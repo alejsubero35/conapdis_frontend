@@ -1,0 +1,54 @@
+{
+
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
+    "jsx": "preserve",
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "suppressImplicitAnyIndexErrors": true,////se agrego para quitar problema con mensajes de validadores
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "baseUrl": "./",
+    "noImplicitReturns": false,
+    "strictNullChecks":false,
+    
+    "types": [
+      "webpack-env",
+      "vue-sweetalert2"
+    ],
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    }, 
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "src/**/*.js",
+    "tests/**/*.tsx", "public/service-worker.js",
+    
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "transpileDependencies": [
+    "@coreui/utils"
+  ],
+  
+  "allowJs": true
+}
