@@ -91,16 +91,15 @@ class sessionModule extends VuexModule {
 	}
 
   	@Action
-	async login(userLogin: UserSubmit) {
-		await http.post('users/login', userLogin)
+	async login(data:any) {
+		await http.post('/login', data)
 	
 		.then((payload: any) => {
 			if (payload) {
-			const login = deserialize(payload.data)
-			userLogin.code = payload.status
-		
+				console.log(payload)
+			const login = payload.data		
 	
-			if (userLogin.code === 200) {
+			if (payload.status === 200) {
 				const stoken: string  = login.access_token;
 				const user_id: string = login.id
 				const rolename: string = login.role.name
@@ -120,15 +119,14 @@ class sessionModule extends VuexModule {
 
 			}
 			} else {
-			userLogin.code == 500;
-			userLogin.message = 'Error grave con Servidor';
+				payload.status == 500;
+				payload.message = 'Error grave con Servidor';
 			}
 		})
 		.catch((e) => {
-			userLogin.code = 500;
-			userLogin.message = 'Error 500 grave con Servidor ';
+
 		});
-		return userLogin;
+
 	}
 
 	@Action

@@ -71,9 +71,7 @@ export default class Login extends Vue {
     text = 'Email o Password Incorrecto'
     alert = false
     loginForm : any = {
-        device_name: 'iphone',
-        code: 0,
-        message: '',
+
     }
     data(){
         return{
@@ -106,7 +104,7 @@ export default class Login extends Vue {
         this.overlay = true
         const valid : any =  this.$refs.loginForm.validate();
         if (valid) { 
-            const data : any = await sessionModule.login(this.LoginRequest)
+            const data : any = await sessionModule.login(this.loginForm)
             if (data.code == 200) {
                 this.$router.push({ name: 'Dashboard' });
                 this.overlay = false
@@ -138,7 +136,7 @@ export default class Login extends Vue {
       border-radius: 10px;
 }
 .v-application .success {
-    background-color: #1D3768 !important;
-    border-color: #1D3768 !important;
+    background-color: #EFAF30 !important;
+    border-color: #EFAF30 !important;
 }
 </style>
