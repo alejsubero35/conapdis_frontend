@@ -3,5 +3,5 @@ export interface UserSubmit {
     password: string;
     code: number;
     message: string;
-    device_name:string;
+  
 }

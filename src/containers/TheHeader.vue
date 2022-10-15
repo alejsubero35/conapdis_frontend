@@ -66,4 +66,7 @@ export default {
 .rolname{
   font-weight: 700;
 }
+.c-header.c-header-fixed{
+  position: fixed !important;
+}
 </style>

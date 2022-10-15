@@ -45,6 +45,27 @@
                         <v-icon left>mdi-login</v-icon>
                         Iniciar Sesión</v-btn
                     >
+               
+                    <v-btn
+                        class="mb-4"
+                        @click="registerUser"
+                        block
+                        color="info"
+                        dark
+                    >
+                        <v-icon left>mdi-account-outline</v-icon>
+                        Registrar Usuario</v-btn
+                    >
+             <!--        <v-btn
+                        class="mb-4"
+                        @click="register"
+                        block
+                        color="primary"
+                        dark
+                    >
+                        <v-icon left>mdi-account-plus-outline</v-icon>
+                        Registrar Empresa</v-btn
+                    > -->
                 </v-form>  
                 <v-alert type="error" v-model="alert" dismissible>
                 {{ text }}
@@ -56,14 +77,13 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import sessionModule from '@/store/modules/sessionModule';
-import { UserSubmit} from '@/store/interfaces/Auth';
-import { required } from 'vee-validate/dist/rules'
 import { ValidationObserver } from 'vee-validate'
-import {serialize, deserialize } from 'jsonapi-fractal'
+
 
 
 @Component
 export default class Login extends Vue {
+    $router :any
     overlay = false;
     email = '';
     password = '';
@@ -71,7 +91,8 @@ export default class Login extends Vue {
     text = 'Email o Password Incorrecto'
     alert = false
     loginForm : any = {
-
+        code: 0,
+        message: '',
     }
     data(){
         return{
@@ -92,7 +113,7 @@ export default class Login extends Vue {
         }
     };
     get LoginRequest(): any {
-        return serialize(this.loginForm,'login',{});
+        return this.loginForm;
     }
 
     $refs!: {
@@ -104,7 +125,8 @@ export default class Login extends Vue {
         this.overlay = true
         const valid : any =  this.$refs.loginForm.validate();
         if (valid) { 
-            const data : any = await sessionModule.login(this.loginForm)
+            const data : any = await sessionModule.login(this.LoginRequest)
+            console.log(data)
             if (data.code == 200) {
                 this.$router.push({ name: 'Dashboard' });
                 this.overlay = false
@@ -115,10 +137,17 @@ export default class Login extends Vue {
             }
         } 
     }
+    async register(){
+        this.$router.push({ name: "bussines"});
+    }
+    async registerUser(){
+        this.$router.push({ name: "createuser"});
+    }
 }
 </script>
 <style lang="scss" scoped>
 .page-wrap {
+   /*  background-image : url('../img/logos_conapdis/fondo.jpg'); */
     background-color: #64A14D !important;
     display: flex;
     align-items: center;

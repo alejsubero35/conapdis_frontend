@@ -2,8 +2,8 @@
     <div>
         <v-dialog v-model="dialogDelete" max-width="350">
             <v-card>
-                <v-card-title class="text-h5">
-                    Eliminar Registro
+                <v-card-title class="text-h6">
+                    {{ titlemodal }}
                 </v-card-title>
 
                 <v-card-text>
@@ -42,6 +42,8 @@ import { Vue, Component, Prop }     from 'vue-property-decorator';
 export default class ButtonOpen extends Vue {
     @Prop() dialogDelete?: Boolean;
     @Prop() textbody?: ' Estas seguro de eliminar el Registro?';
+    @Prop() titlemodal?: ' Estas seguro de eliminar el Registro?';
+    
     deleteContact(){
         this.$emit('deleteData',false)
     }

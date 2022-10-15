@@ -7,7 +7,7 @@
         ></v-progress-circular>
         </v-overlay>
         <v-data-table
-                v-model="selected"
+         
                 :headers="headers"
                 :items="desserts"
                 item-key="id"
@@ -24,37 +24,18 @@
                     'items-per-page-text':'Filtro por Página'
                     
                 }" 
-                :single-expand="singleExpand"
-                :expanded.sync="expanded"
+      
             
                 >
-                <template v-slot:item.name="{item}">
-                    <div class="d-flex align-center">
-                        <p class="ma-0 font-weight-medium">
-                            {{ item.name }}
-                        </p>
-                    </div>
-                </template>
+
                 <template v-slot:item.action="{item}">
                     <div class="d-flex">
                         <v-tooltip top>
                             <template v-slot:activator="{on, attrs}">
                                 <v-btn
-                                   v-if=" section == 'Usuarios'"
                                     color="success"
                                     dark
                                     @click="Edit(item.id)"   
-                                    icon
-                                    v-bind="attrs"
-                                    v-on="on"
-                                >
-                                    <v-icon>mdi-pencil-box-outline</v-icon>
-                                </v-btn>
-                                <v-btn
-                                    v-if="section == 'planes' || section == 'recepcion'"
-                                    color="success"
-                                    dark
-                                    @click="Edit(item)"   
                                     icon
                                     v-bind="attrs"
                                     v-on="on"
@@ -67,24 +48,12 @@
                         <v-tooltip top>
                             <template v-slot:activator="{on, attrs}">
                                 <v-btn
-                                    v-if=" section == 'usuario' ||  section == 'notas' || section == 'evaluacion' || section == 'cierre' "
                                     color="error"
                                     dark
                                     v-bind="attrs"
                                     v-on="on"
                                     icon
                                     @click="Delete(item.id)"   
-                                >
-                                    <v-icon>mdi-trash-can-outline</v-icon>
-                                </v-btn>
-                                <v-btn
-                                    v-if="section == 'planes' || section == 'casos' "
-                                    color="error"
-                                    dark
-                                    v-bind="attrs"
-                                    v-on="on"
-                                    icon
-                                    @click="Delete(item)"   
                                 >
                                     <v-icon>mdi-trash-can-outline</v-icon>
                                 </v-btn>
@@ -130,9 +99,7 @@
 </template>
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import { deserialize } from 'jsonapi-fractal'
 import globalModule from '@/store/modules/globalModule';
-import storageData from '@/store/services/storageService'
 
 
 @Component
@@ -172,6 +139,7 @@ export default class MainDataTable extends Vue {
         this.$emit('delete',id)
     }
     activarPaginate(page){
+        console.log(page)
         this.contador = 0
         if (page.itemsPerPage == -1) {
             this.data.page = page.page
@@ -191,14 +159,14 @@ export default class MainDataTable extends Vue {
        this.$emit('createPDF',item) 
     }
 
-    async dataPaginate(data){  
+    async dataPaginate(dataSubmit){  
     
         this.overlay = true
         let paginateData : any = [];
-      //  if(this.contador  == 0) {
-            const res : any = await globalModule.dataPaginate(data)   
-           // this.contador++;
-            this.pagination.current_page = res.data.meta.page.current_page,
+            const {data,status} : any = await globalModule.dataPaginate(dataSubmit)   
+            console.log(data,status)
+         
+           /*  this.pagination.current_page = res.data.meta.page.current_page,
             this.pagination.from = res.data.meta.page.from,
             this.pagination.last_page = res.data.meta.page.last_page,
             this.pagination.per_page = res.data.meta.page.per_page,
@@ -207,12 +175,10 @@ export default class MainDataTable extends Vue {
         
             if (this.pagination.per_page == this.pagination.total) {
                 this.pagination.per_page = -1
-            }
-            paginateData = deserialize(res.data)
+            } */
+            paginateData = data.data
             this.$emit('updateData', paginateData); 
-        
-       // } 
-       // this.pr()
+    
        
         this.overlay = false 
     }
@@ -233,7 +199,7 @@ export default class MainDataTable extends Vue {
     }
 
     mounted(){
-  
+        console.log(this.desserts)
     }
 
 }

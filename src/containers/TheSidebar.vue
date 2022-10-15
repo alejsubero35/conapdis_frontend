@@ -15,10 +15,10 @@
         viewBox="0 0 110 134" 
       />
     </CSidebarBrand>
-       <CRenderFunction v-if="typeRol == 'Administrador'"  flat :content-to-render="$options.admin"/>
-       <CRenderFunction v-if="typeRol == 'Vendedor'" flat :content-to-render="$options.vendedor"/>
+       <CRenderFunction flat :content-to-render="$options.admin"/>
+<!--   <CRenderFunction v-if="typeRol == 'Vendedor'" flat :content-to-render="$options.vendedor"/>
        <CRenderFunction v-if="typeRol == 'Estandar'" flat :content-to-render="$options.estandar"/>
-       <CRenderFunction v-if="typeRol == 'Tecnico'" flat :content-to-render="$options.tecnico"/>
+       <CRenderFunction v-if="typeRol == 'Tecnico'" flat :content-to-render="$options.tecnico"/> -->
     <CSidebarMinimizer
       class="d-md-down-none"
       @click.native="$store.commit('set', ['sidebarMinimize', !minimize])"

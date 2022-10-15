@@ -94,14 +94,14 @@ export default [
         name: 'Usuarios',
         to: '/users',
         icon: 'cil-user'
-      }
-    /*   {
+      },
+     {
         _name: 'CSidebarNavItem',
-        name: 'Ventas',
-        to: '/facturas',
+        name: 'Registrar Empresas',
+        to: '/bussines',
         icon: 'cil-dollar'
       },
-      {
+     /*{
         _name: 'CSidebarNavItem',
         name: 'Planes',
         to: '/planes',

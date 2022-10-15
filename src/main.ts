@@ -24,10 +24,7 @@ import FormWizard   from 'vue-form-wizard'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import 'sweetalert2/dist/sweetalert2.min.css';
-
-
-
-
+import VueMask from 'v-mask'
 
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
@@ -46,6 +43,7 @@ Vue.config.performance = true;
 Vue.use(CoreuiVue);
 Vue.use(FormWizard);
 Vue.use(VueSweetalert2);
+Vue.use(VueMask);
 //Vue.config.productionTip = false;
 
 

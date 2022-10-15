@@ -14,7 +14,8 @@ const EditUser                = () => import('@/views/modulos/users/EditUser.vue
 const Login                   = () => import('@/views/auth/Login.vue')
 const Logout                  = () => import('@/views/auth/Logout.vue')
 const UpdatePassword          = () => import('@/views/auth/UpdatePassword.vue')
-
+// Bussines
+const Bussines                    = () => import('@/views/modulos/Bussines/Bussines.vue')
 // Errors
 const Page404 = () => import('@/views/errors/Page404.vue')
 const Page500 = () => import('@/views/errors/Page500.vue')
@@ -38,7 +39,7 @@ const router = new Router({
           component: Dashboard,
           meta: { Auth: true, title: 'Dashboard' },
         },
-         {
+        {
           path: 'users',
           name: 'users',
           component: User,
@@ -49,7 +50,7 @@ const router = new Router({
           path: 'createuser',
           name: 'createuser',
           component: CreateUser,
-          meta: { Auth: true, title: 'CreateUser' },
+          meta: { Auth: false, title: 'CreateUser' },
      
         },
         {
@@ -65,7 +66,14 @@ const router = new Router({
           component: UpdatePassword,
           meta: { Auth: true, title: 'UpdatePassword' },
      
-        }              
+        },
+        {
+          path: 'bussines',
+          name: 'bussines',
+          component: Bussines,
+          meta: { Auth: true, title: 'Bussines' },
+     
+        },              
       ]
       
     },

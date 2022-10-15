@@ -14,12 +14,12 @@ import {
   
   @Module({
     namespaced: true,
-    name: 'users',
+    name: 'bussines',
     store,
     dynamic: true,
   })
   
-  class usersModule extends VuexModule {
+  class bussinesModule extends VuexModule {
   
     token: string | null = localStorage.getItem('_token');
   
@@ -104,5 +104,5 @@ import {
 
   }  
   
-  export default getModule(usersModule);
+  export default getModule(bussinesModule);
   

@@ -27,72 +27,7 @@
 	@Action
 	    getFilterSearch(data:any) {
 			return new Promise((resolve, reject) => {
-        if (data.endpoint == 'invoices' ) {
-          http.get(`/${data.endpoint}?include=customers&filter[${data.filter}]=${data.query}&sort=-id`)
-          .then(response =>  {
-        
-			if (response.status === 200) {      
-			let search : any = [];
-			search = deserialize(response.data)
-			resolve(search);
-			}
-          })
-          .catch(error => {
-            reject(error)
-          })
-        } else if (data.endpoint == 'retail-customer-serials' ) {
-          	http.get(`/${data.endpoint}?include=serials&filter[${data.filter}]=${data.query}&sort=-id`)
-          	.then(response =>  {
-        
-				if (response.status === 200) {      
-					let search : any = [];
-					search = deserialize(response.data)
-					resolve(search);
-				}
-          	})
-          	.catch(error => {
-            reject(error)
-          })
-        } else if (data.endpoint == 'deviceplans' ) {
-			http.get(`/${data.endpoint}?include=serials,plans&filter[${data.filter}]=${data.query}&sort=-id`)
-			.then(response =>  {
-		  
-				if (response.status === 200) {   
-					let search : any = [];
-					search = deserialize(response.data)
-					resolve(search);
-				}
-			})
-			.catch(error => {
-			  reject(error)
-			})
-		  } else if (data.endpoint == 'getserialmovements') {
-			http.get(`/${data.endpoint}?filter[${data.filter}]=${data.query}&sort=-id`)
-			.then(response =>  {
-		  
-				if (response.status === 200) {   
-					let search : any = [];
-					search = deserialize(response.data)
-					resolve(search);
-				}
-			})
-			.catch(error => {
-			  reject(error)
-			})
-		  }  else if (data.endpoint == 'tickets') {
-			http.get(`/${data.endpoint}?include=plans,serials,errors,ticketstatuses&filter[customer_id]=${this.getCustomerId}&filter[${data.filter}]=${data.query}&sort=-id`)
-			.then(response =>  {
-		  
-				if (response.status === 200) {   
-					let search : any = [];
-					search = deserialize(response.data)
-					resolve(search);
-				}
-			})
-			.catch(error => {
-			  reject(error)
-			})
-		  } else {
+  
           	http.get(`/${data.endpoint}?filter[${data.filter}]=${data.query}&sort=-id`)
           	.then(response =>  {
         
@@ -105,7 +40,7 @@
           	.catch(error => {
             reject(error)
           })
-        }
+        
 
 		})
 	  }
@@ -127,81 +62,9 @@
         })
     }
 	  @Action
-	  dataPaginate(data:any) {
-         return new Promise((resolve, reject) => {
-            if (data.endpoint == 'invoices') {
-                http.get(`/invoices?include=customers&page[number]=${data.page}&page[size]=${data.itemsPerPage}&sort=-id`)  
-                .then(response =>  {
-                    if (response.status === 200) {     
-                        resolve(response);
-                    }
-				})
-				.catch(error => {
-					reject(error)
-				})
-            } else if (data.endpoint == 'retailcustomerserials') {
-                http.get(`/retailcustomerserials?include=serials&page[number]=${data.page}&page[size]=${data.itemsPerPage}&sort=-id`)  
-                .then(response =>  {
-                    if (response.status === 200) {     
-                        resolve(response);
-                    }
-				})
-				.catch(error => {
-					reject(error)
-				})
-            } else if (data.endpoint == 'deviceplans') {
-              	http.get(`/deviceplans?include=plans,serials&filter[customer_id]=${this.getCustomerId}&page[number]=${data.page}&page[size]=${data.itemsPerPage}&sort=-id`)  
-              	.then(response =>  {
-					if (response.status === 200) {     
-						resolve(response);
-					}
-				})
-				.catch(error => {
-					reject(error)
-				})
-			} else if (data.endpoint == 'tickets') {
-				http.get(`/tickets?include=plans,serials,errors,ticketstatuses&filter[customer_id]=${this.getCustomerId}&page[number]=${data.page}&page[size]=${data.itemsPerPage}&sort=-id`)  
-				.then(response =>  {
-				if (response.status === 200) {     
-					resolve(response);
-				}
-			})
-			.catch(error => {
-				reject(error)
-			})
-			} else if (data.endpoint == 'getserialmovements') {
-				http.get(`/getserialmovements?page[number]=${data.page}&page[size]=${data.itemsPerPage}&sort=-id`)  
-				.then(response =>  {
-				if (response.status === 200) {     
-					resolve(response);
-				}
-			})
-			.catch(error => {
-				reject(error)
-			})
-			} else if (data.endpoint == 'technicalevaluations') {
-				http.get(`/technicalevaluations?include=tickets&page[number]=${data.page}&page[size]=${data.itemsPerPage}&sort=-id`)  
-				.then(response =>  {
-				if (response.status === 200) {     
-					resolve(response);
-				}
-				})
-				.catch(error => {
-					reject(error)
-				})
-			} else if (data.endpoint == 'ticketclosures') {
-				http.get(`/ticketclosures?include=ticketclosuretypes,tickets&page[number]=${data.page}&page[size]=${data.itemsPerPage}&sort=-id`)  
-				.then(response =>  {
-				if (response.status === 200) {     
-					resolve(response);
-				}
-				})
-				.catch(error => {
-					reject(error)
-				})
-			} else {
-  
-                http.get(`/${data.endpoint}?page[number]=${data.page}&page[size]=${data.itemsPerPage}&sort=-id`)
+	  dataPaginate(endpoint:any) {
+         return new Promise((resolve, reject) => {  
+                http.get(`/users`)
                 .then(response =>  {
 
 					if (response.status === 200) {     
@@ -211,7 +74,7 @@
                 .catch(error => {
                     reject(error)
                 })
-            } 
+          
          
             }) 
 	     }

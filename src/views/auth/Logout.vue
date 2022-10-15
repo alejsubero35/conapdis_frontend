@@ -16,8 +16,7 @@ export default class Logout extends Vue {
 
   logout() {
     
-    sessionModule
-      .logout()
+    sessionModule.logout()
       .then((res:any) =>  {
       this.$router.push({ name: 'Login' });
       }

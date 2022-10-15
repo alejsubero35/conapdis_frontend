@@ -23,6 +23,7 @@
     "jspdf": "^2.5.1",
     "read-excel-file": "^5.4.4",
     "register-service-worker": "^1.7.2",
+    "v-mask": "^2.3.0",
     "vee-validate": "^3.3.0",
     "vue": "^2.6.11",
     "vue-axios-interceptors": "^0.3.1",

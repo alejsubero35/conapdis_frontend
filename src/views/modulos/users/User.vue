@@ -12,28 +12,70 @@
             <Filtro  :endpoint="endpoint" :headers="headers"  :label="label" :moduleStore="moduleStore" v-on:updateData="handleDataUser"/>
         </v-col>
         <v-col cols="12">
-            <DataTable :search="search" 
-            :headers="headers" 
-            :desserts="desserts" 
-            :loading="loadTable" 
-            @customChange="openView"  
-            @changePassword="openViewChangePassword"  
-            :title="title" 
-            @edit="editarUsuario" 
-            @delete="showModalDelete" 
-            :moduleStore="moduleStore" 
-            v-on:updateData="handleDataUser"
-            :section="section"
-            :endpoint="endpoint"
-            />
+          <template>
+                <v-data-table
+                    :headers="headers"
+                    :items="desserts" 
+                    :options.sync="options"
+                    :itemsPerPage="per_page"
+                    :footer-props="{
+                        'items-per-page-text':'Filtro por Página'       
+                    }"                     
+                >
+                    <template v-slot:item.action="{ item }">
+                        <div class="d-flex">
+                            <v-tooltip top>
+                                <template v-slot:activator="{on, attrs}">
+                                    <v-btn
+                                        color="success"
+                                        dark
+                                        @click="editar(item.id)"   
+                                        icon
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >
+                                        <v-icon>mdi-pencil-box-outline</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Editar</span>
+                            </v-tooltip>
+                            <v-tooltip top>
+                                <template v-slot:activator="{on, attrs}">
+                                    <v-btn
+                                        color="error"
+                                        dark
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        icon
+                                        @click="Delete(item.id)"   
+                                    >
+                                        <v-icon>mdi-trash-can-outline</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Eliminar</span>
+                            </v-tooltip>
+                        </div>
+                    </template>
+                    <template   v-slot:item.price="{item}">
+                        <template>
+                            {{ setDecimales(item.price) }}
+                        </template>
+                    </template>
+                    <template   v-slot:item.quantity="{item}">
+                        <template>
+                            {{ setDecimales(item.quantity) }}
+                        </template>
+                    </template>
+                </v-data-table>
+            </template>
         </v-col>
-        <ModalDelete @deleteData="deleteUsuario" :dialogDelete="dialogDelete" @cerrarModal="cerrarModal"/>
+        <ModalDelete @deleteData="deleteUsuario" :titlemodal="titlemodal" :textbody="textbody" :dialogDelete="dialogDelete" @cerrarModal="cerrarModal"/>
         <Notificacion :snackbar="snackbar" :textmsj="textmsj"/>
     </v-row>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop }     from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch }     from 'vue-property-decorator';
 import usuariosModule            from '@/store/modules/usersModule';
 import {serialize} from 'jsonapi-fractal'
 
@@ -61,31 +103,36 @@ export default class Usuario extends Vue {
     title  : string = 'NUEVO USUARIO'
     tituloModal : string = ''
     dataEditForm : object = {}
-    dataDeleteForm  = {
-        id : '',
-        deletedAt : ''
-    }
+    id_delete = ''
     snackbar = false
     textmsj = ''
     timeout = 2000
     label = 'Buscar Usuarios'
     moduleStore = usuariosModule
-    page = 1
+    per_page = 10
     endpoint : string = 'users'
-
-    get FormRequestDelete(): any {
-        return serialize(this.dataDeleteForm,'users',{});
+    options = {}
+    textbody = ''
+    titlemodal = ''
+    @Watch('options', { immediate: false })
+        handler (val) {
+        if (val.page != 1) {
+            this.dataIndex()
+        }
     }
+    
+
     openView(){
         this.$router.push({ name: "createuser"});
     }
     openViewChangePassword(id){
         this.$router.push({ name: "updatepassword", params: { id: id,section:this.section } });
     }
-    showModalDelete(id){
+    Delete(id){
         this.dialogDelete = true;
-        this.dataDeleteForm.id = id
-        this.dataDeleteForm.deletedAt = this.currentDate()
+        this.textbody = 'Confirme que desea eliminar el usuario'
+        this.titlemodal = 'Eliminar Registro de Usuario'
+        this.id_delete = id
     }
     cerrarModal(event){
         this.dialogDelete = event;
@@ -93,11 +140,12 @@ export default class Usuario extends Vue {
      async deleteUsuario(event){
         let dataUpdate : any = []
         this.dialogDelete = event;
-        this.overlay = true
-     /*    const res : any = await usuariosModule.deleteUsuario(this.FormRequestDelete);
-        dataUpdate = deserialize(res.data) */
+        //this.overlay = true
+        const res : any = await usuariosModule.delete(this.id_delete);
+        console.log(res.data.data)
+        dataUpdate = res.data.data
         this.desserts = dataUpdate;
-        this.textmsj = 'Usuario inabilitado con Éxito.'
+        this.textmsj = 'Usuario Eliminado con Éxito.'
         this.snackbar = true
         this.closeSnackbar()
         this.overlay = false
@@ -107,7 +155,7 @@ export default class Usuario extends Vue {
             this.snackbar = false
         },2000);
     }
-    handleDataUser(event){
+    handleDataUser(event){console.log(event)
         this.desserts = event;
         this.loadTable = false;
     }
@@ -116,8 +164,22 @@ export default class Usuario extends Vue {
         return  date.toISOString();
     }
 
-    editarUsuario(id) {
+    editar(id) {
         this.$router.push({ name: "edituser", params: { id: id } });
+    }
+    async dataIndex(){  
+    
+        this.overlay = true
+            let paginateData : any = [];
+            const {data,status} : any = await usuariosModule.getAll()   
+            this.desserts = data.data
+        this.overlay = false 
+    }
+    async setQueryPage(page:number){
+        console.log(page)
+    }
+    mounted(){
+        this.dataIndex()
     }
 
 }
@@ -158,5 +220,6 @@ export default class Usuario extends Vue {
     background-color: white;
     padding: 15px;
     border-radius: 13px;
+    margin: 0;
 }
 </style>

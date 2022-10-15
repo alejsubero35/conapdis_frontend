@@ -3,5 +3,5 @@ export interface Usuarios {
     name:string,
     email:string,
     password:string,
-    password_confirmation:string
+    roles:number
 }

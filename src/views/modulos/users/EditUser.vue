@@ -34,7 +34,7 @@
                         item-value="id"
                         label="Roles"
                         placeholder="Roles"
-                        v-model="usersForm.role_id"
+                        v-model="usersForm.roles"
                         outlined
                         dense
                         :rules="rules"
@@ -42,23 +42,11 @@
                         @change="getIdRole($event)"
                         ></v-select>
                     </v-col>
-                    <v-col v-show="visiblecustomers" cols="12" sm="6" md="4">
-                        <v-select
-                        :items="customers"
-                        item-text="nameLegal"
-                        item-value="id"
-                        label="Cliente"
-                        placeholder="Cliente"
-                        v-model="usersForm.customer_id"
-                        outlined
-                        dense
-                        @change="getIdCustomers($event)"
-                        ></v-select>
-                    </v-col>
+  
                 </v-layout>
             </v-container>
             <div class="mt-5 d-flex justify-end ">
-                <v-btn small @click="submitSetting" color="success"  >Actualizar</v-btn> 
+                <v-btn small @click="updateUsers" color="success"  >Actualizar</v-btn> 
             </div>
         </v-form>
         <Notificacion :snackbar="snackbar" :textmsj="textmsj"/>
@@ -80,20 +68,28 @@ export default class Users extends Vue {
 
     overlay = false;
     show : Boolean =  false;
-    usersForm = {
+   usersForm = {
         id:'',
         name:'',
         email:'',
-        role_id:'',
-        customer_id:'',
-        roles:{
-            id: '',
-        },
-        customers:{
-            id:''
-        }
+        password:'',
+        roles:''
+ 
     }
-    roles = []
+    roles = [
+        {
+            id:1,
+            name:'admin'
+        },
+        {
+            id:2,
+            name:'empresa'
+        },
+        {
+            id:3,
+            name:'estandar'
+        }
+    ]
     customers = []
     snackbar = false
     textmsj     = '' 
@@ -114,54 +110,24 @@ export default class Users extends Vue {
             
         }
     };
-    validarPassword(){
-       
-    }
 
     get FormRequestUser(): any {
-        return serialize(this.usersForm,'users',{ relationships: ['roles','customers']});
+        return this.usersForm;
     } 
 
-    get FormRequestUserRoles(): any {
-        return serialize(this.usersForm,'users',{ relationships: ['roles']});
-    } 
 
     $refs!: {
         usersForm: InstanceType<typeof ValidationObserver>;
     };
     getIdRole(event) {
-        if (event == 6) {
-            this.visiblecustomers = true
-        } else {
-            this.visiblecustomers = false
-         
-        }
-        this.usersForm.roles.id = event
+        this.usersForm.roles = event
     }
-    getIdCustomers(event) {
-        this.usersForm.customers.id = event
-    }
-    async submitSetting() { 
-         
-        delete this.FormRequestUser.data.attributes.role_id
-        delete this.FormRequestUser.data.attributes.customer_id
-        delete this.FormRequestUserRoles.data.attributes.role_id
-        delete this.FormRequestUserRoles.data.attributes.customer_id
-        delete this.FormRequestUserRoles.data.attributes.customers
 
-        if(this.usersForm.customers) {
-            this.updateUsers(this.FormRequestUser)
-        } else {
-            this.updateUsers(this.FormRequestUserRoles)
-        }
-    
-   
-    };
-    async updateUsers(dataUsers : any) {
+    async updateUsers() {
         const valid = await this.$refs.usersForm.validate();
         if (valid) {
             this.overlay  = true
-            const data    = await usersModule.update(dataUsers)  
+            const data    = await usersModule.update(this.FormRequestUser)  
             this.textmsj  = 'Usuario Actualizado con Éxito.'
             this.snackbar = true
             this.back();
@@ -174,20 +140,16 @@ export default class Users extends Vue {
         const roles : any = await  usersModule.getRoles();
         this.roles = roles;
     }
-    async getCustomers(){
-        const customers : any = await  usersModule.getCustomers();
-        this.customers = customers;
-    }
+
     async getUserById(id) {
         this.overlay = true
-        const data : any = await usersModule.getUserById(id)  
+        const {data} : any = await usersModule.getUserById(id)  
         console.log(data)
         this.usersForm.name     = data.name
         this.usersForm.email    = data.email
         this.usersForm.id       = data.id
-        this.usersForm.role_id  = data.roles.id
-        this.getIdRole(data.roles.id);
-        this.usersForm.customer_id  = (data.customers) ? data.customers.id : ''
+        this.getIdRole(data.roles);
+
         this.overlay = false
     } 
     reset () {
@@ -202,8 +164,7 @@ export default class Users extends Vue {
         },2000);
     }
     mounted() {
-        this.getRoles();
-        this.getCustomers();
+        //this.getRoles();
         this.getUserById(this.$route.params.id);       
     }
 }

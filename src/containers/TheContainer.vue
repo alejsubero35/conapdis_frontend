@@ -48,4 +48,11 @@ export default class TheContainer extends Vue {
 .fade-leave-to {
   opacity: 0;
 }
+.c-main {
+    flex-basis: auto;
+    flex-shrink: 0;
+    flex-grow: 1;
+    min-width: 0;
+    padding-top: 5rem;
+}
 </style>
