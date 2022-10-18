@@ -7,7 +7,7 @@ import {
     VuexModule,
   } from 'vuex-module-decorators';
   import store from '@/store';
-  import { Usuarios } from '../interfaces/Usuarios';
+  import { Bussines } from '../interfaces/Bussines';
   import { UserToken } from '../interfaces/UserToken';
   import { http,https } from '@/utils/http';
   import { deserialize } from 'jsonapi-fractal'
@@ -20,12 +20,15 @@ import {
   })
   
   class bussinesModule extends VuexModule {
+    getStates() {
+      throw new Error('Method not implemented.');
+    }
   
     token: string | null = localStorage.getItem('_token');
   
     @Action
-	async save(data: Usuarios) { 
-	const response =  await http.post('users', data)
+	async save(data: Bussines) { 
+	const response =  await http.post('busines', data)
 		if (response.status === 201){
 		
 		}
@@ -66,15 +69,13 @@ import {
 		})
 	}				
 	@Action
-	getRoles() {
+	getStatesAll(){
 		return new Promise((resolve, reject) => {
-			http.get('/roles?sort=-id').then(response => {
+			http.get('/states').then(response => {
 	
 				if (response.status === 200) {      
-				let roles : any = [];
-				roles = deserialize(response.data,{changeCase:'camelCase'})
 		
-				resolve(roles);
+					resolve(response);
 				
 				}
 		})
@@ -83,7 +84,86 @@ import {
 		})
 		})
 	}
-
+	@Action
+	getMunicipality(id){
+		return new Promise((resolve, reject) => {
+			http.get(`/municipalities/for_state/${id}`).then(response => {
+	
+				if (response.status === 200) {      
+		
+					resolve(response);
+				
+				}
+		})
+		.catch(error => {
+			reject(error)
+		})
+		})
+	}
+	@Action
+	getParishes(id){
+		return new Promise((resolve, reject) => {
+			http.get(`/parishes/for_municipality/${id}`).then(response => {
+	
+				if (response.status === 200) {      
+		
+					resolve(response);
+				
+				}
+		})
+		.catch(error => {
+			reject(error)
+		})
+		})
+	}
+	@Action
+	getEconomicSectorAll(){
+		return new Promise((resolve, reject) => {
+			http.get(`/economic-sectors`).then(response => {
+	
+				if (response.status === 200) {      
+		
+					resolve(response);
+				
+				}
+		})
+		.catch(error => {
+			reject(error)
+		})
+		})
+	}
+	@Action
+	getEconomicActiviesAll(){
+		return new Promise((resolve, reject) => {
+			http.get(`/economic-activies`).then(response => {
+	
+				if (response.status === 200) {      
+		
+					resolve(response);
+				
+				}
+		})
+		.catch(error => {
+			reject(error)
+		})
+		})
+	}
+	@Action
+	getTypeCompanyAll(){
+		return new Promise((resolve, reject) => {
+			http.get(`/company-types`).then(response => {
+	
+				if (response.status === 200) {      
+		
+					resolve(response);
+				
+				}
+		})
+		.catch(error => {
+			reject(error)
+		})
+		})
+	}
 	@Action
 	getAll() {
 	   return new Promise((resolve, reject) => {  

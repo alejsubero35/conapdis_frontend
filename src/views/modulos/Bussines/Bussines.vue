@@ -21,7 +21,7 @@
             shape="tab" 
             finish-button-text="Guardar" 
             back-button-text="Atras" 
-            next-button-text="Guardar y Continuar">
+            next-button-text="Siguiente">
                 <tab-content title="Información Básica"  icon="mdi mdi-bank-check" :before-change="beforeTabSwitch">
                     <v-form class="formCliente" ref="validateStepForm"  lazy-validation >	
 						<v-row>
@@ -120,7 +120,7 @@
 									outlined
 									dense
 									:rules="rules"
-									v-model="bussinesform.year"
+									v-model="bussinesform.organismo"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="4">
@@ -135,9 +135,9 @@
 							</v-col>
 							<v-col cols="12" sm="6" md="4">
 								<v-select
-									:items="typerif"
-									item-text="text"
-									item-value="value"
+									:items="arrayEconomicSector"
+									item-text="name"
+									item-value="id"
 									label="Sector Económico"
 									placeholder="Sector Económico"
 									v-model="bussinesform.economic_sectors_id"
@@ -149,9 +149,9 @@
 							</v-col>
 							<v-col cols="12" sm="6" md="4">
 								<v-select
-									:items="typerif"
-									item-text="text"
-									item-value="value"
+									:items="arrayTypeCompany"
+									item-text="name"
+									item-value="id"
 									label="Tipo de Empresa"
 									placeholder="Tipo de Empresa"
 									v-model="bussinesform.company_types_id"
@@ -173,9 +173,9 @@
 							</v-col>
 							<v-col cols="12" sm="6" md="4">
 								<v-select
-									:items="typerif"
-									item-text="text"
-									item-value="value"
+									:items="arrayEconomicActivies"
+									item-text="name"
+									item-value="id"
 									label="Actividad Económica"
 									placeholder="Actividad Económica"
 									v-model="bussinesform.economic_activity_id"
@@ -206,9 +206,9 @@
 						<v-row>
 							<v-col cols="12" sm="6" md="3">
 								<v-select
-									:items="typerif"
-									item-text="text"
-									item-value="value"
+									:items="arrayStates"
+									item-text="name"
+									item-value="id"
 									label="Estado"
 									placeholder="Estado"
 									v-model="bussinesform.state_id"
@@ -216,13 +216,14 @@
 									dense
 									:rules="rules"
 									required
+									@change="getMunicipalityByState($event)"
 								></v-select>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
 								<v-select
-									:items="typerif"
-									item-text="text"
-									item-value="value"
+									:items="arrayMunicipality"
+									item-text="name"
+									item-value="id"
 									label="Municipio"
 									placeholder="Municipio"
 									v-model="bussinesform.municipality_id"
@@ -230,13 +231,14 @@
 									dense
 									:rules="rules"
 									required
+									@change="getParishesByMunicipality($event)"
 								></v-select>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
 								<v-select
-									:items="typerif"
-									item-text="text"
-									item-value="value"
+									:items="arrayParishes"
+									item-text="name"
+									item-value="id"
 									label="Parroquia"
 									placeholder="Parroquia"
 									v-model="bussinesform.parishe_id"
@@ -263,12 +265,12 @@
 							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Teléfono"
-									placeholder="(####)#######"
+									placeholder="###########"
 									outlined
 									dense
 									:rules="rules"
 									v-model="bussinesform.phone"
-									v-mask="'(####)#######'"
+									v-mask="'###########'"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="12" md="9">
@@ -305,7 +307,7 @@
 							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Cédula / Pasaporte"
-									placeholder="(####)#######"
+									placeholder="###########"
 									outlined
 									dense
 									:rules="rules"
@@ -361,23 +363,23 @@
 							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Teléfono"
-									placeholder="(####)#######"
+									placeholder="###########"
 									outlined
 									dense
 									:rules="rules"
-									v-model="bussinesform.phone"
-									v-mask="'(####)#######'"
+									v-model="bussinesform.phone2"
+									v-mask="'###########'"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Teléfono"
-									placeholder="(####)#######"
+									placeholder="###########"
 									outlined
 									dense
 									:rules="rules"
-									v-model="bussinesform.phone"
-									v-mask="'(####)#######'"
+									v-model="bussinesform.phone3"
+									v-mask="'###########'"
 								></v-text-field>
 							</v-col>
 						</v-row>
@@ -563,14 +565,15 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import bussinesModule from '@/store/modules/bussinesModule';
 import { ValidationObserver } from 'vee-validate'
-import {serialize, deserialize } from 'jsonapi-fractal'
+
 
 @Component({
   components: {
 
   }
 })
-export default class EditarCliente extends Vue {
+export default class Bussines extends Vue {
+[x: string]: unknown;
 	zonas?: any = [];
 	tipoclientes?: any = [];
 	vendedor?: any = [];
@@ -580,7 +583,7 @@ export default class EditarCliente extends Vue {
 	title : string = '';
 	subtitle : string = ''
 	validateStepForm : any = {inactivo: '1'};
-    bussinesform : object = {}
+    bussinesform : any = {}
     loadingWizard = false
 	typerif = [
         {value: '1', text: 'Consejo Comunal'},
@@ -616,6 +619,12 @@ export default class EditarCliente extends Vue {
     box            = false
     thermal_roll   = false
     manual         = false
+	arrayStates = []
+	arrayMunicipality = []
+	arrayParishes = []
+	arrayEconomicSector = []
+	arrayEconomicActivies = []
+	arrayTypeCompany = []
 	$refs!: {
         validateStepForm: InstanceType<typeof ValidationObserver>;
         validateStepFormTwo: InstanceType<typeof ValidationObserver>;
@@ -623,7 +632,7 @@ export default class EditarCliente extends Vue {
 		validateStepFormFour: InstanceType<typeof ValidationObserver>;
 	}
 	get FormRequest(): any {
-        return serialize(this.bussinesform,'clientes',{});
+        return this.bussinesform;
     }
 
     get activo() {
@@ -637,6 +646,9 @@ export default class EditarCliente extends Vue {
     }
     beforeTabSwitch(){
         const valid :any =  this.$refs.validateStepForm.validate();
+		this.FormRequest.rif.replaceAll('-',"")
+		this.FormRequest.rif.slice(1)
+		console.log(this.FormRequest.rif)
         if (valid) {
            return true
         }else {
@@ -669,29 +681,54 @@ export default class EditarCliente extends Vue {
     }
 
 	onComplete() {
+		this.FormRequest.rif.replace('-','')
+		this.FormRequest.rif.slice(1)
+		console.log(this.FormRequest)
 		const valid :any =  this.$refs.validateStepForm.validate();
 
-        if (valid) {
-            this.saveCliente();
+    /*     if (valid) {
+            this.saveBussines();
         }else {
             this.dialog = true
-        } 
+        }  */
 		
     }
- 	async saveCliente() {
+ 	async saveBussines() {
         console.log(this.FormRequest)
- 		/* this.overlay = true
-    	const data = await clientModule.saveClient(this.FormRequest)
+ 		this.overlay = true
+    	const data = await bussinesModule.save(this.FormRequest)
 		this.reset();
-        this.textmsj = 'Cliente Creado con Éxito.'
+        this.textmsj = 'empresa Registrada con Éxito.'
         this.color = 'success'
         this.snackbar = true
-        this.back();
-		this.overlay = false  */
+        //this.back();
+		this.overlay = false 
     }; 
-
-
-
+	async getStates(){
+		const states : any = await bussinesModule.getStatesAll()
+		this.arrayStates = states.data.data
+	}
+	async getEconomicSector(){
+		const economicsector : any = await bussinesModule.getEconomicSectorAll()
+		this.arrayEconomicSector = economicsector.data.data
+	}
+	async getEconomicActivies(){
+		const economicactivies : any = await bussinesModule.getEconomicActiviesAll()
+		this.arrayEconomicActivies = economicactivies.data.data
+	}
+	async getTypeCompany(){
+		const typecompany : any = await bussinesModule.getTypeCompanyAll()
+		this.arrayTypeCompany = typecompany.data.data
+	}
+	async getMunicipalityByState(event){
+		const municipality : any = await bussinesModule.getMunicipality(event)
+		this.arrayMunicipality = municipality.data.data
+	}
+	async getParishesByMunicipality(event){
+		const parishes : any = await bussinesModule.getParishes(event)
+		this.arrayParishes = parishes.data.data
+	}
+	
 	reset () {
         this.$refs.validateStepForm.reset()
     };
@@ -720,9 +757,10 @@ export default class EditarCliente extends Vue {
         }
     };
     mounted(){
-
-         
-       
+		this.getStates()
+		this.getEconomicSector()
+		this.getEconomicActivies()
+		this.getTypeCompany()
     }
 }
 </script>

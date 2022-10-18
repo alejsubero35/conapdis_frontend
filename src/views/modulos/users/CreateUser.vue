@@ -69,6 +69,7 @@ import {serialize} from 'jsonapi-fractal'
   }
 })
 export default class Users extends Vue {
+[x: string]: unknown;
     value = ''
     label = 'prueba'
     overlay = false;
@@ -134,6 +135,7 @@ export default class Users extends Vue {
         if (valid) {
             this.overlay  = true
             const data    = await usersModule.save(this.FormRequestUser)  
+            console.log('en la vista:: ' + data )
             this.textmsj  = 'Usuario Creado con Éxito.'
             this.snackbar = true
             this.back();
@@ -154,7 +156,7 @@ export default class Users extends Vue {
     };
     back() {
         setTimeout(() => {
-            this.$router.go(-1);
+            this.$router.push({ name: 'bussines' });
             this.snackbar = false
         },2000);
     }

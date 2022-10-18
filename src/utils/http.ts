@@ -4,7 +4,7 @@ import store from '@/store';
 import Swal from 'sweetalert2'
 axios.defaults.withCredentials = true;
 
-const URL     =  'http://conapdis.local/api/v1/'
+const URL     =  'https://conapdis.local/api/v1'
 
 const URLBASE =  'http://conapdis.local'
 
@@ -32,7 +32,7 @@ http.interceptors.request.use( (config) => {
     const tk  = token?.replaceAll('"',"");
     config.headers.Authorization = `Bearer ${tk}`;
     //config.headers['Content-Type'] = 'application/json';
-    config.headers['Content-Type'] = 'application/vnd.api+json';
+    config.headers['Content-Type'] = 'application/json';
    /*  config.headers.Charset = 'uft-8'; */
   }
   return config;

@@ -65,6 +65,7 @@ import {serialize} from 'jsonapi-fractal'
   }
 })
 export default class Users extends Vue {
+[x: string]: unknown;
 
     overlay = false;
     show : Boolean =  false;
@@ -145,10 +146,11 @@ export default class Users extends Vue {
         this.overlay = true
         const {data} : any = await usersModule.getUserById(id)  
         console.log(data)
-        this.usersForm.name     = data.name
-        this.usersForm.email    = data.email
-        this.usersForm.id       = data.id
-        this.getIdRole(data.roles);
+        this.usersForm.name     = data.data.name
+        this.usersForm.email    = data.data.email
+        this.usersForm.id       = data.data.id
+        console.log(data.data.roles[0].id)
+        this.getIdRole(data.data.roles[0].id);
 
         this.overlay = false
     } 

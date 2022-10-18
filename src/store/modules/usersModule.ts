@@ -11,6 +11,7 @@ import {
   import { UserToken } from '../interfaces/UserToken';
   import { http,https } from '@/utils/http';
   import { deserialize } from 'jsonapi-fractal'
+  import storageData from '@/store/services/storageService'
   
   @Module({
     namespaced: true,
@@ -25,10 +26,24 @@ import {
   
     @Action
 	async save(data: Usuarios) { 
-	const response =  await http.post('users', data)
-		if (response.status === 201){
-		
-		}
+		return new Promise((resolve, reject) => {
+			http.post('users/store_bussiness', data)
+			.then(response => {
+				if (response.status === 201) {   
+					const stoken: string  = response.data.data.access_token;
+					storageData.set('_token', stoken);
+					resolve(response);
+				}
+			})
+		})
+
+/* 	const response =  await http.post('users/store_bussiness', data)
+	console.log(response)
+		if (response.status === 200 || response.status === 201 ){
+			const stoken: string  = response.data.data.access_token;
+			storageData.set('_token', stoken);
+			return response
+		} */
 	}  
 	@Action
 	async update(dataUsers:any) { 
