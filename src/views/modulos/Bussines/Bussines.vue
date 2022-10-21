@@ -265,12 +265,11 @@
 							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Teléfono"
-									placeholder="###########"
 									outlined
 									dense
 									:rules="rules"
 									v-model="bussinesform.phone"
-									v-mask="'###########'"
+									
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="12" md="9">
@@ -353,9 +352,9 @@
 									item-value="value"
 									label="Cargo"
 									placeholder="Cargo"
-									v-model="bussinesform.type_identity_card"
 									outlined
 									dense
+									v-model="bussinesform.type_identity_card"
 									:rules="rules"
 									required
 								></v-select>
@@ -366,7 +365,6 @@
 									placeholder="###########"
 									outlined
 									dense
-									:rules="rules"
 									v-model="bussinesform.phone2"
 									v-mask="'###########'"
 								></v-text-field>
@@ -377,7 +375,6 @@
 									placeholder="###########"
 									outlined
 									dense
-									:rules="rules"
 									v-model="bussinesform.phone3"
 									v-mask="'###########'"
 								></v-text-field>
@@ -592,11 +589,11 @@ export default class Bussines extends Vue {
 		{value: '4', text: 'Personal'}
     ];
 	tipodocumentos  = [
-        {value: '1', text: 'Acta de Nacimiento'},
-        {value: '2', text: 'Cédula Extranjero'},
-		{value: '3', text: 'Cédula Residente'},
-		{value: '4', text: 'Cédula Venezolano'},
-		{value: '4', text: 'Pasaporte'}
+        {value: 'Nacimiento', text: 'Acta de Nacimiento'},
+        {value: 'Extranjero', text: 'Cédula Extranjero'},
+		{value: 'Residente',  text: 'Cédula Residente'},
+		{value: 'Venezolano', text: 'Cédula Venezolano'},
+		{value: 'Pasaporte',  text: 'Pasaporte'}
     ];
 	inactivo = [
         {value: '0', text: 'Inactivo'},
@@ -646,9 +643,9 @@ export default class Bussines extends Vue {
     }
     beforeTabSwitch(){
         const valid :any =  this.$refs.validateStepForm.validate();
-		this.FormRequest.rif.replaceAll('-',"")
-		this.FormRequest.rif.slice(1)
-		console.log(this.FormRequest.rif)
+		const newStr = this.FormRequest.rif.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '')
+		this.FormRequest.rif = newStr.slice(1)
+	
         if (valid) {
            return true
         }else {
@@ -681,16 +678,14 @@ export default class Bussines extends Vue {
     }
 
 	onComplete() {
-		this.FormRequest.rif.replace('-','')
-		this.FormRequest.rif.slice(1)
-		console.log(this.FormRequest)
+
 		const valid :any =  this.$refs.validateStepForm.validate();
 
-    /*     if (valid) {
+        if (valid) {
             this.saveBussines();
         }else {
             this.dialog = true
-        }  */
+        } 
 		
     }
  	async saveBussines() {
@@ -698,10 +693,10 @@ export default class Bussines extends Vue {
  		this.overlay = true
     	const data = await bussinesModule.save(this.FormRequest)
 		this.reset();
-        this.textmsj = 'empresa Registrada con Éxito.'
+        this.textmsj = 'Empresa Registrada con Éxito.'
         this.color = 'success'
         this.snackbar = true
-        //this.back();
+        this.back();
 		this.overlay = false 
     }; 
 	async getStates(){
@@ -734,7 +729,7 @@ export default class Bussines extends Vue {
     };
     back() {
         setTimeout(() => {
-            this.$router.go(-1);
+            //this.$router.go(-1);
             this.snackbar = false
         },2000);
     }

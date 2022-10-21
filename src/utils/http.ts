@@ -4,7 +4,7 @@ import store from '@/store';
 import Swal from 'sweetalert2'
 axios.defaults.withCredentials = true;
 
-const URL     =  'https://conapdis.local/api/v1'
+const URL     =  'http://conapdis.local/api/v1'
 
 const URLBASE =  'http://conapdis.local'
 
