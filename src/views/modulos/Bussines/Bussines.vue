@@ -8,7 +8,7 @@
         </v-overlay>
    
             <div class="formCliente">
-   <TitleSection :sectiontitle="sectiontitle"/>
+   		<TitleSection :sectiontitle="sectiontitle"/>
             <form-wizard  
             class="test " 
             :start-index="tabIndex"
@@ -20,22 +20,11 @@
             color="#009db0" 
             shape="tab" 
             finish-button-text="Guardar" 
-            back-button-text="Atras" 
+            back-button-text="Atrás" 
             next-button-text="Siguiente">
-                <tab-content title="Información Básica"  icon="mdi mdi-bank-check" :before-change="beforeTabSwitch">
+                <tab-content title="Información Básica"  icon="mdi mdi-information" :before-change="beforeTabSwitch">
                     <v-form class="formCliente" ref="validateStepForm"  lazy-validation >	
 						<v-row>
-							<v-col cols="12" sm="6" md="3">
-								<v-text-field
-									label="Rif"
-									placeholder="Rif"
-									outlined
-									dense
-									:rules="rules"
-									v-model="bussinesform.rif"
-									v-mask="'N-#########-#'"
-								></v-text-field>
-							</v-col>
 							<v-col cols="12" sm="6" md="3">
 							<v-select
 								:items="typerif"
@@ -50,6 +39,17 @@
 								required
 							></v-select>
 							</v-col>
+							<v-col cols="12" sm="6" md="3">
+								<v-text-field
+									label="Rif"
+									placeholder="Rif"
+									outlined
+									dense
+									:rules="rules"
+									v-model="bussinesform.rif"
+									v-mask="'############'"
+								></v-text-field>
+							</v-col>
 							<v-col cols="12" sm="6" md="6">
 								<v-text-field
 									label="Razón social"
@@ -58,6 +58,40 @@
 									dense
 									:rules="rules"
 									v-model="bussinesform.company_name"
+								></v-text-field>
+							</v-col>
+							<v-col cols="12" sm="6" md="3">
+								<v-switch
+								label="¿Es una Sucursal?"
+								v-model="sucursal"
+								color="success"
+								:value="is_sucursal"  
+								hide-details
+						
+								@change="typeSucursal()"
+								></v-switch>
+							</v-col>
+							<v-col cols="12" sm="6" md="3">
+								<v-text-field
+									v-show="showSucursal"
+									label="N° de Sucursal"
+									placeholder="N° de Sucursal"
+									outlined
+									dense
+									:rules="rules"
+									v-model="numero_sucursal"
+									v-mask="'############'"
+								></v-text-field>
+							</v-col>
+							<v-col cols="12" sm="6" md="3">
+								<v-text-field
+									v-show="showSucursal"
+									label="Nombre Sucursal"
+									placeholder="Nombre Sucursal"
+									outlined
+									dense
+									:rules="rules"
+									v-model="nombre_sucursal"
 								></v-text-field>
 							</v-col>
 						</v-row>
@@ -76,7 +110,7 @@
 									dense
 									:rules="rules"
 									v-model="bussinesform.tomo"
-									v-mask="'#######################'"
+									 type="number"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
@@ -87,7 +121,7 @@
 									dense
 									:rules="rules"
 									v-model="bussinesform.folio"
-									v-mask="'#######################'"
+									 type="number"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
@@ -98,7 +132,7 @@
 									dense
 									:rules="rules"
 									v-model="bussinesform.number"
-									v-mask="'#######################'"
+									 type="number"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
@@ -129,7 +163,6 @@
 									placeholder="Página Web"
 									outlined
 									dense
-									:rules="rules"
 									v-model="bussinesform.web"
 								></v-text-field>
 							</v-col>
@@ -194,14 +227,14 @@
 								outlined
 								dense
 								:rules="rules"
-								v-model="bussinesform.location"
+								v-model="bussinesform.comercial_designation"
 								rows="3"
 							></v-textarea>
 							</v-col>
 						</v-row>
                 	</v-form>
 				</tab-content>
-                <tab-content title="Direccion y Teléfonos"  icon="mdi mdi-cellphone-marker" :before-change="beforeTabSwitchTwo">
+                <tab-content title="Direccion y Teléfonos"  icon="mdi mdi-cellphone-marker">
                     <v-form class="formCliente" ref="validateStepFormTwo"  lazy-validation >	
 						<v-row>
 							<v-col cols="12" sm="6" md="3">
@@ -248,7 +281,7 @@
 									required
 								></v-select>
 							</v-col>
-							<v-col cols="12" sm="6" md="3">
+					<!-- 		<v-col cols="12" sm="6" md="3">
 								<v-select
 									:items="typerif"
 									item-text="text"
@@ -261,7 +294,7 @@
 									:rules="rules"
 									required
 								></v-select>
-							</v-col>
+							</v-col> -->
 							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Teléfono"
@@ -272,7 +305,7 @@
 									
 								></v-text-field>
 							</v-col>
-							<v-col cols="12" sm="12" md="9">
+							<v-col cols="12" sm="12" md="12">
 								<v-textarea
 									label="Dirección"
 									placeholder="Dirección"
@@ -342,220 +375,15 @@
 								outlined
 								dense
 								:rules="emailRules"
-								v-model="bussinesform.email_business"
+								v-model="bussinesform.email_rl"
 							></v-text-field>
-							</v-col>
-							<v-col cols="12" sm="6" md="3">
-								<v-select
-									:items="tipodocumentos"
-									item-text="text"
-									item-value="value"
-									label="Cargo"
-									placeholder="Cargo"
-									outlined
-									dense
-									v-model="bussinesform.type_identity_card"
-									:rules="rules"
-									required
-								></v-select>
-							</v-col>
-							<v-col cols="12" sm="6" md="3">
-								<v-text-field
-									label="Teléfono"
-									placeholder="###########"
-									outlined
-									dense
-									v-model="bussinesform.phone2"
-									v-mask="'###########'"
-								></v-text-field>
-							</v-col>
-							<v-col cols="12" sm="6" md="3">
-								<v-text-field
-									label="Teléfono"
-									placeholder="###########"
-									outlined
-									dense
-									v-model="bussinesform.phone3"
-									v-mask="'###########'"
-								></v-text-field>
 							</v-col>
 						</v-row>
 					</v-form>	
 				</tab-content>
-			<!-- 	<tab-content title="Accesibilidad en el entorno Físico" icon="mdi mdi-playlist-check" :before-change="beforeTabSwitchFour">
-					<v-form class="formCliente" ref="validateStepFormFour"  lazy-validation >	
-					    <v-row>
-						<v-col cols="12" sm="12" md="12">
-							<v-container>  
-								<v-layout>    
-									<v-row>   
-										<v-col cols="12" sm="6" md="6">
-											<v-switch
-											label="Rampas"
-											v-model="bussinesform.charger"
-											color="success"
-											:value="charger"  
-											hide-details
-											class="pl-3 pr-3"
-											></v-switch>
-											<v-switch
-											label="Accesibilidad"
-											v-model="bussinesform.cable_usb"
-											color="success"
-											:value="cable_usb"    
-											hide-details
-											class="pl-3 pr-3"
-											></v-switch>
-											<v-switch
-											label="Acceso Directo"
-											v-model="bussinesform.battery"
-											color="success"
-											:value="battery"    
-											hide-details
-											class="pl-3 pr-3"
-											></v-switch>
-											<v-switch
-											label="Transporte Público"
-											v-model="bussinesform.battery_cover"
-											color="success"
-											:value="color"
-											hide-details
-											class="pl-3 pr-3"
-											></v-switch>
-											<v-switch
-											label="Transporte Empresa"
-											v-model="bussinesform.printer_cap"
-											color="success"
-											:value="printer_cap"
-											hide-details
-											class="pl-3 pr-3"
-											></v-switch>
-											<v-switch
-											label="Señalizaciones Luminosas"
-											v-model="bussinesform.manual"
-											color="success"
-											hide-details
-											class="pl-3 pr-3"
-											:value="manual"
-											></v-switch>
-											<v-switch
-											label="Puestos de Estacionammiento"
-											v-model="bussinesform.manual"
-											color="success"
-											hide-details
-											class="pl-3 pr-3"
-											:value="manual"
-											></v-switch>
-											<v-switch
-											label="Señalización"
-											v-model="bussinesform.manual"
-											color="success"
-											hide-details
-											class="pl-3 pr-3"
-											:value="manual"
-											></v-switch>
-											<v-switch
-											label="Herramienta Tecnológica"
-											v-model="bussinesform.manual"
-											color="success"
-											hide-details
-											class="pl-3 pr-3"
-											:value="manual"
-											></v-switch>
-
-											</v-col>
-											<v-col cols="12" sm="6" md="6">
-											<v-switch
-											label="Vialidad"
-											v-model="bussinesform.simcard"
-											color="success"
-											hide-details
-											class="pl-3 pr-3"
-											:value="simcard"
-											></v-switch>
-											<v-switch
-											label="Baños Acondicionados para Discapacidad Motora"
-											v-model="bussinesform.box"
-											color="success"
-											hide-details
-											class="pl-3 pr-3"
-											:value="box"
-											></v-switch>
-											<v-switch
-											label="Escaleras"
-											v-model="bussinesform.thermal_roll"
-											color="success"
-											hide-details
-											class="pl-3 pr-3"
-											:value="thermal_roll"
-											></v-switch>
-											<v-switch
-											label="Pasamanos"
-											v-model="bussinesform.manual"
-											color="success"
-											hide-details
-											class="pl-3 pr-3"
-											:value="manual"
-											></v-switch>
-											<v-switch
-											label="Pasillos"
-											v-model="bussinesform.manual"
-											color="success"
-											hide-details
-											class="pl-3 pr-3"
-											:value="manual"
-											></v-switch>
-											<v-switch
-											label="Ascensores"
-											v-model="bussinesform.manual"
-											color="success"
-											hide-details
-											class="pl-3 pr-3"
-											:value="manual"
-											></v-switch>
-											<v-switch
-											label="Puertas Adaptadas"
-											v-model="bussinesform.manual"
-											color="success"
-											hide-details
-											class="pl-3 pr-3"
-											:value="manual"
-											></v-switch>
-											<v-switch
-											label="Buena Iluminación"
-											v-model="bussinesform.manual"
-											color="success"
-											hide-details
-											class="pl-3 pr-3"
-											:value="manual"
-											></v-switch>
-								
-										</v-col>
-									</v-row>
-								</v-layout>
-							</v-container>
-						</v-col>
-						</v-row>
-					</v-form>	
-				</tab-content> -->
             </form-wizard> 
-            </div>
-         
-    
-    <Notificacion :snackbar="snackbar" :textmsj="textmsj"/>
-        <v-dialog v-model="dialog" max-width="290">
-            <v-card>
-                <v-card-title>
-                    Campos Incompletos
-                </v-card-title>
-                <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="green darken-1" text @click="dialog = false">
-                    Aceptar
-                </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+        </div>
+    	<Notificacion :snackbar="snackbar" :textmsj="textmsj"/>
     </div>
 </template>
 <script lang="ts">
@@ -583,18 +411,13 @@ export default class Bussines extends Vue {
     bussinesform : any = {}
     loadingWizard = false
 	typerif = [
-        {value: '1', text: 'Consejo Comunal'},
-        {value: '2', text: 'Gobierno'},
-		{value: '3', text: 'Jurídico'},
-		{value: '4', text: 'Personal'}
+        {value: '1', text: 'V'},
+        {value: '2', text: 'J'},
+		{value: '3', text: 'G'},
+		{value: '4', text: 'E'},
+		{value: '5', text: 'P'}
     ];
-	tipodocumentos  = [
-        {value: 'Nacimiento', text: 'Acta de Nacimiento'},
-        {value: 'Extranjero', text: 'Cédula Extranjero'},
-		{value: 'Residente',  text: 'Cédula Residente'},
-		{value: 'Venezolano', text: 'Cédula Venezolano'},
-		{value: 'Pasaporte',  text: 'Pasaporte'}
-    ];
+
 	inactivo = [
         {value: '0', text: 'Inactivo'},
         {value: '1', text: 'Activo'}
@@ -604,7 +427,7 @@ export default class Bussines extends Vue {
     textmsj = ''
     color = ''
     timeout = 2000
-    sectiontitle = 'Registro de Empresa'
+    sectiontitle = 'Registrar Empresa'
     dialog = false
     tabIndex = 0
 	charger        = false
@@ -622,6 +445,19 @@ export default class Bussines extends Vue {
 	arrayEconomicSector = []
 	arrayEconomicActivies = []
 	arrayTypeCompany = []
+	is_sucursal = false
+	sucursal    = false
+	tipodocumentos  = [
+        {value: 'cedula', text: 'Cédula'},
+        {value: 'pasaporte', text: 'Pasaporte'},
+    ];
+    tipoidentity  = [
+        {value: 'v', text: 'Venezolano'},
+        {value: 'e', text: 'Extrajero'},
+    ];
+	numero_sucursal = ''
+	nombre_sucursal = ''
+	showSucursal = false
 	$refs!: {
         validateStepForm: InstanceType<typeof ValidationObserver>;
         validateStepFormTwo: InstanceType<typeof ValidationObserver>;
@@ -643,8 +479,13 @@ export default class Bussines extends Vue {
     }
     beforeTabSwitch(){
         const valid :any =  this.$refs.validateStepForm.validate();
-		const newStr = this.FormRequest.rif.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '')
-		this.FormRequest.rif = newStr.slice(1)
+		if(this.nombre_sucursal != '' && this.numero_sucursal != '') {
+			let code_office =  this.bussinesform.rif + '-' + this.nombre_sucursal.toUpperCase() + this.numero_sucursal
+			this.bussinesform.code_branch_office = code_office
+			Math.ceil(this.bussinesform.tomo)
+			Math.ceil(this.bussinesform.folio)
+			Math.ceil(this.bussinesform.number)
+		}
 	
         if (valid) {
            return true
@@ -676,7 +517,15 @@ export default class Bussines extends Vue {
             return false
         }
     }
-
+	async typeSucursal(){
+		if (this.sucursal) {
+			this.showSucursal = true
+			this.bussinesform.is_major = 0
+		} else {
+			this.showSucursal = false
+			this.bussinesform.is_major = 1
+		}
+	}
 	onComplete() {
 
 		const valid :any =  this.$refs.validateStepForm.validate();
@@ -729,7 +578,7 @@ export default class Bussines extends Vue {
     };
     back() {
         setTimeout(() => {
-            //this.$router.go(-1);
+            this.$router.push({ name: 'Dashboard' });
             this.snackbar = false
         },2000);
     }

@@ -4,6 +4,7 @@ export interface User {
   email: string;
   roles: number;
   password:number;
+  type_document:string,
   created_at: string;
   updated_at: string;
   deleted_at?: any;

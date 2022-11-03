@@ -119,44 +119,60 @@ import {
 		  return userLogin;
 	  }
   
-	  @Action
-	  async logout() {
-		  await http.post('/logout')
-		  .then((payload: any) => {
-			  storageData.remove('_token');
-			  storageData.remove('_user_id');
-			
-			  return payload;
-		  })
-		  .catch((e) => console.log('Error ${e}'));
-	  }
+		@Action
+		async logout() {
+			await http.post('/logout')
+			.then((payload: any) => {
+				storageData.remove('_token');
+				storageData.remove('_user_id');
+				
+				return payload;
+			})
+			.catch((e) => console.log('Error ${e}'));
+		}
   
-	  @Action
-	  async getRefreshToken() {
-		  const stoken: string = ''
-		  await http
-		  .post('refreshtoken',
-			  {
-			  'refresh_token': this.refresh_token
-			  })
-		  .then((payload: any) => {
-			  if (payload) {
-			  if (payload.data.code === 200) {
-				  const stoken: string = payload.data.data.access_token;
-				  const srefresh_token: string = payload.data.data.refresh_token;
-				  storageData.set('_token', stoken);
-				  storageData.set('_refresh_token', srefresh_token);
-				  this.context.commit('setToken', stoken);
-				  this.context.commit('setRefresh_token', srefresh_token);
-			  }
-			  }
-		  })
-		  .catch((err) => {
-			  console.log(err.data.error);
-			  return false;
-		  });
-		  return true;
-	  }
+		@Action
+		async getRefreshToken() {
+			const stoken: string = ''
+			await http
+			.post('refreshtoken',
+				{
+				'refresh_token': this.refresh_token
+				})
+			.then((payload: any) => {
+				if (payload) {
+				if (payload.data.code === 200) {
+					const stoken: string = payload.data.data.access_token;
+					const srefresh_token: string = payload.data.data.refresh_token;
+					storageData.set('_token', stoken);
+					storageData.set('_refresh_token', srefresh_token);
+					this.context.commit('setToken', stoken);
+					this.context.commit('setRefresh_token', srefresh_token);
+				}
+				}
+			})
+			.catch((err) => {
+				console.log(err.data.error);
+				return false;
+			});
+			return true;
+		}
+		@Action
+		async getPositionAll(){
+			return new Promise((resolve, reject) => {
+				http.get(`/positions`).then(response => {
+		
+					if (response.status === 200) {      
+			
+						resolve(response);
+					
+					}
+			})
+			.catch(error => {
+				reject(error)
+			})
+			})
+		}
 	  
 	  }
   export default getModule(sessionModule);
