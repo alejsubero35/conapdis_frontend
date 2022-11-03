@@ -73,14 +73,14 @@ export default {
 }
   .c-sidebar{
     color: #FEFEFE;
-    background: #EFAF30;
+    background: #1c3969;
   }
   .c-sidebar .c-sidebar-brand {
     color: #FEFEFE;
     background: #FFFFFF;
   }
   .c-sidebar .c-sidebar-minimizer {
-    background: #EFAF30;
+    background: #1c3969;
   }
   .c-sidebar .c-sidebar-nav-link, .c-sidebar .c-sidebar-nav-dropdown-toggle {
     color: white;

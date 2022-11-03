@@ -3,7 +3,7 @@
         <v-snackbar
         v-model="snackbar"
         :timeout="timeout"
-        color="success"
+        :color="color"
         bottom
         >{{ textmsj }}
         </v-snackbar>
@@ -16,6 +16,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 export default class Notificaciones extends Vue {
 	@Prop() snackbar : boolean = false;
     @Prop() textmsj : string  = '';
+    @Prop() color : string  = '';
     timeout = 3500
 
 

@@ -17,13 +17,14 @@
             @on-loading="setLoading"
             @on-validate="handleValidation"
             @on-complete="onComplete" 
-            color="#009db0" 
+            color="#64A14D" 
             shape="tab" 
             finish-button-text="Guardar" 
             back-button-text="Atrás" 
             next-button-text="Siguiente">
-                <tab-content title="Información Básica"  icon="mdi mdi-information" :before-change="beforeTabSwitch">
+                <tab-content title="Información Básica"  icon="mdi mdi-cube-send" :before-change="beforeTabSwitch">
                     <v-form class="formCliente" ref="validateStepForm"  lazy-validation >	
+						<input type="hidden" v-model="bussinesform.id" value:any="0" >
 						<v-row>
 							<v-col cols="12" sm="6" md="3">
 							<v-select
@@ -67,7 +68,6 @@
 								color="success"
 								:value="is_sucursal"  
 								hide-details
-						
 								@change="typeSucursal()"
 								></v-switch>
 							</v-col>
@@ -78,7 +78,6 @@
 									placeholder="N° de Sucursal"
 									outlined
 									dense
-									:rules="rules"
 									v-model="numero_sucursal"
 									v-mask="'############'"
 								></v-text-field>
@@ -90,7 +89,6 @@
 									placeholder="Nombre Sucursal"
 									outlined
 									dense
-									:rules="rules"
 									v-model="nombre_sucursal"
 								></v-text-field>
 							</v-col>
@@ -136,15 +134,35 @@
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
-								<v-text-field
-									label="Año"
-									placeholder="Año"
-									outlined
-									dense
-									:rules="rules"
-									v-model="bussinesform.year"
-								></v-text-field>
+								<v-menu
+									v-model="menu2"
+									:close-on-content-click="false"
+									:nudge-right="40"
+									transition="scale-transition"
+									offset-y
+									min-width="auto"
+								>
+									<template v-slot:activator="{ on, attrs }">
+									<v-text-field
+										v-model="date"
+										label="Año de constitución"
+										append-icon="mdi-calendar"
+										readonly
+										v-bind="attrs"
+										v-on="on"
+										dense 
+										outlined
+							   
+									></v-text-field>
+									</template>
+									<v-date-picker
+									v-model="date"
+									@input="menu2 = false"
+									@change="updateFecha()"
+									></v-date-picker>
+								</v-menu>
 							</v-col>
+				
 						</v-row>
 						<v-row>
 							<v-col cols="12" sm="6" md="4">
@@ -154,7 +172,7 @@
 									outlined
 									dense
 									:rules="rules"
-									v-model="bussinesform.organismo"
+									v-model="bussinesform.attached_body"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="4">
@@ -383,12 +401,13 @@
 				</tab-content>
             </form-wizard> 
         </div>
-    	<Notificacion :snackbar="snackbar" :textmsj="textmsj"/>
+    	<Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color"/>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import bussinesModule from '@/store/modules/bussinesModule';
+import sessionModule from '@/store/modules/sessionModule';
 import { ValidationObserver } from 'vee-validate'
 
 
@@ -408,7 +427,7 @@ export default class Bussines extends Vue {
 	title : string = '';
 	subtitle : string = ''
 	validateStepForm : any = {inactivo: '1'};
-    bussinesform : any = {}
+    bussinesform : any = { code: 0, message:''}
     loadingWizard = false
 	typerif = [
         {value: '1', text: 'V'},
@@ -458,12 +477,19 @@ export default class Bussines extends Vue {
 	numero_sucursal = ''
 	nombre_sucursal = ''
 	showSucursal = false
+	date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
+    menu2 : boolean = false
+    max25chars = v => v.length <= 25 || 'Input too long!'
+
 	$refs!: {
         validateStepForm: InstanceType<typeof ValidationObserver>;
         validateStepFormTwo: InstanceType<typeof ValidationObserver>;
 		validateStepFormThree: InstanceType<typeof ValidationObserver>;
 		validateStepFormFour: InstanceType<typeof ValidationObserver>;
 	}
+	get getBussines() {
+        return sessionModule.getBussines; 
+    }
 	get FormRequest(): any {
         return this.bussinesform;
     }
@@ -477,6 +503,10 @@ export default class Bussines extends Vue {
     handleValidation(isValid, tabIndex){
         console.log('Tab: '+tabIndex+ ' valid: '+isValid)
     }
+	async updateFecha(){
+		this.bussinesform.registration_date = this.date
+		console.log(this.bussinesform.registration_date)
+	}
     beforeTabSwitch(){
         const valid :any =  this.$refs.validateStepForm.validate();
 		if(this.nombre_sucursal != '' && this.numero_sucursal != '') {
@@ -527,15 +557,11 @@ export default class Bussines extends Vue {
 		}
 	}
 	onComplete() {
-
-		const valid :any =  this.$refs.validateStepForm.validate();
-
-        if (valid) {
-            this.saveBussines();
-        }else {
-            this.dialog = true
-        } 
-		
+		if (this.FormRequest.id > 0) {
+			this.updateBussines();
+		} else {
+			this.saveBussines();
+		}	
     }
  	async saveBussines() {
         console.log(this.FormRequest)
@@ -548,6 +574,26 @@ export default class Bussines extends Vue {
         this.back();
 		this.overlay = false 
     }; 
+	async updateBussines(){
+		console.log(this.FormRequest)
+ 		this.overlay = true
+    	const data = await bussinesModule.update(this.FormRequest)
+		if(data.code == 200 || data.code == 201){
+			this.textmsj = 'Empresa Actualizada con Éxito.'
+			this.color = 'success'
+			this.snackbar = true
+			this.back();
+			this.overlay = false 
+		} else {
+			this.textmsj = 'Error al Actualizar los datos de la Empresa.'
+			this.color = 'error'
+			this.snackbar = true
+			this.backError();
+			this.overlay = false 
+		}
+		//this.reset();
+       
+	}
 	async getStates(){
 		const states : any = await bussinesModule.getStatesAll()
 		this.arrayStates = states.data.data
@@ -582,6 +628,11 @@ export default class Bussines extends Vue {
             this.snackbar = false
         },2000);
     }
+	backError(){
+		setTimeout(() => {
+            this.snackbar = false
+        },3500);
+	}
 
 	data(){
     return{
@@ -605,6 +656,17 @@ export default class Bussines extends Vue {
 		this.getEconomicSector()
 		this.getEconomicActivies()
 		this.getTypeCompany()
+		console.log(this.getBussines)
+		if (this.getBussines != '') {
+			this.bussinesform = this.getBussines
+			this.sucursal = (this.getBussines.is_major == false) ? true : false
+		/* 	if (this.getBussines.is_major == false) {
+				this.showSucursal = true
+			} */
+			this.getMunicipalityByState(this.bussinesform.state_id)
+			this.getParishesByMunicipality(this.bussinesform.municipality_id)
+			
+		}
     }
 }
 </script>

@@ -30,5 +30,6 @@ export interface Bussines {
     country_id:number,
     municipality_id:number,
     parishe_id:number,
-    owner_id:number
+    code:number,
+    message:string
 }

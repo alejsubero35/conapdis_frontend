@@ -10,7 +10,7 @@ export default [
       },
      {
         _name: 'CSidebarNavItem',
-        name: 'Registrar Empresas',
+        name: 'Registrar Empresa',
         to: '/bussines',
         icon: 'cil-list'
       },

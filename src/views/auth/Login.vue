@@ -1,6 +1,6 @@
 <template>
     <div class="page-wrap">
-        <div class="session-form-hold">
+        <div  :class="[(loginShow) ? 'session-form-hold' : 'session-form-register']" >
   	    <v-overlay :value="overlay">
         <v-progress-circular
             indeterminate
@@ -43,7 +43,7 @@
                 <v-form v-show="registerShow"  lazy-validation  ref="usersForm">
                     <v-container>
                         <v-layout row wrap >
-                            <v-col cols="12" sm="12" md="12">
+                            <v-col cols="12" :sm="sm" :md="md">
                                 <v-select
                                     :items="tipodocumentos"
                                     item-text="text"
@@ -58,19 +58,8 @@
                                     @change="showTypeDocument()"
                                 ></v-select>
                             </v-col>
-                            <v-col cols="12" sm="12" md="12">
-                                <v-text-field
-                                    label="Cédula / Pasaporte"
-                                    placeholder="###########"
-                                    outlined
-                                    dense
-                                    :rules="rules"
-                                    v-model="usersForm.number_document_identity"
-                                ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="12" md="12">
+                            <v-col v-show="identity" cols="12" :sm="sm" :md="md">
                                 <v-select
-                                    v-show="identity"
                                     :items="tipoidentity"
                                     item-text="text"
                                     item-value="value"
@@ -78,11 +67,20 @@
                                     placeholder="Tipo de Cédula"
                                     outlined
                                     dense
-                                    v-model="usersForm.type_identity_card"     
-                                    class="mt-1"                
+                                    v-model="usersForm.type_identity_card"                   
                                 ></v-select>
                             </v-col>
-                            <v-col cols="12" sm="12" md="12">
+                            <v-col cols="12" :sm="sm" :md="md">
+                                <v-text-field
+                                    label="Cédula / Pasaporte"
+                                    placeholder="Cédula / Pasaporte"
+                                    outlined
+                                    dense
+                                    :rules="rules"
+                                    v-model="usersForm.number_document_identity"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" :sm="sm" :md="md">
                                 <v-text-field
                                     label="Nombres"
                                     placeholder="nombres"
@@ -93,7 +91,7 @@
                             
                                 ></v-text-field>
                             </v-col>
-                            <v-col cols="12" sm="12" md="12">
+                            <v-col cols="12" :sm="sm" :md="md">
                                 <v-text-field
                                     label="Apellidos"
                                     placeholder="Apellidos"
@@ -103,11 +101,11 @@
                                     v-model="usersForm.last_name"
                                 ></v-text-field>
                             </v-col>
-                            <v-col cols="12" sm="12" md="12">
+                            <v-col cols="12" :sm="sm" :md="md">
                                 <v-text-field label="Nombre de Usuario" placeholder="Nombre de Usuario" outlined dense :rules="rules" v-model="usersForm.username">
                                 </v-text-field>
                             </v-col>
-                            <v-col cols="12" sm="12" md="12">
+                            <v-col cols="12" :sm="sm" :md="md">
                                 <v-text-field
                                 label="Email"
                                 placeholder="Email"
@@ -118,11 +116,35 @@
                             ></v-text-field>
                             </v-col>
            
-                            <v-col cols="12" sm="12" md="12">
+                            <v-col cols="12" :sm="sm" :md="md">
                                  <v-text-field   :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"   :type="show ? 'text' : 'password'"  label="Password" placeholder="Password" outlined dense :rules="rules" v-model="usersForm.password"  @click:append="show = !show">
                                 </v-text-field>
                             </v-col>
-                            <v-col cols="12" sm="12" md="12">
+                            <v-col cols="12" :sm="sm" :md="md">
+                                <v-select
+                                    :items="arrayPosition"
+                                    item-text="name"
+                                    item-value="id"
+                                    label="Cargo"
+                                    placeholder="Cargo"
+                                    outlined
+                                    dense
+                                    v-model="usersForm.position_id"
+                                    :rules="rules"
+                                    required
+                                ></v-select>
+                            </v-col>
+                            <v-col cols="12" :sm="sm" :md="md">
+                                <v-text-field
+                                    label="Teléfono"
+                                    placeholder="###########"
+                                    outlined
+                                    dense
+                                    v-model="usersForm.phone"
+                                    v-mask="'###########'"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" :sm="sm" :md="md">
 								<v-select
 									:items="arrayStates"
 									item-text="name"
@@ -137,7 +159,7 @@
 									@change="getMunicipalityByState($event)"
 								></v-select>
 							</v-col>
-							<v-col cols="12" sm="12" md="12">
+							<v-col cols="12" :sm="sm" :md="md">
 								<v-select
 									:items="arrayMunicipality"
 									item-text="name"
@@ -152,7 +174,7 @@
 									@change="getParishesByMunicipality($event)"
 								></v-select>
 							</v-col>
-							<v-col cols="12" sm="12" md="12">
+							<v-col cols="12" :sm="sm" :md="md">
 								<v-select
 									:items="arrayParishes"
 									item-text="name"
@@ -166,30 +188,7 @@
 									required
 								></v-select>
 							</v-col>
-                            <v-col cols="12" sm="12" md="12">
-                                <v-select
-                                    :items="arrayPosition"
-                                    item-text="name"
-                                    item-value="id"
-                                    label="Cargo"
-                                    placeholder="Cargo"
-                                    outlined
-                                    dense
-                                    v-model="usersForm.position_id"
-                                    :rules="rules"
-                                    required
-                                ></v-select>
-                            </v-col>
-                            <v-col cols="12" sm="12" md="12">
-                                <v-text-field
-                                    label="Teléfono"
-                                    placeholder="###########"
-                                    outlined
-                                    dense
-                                    v-model="usersForm.phone"
-                                    v-mask="'###########'"
-                                ></v-text-field>
-                            </v-col>
+              
             
                         </v-layout>
                     </v-container>
@@ -206,7 +205,6 @@
                     <v-icon left>mdi-arrow-left-bold-box-outline</v-icon>
                     Login
                 </v-btn>
-            
                 <v-btn  v-show="loginShow"  class="mb-4" @click="registerUser" block color="info" dark>
                     <v-icon left>mdi-account-outline</v-icon>
                     Registrar Usuario
@@ -231,6 +229,8 @@ import { ValidationObserver } from 'vee-validate'
 export default class Login extends Vue {
 [x: string]: unknown;
     $router :any
+    sm = '12'
+    md = '12'
     overlay = false;
     email = '';
     password = '';
@@ -351,12 +351,12 @@ export default class Login extends Vue {
     async register(){
         this.loginShow = true
         this.registerShow = false
-        //this.$router.push({ name: "bussines"});
     }
     async registerUser(){
         this.loginShow = false
         this.registerShow = true
-        //this.$router.push({ name: "createuser"});
+        this.sm = '6'
+        this.md = '6'
     }
     getIdRole(event) {
         this.usersForm.roles = event
@@ -415,6 +415,11 @@ export default class Login extends Vue {
 .session-form-hold {
     width: 100%;
     max-width: 400px;
+    margin: 0 auto;
+}
+.session-form-register{
+    width: 100%;
+    max-width: 800px;
     margin: 0 auto;
 }
 .content{

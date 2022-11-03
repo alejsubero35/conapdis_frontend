@@ -30,84 +30,94 @@ import {
 	  	rolename : string = ''
 	  	customer_id : any = '';
 	  	nameuser : any = '';
+		bussines: User[] = [];
   
-	  get getTokens() {
-		  return storageData.get('_token');
-	  }
+		get getTokens() {
+			return storageData.get('_token');
+		}
   
 		get getUserId() {
-		  return  storageData.get('_user_id');
-	  }
+			return  storageData.get('_user_id');
+		}
   
-	  get getRole() {
-		  return  storageData.get('_rolename');
-	  }
+		get getRole() {
+			return  storageData.get('_rolename');
+		}
   
-	  get getCustomerId() {
-		  return  storageData.get('_customer_id');
-	  }
-	  get getNameUser() {
-		  return  storageData.get('_nameUser');
-	  }
-	  @Mutation
-	  setTokens(tokens: UserToken[]) {
-		  this.tokens = tokens;
-	  }
-	  @Mutation
-	  setToken(token: string) {
-		  this.token = token;
-	  }
-  
-	  @Mutation
-	  setRefresh_token(refresh_token: string) {
-		  this.refresh_token = refresh_token;
-	  }
-	  @Mutation
-	  destroyTokens() {
-		  this.tokens = [];
-	  }
-	  @Mutation
-	  destroyToken() {
-		  this.token = '';
-		  this.refresh_token = null;
-	  }
-	  @Mutation
-	  setUserId(user_id: any) {
-		  this.user_id = user_id;
-	  }
-	  @Mutation
-	  setRoleName(rolename: any) {
-		  this.rolename = rolename;
-	  }
-	  @Mutation
-	  setCustomerId(customer_id: any) {
-		  this.customer_id = customer_id;
-	  }
-	  @Mutation
-	  setNameUser(nameuser: any) {
-		  this.nameuser = nameuser;
-	  }
+		get getCustomerId() {
+			return  storageData.get('_customer_id');
+		}
+		get getNameUser() {
+			return  storageData.get('_nameUser');
+		}
+		get getBussines() {
+			return  storageData.get('_bussines');
+		}
+		@Mutation
+		setTokens(tokens: UserToken[]) {
+			this.tokens = tokens;
+		}
+		@Mutation
+		setToken(token: string) {
+			this.token = token;
+		}
+		@Mutation
+		setRefresh_token(refresh_token: string) {
+			this.refresh_token = refresh_token;
+		}
+		@Mutation
+		destroyTokens() {
+			this.tokens = [];
+		}
+		@Mutation
+		destroyToken() {
+			this.token = '';
+			this.refresh_token = null;
+		}
+		@Mutation
+		setUserId(user_id: any) {
+			this.user_id = user_id;
+		}
+		@Mutation
+		setRoleName(rolename: any) {
+			this.rolename = rolename;
+		}
+		@Mutation
+		setCustomerId(customer_id: any) {
+			this.customer_id = customer_id;
+		}
+		@Mutation
+		setNameUser(nameuser: any) {
+			this.nameuser = nameuser;
+		}
+		@Mutation
+		setBussines(bussines: any) {
+			this.bussines = bussines;
+		}
   
 		@Action
-	  async login(userLogin: UserSubmit) {
-		  await http.post('/login', userLogin)
+	  	async login(userLogin: UserSubmit) {
+		  	await http.post('/login', userLogin)
 	  
-		  .then((payload: any) => {
-			  if (payload) {
-				const login = payload.data
-				userLogin.code = payload.status
+		  	.then((payload: any) => {
+				if (payload) {
+					const login = payload.data
+					userLogin.code = payload.status
 	
 				if (userLogin.code == 200) {
 		
 					const stoken: string  = login.access_token;
 					const user_id: string = login.user.id
-							
+					const busine: any     = login.user.busine[0]
+
 					storageData.set('_token', stoken);
 					storageData.set('_user_id', user_id);
+					storageData.set('_bussines', busine);
 			
 					this.context.commit('setToken', stoken);
 					this.context.commit('setTokens', payload.data.data);
 					this.context.commit('setUserId', user_id);
+					this.context.commit('setBussines', busine);
 			
 				}
 			  } else {
@@ -117,7 +127,7 @@ import {
 		  })
 	
 		  return userLogin;
-	  }
+	  	}
   
 		@Action
 		async logout() {
@@ -125,6 +135,7 @@ import {
 			.then((payload: any) => {
 				storageData.remove('_token');
 				storageData.remove('_user_id');
+				storageData.remove('_bussines');
 				
 				return payload;
 			})

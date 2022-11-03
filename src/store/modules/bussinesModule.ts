@@ -34,14 +34,20 @@ import {
 		}
 	}  
 	@Action
-	async update(dataUsers:any) { 
+	async update(dataUsers:Bussines) { 
 	
 		let id = dataUsers.id
-
-		const response =  await http.put(`users/${id}`, dataUsers)
-		if (response.status === 200 || response.status === 201){
-		
-		}
+		await http.put(`busines/${id}`, dataUsers)
+		.then((payload: any) => {
+			console.log(payload)
+			if(payload){
+				dataUsers.code = payload.status
+			} else {
+				dataUsers.code = 500;
+				dataUsers.message = 'Error al procesar la Solicitud';
+			}
+		})
+		return dataUsers;
 	} 
 	@Action
 	async delete(id:any) { 

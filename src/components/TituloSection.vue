@@ -36,8 +36,8 @@ export default {
     justify-content: space-between;
 }
 .btn_atras{
-    background-color: #4CAf50;
-    border: #007BC5
+    background-color: #fbc907;
+    border: #fbc907
 }
 .title_section{
     color:#000000;
