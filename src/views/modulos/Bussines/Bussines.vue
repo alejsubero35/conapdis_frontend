@@ -578,7 +578,7 @@ export default class Bussines extends Vue {
 		console.log(this.FormRequest)
  		this.overlay = true
     	const data = await bussinesModule.update(this.FormRequest)
-		if(data.code == 200 || data.code == 201){
+		if(data.code == 202){
 			this.textmsj = 'Empresa Actualizada con Éxito.'
 			this.color = 'success'
 			this.snackbar = true
