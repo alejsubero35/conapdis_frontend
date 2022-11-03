@@ -285,8 +285,8 @@ export default class Login extends Vue {
         {value: 'pasaporte', text: 'Pasaporte'},
     ];
     tipoidentity  = [
-        {value: 'v', text: 'Venezolano'},
-        {value: 'e', text: 'Extrajero'},
+        {value: '1', text: 'Venezolano'},
+        {value: '2', text: 'Extrajero'},
     ];
     arrayStates = []
 	arrayMunicipality = []
