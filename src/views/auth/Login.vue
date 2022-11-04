@@ -76,7 +76,7 @@
                                     placeholder="Cédula / Pasaporte"
                                     outlined
                                     dense
-                                    :rules="rules"
+                                    :rules="numberRule"
                                     v-model="usersForm.number_document_identity"
                                 ></v-text-field>
                             </v-col>
@@ -196,7 +196,7 @@
                         <v-btn color="success" @click="saveUsers" block dark ><v-icon left>mdi-content-save-check</v-icon>Guardar</v-btn> 
                     </div>
                 </v-form>
-                <Notificacion :snackbar="snackbar" :textmsj="textmsj"/>
+                <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color"/>
                 <v-btn v-show="loginShow" class="mb-4" @click="login" block color="success" dark>
                     <v-icon left>mdi-login</v-icon>
                     Iniciar Sesión
@@ -257,7 +257,9 @@ export default class Login extends Vue {
         municipality_id:'',
         parishe_id:'',
         country_id:237,
-        is_active:1
+        is_active:1,
+        code: 0,
+        message: ''
     }
     identity = false
     title_login = 'Iniciar Sesión en su Cuenta'
@@ -265,7 +267,8 @@ export default class Login extends Vue {
     loginShow = true
     registerShow = false
     snackbar = false
-    textmsj     = '' 
+    textmsj     = ''
+    color = '' 
     roles = [
         {
             id:1,
@@ -282,7 +285,7 @@ export default class Login extends Vue {
     ]
     tipodocumentos  = [
         {value: 'cedula', text: 'Cédula'},
-        {value: 'pasaporte', text: 'Pasaporte'},
+        {value: 'passport', text: 'Pasaporte'},
     ];
     tipoidentity  = [
         {value: '1', text: 'Venezolano'},
@@ -311,6 +314,12 @@ export default class Login extends Vue {
         rules: [
             (v:any) => !!v || 'Campo requerido'
         ],
+        numberRule: [
+            (v:any) => !!v || 'Cédula o Pasaporte',
+            (v:any) =>
+                (v && v.length <= 8) ||
+                'Debe ingresar máximo 8 caracteres'
+        ]
         }
     };
     get LoginRequest(): any {
@@ -337,7 +346,7 @@ export default class Login extends Vue {
         const valid : any =  this.$refs.loginForm.validate();
         if (valid) { 
             const data : any = await sessionModule.login(this.LoginRequest)
-            console.log(data)
+    
             if (data.code == 200) {
                 this.$router.push({ name: 'Dashboard' });
                 this.overlay = false
@@ -377,15 +386,24 @@ export default class Login extends Vue {
 		const parishes : any = await bussinesModule.getParishes(event)
 		this.arrayParishes = parishes.data.data
 	}
-    async saveUsers() {console.log(this.FormRequestUser)
+    async saveUsers() {
         const valid = await this.$refs.usersForm.validate();
         if (valid) {
             this.overlay  = true
             const data    = await usersModule.save(this.FormRequestUser)  
-            this.textmsj  = 'Usuario Creado con Éxito.'
-            this.snackbar = true
-            this.back();
-            this.overlay  = false
+            if(data.code == 201){
+                this.textmsj = 'Usuario Registrado con Éxito.'
+                this.color = 'success'
+                this.snackbar = true
+                this.back();
+                this.overlay = false 
+            } else {
+                this.textmsj = 'Error al Registrar los datos de Usuario.'
+                this.color = 'error'
+                this.snackbar = true
+                this.backError();
+                this.overlay = false 
+            }
         } else {
             //return false
         }  
@@ -396,6 +414,11 @@ export default class Login extends Vue {
             this.snackbar = false
         },2000);
     }
+    backError(){
+		setTimeout(() => {
+            this.snackbar = false
+        },3500);
+	}
     mounted(){
         this.getPositionAll()
         this.getStates()

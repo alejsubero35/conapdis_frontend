@@ -11,6 +11,7 @@ import {
   import { UserToken } from '../interfaces/UserToken';
   import { http,https } from '@/utils/http';
   import { deserialize } from 'jsonapi-fractal'
+  import storageData from '@/store/services/storageService'
   
   @Module({
     namespaced: true,
@@ -25,13 +26,32 @@ import {
     }
   
     token: string | null = localStorage.getItem('_token');
-  
+	bussines: Bussines[] = [];
+	get getBussines() {
+		return  storageData.get('_bussines');
+	}
+
+	@Mutation
+	setBussines(bussines: any) {
+		this.bussines = bussines;
+	}
+
     @Action
-	async save(data: Bussines) { 
-	const response =  await http.post('busines', data)
-		if (response.status === 201){
-		
-		}
+	async save(dataUsers: Bussines) { 
+		await http.post(`busines`, dataUsers)
+		.then((payload: any) => {
+
+			if(payload){
+				dataUsers.code = payload.status
+				const busine: any     = payload.data.data
+				storageData.set('_bussines', busine);
+				this.context.commit('setBussines', busine);
+			} else {
+				dataUsers.code = 500;
+				dataUsers.message = 'Error al procesar la Solicitud';
+			}
+		})
+		return dataUsers;
 	}  
 	@Action
 	async update(dataUsers:Bussines) { 
@@ -39,9 +59,12 @@ import {
 		let id = dataUsers.id
 		await http.put(`busines/${id}`, dataUsers)
 		.then((payload: any) => {
-			console.log(payload)
+		
 			if(payload){
 				dataUsers.code = payload.status
+				const busine: any     = payload.data.data
+				storageData.set('_bussines', busine);
+				this.context.commit('setBussines', busine);
 			} else {
 				dataUsers.code = 500;
 				dataUsers.message = 'Error al procesar la Solicitud';

@@ -409,6 +409,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import bussinesModule from '@/store/modules/bussinesModule';
 import sessionModule from '@/store/modules/sessionModule';
 import { ValidationObserver } from 'vee-validate'
+import storageData from '@/store/services/storageService'
 
 
 @Component({
@@ -488,7 +489,7 @@ export default class Bussines extends Vue {
 		validateStepFormFour: InstanceType<typeof ValidationObserver>;
 	}
 	get getBussines() {
-        return sessionModule.getBussines; 
+        return bussinesModule.getBussines; 
     }
 	get FormRequest(): any {
         return this.bussinesform;
@@ -505,7 +506,6 @@ export default class Bussines extends Vue {
     }
 	async updateFecha(){
 		this.bussinesform.registration_date = this.date
-		console.log(this.bussinesform.registration_date)
 	}
     beforeTabSwitch(){
         const valid :any =  this.$refs.validateStepForm.validate();
@@ -564,18 +564,23 @@ export default class Bussines extends Vue {
 		}	
     }
  	async saveBussines() {
-        console.log(this.FormRequest)
  		this.overlay = true
     	const data = await bussinesModule.save(this.FormRequest)
-		this.reset();
-        this.textmsj = 'Empresa Registrada con Éxito.'
-        this.color = 'success'
-        this.snackbar = true
-        this.back();
-		this.overlay = false 
+		if(data.code == 201){
+			this.textmsj = 'Empresa Creada con Éxito.'
+			this.color = 'success'
+			this.snackbar = true
+			this.back();
+			this.overlay = false 
+		} else {
+			this.textmsj = 'Error al Registrar los datos de la Empresa.'
+			this.color = 'error'
+			this.snackbar = true
+			this.backError();
+			this.overlay = false 
+		}
     }; 
 	async updateBussines(){
-		console.log(this.FormRequest)
  		this.overlay = true
     	const data = await bussinesModule.update(this.FormRequest)
 		if(data.code == 202){
@@ -656,13 +661,13 @@ export default class Bussines extends Vue {
 		this.getEconomicSector()
 		this.getEconomicActivies()
 		this.getTypeCompany()
-		console.log(this.getBussines)
-		if (this.getBussines != '') {
-			this.bussinesform = this.getBussines
-			this.sucursal = (this.getBussines.is_major == false) ? true : false
-		/* 	if (this.getBussines.is_major == false) {
-				this.showSucursal = true
-			} */
+
+		if (storageData.get('_bussines')) {
+			this.bussinesform = storageData.get('_bussines')//this.getBussines
+			if(storageData.get('_bussines').hasOwnProperty('is_major')){
+				this.sucursal = (this.getBussines.is_major == false) ? true : false
+			}
+			
 			this.getMunicipalityByState(this.bussinesform.state_id)
 			this.getParishesByMunicipality(this.bussinesform.municipality_id)
 			

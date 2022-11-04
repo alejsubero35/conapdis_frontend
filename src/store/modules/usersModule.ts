@@ -7,7 +7,7 @@ import {
     VuexModule,
   } from 'vuex-module-decorators';
   import store from '@/store';
-  import { Usuarios } from '../interfaces/Usuarios';
+  import { User } from '../interfaces/User';
   import { UserToken } from '../interfaces/UserToken';
   import { http,https } from '@/utils/http';
   import { deserialize } from 'jsonapi-fractal'
@@ -25,26 +25,22 @@ import {
     token: string | null = localStorage.getItem('_token');
   
     @Action
-	async save(data: Usuarios) { 
-		return new Promise((resolve, reject) => {
-			http.post('users/store_bussiness', data)
-			.then(response => {
-				if (response.status === 201) {   
-					const stoken: string  = response.data.data.access_token;
-					storageData.set('_token', stoken);
-					resolve(response);
-				}
-			})
-		})
+	async save(dataUsers: User) { 
+		await http.post(`users/store_bussiness`, dataUsers)
+		.then((payload: any) => {
 
-/* 	const response =  await http.post('users/store_bussiness', data)
-	console.log(response)
-		if (response.status === 200 || response.status === 201 ){
-			const stoken: string  = response.data.data.access_token;
-			storageData.set('_token', stoken);
-			return response
-		} */
+			if(payload){
+				dataUsers.code = payload.status
+				const stoken: string  = payload.data.data.access_token;
+				storageData.set('_token', stoken);
+			} else {
+				dataUsers.code = 500;
+				dataUsers.message = 'Error al procesar la Solicitud';
+			}
+		})
+		return dataUsers;
 	}  
+ 
 	@Action
 	async update(dataUsers:any) { 
 	
