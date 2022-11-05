@@ -29,7 +29,7 @@
       </CHeaderNavItem> -->
       <CHeaderNavItem class="d-md-down-none mx-2">
         <CHeaderNavLink class="rolname">
-          {{ nameUser }} | {{ rolName }}
+          {{ nameUser }} 
         </CHeaderNavLink>
       </CHeaderNavItem>
       <TheHeaderDropdownAccnt/>
@@ -58,7 +58,7 @@ export default {
   },
   mounted(){
     this.rolName  = storageData.get('_rolename')
-    this.nameUser = storageData.get('_nameUser')
+    this.nameUser = storageData.get('_nameUser').toUpperCase()
   }
 }
 </script>

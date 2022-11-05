@@ -94,6 +94,7 @@ import {
 		setBussines(bussines: any) {
 			this.bussines = bussines;
 		}
+
   
 		@Action
 	  	async login(userLogin: UserSubmit) {
@@ -109,15 +110,18 @@ import {
 					const stoken: string  = login.access_token;
 					const user_id: string = login.user.id
 					const busine: any     = login.user.busine[0]
+					const full_name: string = login.user.first_name + ' ' + login.user.last_name
 
 					storageData.set('_token', stoken);
 					storageData.set('_user_id', user_id);
 					storageData.set('_bussines', busine);
+					storageData.set('_nameUser', full_name);
 			
 					this.context.commit('setToken', stoken);
 					this.context.commit('setTokens', payload.data.data);
 					this.context.commit('setUserId', user_id);
 					this.context.commit('setBussines', busine);
+					this.context.commit('setNameUser', full_name);
 			
 				}
 			  } else {

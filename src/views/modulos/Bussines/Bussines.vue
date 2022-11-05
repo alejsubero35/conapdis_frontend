@@ -165,7 +165,17 @@
 				
 						</v-row>
 						<v-row>
-							<v-col cols="12" sm="6" md="4">
+							<v-col cols="12" sm="6" md="3">
+								<v-text-field
+									label="Duración"
+									placeholder="Duración"
+									outlined
+									dense
+									:rules="rules"
+									v-model="bussinesform.duration"
+								></v-text-field>
+							</v-col>
+							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Organismo Inscrito a:"
 									placeholder="Organismo Inscrito a:"
@@ -175,7 +185,7 @@
 									v-model="bussinesform.attached_body"
 								></v-text-field>
 							</v-col>
-							<v-col cols="12" sm="6" md="4">
+							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Página Web"
 									placeholder="Página Web"
@@ -184,7 +194,17 @@
 									v-model="bussinesform.web"
 								></v-text-field>
 							</v-col>
-							<v-col cols="12" sm="6" md="4">
+							<v-col cols="12" sm="6" md="3">
+								<v-text-field
+								label="Email Empresarial"
+								placeholder="Email Empresarial"
+								outlined
+								dense
+								:rules="emailRules"
+								v-model="bussinesform.email"
+							></v-text-field>
+							</v-col>
+							<v-col cols="12" sm="6" md="3">
 								<v-select
 									:items="arrayEconomicSector"
 									item-text="name"
@@ -198,7 +218,7 @@
 									required
 								></v-select>
 							</v-col>
-							<v-col cols="12" sm="6" md="4">
+							<v-col cols="12" sm="6" md="3">
 								<v-select
 									:items="arrayTypeCompany"
 									item-text="name"
@@ -212,7 +232,7 @@
 									required
 								></v-select>
 							</v-col>
-							<v-col cols="12" sm="6" md="4">
+							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Número Patronal  IVSS"
 									placeholder="Número Patronal  IVSS"
@@ -222,7 +242,7 @@
 									v-model="bussinesform.employer_number_ivss"
 								></v-text-field>
 							</v-col>
-							<v-col cols="12" sm="6" md="4">
+							<v-col cols="12" sm="6" md="3">
 								<v-select
 									:items="arrayEconomicActivies"
 									item-text="name"
@@ -238,7 +258,21 @@
 							</v-col>
 						</v-row>
 						<v-row>
-							<v-col cols="12" sm="12" md="12">
+							<v-col cols="12" sm="6" md="3">
+								<v-select
+									:items="arrayUserType"
+									item-text="name"
+									item-value="id"
+									label="Tipo de Usuario"
+									placeholder="Tipo de Usuario"
+									v-model="bussinesform.user_type_id"
+									outlined
+									dense
+									:rules="rules"
+									required
+								></v-select>
+							</v-col>
+							<v-col cols="12" sm="12" md="9">
 							<v-textarea
 								label="Objeto de la Empresa"
 								placeholder="Objeto de la Empresa"
@@ -465,6 +499,7 @@ export default class Bussines extends Vue {
 	arrayEconomicSector = []
 	arrayEconomicActivies = []
 	arrayTypeCompany = []
+	arrayUserType = []
 	is_sucursal = false
 	sucursal    = false
 	tipodocumentos  = [
@@ -510,7 +545,7 @@ export default class Bussines extends Vue {
     beforeTabSwitch(){
         const valid :any =  this.$refs.validateStepForm.validate();
 		if(this.nombre_sucursal != '' && this.numero_sucursal != '') {
-			let code_office =  this.bussinesform.rif + '-' + this.nombre_sucursal.toUpperCase() + this.numero_sucursal
+			let code_office =  this.bussinesform.rif + '-' + this.nombre_sucursal.toUpperCase() + '-' + this.numero_sucursal
 			this.bussinesform.code_branch_office = code_office
 			Math.ceil(this.bussinesform.tomo)
 			Math.ceil(this.bussinesform.folio)
@@ -603,6 +638,10 @@ export default class Bussines extends Vue {
 		const states : any = await bussinesModule.getStatesAll()
 		this.arrayStates = states.data.data
 	}
+	async getUserType(){
+		const typeuser : any = await bussinesModule.getUserTypeAll()
+		this.arrayUserType = typeuser.data.data
+	}
 	async getEconomicSector(){
 		const economicsector : any = await bussinesModule.getEconomicSectorAll()
 		this.arrayEconomicSector = economicsector.data.data
@@ -661,9 +700,10 @@ export default class Bussines extends Vue {
 		this.getEconomicSector()
 		this.getEconomicActivies()
 		this.getTypeCompany()
+		this.getUserType()
 
 		if (storageData.get('_bussines')) {
-			this.bussinesform = storageData.get('_bussines')//this.getBussines
+			this.bussinesform = storageData.get('_bussines')
 			if(storageData.get('_bussines').hasOwnProperty('is_major')){
 				this.sucursal = (this.getBussines.is_major == false) ? true : false
 			}

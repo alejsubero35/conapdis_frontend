@@ -252,7 +252,7 @@ export default class Login extends Vue {
         position_id:'',
         phone:'',
         password:'',
-        roles:1,
+        roles:10,
         state_id:'',
         municipality_id:'',
         parishe_id:'',

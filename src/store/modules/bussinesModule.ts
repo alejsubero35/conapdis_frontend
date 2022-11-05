@@ -114,6 +114,22 @@ import {
 		})
 	}
 	@Action
+	getUserTypeAll(){
+		return new Promise((resolve, reject) => {
+			http.get('/user-types').then(response => {
+	
+				if (response.status === 200) {      
+		
+					resolve(response);
+				
+				}
+		})
+		.catch(error => {
+			reject(error)
+		})
+		})
+	}
+	@Action
 	getMunicipality(id){
 		return new Promise((resolve, reject) => {
 			http.get(`/municipalities/for_state/${id}`).then(response => {
