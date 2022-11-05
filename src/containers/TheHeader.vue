@@ -11,7 +11,7 @@
       @click="$store.commit('toggleSidebarDesktop')"
     />
     <CHeaderBrand class="mx-auto d-lg-none" to="/">
-     <img src="img/logos_memorytech/Logo_mobile.png" width="180" alt="imagen" title="log_sistema">
+    <!--  <img src="img/logos_memorytech/Logo_mobile.png" width="180" alt="imagen" title="log_sistema"> -->
     </CHeaderBrand>
     <CHeaderNav class="d-md-down-none mr-auto">
       

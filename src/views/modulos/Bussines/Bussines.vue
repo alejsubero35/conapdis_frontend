@@ -167,12 +167,13 @@
 						<v-row>
 							<v-col cols="12" sm="6" md="3">
 								<v-text-field
-									label="Duración"
-									placeholder="Duración"
+									label="Duración en años"
+									placeholder="Duración en años"
 									outlined
 									dense
 									:rules="rules"
 									v-model="bussinesform.duration"
+									type="number"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
@@ -333,20 +334,6 @@
 									required
 								></v-select>
 							</v-col>
-					<!-- 		<v-col cols="12" sm="6" md="3">
-								<v-select
-									:items="typerif"
-									item-text="text"
-									item-value="value"
-									label="Sector"
-									placeholder="Sector"
-									v-model="bussinesform.owner_id"
-									outlined
-									dense
-									:rules="rules"
-									required
-								></v-select>
-							</v-col> -->
 							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Teléfono"
@@ -481,7 +468,7 @@ export default class Bussines extends Vue {
     textmsj = ''
     color = ''
     timeout = 2000
-    sectiontitle = 'Registrar Empresa'
+    sectiontitle = 'Registrar Datos de Empresa'
     dialog = false
     tabIndex = 0
 	charger        = false
@@ -710,7 +697,7 @@ export default class Bussines extends Vue {
 				let cadena = this.getBussines.code_branch_office;
 				var result = cadena.split('-')[1];
 				var result2 = cadena.split('-')[2];
-	
+				this. sectiontitle = 'Actualizar Datos de Empresa'
 				this.numero_sucursal = result2
 				this.nombre_sucursal = result
 			}

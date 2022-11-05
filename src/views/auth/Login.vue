@@ -10,15 +10,16 @@
             <v-card-text class="text-center content">
                 <v-avatar size="60" class="mb-4">
                     <img v-show="loginShow"  src="@/assets/images/conapdis_circular.png" alt="" />
-                    <img v-show="registerShow"  src="@/assets/images/avatars/avatar_3.png" alt="" />
+                    <!-- <img v-show="registerShow"  src="@/assets/images/avatars/avatar_3.png" alt="" /> -->
+                    <v-icon v-show="registerShow" large style="font-size:60px;">mdi-account-multiple-plus</v-icon>
                 </v-avatar>
 
                 <h6 v-show="loginShow" class="text--disabled font-weight-bold mb-10">
                     {{ title_login }}
                 </h6>
-                 <h6  v-show="registerShow"  class="text--disabled font-weight-bold mb-10">
+                 <h4  v-show="registerShow"  class=" font-weight-bold mb-10">
                     {{ title_register }}
-                </h6>
+                </h4>
                 <v-form v-show="loginShow" ref="loginForm">
                     <v-text-field
                         label="Email"

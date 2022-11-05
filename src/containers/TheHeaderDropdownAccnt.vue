@@ -8,12 +8,13 @@
     <template #toggler>
       <CHeaderNavLink>
         <div class="c-avatar">
-          <img
+         <!--  <img
             src="img/logos_conapdis/conapdis_circular.png"
             class="c-avatar-img"
             alt="imagen"
             title="imagen"
-          />
+          /> -->
+          <v-icon  large>mdi-account-circle</v-icon>
         </div>
       </CHeaderNavLink>
     </template>

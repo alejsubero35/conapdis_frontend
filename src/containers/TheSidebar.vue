@@ -6,7 +6,7 @@
     @update:show="(value) => $store.commit('set', ['sidebarShow', value])"
   >
     <CSidebarBrand class="d-md-down-none" to="/">
-      <img src="img/logos_conapdis/zyro-image.png" width="180" alt="">
+      <img src="img/logos_conapdis/logo.png" width="180" alt="">
       <CIcon 
         class="c-sidebar-brand-minimized" 
         name="logo" 
