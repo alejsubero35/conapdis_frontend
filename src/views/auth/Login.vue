@@ -11,15 +11,9 @@
             <img v-show="loginShow"  src="img/logos_conapdis/logo_cuadrado.png" alt="" class="logo_login" />
         </v-row>
             <v-card-text class="text-center content">
-                <v-avatar size="60" class="mb-4">
-                 
-                    <!-- <img v-show="registerShow"  src="@/assets/images/avatars/avatar_3.png" alt="" /> -->
-                    <v-icon v-show="registerShow" large style="font-size:60px;">mdi-account-multiple-plus</v-icon>
+                <v-avatar v-show="registerShow" size="60" class="mb-4">
+                    <v-icon  large style="font-size:60px;">mdi-account-multiple-plus</v-icon>
                 </v-avatar>
-
-             <!--    <h6 v-show="loginShow" class="text--disabled font-weight-bold mb-10">
-                    {{ title_login }}
-                </h6> -->
                  <h4  v-show="registerShow"  class=" font-weight-bold mb-10">
                     {{ title_register }}
                 </h4>
@@ -205,11 +199,11 @@
                     <v-icon left>mdi-login</v-icon>
                     Iniciar Sesión
                 </v-btn>
-                <v-btn v-show="registerShow" class="mb-15 mt-5 btn-login" @click="register" block color="info" dark>
+                <v-btn v-show="registerShow" class="mb-15 mt-5 btn-login register" @click="register" block color="info" dark>
                     <v-icon left>mdi-arrow-left-bold-box-outline</v-icon>
                     Login
                 </v-btn>
-                <v-btn  v-show="loginShow"  class="mb-4 btn-login" @click="registerUser" block color="info" dark>
+                <v-btn  v-show="loginShow"  class="mb-4 btn-login register" @click="registerUser" block color="info" dark>
                     <v-icon left>mdi-account-outline</v-icon>
                     Registrar Usuario
                 </v-btn>
@@ -460,6 +454,9 @@ export default class Login extends Vue {
 }
 .btn-login{
     border-radius: 25px;
+}
+.register{
+    background-color: #1C3969  !important;
 }
 /* .v-application .success {
     background-color: #EFAF30 !important;
