@@ -25,6 +25,7 @@
                 <tab-content title="Información Básica"  icon="mdi mdi-cube-send" :before-change="beforeTabSwitch">
                     <v-form class="formCliente" ref="validateStepForm"  lazy-validation >	
 						<input type="hidden" v-model="bussinesform.id" value:any="0" >
+						<input type="hidden" v-model="bussinesform.country_id" value:any="237" >
 						<v-row>
 							<v-col cols="12" sm="6" md="3">
 							<v-select
