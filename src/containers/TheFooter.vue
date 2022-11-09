@@ -1,12 +1,12 @@
 <template>
   <CFooter :fixed="false">
     <div>
-      <a class="footer_color" href="https://www.memorytech.com/" target="_blank">conapdis</a>
+      <a class="footer_color" href="#" target="_blank">conapdis</a>
       <span class="ml-1">&copy; {{new Date().getFullYear()}}</span>
     </div>
     <div class="ml-auto">
       <span class="mr-1">Powered by</span>
-      <a class="footer_color" href="https://www.filicabh.com.ve/" target="_blank">@rrau Technology HDD</a>
+      <a class="footer_color" href="#" target="_blank">@rrau Technology HDD</a>
     </div>
   </CFooter>
 </template>
