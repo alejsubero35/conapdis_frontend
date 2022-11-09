@@ -80,6 +80,8 @@ http.interceptors.response.use( (response) => {
   return response;
 
 }, async (error: any) => {
+  return error.response.data;
+  console.log(error)
   //console.log('ERROR')
 /*   Swal.fire({
     title: 'Mensaje de Error !',

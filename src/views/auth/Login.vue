@@ -19,9 +19,9 @@
                 </h4>
                 <v-form v-show="loginShow" ref="loginForm">
                     <v-text-field
-                        label="Email"
+                        label="Email / Username"
                         v-model="loginForm.email"
-                        :rules="emailRules"
+                        :rules="rules"
                         required
                         @keyup.enter="login()"
                     />
@@ -100,7 +100,7 @@
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12" :sm="sm" :md="md">
-                                <v-text-field label="Nombre de Usuario" placeholder="Nombre de Usuario" outlined dense :rules="rules" v-model="usersForm.username">
+                                <v-text-field label="Nombre de Usuario"  @blur="validate()" autocomplete="nope" placeholder="Nombre de Usuario" outlined dense :rules="usernameRules" v-model="usersForm.username">
                                 </v-text-field>
                             </v-col>
                             <v-col cols="12" :sm="sm" :md="md">
@@ -195,6 +195,7 @@
                     </div>
                 </v-form>
                 <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color"/>
+                <Alertas :data="dataModalAlert" :dialogOpen="dialogOpen" v-on:cerrarModal="closeModal"/>
                 <v-btn v-show="loginShow" class="mb-4 btn-login" @click="login" block color="success" dark>
                     <v-icon left>mdi-login</v-icon>
                     Iniciar Sesión
@@ -227,13 +228,14 @@ import { ValidationObserver } from 'vee-validate'
 export default class Login extends Vue {
 [x: string]: unknown;
     $router :any
+    mask = ['aaaaaaa']
     sm = '12'
     md = '12'
     overlay = false;
     email = '';
     password = '';
     loginError = '';
-    text = 'Email o Password Incorrecto'
+    text = ''
     alert = false
     loginForm : any = {
         code: 0,
@@ -293,6 +295,8 @@ export default class Login extends Vue {
 	arrayMunicipality = []
 	arrayParishes = []
     arrayPosition = []
+    dataModalAlert = ''
+    dialogOpen = false
     data(){
         return{
         show:false,
@@ -317,7 +321,11 @@ export default class Login extends Vue {
             (v:any) =>
                 (v && v.length <= 8) ||
                 'Debe ingresar máximo 8 caracteres'
-        ]
+        ],
+        usernameRules: [
+        v => !!v || 'Campo requerido',
+        v => (v && v.length <= 10) || 'Debe ingresar máximo 10 caracteres'
+        ],
         }
     };
     get LoginRequest(): any {
@@ -338,19 +346,30 @@ export default class Login extends Vue {
             this.identity = false
         }
     }
- 
+async validate(){
+    var alphaExp = /^[a-zA-Z]+$/;
+    if(this.usersForm.username.match(alphaExp)){
+        //Your logice will be here.
+    } else {
+        this.dataModalAlert = 'Solo se permite letras para el username'
+        this.dialogOpen = true
+        this.usersForm.username = ''
+    }
+}
+
     async login() {
         this.overlay = true
         const valid : any =  this.$refs.loginForm.validate();
+        this.LoginRequest.email.replace(/\s+/g, '')
         if (valid) { 
             const data : any = await sessionModule.login(this.LoginRequest)
-    
+       
             if (data.code == 200) {
                 this.$router.push({ name: 'Dashboard' });
                 this.overlay = false
             } else {
                 this.alert = true
-                this.loginError = data.message
+                this.text = data.message
                 this.overlay = false
             }
         } 
@@ -417,6 +436,9 @@ export default class Login extends Vue {
             this.snackbar = false
         },3500);
 	}
+    closeModal(){
+        this.dialogOpen = false
+    }
     mounted(){
         this.getPositionAll()
         this.getStates()
