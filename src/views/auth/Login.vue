@@ -14,6 +14,9 @@
                 <v-avatar v-show="registerShow" size="60" class="mb-4">
                     <v-icon  large style="font-size:60px;">mdi-account-multiple-plus</v-icon>
                 </v-avatar>
+                <h4  v-show="loginShow"  class=" font-weight-bold mb-10">
+                    {{ title_login }}
+                </h4>
                  <h4  v-show="registerShow"  class=" font-weight-bold mb-10">
                     {{ title_register }}
                 </h4>
@@ -260,7 +263,7 @@ export default class Login extends Vue {
         message: ''
     }
     identity = false
-    title_login = 'Iniciar Sesión en su Cuenta'
+    title_login = 'INICIAR SESIÓN'
     title_register = 'Registrar Usuario'
     loginShow = true
     registerShow = false
@@ -446,6 +449,7 @@ export default class Login extends Vue {
 .content{
       background-color: white;
       border-radius: 10px;
+      padding: 35px;
 }
 .logo_login{
     width: 66%;
