@@ -8,6 +8,7 @@ import {
   } from 'vuex-module-decorators';
   import store from '@/store';
   import { User } from '../interfaces/User';
+  import { UpdatePassword } from '../interfaces/UpdatePassword';
   import { UserToken } from '../interfaces/UserToken';
   import { http,https } from '@/utils/http';
   import { deserialize } from 'jsonapi-fractal'
@@ -59,11 +60,17 @@ import {
 		//}
 	}
 	@Action
-	async updatePassword(dataPassword : any) {
-		const response =  await https.put('users/resetPassword', dataPassword)
-		if (response.status === 200 || response.status === 201){
-			return response
+	async updatePassword(dataPassword : UpdatePassword) {
+		const payload : any =  await http.post('change-password', dataPassword)
+		console.log(payload)
+		if (payload.data) {console.log(1)
+			dataPassword.code = payload.status
+		} else {console.log(2)
+			dataPassword.code    = payload.code;
+			dataPassword.message = payload.message;
 		}
+
+		return dataPassword;
 	}
 	@Action
 	async getUserById(id:number){
