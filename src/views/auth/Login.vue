@@ -361,10 +361,11 @@ async validate(){
 }
 
     async login() {
-        this.overlay = true
+      
         const valid : any =  this.$refs.loginForm.validate();
         this.LoginRequest.email.replace(/\s+/g, '')
         if (valid) { 
+            this.overlay = true
             const data : any = await sessionModule.login(this.LoginRequest)
        
             if (data.code == 200) {
