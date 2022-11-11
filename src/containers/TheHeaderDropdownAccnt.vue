@@ -22,7 +22,7 @@
       <strong>Perfil de Cuenta</strong>
     </CDropdownHeader> -->
     <CDropdownItem @click="updatePassword()">
-      <CIcon name="cil-shield-alt" /> Cambiar Contraseña
+      <CIcon name="cil-sync" /> Cambiar Contraseña
     </CDropdownItem>    
     <Logout/>
   </CDropdown>

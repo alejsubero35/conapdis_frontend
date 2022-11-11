@@ -1,7 +1,7 @@
 <template>
       <div>
         <CDropdownItem @click="logout" > 
-        <CIcon name="cil-lock-locked"   />Cerrar Sesión
+        <CIcon name="cil-power-standby"   />Cerrar Sesión
         </CDropdownItem  > 
       </div>
 </template>

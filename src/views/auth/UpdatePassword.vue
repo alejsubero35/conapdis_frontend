@@ -127,11 +127,7 @@ export default class Users extends Vue {
         }  
     };
     mounted() {
-        if (this.$route.params.section == 'Usuarios') {
-            this.usersFormPassword.user_id = this.$route.params.id
-        } else {
-            this.usersFormPassword.user_id = this.getUserId
-        }
+
     }
 }
 

@@ -22,6 +22,16 @@ import {
   cibPaypal,
   cibGooglePay, 
   cibCcAmex, 
+  cibDraugiemLv,
+  cilLan,
+  cibOpenstreetmap,
+  cilCloudUpload,
+  cibQuarkus,
+  cilHome,
+  cibToggl,
+  cilPowerStandby,
+  cilSync,
+  cibLibreoffice
   
 } from '@coreui/icons'
 
@@ -171,6 +181,16 @@ export const iconsSet = Object.assign(
     cibStripe, 
     cibPaypal, 
     cibGooglePay,
-    cibCcAmex
+    cibCcAmex,
+    cibDraugiemLv,
+    cilLan,
+    cibOpenstreetmap,
+    cilCloudUpload,
+    cibQuarkus,
+    cilHome,
+    cibToggl,
+    cilPowerStandby,
+    cilSync,
+    cibLibreoffice
   }
 )
