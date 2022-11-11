@@ -13,12 +13,16 @@
             <TitleSection :sectiontitle="sectiontitle"/>
             <v-container >
                 <v-layout row wrap >
-                    <v-col cols="12" sm="6" md="6">
-                        <v-text-field    :type="show ? 'text' : 'password'"  label="Password" placeholder="Password" outlined dense :rules="rules" v-model="usersFormPassword.password"  @click:append="show = !show">
+                    <v-col cols="12" sm="6" md="4">
+                        <v-text-field    :type="show ? 'text' : 'password'"  label="Contraseña Actual" placeholder="Contraseña Actual" outlined dense :rules="rules" v-model="usersFormPassword.old_password"  @click:append="show = !show">
                         </v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="6" md="6">
-                        <v-text-field  :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"   :type="show ? 'text' : 'password'"  label="Password Confirmation" placeholder="Password Confirmation" outlined dense  :rules="[(usersFormPassword.password === usersFormPassword.password_confirmation) || 'confirmación Incorrecta ']" v-model="usersFormPassword.password_confirmation"  @click:append="show = !show">
+                    <v-col cols="12" sm="6" md="4">
+                        <v-text-field    :type="show ? 'text' : 'password'"  label="Nueva Contraseña" placeholder="Nueva Contraseña" outlined dense :rules="rules" v-model="usersFormPassword.new_password"  @click:append="show = !show">
+                        </v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                        <v-text-field  :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"   :type="show ? 'text' : 'password'"  label="Confirmar Nueva Contraseña" placeholder="Confirmar Nueva Contraseña" outlined dense  :rules="[(usersFormPassword.password === usersFormPassword.password_confirmation) || 'confirmación Incorrecta ']" v-model="usersFormPassword.new_password_confirmation"  @click:append="show = !show">
                         </v-text-field>
                     </v-col>
                 </v-layout>
@@ -28,7 +32,7 @@
                 <v-btn small @click="submitUpdatePassword" color="success"  >Guardar</v-btn> 
             </div>
         </v-form>
-        <Notificacion :snackbar="snackbar" :textmsj="textmsj"/>
+        <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color"/>
     </v-app>
 </template>
 <script lang="ts">
@@ -48,12 +52,12 @@ export default class Users extends Vue {
     overlay = false;
     show : Boolean =  false;
     usersFormPassword = {
-       user_id : '' ,
-       password : '',
-       password_confirmation : ''
+        code:'',
+        message: ''
     }
     snackbar = false
     textmsj     = '' 
+    color = ''
     sectiontitle = 'Actualización de Contraseña'
     dialog = false
   
@@ -75,7 +79,7 @@ export default class Users extends Vue {
     }
 
     get FormRequestUpdatePassword(): any {
-        return serialize(this.usersFormPassword,'users',{});
+        return this.usersFormPassword;
     } 
 
     $refs!: {
@@ -86,10 +90,20 @@ export default class Users extends Vue {
         if (valid) {
             this.overlay = true
             const data = await usersModule.updatePassword(this.FormRequestUpdatePassword)  
-            this.textmsj = 'Password Actualizado con Éxito.'
-            this.snackbar = true
-            this.back();
-            this.overlay = false
+            if(data.code == 200){
+                this.textmsj = 'Password Actualizado con Éxito.'
+                this.snackbar = true
+                this.color = 'success'
+                this.back();
+                this.overlay = false
+            } else {
+                this.textmsj = data.message
+                this.snackbar = true
+                this.color = 'error'
+                this.backError();
+                this.overlay = false
+            }
+  
     
         } else {
             //return false
@@ -101,6 +115,11 @@ export default class Users extends Vue {
             this.$router.go(-1);
             this.snackbar = false
         },2000);
+    }
+    backError(){
+        setTimeout(() => {
+            this.snackbar = false
+        },3000);
     }
     reset () {
         if (!this.$refs.usersFormPassword.validate()) {

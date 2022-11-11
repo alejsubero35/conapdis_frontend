@@ -101,10 +101,12 @@ import {
 		  	await http.post('/login', userLogin)
 	  
 		  	.then((payload: any) => {
-				if (payload) {
+
+			
+				if (payload.data) {
 					const login = payload.data
 					userLogin.code = payload.status
-	
+				
 				if (userLogin.code == 200) {
 		
 					const stoken: string  = login.access_token;
@@ -123,10 +125,10 @@ import {
 					this.context.commit('setBussines', busine);
 					this.context.commit('setNameUser', full_name);
 			
-				}
+				} 
 			  } else {
-			  userLogin.code == 500;
-			  userLogin.message = 'Error grave con Servidor';
+				userLogin.code    = payload.code;
+				userLogin.message = payload.message;
 			  }
 		  })
 	

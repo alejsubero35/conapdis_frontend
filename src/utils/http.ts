@@ -80,20 +80,7 @@ http.interceptors.response.use( (response) => {
   return response;
 
 }, async (error: any) => {
-  //console.log('ERROR')
-/*   Swal.fire({
-    title: 'Mensaje de Error !',
-    text: 'Ocurrio un error al consultar el servidor',
-    icon: 'error',
-    confirmButtonText: 'Aceptar'
-  }) */
- // alert( error.response.data.errors[0].detail)
-/*   store.commit('loading',false);
-  store.commit('errors',error.response.data || { "none": [error.response.data]  });
-  store.commit('error',true);
-  const { config, response: { status } } = error; */
-
-
+  return error.response.data;
 });
 
 
