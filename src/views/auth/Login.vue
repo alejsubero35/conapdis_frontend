@@ -322,7 +322,7 @@ export default class Login extends Vue {
         ],
         textRules: [
             (v:any) => !!v || 'Campo Requerido',
-            (v:any) => /^[A-Za-z]+$/.test(v) || 'Campo No acepta caracteres especiales',
+            (v:any) => /^[A-Za-z-0-9]+$/.test(v) || 'Campo No acepta caracteres especiales',
             (v:any) =>(v && v.length <= 10) ||'Debe ingresar máximo 10 caracteres'
         ],
         }
