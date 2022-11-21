@@ -15,7 +15,9 @@ const Login                   = () => import('@/views/auth/Login.vue')
 const Logout                  = () => import('@/views/auth/Logout.vue')
 const UpdatePassword          = () => import('@/views/auth/UpdatePassword.vue')
 // Bussines
-const Bussines                    = () => import('@/views/modulos/Bussines/Bussines.vue')
+const Bussines                = () => import('@/views/modulos/Bussines/Bussines.vue')
+//requirements
+const Requeriments            = () => import('@/views/modulos/Requeriment/Requeriments.vue')
 // Errors
 const Page404 = () => import('@/views/errors/Page404.vue')
 const Page500 = () => import('@/views/errors/Page500.vue')
@@ -73,7 +75,14 @@ const router = new Router({
           component: Bussines,
           meta: { Auth: true, title: 'Bussines' },
      
-        },              
+        },  
+        {
+          path: 'requeriments',
+          name: 'requeriments',
+          component: Requeriments,
+          meta: { Auth: true, title: 'Requeriments' },
+     
+        },            
       ]
       
     },

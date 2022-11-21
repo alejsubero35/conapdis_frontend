@@ -29,7 +29,7 @@ export default [
       {
         _name: 'CSidebarNavItem',
         name: 'Carga de Documentos',
-        to: '#',
+        to: '/requeriments',
         icon: 'cilCloudUpload'
       },
       {
