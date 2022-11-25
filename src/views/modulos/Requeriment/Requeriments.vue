@@ -52,11 +52,11 @@
                     <v-col cols="12" sm="6" md="4">
                         <v-file-input
                             :rules="(doc.is_required) ? rules : Notrules"
+                            :disabled="(doc.approved == 1) ? disabledFile : !disabledFile"
                             accept="image/png, image/jpeg, application/pdf"
-                            placeholder="Seleccione Documento"
                             outlined 
                             dense
-                            label="Documento"
+                            :label="(doc.approved == 1) ? 'Documento Adjuntado en Revisión' : placeholder"
                             @change="updateDocument(doc)"
                             v-model="doc.name"
                         >
@@ -110,6 +110,8 @@ export default class Users extends Vue {
     color = ''
     fileUpload = ''
     disabled = true
+    disabledFile = true
+    placeholder = 'Cargar Documento'
     data(){
         return{
             rules: [
