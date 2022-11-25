@@ -66,7 +66,7 @@
                 </v-layout>
             </v-container>
             <div class="mt-5 d-flex justify-end">
-                <v-btn small @click="saveDocuemnts" color="success">Guardar</v-btn> 
+                <v-btn small @click="saveDocuemnts" :disabled="disabledBtn" color="success">Guardar</v-btn> 
             </div>
         </v-form>
         <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color"/>
@@ -111,6 +111,7 @@ export default class Users extends Vue {
     fileUpload = ''
     disabled = true
     disabledFile = true
+    disabledBtn = false
     placeholder = 'Cargar Documento'
     data(){
         return{
@@ -147,23 +148,23 @@ export default class Users extends Vue {
     
         const valid = await this.$refs.documentsForm.validate();
         delete this.FormRequestDocuments.name
-        const data    = await documentModule.saveDocuments(this.FormRequestDocuments)  
 
-        if (valid) {
+      //  if (valid) {
             this.overlay  = true
             const data    = await documentModule.saveDocuments(this.FormRequestDocuments)  
             if(data.code == 201 ){
-                this.textmsj  = 'Usuario Creado con Éxito.'
+                this.textmsj  = 'Documentos Cargados con Éxito.'
                 this.snackbar = true
                 this.back();
+                this.disabledBtn = true
                 this.overlay  = false
             } else {
                 
             }
     
-        } else {
+       /*  } else {
            
-        }  
+        } */  
     }
     async updateFecha(id_){
         let index  = this.documents.findIndex(({ id })  => id == id_)
@@ -204,7 +205,7 @@ export default class Users extends Vue {
     };
     back() {
         setTimeout(() => {
-            this.$router.push({ name: 'bussines' });
+            //this.$router.push({ name: 'bussines' });
             this.snackbar = false
         },2000);
     }

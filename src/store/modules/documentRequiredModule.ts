@@ -15,7 +15,7 @@ import {
   
   @Module({
     namespaced: true,
-    name: 'bussines',
+    name: 'Documents Bussines',
     store,
     dynamic: true,
   })
@@ -77,7 +77,7 @@ import {
 
   }  
 
-  
+
   
   export default getModule(DocumentRequired);
   

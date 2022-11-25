@@ -15,7 +15,7 @@ import {
   
   @Module({
     namespaced: true,
-    name: 'bussines',
+    name: 'Bussines',
     store,
     dynamic: true,
   })
