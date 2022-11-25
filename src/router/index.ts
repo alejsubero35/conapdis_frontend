@@ -18,6 +18,10 @@ const UpdatePassword          = () => import('@/views/auth/UpdatePassword.vue')
 const Bussines                = () => import('@/views/modulos/Bussines/Bussines.vue')
 //requirements
 const Requeriments            = () => import('@/views/modulos/Requeriment/Requeriments.vue')
+//Notificaciones
+const Notification          = () => import('@/views/modulos/Notification/Notification.vue')
+const PdfNotification          = () => import('@/views/modulos/Notification/PdfNotification.vue')
+
 // Errors
 const Page404 = () => import('@/views/errors/Page404.vue')
 const Page500 = () => import('@/views/errors/Page500.vue')
@@ -81,6 +85,19 @@ const router = new Router({
           name: 'requeriments',
           component: Requeriments,
           meta: { Auth: true, title: 'Requeriments' },
+        }, 
+        {
+          path: 'notification',
+          name: 'notification',
+          component: Notification,
+          meta: { Auth: true, title: 'Notification' },
+     
+        }, 
+        {
+          path: 'pdfnotification/:id',
+          name: 'pdfnotification',
+          component: PdfNotification,
+          meta: { Auth: true, title: 'PdfNotification' },
      
         },            
       ]

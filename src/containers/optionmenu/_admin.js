@@ -16,8 +16,8 @@ export default [
       },
      {
         _name: 'CSidebarNavItem',
-        name: 'Centro de Notificaciones',
-        to: '#',
+        name: 'Notificaciones',
+        to: '/notification',
         icon: 'cilLan'
       },
      {
