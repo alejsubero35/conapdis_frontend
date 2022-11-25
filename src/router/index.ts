@@ -22,6 +22,8 @@ const Requeriments            = () => import('@/views/modulos/Requeriment/Requer
 const Notification          = () => import('@/views/modulos/Notification/Notification.vue')
 const PdfNotification          = () => import('@/views/modulos/Notification/PdfNotification.vue')
 
+//requirements Bussines
+const RequerimentsBussines            = () => import('@/views/modulos/RequerimentBussines/RequerimentsBussines.vue')
 // Errors
 const Page404 = () => import('@/views/errors/Page404.vue')
 const Page500 = () => import('@/views/errors/Page500.vue')
@@ -99,7 +101,14 @@ const router = new Router({
           component: PdfNotification,
           meta: { Auth: true, title: 'PdfNotification' },
      
-        },            
+        },  
+        {
+          path: 'requerimentsbussines',
+          name: 'requerimentsbussines',
+          component: RequerimentsBussines,
+          meta: { Auth: true, title: 'RequerimentsBussines' },
+     
+        },          
       ]
       
     },

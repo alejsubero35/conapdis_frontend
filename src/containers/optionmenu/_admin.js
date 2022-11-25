@@ -28,6 +28,12 @@ export default [
       },
       {
         _name: 'CSidebarNavItem',
+        name: 'Requisitos',
+        to: '/requerimentsbussines',
+        icon: 'cibReadTheDocs'
+      },
+      {
+        _name: 'CSidebarNavItem',
         name: 'Carga de Documentos',
         to: '/requeriments',
         icon: 'cilCloudUpload'

@@ -52,9 +52,8 @@
                     <v-col cols="12" sm="6" md="4">
                         <v-file-input
                             :rules="(doc.is_required) ? rules : Notrules"
-                            accept="image/png, image/jpeg, image/bmp"
+                            accept="image/png, image/jpeg, application/pdf"
                             placeholder="Seleccione Documento"
-                            prepend-icon="mdi-camera"
                             outlined 
                             dense
                             label="Documento"
@@ -76,7 +75,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import sessionModule from '@/store/modules/sessionModule';
-import bussinesModule from '@/store/modules/bussinesModule';
+import documentModule from '@/store/modules/documentRequiredModule';
 import { ValidationObserver } from 'vee-validate'
 import storageData from '@/store/services/storageService'
 
@@ -137,7 +136,7 @@ export default class Users extends Vue {
 
     async getDocuments(){
         this.overlay  = true
-        const documents : any = await  bussinesModule.getDocumentsAll();
+        const documents : any = await  documentModule.getDocumentsAll();
         this.documents = documents.data.data;
         this.overlay  = false
     }
@@ -146,19 +145,23 @@ export default class Users extends Vue {
     
         const valid = await this.$refs.documentsForm.validate();
         delete this.FormRequestDocuments.name
-        const data    = await bussinesModule.saveDocuments(this.FormRequestDocuments)  
+        const data    = await documentModule.saveDocuments(this.FormRequestDocuments)  
 
-  /*       if (valid) {
+        if (valid) {
             this.overlay  = true
-            const data    = await bussinesModule.saveDocuments(this.FormRequestDocuments)  
-            console.log('en la vista:: ' + data )
-            this.textmsj  = 'Usuario Creado con Éxito.'
-            this.snackbar = true
-            this.back();
-            this.overlay  = false
+            const data    = await documentModule.saveDocuments(this.FormRequestDocuments)  
+            if(data.code == 201 ){
+                this.textmsj  = 'Usuario Creado con Éxito.'
+                this.snackbar = true
+                this.back();
+                this.overlay  = false
+            } else {
+                
+            }
+    
         } else {
            
-        }  */ 
+        }  
     }
     async updateFecha(id_){
         let index  = this.documents.findIndex(({ id })  => id == id_)
