@@ -6,9 +6,10 @@
             size="64"
         ></v-progress-circular>
         </v-overlay>
+
         <v-form class="form-container" 
             lazy-validation 
-            ref="documentsForm"
+            ref="documents"
             enctype='multipart/form-data'
           >
             <TitleSection :sectiontitle="sectiontitle"/>
@@ -134,7 +135,7 @@ export default class Users extends Vue {
 
     $refs!: {
     [x: string]: any;
-        documentsForm: InstanceType<typeof ValidationObserver>;
+        documents: InstanceType<typeof ValidationObserver>;
     };
 
     async getDocuments(){
@@ -146,10 +147,10 @@ export default class Users extends Vue {
 
     async saveDocuemnts() { 
     
-        const valid = await this.$refs.documentsForm.validate();
+        const valid = await this.$refs.documents.validate();
         delete this.FormRequestDocuments.name
 
-      //  if (valid) {
+        if (valid) {
             this.overlay  = true
             const data    = await documentModule.saveDocuments(this.FormRequestDocuments)  
             if(data.code == 201 ){
@@ -162,31 +163,29 @@ export default class Users extends Vue {
                 
             }
     
-       /*  } else {
+        } else {
            
-        } */  
+        }  
     }
     async updateFecha(id_){
         let index  = this.documents.findIndex(({ id })  => id == id_)
         this.documents[index].registration_date = this.date
         this.documents[index].bussines_id = (storageData.get('bussines_id')) ? storageData.get('bussines_id') : this.getBussines.id
-        console.log(this.documents[index].bussines_id)
     }
     async updateDocument(doc){
         const _this = this
         var event = event || window.event;
-        let base64 = await this.getBase64(event.target.files[0],doc)   
-        console.log(event.target.files[0])
+        if(event.target.files != undefined && event.target.files.length == 1){
+            let base64 = await this.getBase64(event.target.files[0],doc)  
+        }
     }
 
     async getImgBase(imgbase64,doc,fileName){  
         let index  = this.documents.findIndex(({ id })  => id == doc.id)
         this.documents[index].file =  imgbase64; 
-        this.documents[index].name =  fileName;
-
-        console.log(this.documents[index].file)     
+        this.documents[index].name =  fileName;     
     }
-    getBase64(file,doc) {
+    getBase64(file,doc) { 
         const _this = this
         var reader = new FileReader();
         reader.readAsDataURL(file);
@@ -205,7 +204,6 @@ export default class Users extends Vue {
     };
     back() {
         setTimeout(() => {
-            //this.$router.push({ name: 'bussines' });
             this.snackbar = false
         },2000);
     }
