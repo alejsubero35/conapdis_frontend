@@ -17,8 +17,10 @@ const UpdatePassword          = () => import('@/views/auth/UpdatePassword.vue')
 // Bussines
 const Bussines                = () => import('@/views/modulos/Bussines/Bussines.vue')
 //Notificaciones
-const Notification          = () => import('@/views/modulos/Notification/Notification.vue')
-const PdfNotification          = () => import('@/views/modulos/Notification/PdfNotification.vue')
+const Notification            = () => import('@/views/modulos/Notification/Notification.vue')
+const PdfNotification         = () => import('@/views/modulos/Notification/PdfNotification.vue')
+const PlanillaSolicitud       = () => import('@/views/modulos/Notification/PlanillaSolicitud.vue')
+
 
 // Errors
 const Page404 = () => import('@/views/errors/Page404.vue')
@@ -91,7 +93,14 @@ const router = new Router({
           component: PdfNotification,
           meta: { Auth: true, title: 'PdfNotification' },
      
-        },            
+        },   
+        {
+          path: 'planillasolicitud',
+          name: 'planillasolicitud',
+          component: PlanillaSolicitud,
+          meta: { Auth: true, title: 'PlanillaSolicitud' },
+     
+        },         
       ]
       
     },

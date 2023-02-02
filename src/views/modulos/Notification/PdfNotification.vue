@@ -174,7 +174,7 @@
      background: white;
      padding: 5%;
      border-radius: 8px;
-     background-image : url('/img/logos_conapdis/borde_2.png');
+
      background-repeat: no-repeat;
      background-size: cover;
      background-position: center;

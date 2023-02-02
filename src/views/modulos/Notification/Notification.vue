@@ -100,7 +100,7 @@ export default class Usuario extends Vue {
     clientes : any = [];
     dialog : boolean = false;
     dialogDelete : boolean = false;
-    title  : string = 'NUEVO USUARIO'
+    title  : string = 'Planilla de solicitud'
     tituloModal : string = ''
     dataEditForm : object = {}
     id_delete = ''
@@ -124,7 +124,7 @@ export default class Usuario extends Vue {
     
 
     openView(){
-        this.$router.push({ name: "createuser"});
+        this.$router.push({ name: "planillasolicitud"});
     }
     openViewChangePassword(id){
         this.$router.push({ name: "updatepassword", params: { id: id,section:this.section } });
