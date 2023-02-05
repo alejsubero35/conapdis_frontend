@@ -103,7 +103,7 @@
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12" :sm="sm" :md="md">
-                                <v-text-field label="Nombre de Usuario"  @blur="validate()" autocomplete="nope" placeholder="Nombre de Usuario" outlined dense :rules="usernameRules" v-model="usersForm.username">
+                                <v-text-field label="Nombre de Usuario"  placeholder="Nombre de Usuario" outlined dense :rules="textRules" v-model="usersForm.username">
                                 </v-text-field>
                             </v-col>
                             <v-col cols="12" :sm="sm" :md="md">
@@ -321,13 +321,12 @@ export default class Login extends Vue {
         ],
         numberRule: [
             (v:any) => !!v || 'Cédula o Pasaporte',
-            (v:any) =>
-                (v && v.length <= 8) ||
-                'Debe ingresar máximo 8 caracteres'
+            (v:any) =>(v && v.length <= 8) ||'Debe ingresar máximo 8 caracteres'
         ],
-        usernameRules: [
-        v => !!v || 'Campo requerido',
-        v => (v && v.length <= 10) || 'Debe ingresar máximo 10 caracteres'
+        textRules: [
+            (v:any) => !!v || 'Campo Requerido',
+            (v:any) => /^[A-Za-z-0-9]+$/.test(v) || 'Campo No acepta caracteres especiales',
+            (v:any) =>(v && v.length <= 10) ||'Debe ingresar máximo 10 caracteres'
         ],
         }
     };
@@ -349,6 +348,19 @@ export default class Login extends Vue {
             this.identity = false
         }
     }
+    async allLetter(inputtxt)
+  {
+   var letters = /^[A-Za-z]+$/;
+   if(inputtxt.value.match(letters))
+     {
+      return true;
+     }
+   else
+     {
+     alert("message");
+     return false;
+     }
+  }
 async validate(){
     var alphaExp = /^[a-zA-Z]+$/;
     if(this.usersForm.username.match(alphaExp)){
