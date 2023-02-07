@@ -20,8 +20,8 @@ const Bussines                = () => import('@/views/modulos/Bussines/Bussines.
 const Notification            = () => import('@/views/modulos/Notification/Notification.vue')
 const PdfNotification         = () => import('@/views/modulos/Notification/PdfNotification.vue')
 const PlanillaSolicitud       = () => import('@/views/modulos/Notification/PlanillaSolicitud.vue')
-//Solicitud Inspeccion
-//const Solicitud       = () => import('@/views/modulos/Notification/Solicitud.vue')
+//Certificado ABI
+const CertificadoAbi          = () => import('@/views/modulos/Certificado/CertificadoAbi.vue')
 
 
 
@@ -103,7 +103,14 @@ const router = new Router({
           component: PlanillaSolicitud,
           meta: { Auth: true, title: 'PlanillaSolicitud' },
      
-        },         
+        },   
+        {
+          path: 'certificadoabi',
+          name: 'certificadoabi',
+          component: CertificadoAbi,
+          meta: { Auth: true, title: 'CertificadoAbi' },
+     
+        },       
       ]
       
     },
