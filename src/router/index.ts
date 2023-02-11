@@ -15,7 +15,13 @@ const Login                   = () => import('@/views/auth/Login.vue')
 const Logout                  = () => import('@/views/auth/Logout.vue')
 const UpdatePassword          = () => import('@/views/auth/UpdatePassword.vue')
 // Bussines
-const Bussines                    = () => import('@/views/modulos/Bussines/Bussines.vue')
+const Bussines                = () => import('@/views/modulos/Bussines/Bussines.vue')
+//Notificaciones
+const Notification            = () => import('@/views/modulos/Notification/Notification.vue')
+const PdfNotification         = () => import('@/views/modulos/Notification/PdfNotification.vue')
+const PlanillaSolicitud       = () => import('@/views/modulos/Notification/PlanillaSolicitud.vue')
+
+
 // Errors
 const Page404 = () => import('@/views/errors/Page404.vue')
 const Page500 = () => import('@/views/errors/Page500.vue')
@@ -73,7 +79,28 @@ const router = new Router({
           component: Bussines,
           meta: { Auth: true, title: 'Bussines' },
      
-        },              
+        }, 
+        {
+          path: 'notification',
+          name: 'notification',
+          component: Notification,
+          meta: { Auth: true, title: 'Notification' },
+     
+        }, 
+        {
+          path: 'pdfnotification/:id',
+          name: 'pdfnotification',
+          component: PdfNotification,
+          meta: { Auth: true, title: 'PdfNotification' },
+     
+        },   
+        {
+          path: 'planillasolicitud',
+          name: 'planillasolicitud',
+          component: PlanillaSolicitud,
+          meta: { Auth: true, title: 'PlanillaSolicitud' },
+     
+        },         
       ]
       
     },
