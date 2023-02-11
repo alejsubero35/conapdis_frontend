@@ -20,6 +20,9 @@ const Bussines                = () => import('@/views/modulos/Bussines/Bussines.
 const Notification            = () => import('@/views/modulos/Notification/Notification.vue')
 const PdfNotification         = () => import('@/views/modulos/Notification/PdfNotification.vue')
 const PlanillaSolicitud       = () => import('@/views/modulos/Notification/PlanillaSolicitud.vue')
+//Solicitud Inspeccion
+//const Solicitud       = () => import('@/views/modulos/Notification/Solicitud.vue')
+
 
 
 // Errors
@@ -95,8 +98,8 @@ const router = new Router({
      
         },   
         {
-          path: 'planillasolicitud',
-          name: 'planillasolicitud',
+          path: 'solicitudinspeccion',
+          name: 'solicitudinspeccion',
           component: PlanillaSolicitud,
           meta: { Auth: true, title: 'PlanillaSolicitud' },
      

@@ -23,7 +23,7 @@ export default [
      {
         _name: 'CSidebarNavItem',
         name: 'Solicitudes de Inspección',
-        to: '#',
+        to: '/solicitudinspeccion',
         icon: 'cibOpenstreetmap'
       },
       {
