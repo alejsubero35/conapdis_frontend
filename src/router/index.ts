@@ -20,8 +20,9 @@ const Bussines                = () => import('@/views/modulos/Bussines/Bussines.
 const Notification            = () => import('@/views/modulos/Notification/Notification.vue')
 const PdfNotification         = () => import('@/views/modulos/Notification/PdfNotification.vue')
 const PlanillaSolicitud       = () => import('@/views/modulos/Notification/PlanillaSolicitud.vue')
-//Solicitud Inspeccion
-//const Solicitud       = () => import('@/views/modulos/Notification/Solicitud.vue')
+//Acta de Cumplimiento
+const ActaCumplimiento        = () => import('@/views/modulos/Acta/ActaCumplimiento.vue')
+
 
 
 
@@ -103,7 +104,14 @@ const router = new Router({
           component: PlanillaSolicitud,
           meta: { Auth: true, title: 'PlanillaSolicitud' },
      
-        },         
+        },   
+        {
+          path: 'actacumplimiento',
+          name: 'actacumplimiento',
+          component: ActaCumplimiento,
+          meta: { Auth: true, title: 'ActaCumplimiento' },
+     
+        },      
       ]
       
     },

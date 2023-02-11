@@ -38,6 +38,12 @@ export default [
         to: '#',
         icon: 'cibLibreoffice'
       },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Acta de Cumplimiento',
+        to: '/actacumplimiento',
+        icon: 'cibLibreoffice'
+      },
     ]
   }
 ]
