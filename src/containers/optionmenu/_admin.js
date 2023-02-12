@@ -41,7 +41,7 @@ export default [
       {
         _name: 'CSidebarNavItem',
         name: 'Certificados ABI',
-        to: '#',
+        to: '/certificadoabi',
         icon: 'cibLibreoffice'
       },
       {

@@ -24,6 +24,8 @@ const PdfNotification         = () => import('@/views/modulos/Notification/PdfNo
 const PlanillaSolicitud       = () => import('@/views/modulos/Notification/PlanillaSolicitud.vue')
 //Acta de Cumplimiento
 const ActaCumplimiento        = () => import('@/views/modulos/Acta/ActaCumplimiento.vue')
+//Certificado ABI
+const CertificadoAbi          = () => import('@/views/modulos/Certificado/CertificadoAbi.vue')
 
 
 
@@ -128,7 +130,14 @@ const router = new Router({
           component: RequerimentsBussines,
           meta: { Auth: true, title: 'RequerimentsBussines' },
      
-        },          
+        },   
+        {        
+          path: 'certificadoabi',
+          name: 'certificadoabi',
+          component: CertificadoAbi,
+          meta: { Auth: true, title: 'CertificadoAbi' },
+     
+        },       
       ]
       
     },
