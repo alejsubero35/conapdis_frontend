@@ -13,7 +13,7 @@
             enctype='multipart/form-data'
           >
             <TitleSection :sectiontitle="sectiontitle"/>
-            <v-container >
+            <v-container v-if="documents.length > 0" >
                 <v-layout  v-for="(doc,index) in documents" :key="index" row wrap >
                    <v-row>
                     <input type="hidden" v-model="doc.id">
@@ -66,7 +66,10 @@
                    </v-row>
                 </v-layout>
             </v-container>
-            <div class="mt-5 d-flex justify-end">
+            <v-container v-else>
+                <h1 class="text-center">No hay documentos requeridos</h1>
+            </v-container>
+            <div v-if="documents.length > 0" class="mt-5 d-flex justify-end">
                 <v-btn small @click="saveDocuemnts" :disabled="disabledBtn" color="success">Guardar</v-btn> 
             </div>
         </v-form>
