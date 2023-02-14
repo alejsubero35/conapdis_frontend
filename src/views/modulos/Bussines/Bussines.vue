@@ -203,7 +203,7 @@
 								outlined
 								dense
 								:rules="emailRules"
-								v-model="bussinesform.email"
+								v-model="bussinesform.email_business"
 							></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
@@ -415,7 +415,7 @@
 								outlined
 								dense
 								:rules="emailRules"
-								v-model="bussinesform.email_rl"
+								v-model="bussinesform.email"
 							></v-text-field>
 							</v-col>
 						</v-row>
@@ -649,6 +649,7 @@ export default class Bussines extends Vue {
 	async getParishesByMunicipality(event){
 		const parishes : any = await bussinesModule.getParishes(event)
 		this.arrayParishes = parishes.data.data
+		this.overlay = false
 	}
 	
 	reset () {
@@ -690,14 +691,15 @@ export default class Bussines extends Vue {
 		this.getTypeCompany()
 		this.getUserType()
 
-		if (storageData.get('_bussines')) {
+		if (storageData.get('_bussines')) {console.log(storageData.get('_bussines'))
+			this.overlay = true
 			this.bussinesform = storageData.get('_bussines')
 			if(storageData.get('_bussines').hasOwnProperty('is_major')){
 				this.sucursal = (this.getBussines.is_major == false) ? true : false
 				this.showSucursal = true
-				let cadena = this.getBussines.code_branch_office;
-				var result = cadena.split('-')[1];
-				var result2 = cadena.split('-')[2];
+				let cadena  = this.getBussines.code_branch_office;
+				var result  = (cadena) ? cadena.split('-')[1] : '';
+				var result2 = (cadena) ? cadena.split('-')[2] : '';
 				this. sectiontitle = 'Actualizar Datos de Empresa'
 				this.numero_sucursal = result2
 				this.nombre_sucursal = result

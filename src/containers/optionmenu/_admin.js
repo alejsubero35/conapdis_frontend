@@ -38,6 +38,12 @@ export default [
         to: '#',
         icon: 'cibLibreoffice'
       },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Guia de Inspección',
+        to: '/guiainspeccion',
+        icon: 'cibLibreoffice'
+      },
     ]
   }
 ]
