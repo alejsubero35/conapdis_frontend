@@ -26,6 +26,8 @@ const PlanillaSolicitud       = () => import('@/views/modulos/Notification/Plani
 const GuiaInspeccion          = () => import('@/views/modulos/Guia/GuiaInspeccion.vue')
 //Acta de Cumplimiento
 const ActaCumplimiento        = () => import('@/views/modulos/Acta/ActaCumplimiento.vue')
+//Certificado ABI
+const CertificadoAbi          = () => import('@/views/modulos/Certificado/CertificadoAbi.vue')
 
 
 
@@ -137,7 +139,14 @@ const router = new Router({
           component: ActaCumplimiento,
           meta: { Auth: true, title: 'ActaCumplimiento' },
      
-        },      
+        },        
+        {
+          path: 'certificadoabi',
+          name: 'certificadoabi',
+          component: CertificadoAbi,
+          meta: { Auth: true, title: 'CertificadoAbi' },
+     
+        },       
       ]
       
     },
