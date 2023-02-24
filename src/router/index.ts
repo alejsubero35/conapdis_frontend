@@ -24,6 +24,9 @@ const PdfNotification         = () => import('@/views/modulos/Notification/PdfNo
 const PlanillaSolicitud       = () => import('@/views/modulos/Notification/PlanillaSolicitud.vue')
 //Guia de Inspeccion
 const GuiaInspeccion          = () => import('@/views/modulos/Guia/GuiaInspeccion.vue')
+//Acta de Cumplimiento
+const ActaCumplimiento        = () => import('@/views/modulos/Acta/ActaCumplimiento.vue')
+
 
 
 
@@ -128,7 +131,13 @@ const router = new Router({
           meta: { Auth: true, title: 'GuiaInspeccion' },
      
         }, 
-                
+        {
+          path: 'actacumplimiento',
+          name: 'actacumplimiento',
+          component: ActaCumplimiento,
+          meta: { Auth: true, title: 'ActaCumplimiento' },
+     
+        },      
       ]
       
     },
