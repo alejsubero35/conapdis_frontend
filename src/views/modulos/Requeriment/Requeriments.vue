@@ -50,7 +50,7 @@
                             ></v-date-picker>
                         </v-menu>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col v-if="doc.url == ''" cols="12" sm="6" md="4">
                         <v-file-input
                             :rules="(doc.is_required) ? rules : Notrules"
                             :disabled="(doc.approved == 1) ? disabledFile : !disabledFile"
@@ -60,8 +60,20 @@
                             :label="(doc.approved == 1) ? 'Documento Adjuntado en Revisión' : placeholder"
                             @change="updateDocument(doc)"
                             v-model="doc.name"
+                    
                         >
                      </v-file-input>
+                    </v-col>
+                    <v-col v-else cols="12" sm="6" md="4">
+                         <v-chip
+                            class="ma-1 mt-2 mb-5"
+                            :href="doc.url" 
+                            target="_blank"
+                            :color="(doc.status == 'pending') ? 'warning' : 'green'"
+                            text-color="white"
+                        >
+                        {{ doc.title }}
+                       </v-chip>
                     </v-col>
                    </v-row>
                 </v-layout>

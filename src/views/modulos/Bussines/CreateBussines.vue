@@ -317,7 +317,9 @@ export default class EditarCliente extends Vue {
 	title : string = '';
 	subtitle : string = ''
 	validateStepForm : any = {inactivo: '1'};
-    bussinesform : object = {}
+    bussinesform : object = {
+        country_id : 237
+    }
     loadingWizard = false
 	option = [
         {value: '0', text: 'No'},
@@ -424,6 +426,7 @@ export default class EditarCliente extends Vue {
         }
     };
     mounted(){
+        this.bussinesform.country_id = 237
 
         //this.comboboxAll();       
        
