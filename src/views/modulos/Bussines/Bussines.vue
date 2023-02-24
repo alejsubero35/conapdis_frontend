@@ -450,7 +450,7 @@ export default class Bussines extends Vue {
 	title : string = '';
 	subtitle : string = ''
 	validateStepForm : any = {inactivo: '1'};
-    bussinesform : any = { code: 0, message:''}
+    bussinesform : any = { code: 0, message:'',country_id : 237}
     loadingWizard = false
 	typerif = [
         {value: '1', text: 'V'},

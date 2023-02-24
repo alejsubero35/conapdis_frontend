@@ -15,7 +15,8 @@
         viewBox="0 0 110 134" 
       />
     </CSidebarBrand>
-       <CRenderFunction flat :content-to-render="$options.admin"/>
+       <CRenderFunction v-if="bussine" flat :content-to-render="$options.admin"/>
+       <CRenderFunction v-else flat :content-to-render="$options.estandar"/>
 <!--   <CRenderFunction v-if="typeRol == 'Vendedor'" flat :content-to-render="$options.vendedor"/>
        <CRenderFunction v-if="typeRol == 'Estandar'" flat :content-to-render="$options.estandar"/>
        <CRenderFunction v-if="typeRol == 'Tecnico'" flat :content-to-render="$options.tecnico"/> -->
@@ -43,11 +44,13 @@ export default {
   },
   data(){
     return{
-      typeRol : ''
+      typeRol : '',
+      bussine : ''
     }
   },
   mounted(){
   this.typeRol = storageData.get('_rolename')
+  this.bussine = storageData.get('_bussines')
   },
   computed: {
     show () {

@@ -16,6 +16,8 @@ const Logout                  = () => import('@/views/auth/Logout.vue')
 const UpdatePassword          = () => import('@/views/auth/UpdatePassword.vue')
 // Bussines
 const Bussines                = () => import('@/views/modulos/Bussines/Bussines.vue')
+//requirements
+const Requeriments            = () => import('@/views/modulos/Requeriment/Requeriments.vue')
 //Notificaciones
 const Notification            = () => import('@/views/modulos/Notification/Notification.vue')
 const PdfNotification         = () => import('@/views/modulos/Notification/PdfNotification.vue')
@@ -25,6 +27,8 @@ const PlanillaSolicitud       = () => import('@/views/modulos/Notification/Plani
 
 
 
+//requirements Bussines
+const RequerimentsBussines            = () => import('@/views/modulos/RequerimentBussines/RequerimentsBussines.vue')
 // Errors
 const Page404 = () => import('@/views/errors/Page404.vue')
 const Page500 = () => import('@/views/errors/Page500.vue')
@@ -82,6 +86,12 @@ const router = new Router({
           component: Bussines,
           meta: { Auth: true, title: 'Bussines' },
      
+        },  
+        {
+          path: 'requeriments',
+          name: 'requeriments',
+          component: Requeriments,
+          meta: { Auth: true, title: 'Requeriments' },
         }, 
         {
           path: 'notification',
@@ -104,6 +114,13 @@ const router = new Router({
           meta: { Auth: true, title: 'PlanillaSolicitud' },
      
         },         
+        {
+          path: 'requerimentsbussines',
+          name: 'requerimentsbussines',
+          component: RequerimentsBussines,
+          meta: { Auth: true, title: 'RequerimentsBussines' },
+     
+        },          
       ]
       
     },

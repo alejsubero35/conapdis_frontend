@@ -15,7 +15,7 @@ import {
   
   @Module({
     namespaced: true,
-    name: 'bussines',
+    name: 'Bussines',
     store,
     dynamic: true,
   })
@@ -212,7 +212,7 @@ import {
 	@Action
 	getAll() {
 	   return new Promise((resolve, reject) => {  
-			  http.get(`/users`)
+			  http.get(`/busines`)
 			  .then(response =>  {
 
 				  if (response.status === 200) {     
@@ -226,6 +226,41 @@ import {
 	   
 		  }) 
 	   }
+	   @Action
+	   getDocumentsAll() {
+		  return new Promise((resolve, reject) => {  
+				 http.get(`/document-requirements`)
+				 .then(response =>  {
+   
+					 if (response.status === 200) {     
+						 resolve(response); 
+					 }
+				 })
+				 .catch(error => {
+					 reject(error)
+				 })
+		   
+		  
+			 }) 
+		  }
+		  @Action
+		  async saveDocuments(dataDocuments: any) { 
+
+			  await http.post(`document-bussines/store_documents`, dataDocuments).then((payload: any) => {
+	  
+				  if(payload){
+					  dataDocuments.code = payload.status
+					  const busine: any     = payload.data.data
+					  storageData.set('_bussines', busine);
+					  this.context.commit('setBussines', busine);
+				  } else {
+					  dataDocuments.code = 500;
+					  dataDocuments.message = 'Error al procesar la Solicitud';
+				  }
+			  })
+			  return dataDocuments;
+		  }  
+		
 
   }  
   
