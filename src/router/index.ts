@@ -146,7 +146,14 @@ const router = new Router({
           component: CertificadoAbi,
           meta: { Auth: true, title: 'CertificadoAbi' },
      
-        },       
+        }, 
+        {
+          path: 'planillasolicitud',
+          name: 'planillasolicitud',
+          component: PlanillaSolicitud,
+          meta: { Auth: true, title: 'PlanillaSolicitud' },
+     
+        },      
       ]
       
     },

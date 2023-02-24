@@ -8,6 +8,7 @@
         ></v-progress-circular>
         </v-overlay>
         <ButtonOpen  @openView="openView" :title="title" />
+        <v-btn small class="mt-3" @click="pdfNotification(10)">Pdf Notificación</v-btn>
         <v-col cols="12">
             <Filtro  :endpoint="endpoint" :headers="headers"  :label="label" :moduleStore="moduleStore" v-on:updateData="handleDataUser"/>
         </v-col>
@@ -181,7 +182,7 @@ export default class Usuario extends Vue {
         console.log(page)
     }
     mounted(){
-        this.dataIndex()
+       // this.dataIndex()
     }
 
 }
