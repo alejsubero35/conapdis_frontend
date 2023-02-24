@@ -695,9 +695,9 @@ export default class Bussines extends Vue {
 			if(storageData.get('_bussines').hasOwnProperty('is_major')){
 				this.sucursal = (this.getBussines.is_major == false) ? true : false
 				this.showSucursal = true
-				let cadena = this.getBussines.code_branch_office;
-				var result = cadena.split('-')[1];
-				var result2 = cadena.split('-')[2];
+				let cadena  = this.getBussines.code_branch_office;
+				var result  = (cadena) ? cadena.split('-')[1] : '';
+				var result2 = (cadena) ? cadena.split('-')[2] : '';
 				this. sectiontitle = 'Actualizar Datos de Empresa'
 				this.numero_sucursal = result2
 				this.nombre_sucursal = result
