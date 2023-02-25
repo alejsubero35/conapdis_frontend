@@ -17,12 +17,13 @@
       
     </CHeaderNav>
     <CHeaderNav class="mr-4">
-<!--       <CHeaderNavItem class="d-md-down-none mx-2">
+      <!-- <CHeaderNavItem class="d-md-down-none mx-2">
         <CHeaderNavLink>
           <CIcon name="cil-bell"/>
         </CHeaderNavLink>
-      </CHeaderNavItem>
-      <CHeaderNavItem class="d-md-down-none mx-2">
+      </CHeaderNavItem> -->
+      <TheNotifications/>
+      <!-- <CHeaderNavItem class="d-md-down-none mx-2">
         <CHeaderNavLink>
           <CIcon name="cil-list"/>
         </CHeaderNavLink>
@@ -42,13 +43,15 @@
 
 <script>
 import TheHeaderDropdownAccnt from './TheHeaderDropdownAccnt'
+import TheNotifications from './TheNotifications'
 import sessionModule from '@/store/modules/sessionModule';
 import storageData from '@/store/services/storageService'
 
 export default {
   name: 'TheHeader',
   components: {
-    TheHeaderDropdownAccnt
+    TheHeaderDropdownAccnt,
+    TheNotifications
   },
   data(){
     return{

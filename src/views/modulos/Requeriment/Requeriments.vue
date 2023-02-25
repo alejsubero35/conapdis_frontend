@@ -40,7 +40,7 @@
                                 v-on="on"
                                 dense 
                                 outlined
-                                :rules="rules"
+                                :rules="(doc.url == '') ? rules : Notrules"
                             ></v-text-field>
                             </template>
                             <v-date-picker
@@ -82,7 +82,7 @@
                 <h1 class="text-center">No hay documentos requeridos</h1>
             </v-container>
             <div v-if="documents.length > 0" class="mt-5 d-flex justify-end">
-                <v-btn small @click="saveDocuemnts" :disabled="disabledBtn" color="success">Guardar</v-btn> 
+                <v-btn small @click="save" :disabled="disabledBtn" color="success">Guardar</v-btn> 
             </div>
         </v-form>
         <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color"/>
@@ -160,27 +160,35 @@ export default class Users extends Vue {
         this.overlay  = false
     }
 
-    async saveDocuemnts() { 
-    
+    async save(){
         const valid = await this.$refs.documents.validate();
         delete this.FormRequestDocuments.name
-
+        const events = []
+        for(var i=0; i<this.FormRequestDocuments.length;i++){ 
+            if(this.FormRequestDocuments[i].url == '' ){
+                events.push(this.FormRequestDocuments[i])
+            }  
+        }
+        console.log(events)
         if (valid) {
-            this.overlay  = true
-            const data    = await documentModule.saveDocuments(this.FormRequestDocuments)  
-            if(data.code == 201 ){
-                this.textmsj  = 'Documentos Cargados con Éxito.'
-                this.snackbar = true
-                this.back();
-                this.disabledBtn = true
-                this.overlay  = false
-            } else {
-                
-            }
+            this.saveDocuments(events)
+        }
+    }
+
+    async saveDocuments(dataDoc) { 
     
+        this.overlay  = true
+        const data    = await documentModule.saveDocuments(dataDoc)  
+        if(data.code == 201 ){
+            this.textmsj  = 'Documentos Cargados con Éxito.'
+            this.snackbar = true
+            this.back();
+            this.disabledBtn = true
+            this.overlay  = false
         } else {
-           
-        }  
+            
+        }
+     
     }
     async updateFecha(id_){
         let index  = this.documents.findIndex(({ id })  => id == id_)
