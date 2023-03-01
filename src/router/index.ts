@@ -28,7 +28,12 @@ const GuiaInspeccion          = () => import('@/views/modulos/Guia/GuiaInspeccio
 const ActaCumplimiento        = () => import('@/views/modulos/Acta/ActaCumplimiento.vue')
 //Certificado ABI
 const CertificadoAbi          = () => import('@/views/modulos/Certificado/CertificadoAbi.vue')
+const PlanillaCertificadoAbi  = () => import('@/views/modulos/Certificado/PlanillaCertificadoAbi.vue')
 
+//Solicitud de Inspeccion
+const SolicitudInspeccion     = () => import('@/views/modulos/inspeccion/SolicitudInspeccion.vue')
+//Boleta Ordenamiento
+const BoletaOrdenamiento     = () => import('@/views/modulos/ordenamiento/BoletaOrdenamiento.vue')
 
 
 
@@ -115,8 +120,8 @@ const router = new Router({
         {
           path: 'solicitudinspeccion',
           name: 'solicitudinspeccion',
-          component: PlanillaSolicitud,
-          meta: { Auth: true, title: 'PlanillaSolicitud' },
+          component: SolicitudInspeccion,
+          meta: { Auth: true, title: 'SolicitudInspeccion' },
      
         },         
         {
@@ -148,14 +153,29 @@ const router = new Router({
      
         }, 
         {
-          path: 'planillasolicitud',
+          path: 'planillacertificadoabi/:id',
+          name: 'planillacertificadoabi',
+          component: PlanillaCertificadoAbi,
+          meta: { Auth: true, title: 'PlanillaCertificadoAbi' },
+     
+        },
+        {
+          path: 'planillasolicitud/:id',
           name: 'planillasolicitud',
           component: PlanillaSolicitud,
           meta: { Auth: true, title: 'PlanillaSolicitud' },
      
-        },      
+        },   
+        {
+          path: 'boletaordenamiento',
+          name: 'boletaordenamiento',
+          component: BoletaOrdenamiento,
+          meta: { Auth: true, title: 'BoletaOrdenamiento' },
+     
+        }, 
+           
       ]
-      
+      //
     },
     {
       path: '/login',

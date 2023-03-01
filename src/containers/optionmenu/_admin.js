@@ -49,13 +49,19 @@ export default [
         _name: 'CSidebarNavItem',
         name: 'Guia de Inspección',
         to: '/guiainspeccion',
-        icon: 'cibLibreoffice'
+        icon: 'cibReadTheDocs'
       },
       {
         _name: 'CSidebarNavItem',
         name: 'Acta de Cumplimiento',
         to: '/actacumplimiento',
         icon: 'cibLibreoffice'
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Boleta de Ordenamiento',
+        to: '/boletaordenamiento',
+        icon: 'cibBuffer'
       },
     ]
   }

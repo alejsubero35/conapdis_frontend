@@ -203,7 +203,7 @@
 								outlined
 								dense
 								:rules="emailRules"
-								v-model="bussinesform.email_business"
+								v-model="bussinesform.email"
 							></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
@@ -415,7 +415,7 @@
 								outlined
 								dense
 								:rules="emailRules"
-								v-model="bussinesform.email"
+								v-model="bussinesform.email_rl"
 							></v-text-field>
 							</v-col>
 						</v-row>

@@ -32,7 +32,8 @@ import {
   cilPowerStandby,
   cilSync,
   cibLibreoffice,
-  cibReadTheDocs
+  cibReadTheDocs,
+  cibBuffer
   
 } from '@coreui/icons'
 
@@ -193,6 +194,7 @@ export const iconsSet = Object.assign(
     cilPowerStandby,
     cilSync,
     cibLibreoffice,
-    cibReadTheDocs
+    cibReadTheDocs,
+    cibBuffer
   }
 )

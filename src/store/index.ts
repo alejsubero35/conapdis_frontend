@@ -21,6 +21,12 @@ export default new Vuex.Store({
     toggleSidebarMobile (state) {
       state.sidebar = !state.sidebar;
     },
+    toggleDesktop (state) {
+      state.sidebar = false;
+    },
+    toggleMobile (state) {
+      state.sidebar = true;
+    },
     set (state, [variable, value]) {
       state.sidebar = true;
     },

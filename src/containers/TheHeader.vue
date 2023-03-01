@@ -59,6 +59,18 @@ export default {
       nameUser : ''
     }
   },
+  created() {
+    window.addEventListener("resize", this.resizeHandler);
+  },
+  methods:{
+    resizeHandler(e)  {
+      if(window.screen.width > 1000){
+        this.$store.commit('toggleDesktop')
+      } else {
+        this.$store.commit('toggleMobile')
+      }
+    },
+  },
   mounted(){
     this.rolName  = storageData.get('_rolename')
     this.nameUser = storageData.get('_nameUser').toUpperCase()

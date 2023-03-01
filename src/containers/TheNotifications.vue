@@ -8,7 +8,12 @@
       <template #toggler>
         <CHeaderNavLink>
           <div class="c-avatar">
-            <CIcon name="cil-bell"/>
+            <v-badge
+            color="primary"
+            content="6"
+          >
+          <CIcon name="cil-bell"/>
+          </v-badge>
           </div>
         </CHeaderNavLink>
       </template>
@@ -18,9 +23,6 @@
 
     </CDropdown>
   </template>
-  
-  
-  
   <script lang="ts">
   
   import { Component, Vue } from 'vue-property-decorator';

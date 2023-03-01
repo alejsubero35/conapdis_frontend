@@ -8,9 +8,9 @@
         ></v-progress-circular>
         </v-overlay>
         <ButtonOpen  @openView="openView" :title="title" />
-        <v-col cols="12">
+     <!--    <v-col cols="12">
             <Filtro  :endpoint="endpoint" :headers="headers"  :label="label" :moduleStore="moduleStore" v-on:updateData="handleDataUser"/>
-        </v-col>
+        </v-col> -->
         <v-col cols="12">
           <template>
                 <v-data-table
@@ -29,30 +29,15 @@
                                     <v-btn
                                         color="success"
                                         dark
-                                        @click="editar(item.id)"   
+                                        @click="viewPDF(item.id)"   
                                         icon
                                         v-bind="attrs"
                                         v-on="on"
                                     >
-                                        <v-icon>mdi-pencil-box-outline</v-icon>
+                                        <v-icon>mdi-file-pdf-box</v-icon>
                                     </v-btn>
                                 </template>
-                                <span>Editar</span>
-                            </v-tooltip>
-                            <v-tooltip top>
-                                <template v-slot:activator="{on, attrs}">
-                                    <v-btn
-                                        color="error"
-                                        dark
-                                        v-bind="attrs"
-                                        v-on="on"
-                                        icon
-                                        @click="Delete(item.id)"   
-                                    >
-                                        <v-icon>mdi-trash-can-outline</v-icon>
-                                    </v-btn>
-                                </template>
-                                <span>Eliminar</span>
+                                <span>Ver PDF</span>
                             </v-tooltip>
                         </div>
                     </template>
@@ -69,15 +54,15 @@
                 </v-data-table>
             </template>
         </v-col>
-        <ModalDelete @deleteData="deleteUsuario" :titlemodal="titlemodal" :textbody="textbody" :dialogDelete="dialogDelete" @cerrarModal="cerrarModal"/>
-        <Notificacion :snackbar="snackbar" :textmsj="textmsj"/>
+        <ModalDelete @deleteData="deleteInspeccion" :titlemodal="titlemodal" :textbody="textbody" :dialogDelete="dialogDelete" @cerrarModal="cerrarModal"/>
+        <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color"/>
     </v-row>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch }     from 'vue-property-decorator';
-import inspeccionModule            from '@/store/modules/usersModule';
-import {serialize} from 'jsonapi-fractal'
+import orderingModule            from '@/store/modules/orderingModule';
+
 
 @Component({
   components: {
@@ -87,8 +72,11 @@ import {serialize} from 'jsonapi-fractal'
 export default class Usuario extends Vue {
 	@Prop() item?: Object;
     headers = [
-            {text: 'Nombre Completo', value: 'name'},
-            {text: 'Email', value: 'email'},
+            {text: 'N° de Boleta', value: 'num_boleta'},
+            {text: 'Fecha ', value: 'date'},
+            {text: 'Hora', value: 'hour'},
+            {text: 'N° Expediente', value: 'expedient.num_expedient'},
+            {text: 'N° Guía', value: 'guide.num_guia'},
             {text: 'Acciones', value: 'action'}
             ];
     section : string = 'Usuarios'
@@ -100,15 +88,16 @@ export default class Usuario extends Vue {
     clientes : any = [];
     dialog : boolean = false;
     dialogDelete : boolean = false;
-    title  : string = 'NUEVO USUARIO'
+    title  : string = 'NUEVA BOLETA'
     tituloModal : string = ''
     dataEditForm : object = {}
     id_delete = ''
     snackbar = false
     textmsj = ''
+    color = ''
     timeout = 2000
-    label = 'Buscar Usuarios'
-    moduleStore = inspeccionModule
+    label = 'Buscar Solicitud'
+    moduleStore = orderingModule
     per_page = 10
     endpoint : string = 'users'
     options = {}
@@ -125,30 +114,28 @@ export default class Usuario extends Vue {
     openView(){
         this.$router.push({ name: "createuser"});
     }
-    openViewChangePassword(id){
-        this.$router.push({ name: "updatepassword", params: { id: id,section:this.section } });
-    }
+
     Delete(id){
         this.dialogDelete = true;
-        this.textbody = 'Confirme que desea eliminar el usuario'
-        this.titlemodal = 'Eliminar Registro de Usuario'
+        this.textbody = 'Confirme que desea eliminar la solicitud'
+        this.titlemodal = 'Eliminar Registro de Solicitud'
         this.id_delete = id
     }
     cerrarModal(event){
         this.dialogDelete = event;
     }
-     async deleteUsuario(event){
-        let dataUpdate : any = []
+     async deleteInspeccion(event){
+/*         let dataUpdate : any = []
         this.dialogDelete = event;
         //this.overlay = true
-        const res : any = await inspeccionModule.delete(this.id_delete);
+        const res : any = await orderingModule.delete(this.id_delete);
         console.log(res.data.data)
         dataUpdate = res.data.data
         this.desserts = dataUpdate;
         this.textmsj = 'Usuario Eliminado con Éxito.'
         this.snackbar = true
         this.closeSnackbar()
-        this.overlay = false
+        this.overlay = false */
     } 
     closeSnackbar(){
         setTimeout(() => {
@@ -164,14 +151,14 @@ export default class Usuario extends Vue {
         return  date.toISOString();
     }
 
-    editar(id) {
-        this.$router.push({ name: "edituser", params: { id: id } });
+    viewPDF(id) {
+        this.$router.push({ name: "planillasolicitud", params: { id: id } });
     }
     async dataIndex(){  
     
         this.overlay = true
             let paginateData : any = [];
-            const {data,status} : any = await inspeccionModule.getAll()   
+            const {data,status} : any = await orderingModule.getAll()   
             this.desserts = data.data
         this.overlay = false 
     }
