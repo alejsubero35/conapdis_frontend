@@ -535,11 +535,14 @@ export default class Bussines extends Vue {
 		if(this.nombre_sucursal != '' && this.numero_sucursal != '') {
 			let code_office =  this.bussinesform.rif + '-' + this.nombre_sucursal.toUpperCase() + '-' + this.numero_sucursal
 			this.bussinesform.code_branch_office = code_office
+			this.bussinesform.branch_name = this.nombre_sucursal;
+			this.bussinesform.branch_number = this.numero_sucursal;
+		}
+
 			Math.ceil(this.bussinesform.tomo)
 			Math.ceil(this.bussinesform.folio)
 			Math.ceil(this.bussinesform.number)
-		}
-	
+			
         if (valid) {
            return true
         }else {
