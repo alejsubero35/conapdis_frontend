@@ -42,6 +42,21 @@ import {
 	   
 		  }) 
 	   }
+     @Action
+     getSolicitudById(id) {
+        return new Promise((resolve, reject) => {  
+           http.get(`/inspection-requests/${id}`)
+           .then(response =>  {
+             if (response.status === 200) {     
+               resolve(response); 
+             }
+           })
+           .catch(error => {
+             reject(error)
+            })
+          }) 
+        }
+     
 
   }  
   

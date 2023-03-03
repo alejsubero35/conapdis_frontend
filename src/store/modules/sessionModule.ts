@@ -31,6 +31,7 @@ import {
 	  	customer_id : any = '';
 	  	nameuser : any = '';
 		bussines: User[] = [];
+		user : any = '';
   
 		get getTokens() {
 			return storageData.get('_token');
@@ -94,6 +95,10 @@ import {
 		setBussines(bussines: any) {
 			this.bussines = bussines;
 		}
+		@Mutation
+		setUser(user: any) {
+			this.user = user;
+		}
 
   
 		@Action
@@ -110,6 +115,7 @@ import {
 				if (userLogin.code == 200) {
 		
 					const stoken: string  = login.access_token;
+					const user: string = login.user
 					const user_id: string = login.user.id
 					const busine: any     = login.user.busine[0]
 					const full_name: string = login.user.first_name + ' ' + login.user.last_name
@@ -118,12 +124,14 @@ import {
 					storageData.set('_user_id', user_id);
 					storageData.set('_bussines', busine);
 					storageData.set('_nameUser', full_name);
+					storageData.set('_User', user);
 			
 					this.context.commit('setToken', stoken);
 					this.context.commit('setTokens', payload.data.data);
 					this.context.commit('setUserId', user_id);
 					this.context.commit('setBussines', busine);
 					this.context.commit('setNameUser', full_name);
+					this.context.commit('setUser', user);
 			
 				} 
 			  } else {

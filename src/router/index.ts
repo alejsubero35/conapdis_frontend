@@ -21,7 +21,7 @@ const Requeriments            = () => import('@/views/modulos/Requeriment/Requer
 //Notificaciones
 const Notification            = () => import('@/views/modulos/Notification/Notification.vue')
 const PdfNotification         = () => import('@/views/modulos/Notification/PdfNotification.vue')
-const PlanillaSolicitud       = () => import('@/views/modulos/Notification/PlanillaSolicitud.vue')
+const PlanillaSolicitud       = () => import('@/views/modulos/inspeccion/PlanillaSolicitud.vue')
 //Guia de Inspeccion
 const GuiaInspeccion          = () => import('@/views/modulos/Guia/GuiaInspeccion.vue')
 //Acta de Cumplimiento
