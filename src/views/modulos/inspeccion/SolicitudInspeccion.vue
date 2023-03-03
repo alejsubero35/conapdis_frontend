@@ -7,7 +7,7 @@
             class="laoding"
         ></v-progress-circular>
         </v-overlay>
-        <ButtonOpen  @openView="openView" :title="title" />
+      <!--   <ButtonOpen  @openView="openView" :title="title" /> -->
      <!--    <v-col cols="12">
             <Filtro  :endpoint="endpoint" :headers="headers"  :label="label" :moduleStore="moduleStore" v-on:updateData="handleDataUser"/>
         </v-col> -->
@@ -29,15 +29,15 @@
                                     <v-btn
                                         color="success"
                                         dark
-                                        @click="viewPDF(item.id)"   
+                                        @click="viewRequest(item.id)"   
                                         icon
                                         v-bind="attrs"
                                         v-on="on"
                                     >
-                                        <v-icon>mdi-file-pdf-box</v-icon>
+                                        <v-icon>mdi-eye</v-icon>
                                     </v-btn>
                                 </template>
-                                <span>Ver PDF</span>
+                                <span>Ver Solicitud</span>
                             </v-tooltip>
                         </div>
                     </template>
@@ -153,7 +153,7 @@ export default class Usuario extends Vue {
         return  date.toISOString();
     }
 
-    viewPDF(id) {
+    viewRequest(id) {
         this.$router.push({ name: "planillasolicitud", params: { id: id } });
     }
     async dataIndex(){  

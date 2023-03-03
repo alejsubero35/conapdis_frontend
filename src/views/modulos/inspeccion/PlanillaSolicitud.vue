@@ -38,7 +38,7 @@
                     </div><br>
                     <div class="text-center"><h4>1.	PLANILLA DE SOLICITUD DE INSPECCIÓN</h4></div>
                     <div class="inspeccion">
-                        <div>a) Planilla N° : <strong>{{ numeroplanilla }}</strong> <br> Para ser llenado por el administrado o solicitante:</div>
+                        <div>a) Planilla N° : <strong>{{ numeroplanilla }}</strong></div>
                         <div>b) Fecha : <strong>{{ fechaplanilla }}</strong></div>
                     </div><br><br>
     
