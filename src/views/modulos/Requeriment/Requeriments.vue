@@ -54,13 +54,13 @@
                         <v-file-input
                             :rules="(doc.is_required) ? rules : Notrules"
                             :disabled="(doc.approved == 1) ? disabledFile : !disabledFile"
-                            accept="image/png, image/jpeg, application/pdf"
+                            accept="image/png, image/jpeg, image/jpg, application/pdf"
                             outlined 
                             dense
                             :label="(doc.approved == 1) ? 'Documento Adjuntado en Revisión' : placeholder"
                             @change="updateDocument(doc)"
                             v-model="doc.name"
-                    
+                            
                         >
                      </v-file-input>
                     </v-col>
@@ -82,10 +82,11 @@
                 <h1 class="text-center">No hay documentos requeridos</h1>
             </v-container>
             <div v-if="documents.length > 0" class="mt-5 d-flex justify-end">
-                <v-btn small @click="save" :disabled="disabledBtn" color="success">Guardar</v-btn> 
+                <v-btn small @click="save" :disabled="disabledBtn" color="success">Guardar y Solicitar Inspección </v-btn> 
             </div>
         </v-form>
         <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color"/>
+        <Alertas :data="dataModalAlert" :dialogOpen="dialogOpen" v-on:cerrarModal="closeModal"/>
     </v-app>
 </template>
 <script lang="ts">
@@ -102,7 +103,7 @@ import storageData from '@/store/services/storageService'
  
   }
 })
-export default class Users extends Vue {
+export default class RequerimentsDocuments extends Vue {
     [x: string]: unknown;
     value = ''
     label = 'prueba'
@@ -129,10 +130,14 @@ export default class Users extends Vue {
     disabledFile = true
     disabledBtn = false
     placeholder = 'Cargar Documento'
+    dataModalAlert = ''
+    dialogOpen = false
+    tempDoc = {}
     data(){
         return{
             rules: [
                 (v:any) => !!v || 'Campo requerido'
+                //value => !value || value.size < 100000 || 'El archivo excede el tamaño permitido',
             ],
             Notrules: [
            
@@ -196,10 +201,18 @@ export default class Users extends Vue {
         this.documents[index].bussines_id = (storageData.get('bussines_id')) ? storageData.get('bussines_id') : this.getBussines.id
     }
     async updateDocument(doc){
+        let index  = this.documents.findIndex(({ id })  => id == doc.id)
         const _this = this
         var event = event || window.event;
-        if(event.target.files != undefined && event.target.files.length == 1){
-            let base64 = await this.getBase64(event.target.files[0],doc)  
+
+        if(event.target.files[0].size < this.documents[index].max_size){
+            if(event.target.files[0] != undefined && event.target.files.length == 1){
+                let base64 = await this.getBase64(event.target.files[0],doc)  
+            }
+        }else{
+            this.dialogOpen = true
+            this.dataModalAlert = 'El Documento excede el tamaño permitido'
+            this.backClear(doc)
         }
     }
 
@@ -213,13 +226,15 @@ export default class Users extends Vue {
         var reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = function () {
-          _this.getImgBase(reader.result,doc,file) 
+        _this.getImgBase(reader.result,doc,file) 
         };
         reader.onerror = function (error) {
             console.log('Error: ', error);
         };
     }
-
+    closeModal(){
+        this.dialogOpen = false
+    }
     reset () {
         if (!this.$refs.documentsForm.validate()) {
             this.$refs.documentsForm.reset()
@@ -229,6 +244,11 @@ export default class Users extends Vue {
         setTimeout(() => {
             this.snackbar = false
         },2000);
+    }
+    backClear(doc) {
+        setTimeout(() => {
+            doc.name = null
+        },1500);
     }
     mounted() {
         this.getDocuments()

@@ -597,6 +597,7 @@ export default class Bussines extends Vue {
 			this.color = 'success'
 			this.snackbar = true
 			this.back();
+			await sessionModule.updateStatusBussines()
 			this.overlay = false 
 		} else {
 			this.textmsj = 'Error al Registrar los datos de la Empresa.'
@@ -609,12 +610,15 @@ export default class Bussines extends Vue {
 	async updateBussines(){
  		this.overlay = true
     	const data = await bussinesModule.update(this.FormRequest)
+	
 		if(data.code == 202){
 			this.textmsj = 'Empresa Actualizada con Éxito.'
 			this.color = 'success'
 			this.snackbar = true
 			this.back();
+			await sessionModule.updateStatusBussines() // esta peticion esta aqui mientras hago las pruebas
 			this.overlay = false 
+		
 		} else {
 			this.textmsj = 'Error al Actualizar los datos de la Empresa.'
 			this.color = 'error'
@@ -660,7 +664,7 @@ export default class Bussines extends Vue {
     };
     back() {
         setTimeout(() => {
-            this.$router.push({ name: 'Dashboard' });
+            this.$router.push({ name: 'pdfnotification' });
             this.snackbar = false
         },2000);
     }

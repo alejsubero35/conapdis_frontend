@@ -46,7 +46,7 @@
                         </p>
                     </v-row>
     
-                    <v-row class="table">
+                  <!--   <v-row class="table">
                         <table>
                             <tr>
                               <th class="td-center" colspan="4">1.	DEL REGISTRO DE NOTIFICACIÓN:</th>
@@ -86,6 +86,19 @@
                             la documentación requerida, para dar inicio al proceso de tramitación relativo a 
                             la <strong>CERTIFICACIÓN ABI</strong> . Anexándose para tal fin, lista de requisitos.
                         </p>
+                    </v-row> -->
+                    <!-- <div class="html2pdf__page-break"/> -->
+                    <v-row class="title_tramite">
+                        <p class="title_1">LISTA DE REQUISITOS PARA LA TRAMITACIÓN DEL  CERTIFICADO ABI DEL CONAPDIS  TRAMITADO POR PRIMERA VEZ
+                        </p>
+                    </v-row >
+                    <v-row class="table">
+                        <v-row class="renovacion">
+                            <ul class="requeriments" >
+                                <li style="list-style:none" v-for="(doc,index) in documents" :key="index"><strong>{{index+1 + '.-' }}</strong><strong>{{doc.title}}</strong>: {{doc.description}}</li>
+                               
+                            </ul>
+                        </v-row>
                     </v-row>
                     <div class="mt-5 d-flex justify-end ">
                         <v-btn  small @click="generateReport" color="success" v-show="btn_atras"  >{{ btnSave }}</v-btn> 
@@ -97,7 +110,7 @@
  </template>
  <script>
  import VueHtml2pdf from 'vue-html2pdf'
-
+ import documentModule from '@/store/modules/documentRequiredModule';
   
  export default {
      components: {
@@ -134,7 +147,8 @@
              sectiontitle : '',
              nota_entrega_id : '',
              date : new Date(Date.now()),
-             customer : ''
+             customer : '',
+             documents: []
          }
      },
      computed: {
@@ -160,11 +174,19 @@
              var date = new Date(fecha);
              let formatted_date = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
              return  formatted_date;
-         }
+         },
+         async getDocuments(){
+            this.overlay  = true
+            const documents  = await  documentModule.getDocumentsAll();
+            this.documents = documents.data.data;
+            console.log( this.documents )
+            this.overlay  = false
+        },
      },
      mounted(){
          this.nota_entrega_id = this.$route.params.id
          this.notification = 'Notification ' + this.nota_entrega_id
+         this.getDocuments()
         // this.getNotaById(this.nota_entrega_id)
      }
  }
@@ -208,6 +230,10 @@
     margin: auto;
 
  }
+ .renovacion{
+    width: 80%;
+    margin-left: 10%;
+}
  .article{
     font-size: 12px;
  }

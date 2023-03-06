@@ -39,6 +39,12 @@ export default [
         to: '/requeriments',
         icon: 'cilCloudUpload'
       },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Guia de Inspección',
+        to: '/guiainspeccion',
+        icon: 'cibReadTheDocs'
+      },
 /*       {
         _name: 'CSidebarNavItem',
         name: 'Certificados ABI',

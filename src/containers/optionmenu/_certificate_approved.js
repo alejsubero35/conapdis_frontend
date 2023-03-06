@@ -21,13 +21,13 @@ export default [
         to: '/notification',
         icon: 'cilLan'
       },
-/*      {
+     {
         _name: 'CSidebarNavItem',
         name: 'Solicitudes de Inspección',
         to: '/solicitudinspeccion',
         icon: 'cibOpenstreetmap'
       },
-      {
+    /*   {
         _name: 'CSidebarNavItem',
         name: 'Requisitos',
         to: '/requerimentsbussines',
@@ -39,13 +39,31 @@ export default [
         to: '/requeriments',
         icon: 'cilCloudUpload'
       },
-/*       {
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Guia de Inspección',
+        to: '/guiainspeccion',
+        icon: 'cibReadTheDocs'
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Acta de Cumplimiento',
+        to: '/actacumplimiento',
+        icon: 'cibLibreoffice'
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Boleta de Ordenamiento',
+        to: '/boletaordenamiento',
+        icon: 'cibBuffer'
+      },
+      {
         _name: 'CSidebarNavItem',
         name: 'Certificados ABI',
         to: '/certificadoabi',
         icon: 'cibLibreoffice'
       },
-      {
+     /*  {
         _name: 'CSidebarNavItem',
         name: 'Guia de Inspección',
         to: '/guiainspeccion',

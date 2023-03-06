@@ -32,6 +32,7 @@ import {
 	  	nameuser : any = '';
 		bussines: User[] = [];
 		user : any = '';
+		statusBusine :  string | null = storageData.get('_status_busine');
   
 		get getTokens() {
 			return storageData.get('_token');
@@ -53,6 +54,9 @@ import {
 		}
 		get getBussines() {
 			return  storageData.get('_bussines');
+		}
+		get getStatusBussines() {
+			return  this.statusBusine
 		}
 		@Mutation
 		setTokens(tokens: UserToken[]) {
@@ -99,6 +103,10 @@ import {
 		setUser(user: any) {
 			this.user = user;
 		}
+		@Mutation
+		setStatusBussine(statusBusine: any) {console.log(statusBusine)
+			this.statusBusine = statusBusine;
+		}
 
   
 		@Action
@@ -114,17 +122,19 @@ import {
 				
 				if (userLogin.code == 200) {
 		
-					const stoken: string  = login.access_token;
-					const user: string = login.user
-					const user_id: string = login.user.id
-					const busine: any     = login.user.busine[0]
-					const full_name: string = login.user.first_name + ' ' + login.user.last_name
+					const stoken: string  		= login.access_token;
+					const user: string 			= login.user
+					const user_id: string 		= login.user.id
+					const busine: any     		= login.user.busine[0]
+					const full_name: string 	= login.user.first_name + ' ' + login.user.last_name
+					const statusBusine: string  = login.status_busine;
 
 					storageData.set('_token', stoken);
 					storageData.set('_user_id', user_id);
 					storageData.set('_bussines', busine);
 					storageData.set('_nameUser', full_name);
 					storageData.set('_User', user);
+					storageData.set('_status_busine', statusBusine);
 			
 					this.context.commit('setToken', stoken);
 					this.context.commit('setTokens', payload.data.data);
@@ -132,6 +142,7 @@ import {
 					this.context.commit('setBussines', busine);
 					this.context.commit('setNameUser', full_name);
 					this.context.commit('setUser', user);
+					this.context.commit('setStatusBussine', statusBusine);
 			
 				} 
 			  } else {
@@ -151,6 +162,10 @@ import {
 				storageData.remove('_user_id');
 				storageData.remove('_bussines');
 				storageData.remove('bussines_id');
+				storageData.remove('_status_busine');
+				storageData.remove('_User');
+				storageData.remove('_nameUser');
+				localStorage.clear();
 				
 				return payload;
 			})
@@ -198,6 +213,26 @@ import {
 				reject(error)
 			})
 			})
+		}
+		@Action
+		async updateStatusBussines(){
+			let status : string = 'approved'
+			storageData.remove('_status_busine');
+			storageData.set('_status_busine', status);
+			this.context.commit('setStatusBussine', status);
+	/* 		return new Promise((resolve, reject) => {
+				http.get(`/positions`).then(response => {
+		
+					if (response.status === 200) {      
+			
+						resolve(response);
+					
+					}
+			})
+			.catch(error => {
+				reject(error)
+			})
+			}) */
 		}
 	  
 	  }

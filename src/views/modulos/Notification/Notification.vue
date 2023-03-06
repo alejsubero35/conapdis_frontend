@@ -7,8 +7,8 @@
             class="laoding"
         ></v-progress-circular>
         </v-overlay>
-        <ButtonOpen  @openView="openView" :title="title" />
-        <v-btn small class="mt-3" @click="pdfNotification(10)">Pdf Notificación</v-btn>
+        <ButtonOpen  @openView="pdfNotification(1)" :title="title" />
+   
         <v-col cols="12">
             <Filtro  :endpoint="endpoint" :headers="headers"  :label="label" :moduleStore="moduleStore" v-on:updateData="handleDataUser"/>
         </v-col>
