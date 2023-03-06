@@ -7,6 +7,7 @@
   >
     <CSidebarBrand class="d-md-down-none" to="/">
       <img src="img/logos_conapdis/logo.png" width="180" alt="">
+      
       <CIcon 
         class="c-sidebar-brand-minimized" 
         name="logo" 
@@ -15,29 +16,35 @@
         viewBox="0 0 110 134" 
       />
     </CSidebarBrand>
-       <CRenderFunction v-if="bussine" flat :content-to-render="$options.admin"/>
-       <CRenderFunction v-else flat :content-to-render="$options.estandar"/>
-<!--   <CRenderFunction v-if="typeRol == 'Vendedor'" flat :content-to-render="$options.vendedor"/>
-       <CRenderFunction v-if="typeRol == 'Estandar'" flat :content-to-render="$options.estandar"/>
-       <CRenderFunction v-if="typeRol == 'Tecnico'" flat :content-to-render="$options.tecnico"/> -->
+      <div>
+          <CRenderFunction v-if="isBussines      == 'pending'" flat :content-to-render="$options.estandar"/>
+          <CRenderFunction v-else-if="isBussines == 'registered'" flat :content-to-render="$options.admin"/>
+          <CRenderFunction v-else-if="isBussines == 'document_aproved'" flat :content-to-render="$options.approved"/>
+          <CRenderFunction v-else-if="isBussines == 'certificate_pending'" flat :content-to-render="$options.certificatepending"/>
+          <CRenderFunction v-else flat :content-to-render="$options.certificateapproved"/>
+          <!--registered / document_aproved / certificate_pending / certificate_aproved -->
+      </div>
     <CSidebarMinimizer
       class="d-md-down-none"
       @click.native="$store.commit('set', ['sidebarMinimize', !minimize])"
     />
+  
   </CSidebar>
 </template>
 
 <script>
-import admin from './optionmenu/_admin'
-import vendedor from './optionmenu/_vendedor'
-import estandar from './optionmenu/_estandar'
-import tecnico from './optionmenu/_tecnico'
+import admin   from './optionmenu/_admin'
+import certificatepending from './optionmenu/_certificate_pending'
+import certificateapproved from './optionmenu/_certificate_approved'
+import estandar  from './optionmenu/_estandar'
+import approved    from './optionmenu/_approved'
 import storageData from '@/store/services/storageService'
+import sessionModule from '@/store/modules/sessionModule';
 
 
 export default {
   name: 'TheSidebar',
-  admin,vendedor,estandar,tecnico,
+  admin,certificatepending,estandar,approved,certificateapproved,
   
   components:{
   
@@ -51,6 +58,7 @@ export default {
   mounted(){
   this.typeRol = storageData.get('_rolename')
   this.bussine = storageData.get('_bussines')
+  console.log(this.isBussines)
   },
   computed: {
     show () {
@@ -58,6 +66,10 @@ export default {
     },
     minimize () {
       return this.$store.state.sidebarMinimize 
+    },
+    isBussines(){
+      return sessionModule.getStatusBussines;
+      
     }
   },
 

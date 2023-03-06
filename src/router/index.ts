@@ -110,13 +110,20 @@ const router = new Router({
           meta: { Auth: true, title: 'Notification' },
      
         }, 
-        {
+/*         {
           path: 'pdfnotification/:id',
           name: 'pdfnotification',
           component: PdfNotification,
           meta: { Auth: true, title: 'PdfNotification' },
      
-        },   
+        },   */ 
+        {
+          path: 'pdfnotification',
+          name: 'pdfnotification',
+          component: PdfNotification,
+          meta: { Auth: true, title: 'PdfNotification' },
+     
+        },  
         {
           path: 'solicitudinspeccion',
           name: 'solicitudinspeccion',

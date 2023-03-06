@@ -21,7 +21,7 @@ export default [
         to: '/notification',
         icon: 'cilLan'
       },
-/*      {
+     {
         _name: 'CSidebarNavItem',
         name: 'Solicitudes de Inspección',
         to: '/solicitudinspeccion',
@@ -29,15 +29,27 @@ export default [
       },
       {
         _name: 'CSidebarNavItem',
-        name: 'Requisitos',
-        to: '/requerimentsbussines',
-        icon: 'cibReadTheDocs'
-      }, */
-      {
-        _name: 'CSidebarNavItem',
         name: 'Carga de Documentos',
         to: '/requeriments',
         icon: 'cilCloudUpload'
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Guia de Inspección',
+        to: '/guiainspeccion',
+        icon: 'cibReadTheDocs'
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Acta de Cumplimiento',
+        to: '/actacumplimiento',
+        icon: 'cibLibreoffice'
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Boleta de Ordenamiento',
+        to: '/boletaordenamiento',
+        icon: 'cibBuffer'
       },
 /*       {
         _name: 'CSidebarNavItem',

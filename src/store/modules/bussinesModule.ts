@@ -27,13 +27,27 @@ import {
   
     token: string | null = localStorage.getItem('_token');
 	bussines: Bussines[] = [];
+	active : ''
 	get getBussines() {
 		return  storageData.get('_bussines');
+	}
+
+	get bussinesActive(){
+		return this.active
 	}
 
 	@Mutation
 	setBussines(bussines: any) {
 		this.bussines = bussines;
+	}
+	@Mutation
+	setBussinesActive(active: any) {console.log(active)
+		this.active = active;
+	}
+
+	@Action
+	async changeActive(valor){
+		this.setBussinesActive(valor);
 	}
 
     @Action
@@ -46,6 +60,8 @@ import {
 				const busine: any     = payload.data.data
 				storageData.set('_bussines', busine);
 				this.context.commit('setBussines', busine);
+
+				//this.changeActive()
 			} else {
 				dataUsers.code = 500;
 				dataUsers.message = 'Error al procesar la Solicitud';
@@ -63,8 +79,11 @@ import {
 			if(payload){
 				dataUsers.code = payload.status
 				const busine: any     = payload.data.data
+				storageData.remove('_bussines');
 				storageData.set('_bussines', busine);
-				this.context.commit('setBussines', busine);
+				//this.context.commit('setBussines', busine);
+				this.context.commit('setBussinesActive', 1);
+			
 			} else {
 				dataUsers.code = 500;
 				dataUsers.message = 'Error al procesar la Solicitud';
