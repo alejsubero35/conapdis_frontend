@@ -42,6 +42,20 @@ import {
 	   
 		  }) 
 	   }
+     @Action
+     getInspectionRequestById(id) {
+        return new Promise((resolve, reject) => {  
+           http.get(`/guide-inspections/${id}`)
+           .then(response =>  {
+             if (response.status === 200) {     
+               resolve(response); 
+             }
+           })
+           .catch(error => {
+             reject(error)
+            })
+          }) 
+        }
 
   }  
   

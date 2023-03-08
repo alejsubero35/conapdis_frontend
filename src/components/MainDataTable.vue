@@ -16,7 +16,7 @@
                 multi-sort
                 :loading="loading"
                 loading-text="Cargando Data... Por Favor Espere"
-                @pagination="activarPaginate"
+                :options.sync="options"
                 :itemsPerPage="pagination.per_page"
                 :server-items-length="pagination.total"  
                 :footer-props="{
@@ -98,7 +98,7 @@
     </div>
 </template>
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
+import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
 import globalModule from '@/store/modules/globalModule';
 
 
@@ -131,7 +131,11 @@ export default class MainDataTable extends Vue {
     expanded = []
     singleExpand : boolean = false
     contador = 0
-
+    options = {}
+    @Watch('options', { immediate: false })
+    handler (page) {
+        this.activarPaginate(page)
+    }
     Edit(id){
         this.$emit('edit',id)
     }
@@ -162,27 +166,13 @@ export default class MainDataTable extends Vue {
     async dataPaginate(dataSubmit){  
     
         this.overlay = true
-        let paginateData : any = [];
+            let paginateData : any = [];
             const {data,status} : any = await globalModule.dataPaginate(dataSubmit)   
             console.log(data,status)
-         
-           /*  this.pagination.current_page = res.data.meta.page.current_page,
-            this.pagination.from = res.data.meta.page.from,
-            this.pagination.last_page = res.data.meta.page.last_page,
-            this.pagination.per_page = res.data.meta.page.per_page,
-            this.pagination.to = res.data.meta.page.to,
-            this.pagination.total = res.data.meta.page.total
-        
-            if (this.pagination.per_page == this.pagination.total) {
-                this.pagination.per_page = -1
-            } */
             paginateData = data.data
             this.$emit('updateData', paginateData); 
-    
-       
         this.overlay = false 
     }
-
     setDecimalesPrice(precio:any) {
         let t=precio.toString();
         let regex=/(\d*.\d{0,2})/;

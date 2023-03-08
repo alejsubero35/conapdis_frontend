@@ -24,6 +24,7 @@ const PdfNotification         = () => import('@/views/modulos/Notification/PdfNo
 const PlanillaSolicitud       = () => import('@/views/modulos/inspeccion/PlanillaSolicitud.vue')
 //Guia de Inspeccion
 const GuiaInspeccion          = () => import('@/views/modulos/Guia/GuiaInspeccion.vue')
+const PlanillaGuiaInspeccion  = () => import('@/views/modulos/Guia/PlanillaGuiaInspeccion.vue')
 //Acta de Cumplimiento
 const ActaCumplimiento        = () => import('@/views/modulos/Acta/ActaCumplimiento.vue')
 //Certificado ABI
@@ -143,6 +144,13 @@ const router = new Router({
           name: 'guiainspeccion',
           component: GuiaInspeccion,
           meta: { Auth: true, title: 'GuiaInspeccion' },
+     
+        },
+        {
+          path: 'planillaguiainspeccion/:id',
+          name: 'planillaguiainspeccion',
+          component: PlanillaGuiaInspeccion,
+          meta: { Auth: true, title: 'PlanillaGuiaInspeccion' },
      
         }, 
         {

@@ -592,12 +592,13 @@ export default class Bussines extends Vue {
  	async saveBussines() {
  		this.overlay = true
     	const data = await bussinesModule.save(this.FormRequest)
+		console.log(data)
 		if(data.code == 201){
 			this.textmsj = 'Empresa Creada con Éxito.'
 			this.color = 'success'
 			this.snackbar = true
 			this.back();
-			await sessionModule.updateStatusBussines()
+			await sessionModule.updateStatusBussines('registered')
 			this.overlay = false 
 		} else {
 			this.textmsj = 'Error al Registrar los datos de la Empresa.'
@@ -616,7 +617,7 @@ export default class Bussines extends Vue {
 			this.color = 'success'
 			this.snackbar = true
 			this.back();
-			await sessionModule.updateStatusBussines() // esta peticion esta aqui mientras hago las pruebas
+			//await sessionModule.updateStatusBussines(data) // esta peticion esta aqui mientras hago las pruebas
 			this.overlay = false 
 		
 		} else {

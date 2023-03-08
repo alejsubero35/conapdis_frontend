@@ -17,12 +17,13 @@
       />
     </CSidebarBrand>
       <div>
-          <CRenderFunction v-if="isBussines      == 'pending'" flat :content-to-render="$options.estandar"/>
+        <CRenderFunction  flat :content-to-render="$options.certificateapproved"/>
+<!--      <CRenderFunction v-if="isBussines      == 'pending'" flat :content-to-render="$options.estandar"/>
           <CRenderFunction v-else-if="isBussines == 'registered'" flat :content-to-render="$options.admin"/>
           <CRenderFunction v-else-if="isBussines == 'document_aproved'" flat :content-to-render="$options.approved"/>
           <CRenderFunction v-else-if="isBussines == 'certificate_pending'" flat :content-to-render="$options.certificatepending"/>
-          <CRenderFunction v-else flat :content-to-render="$options.certificateapproved"/>
-          <!--registered / document_aproved / certificate_pending / certificate_aproved -->
+          <CRenderFunction v-else flat :content-to-render="$options.certificateapproved"/> -->
+
       </div>
     <CSidebarMinimizer
       class="d-md-down-none"

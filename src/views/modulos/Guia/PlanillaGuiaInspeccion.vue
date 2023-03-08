@@ -31,8 +31,8 @@
                     </div><br>
                     <div class="text-center"><h4>1.	GUÍA DE INSPECCIÓN</h4></div>
                     <div class="inspeccion">
-                        <div>a) Guía N° : ______________ </div>
-                        <div>b) Fecha : __/__/____</div>
+                        <div>a) Guía N° : <strong>{{numeroguia}}</strong></div>
+                        <div>b) Fecha : <strong>{{fechaguia}}</strong></div>
                     </div><br><br>
     
                     <v-row class="table">
@@ -45,13 +45,13 @@
                             </tr>
                             <tr>
                               <td  colspan="2"  class=" bold">a.	Expediente N°:</td>
-                              <td  colspan="2"  class=" bold">b.	Solicitud de Inspección N°:</td>
+                              <td  colspan="2"  class=" bold">b.	Solicitud de Inspección N°: </td>
                               <td  colspan="2"  class=" bold">c.	Unidad de Fiscalización:</td>
                             </tr>
                             <tr>
                                 <td colspan="2">00001</td>
-                                <td colspan="2">J-123456789-0</td>
-                                <td colspan="2">J-123456789-0</td>
+                                <td colspan="2" class="text-center">{{solicitudnumero}}</td>
+                                <td colspan="2" class="text-center"> {{unidadfiscalizacion}}</td>
                             </tr>
                             <tr>
                                 <th class="td-center" colspan="5">3.	DE LOS DATOS DE LA ENTIDAD DE TRABAJO O RAZÓN SOCIAL Y DIRECCIÓN:</th>
@@ -61,14 +61,14 @@
                                 <td colspan="3"  class=" bold"> b.	Registro de Información Fiscal R.I.F.:</td>
                             </tr>
                             <tr>
-                                <td colspan="3">Central</td>
-                                <td colspan="3">Miranda</td>
+                                <td colspan="3">{{razonsocial}}</td>
+                                <td colspan="3">{{rif}}</td>
                             </tr>
                             <tr>
                                 <td colspan="5"  class=" bold">c.	Denominación Comercial:</td>
                             </tr>
                             <tr>
-                                <td colspan="5">San Francisco de Yare, Edo. Miranda</td>
+                                <td colspan="5">{{denominacioncomercial}}</td>
                             </tr>
                             <tr>
                                 <td class=" bold" colspan="2">d.Región</td>
@@ -77,12 +77,12 @@
                                 <td class=" bold" >g.Parroquia</td>         
                             </tr>
                             <tr>
-                                <td class=" bold" colspan="2">Central</td>
-                                <td class=" bold" >Miranda</td>
-                                <td class=" bold" >Paz Castillo</td>
-                                <td class=" bold" >Santa Lucia</td>        
+                                <td colspan="2">{{region}}</td>
+                                <td>{{estado}}</td>
+                                <td>{{municipio}}</td>
+                                <td>{{parroquia}}</td>        
                             </tr>
-                            <tr>
+                         <!--    <tr>
                                 <th class="td-center" colspan="5">3. DEL REGISTRO DE LA ENTIDAD DE TRABAJO O RAZÓN SOCIAL:</th>
                             </tr>
                             <tr>
@@ -106,7 +106,7 @@
                                 <td>06/02/2023</td>
                                 <td>5252</td>
                                 <td>06/02/2023</td>
-                            </tr>
+                            </tr> -->
                             <tr>
                                 <th class="td-center" colspan="5">4.DEL REPRESENTANTE LEGAL DE LA ENTIDAD DE TRABAJO O RAZÓN SOCIAL:</th>
                             </tr>
@@ -117,10 +117,10 @@
                                 <td  class=" bold">4.4 Cargo</td>
                             </tr>
                             <tr>
-                                <td colspan="2">Juan José</td>
-                                <td>Perez Perez</td>
-                                <td>20222111</td>
-                                <td>Supervisor</td>
+                                <td colspan="2">{{firstname}}</td>
+                                <td>{{lastname}}</td>
+                                <td>{{identitycard}}</td>
+                                <td>{{position}}</td>
                             </tr>
                             <tr>
                                 <th class="td-center" colspan="5">5. DE LOS DATOS DEL ADMINISTRADO (A) DESIGNADO (A) PARA PRACTICAR LA INSPECCIÓN:</th>
@@ -153,33 +153,9 @@
                             <tr>
                                 <th class="td-center" colspan="5">6. DE LA CLASIFICACIÓN DE LA EDIFICACIÓN SEGÚN EL TIPO DE OCUPACIÓN</th>
                             </tr>
+                    
                             <tr>
-                                <td class="bold">6.1. Comercial:</td>
-                                <td class="bold">6.2. Industrial:</td>
-                                <td class="bold">6.3. Oficinas:</td>
-                                <td class="bold">6.4. Educacional:</td>
-                                <td class="bold">6.5. Recreativo:</td>
-                            </tr>
-                            <tr>
-                                <td>xxxxx</td>
-                                <td>xxxxx</td>
-                                <td>xxxxx</td>
-                                <td>xxxxx</td>
-                                <td>xxxxx</td>
-                            </tr>
-                            <tr>
-                                <td class="bold">6.6. Asistencial:</td>
-                                <td class="bold">6.7. Alojamioento Turístico:</td>
-                                <td class="bold">6.8. Sitio de Reunión:</td>
-                                <td class="bold">6.9. Estacionamiento para vehículos:</td>
-                                <td class="bold">6.10.Otros:</td>
-                            </tr>
-                            <tr>
-                                <td>xxxxx</td>
-                                <td>xxxxx</td>
-                                <td>xxxxx</td>
-                                <td>xxxxx</td>
-                                <td>xxxxx</td>
+                                <td class="text-center" colspan="5">{{ type_ocupation }}</td>
                             </tr>
                             <tr>
                                 <th class="td-center" colspan="5">7.	DEL EMPLEO PARA LAS PERSONAS CON DISCAPACIDAD – INSERCIÓN LABORAL</th>
@@ -199,10 +175,10 @@
                                 <td  class=" bold">d.	TOTAL NÓMINA (T.N.):</td>
                             </tr>
                             <tr>
-                                <td colspan="2">5</td>
-                                <td>5</td>
-                                <td>40</td>
-                                <td>50</td>
+                                <td colspan="2">{{ ejecutivos }}</td>
+                                <td>{{ empleados }}</td>
+                                <td>{{ obreros }}</td>
+                                <td>{{ total_nomina }}</td>
                             </tr>
                             <tr>
                                 <th class="td-center" colspan="5"> 7.2.	Del 5% de las Personas con Discapacidad Permanente Incorporadas al Plantel de Trabajo</th>
@@ -216,47 +192,47 @@
                                 <td class="bold">e.	De100 a 119 (T.N.)</td>
                             </tr>
                             <tr>
-                                <td>1 Persona C/Discapacidad</td>
-                                <td>2 Persona C/Discapacidad</td>
-                                <td>3 Persona C/Discapacidad</td>
-                                <td>4 Persona C/Discapacidad</td>
-                                <td>5 Persona C/Discapacidad</td>
+                                <td>Persona C/Discapacidad</td>
+                                <td>Persona C/Discapacidad</td>
+                                <td>Persona C/Discapacidad</td>
+                                <td>Persona C/Discapacidad</td>
+                                <td>Persona C/Discapacidad</td>
                             </tr>
                             <tr>
                                 <td class="check" >
                                     <label for="vehicle1">Si</label>&nbsp;
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">&nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" v-model="de_20_39_si">&nbsp;&nbsp;&nbsp;
                                     <label for="vehicle1">No</label>&nbsp;
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_20_39_no">
                                 </td>
                                 <td class="check">
                                     <label for="vehicle1">Si</label>&nbsp;
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">&nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" v-model="de_40_59_si">&nbsp;&nbsp;&nbsp;
                                     <label for="vehicle1">No</label>&nbsp;
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_40_59_no">
                                 </td>
                                 <td class="check">
                                     <label for="vehicle1">Si</label>&nbsp;
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">&nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" v-model="de_60_79_si">&nbsp;&nbsp;&nbsp;
                                     <label for="vehicle1">No</label>&nbsp;
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_60_79_no">
                                 </td>
                                 <td class="check">
                                     <label for="vehicle1">Si</label>&nbsp;
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">&nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" v-model="de_80_99_si">&nbsp;&nbsp;&nbsp;
                                     <label for="vehicle1">No</label>&nbsp;
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_80_99_no">
                                 </td>
                                 <td class="check">
                                     <label for="vehicle1">Si</label>&nbsp;
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">&nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" v-model="de_100_119_si">&nbsp;&nbsp;&nbsp;
                                     <label for="vehicle1">No</label>&nbsp;
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_100_119_no">
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="4">f.	Si supera el número 119 del Total Nómina (T.N.) Especificar Número de Personas con Discapacidad Permanente Incorporadas al Plantel de Trabajo:</td>
-                                <td></td>
+                                <td class="text-center">{{ total_discapacidad }}</td>
                             </tr>
                             <tr>
                                 <th class="td-center" colspan="5"> 8.	ATENCION PREFERENCIAL</th>
@@ -271,10 +247,10 @@
                                 <td  class=" bold">d. Agilidad en los Tramites </td>
                             </tr>
                             <tr>
-                                <td colspan="2"></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td class="text-center" colspan="2">{{ pleno_acceso }}</td>
+                                <td class="text-center">{{ buen_trato }}</td>
+                                <td class="text-center">{{ debida_informacion }}</td>
+                                <td class="text-center">{{ agilidad_en_los_tramites }}</td>
                             </tr>
                             <tr>
                                 <th class="td-center" colspan="5"> 9.	DEL REGISTRO DE TRABAJADORES (AS) CON DISCAPACIDAD ANTE EL CONAPDIS:</th>
@@ -289,11 +265,11 @@
                                 <td colspan="3"  class=" bold">a.	¿La entidad de trabajo ha informado al CONAPDIS?:  </td>
                                 <td  class=" bold">   
                                     <label for="vehicle1">b. ¿Si?</label>&nbsp;
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">&nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" v-model="debida_informacion_si">&nbsp;&nbsp;&nbsp;
                                 </td>
                                 <td  class=" bold">
                                     <label for="vehicle1">c.  ¿No?</label>&nbsp;
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">&nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" v-model="debida_informacion_no">&nbsp;&nbsp;&nbsp;
                                 </td>
                             </tr>
                             <tr>
@@ -382,13 +358,13 @@
                                     ¿Las aceras ubicadas en las salientes de la edificación se encuentran libres y sin obstáculos, 
                                     lo que pudiera determinar barreras urbanísticas hacia el ambiente o entorno urbano?</td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="aceras_salientes_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="aceras_salientes_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="aceras_salientes_na">
                                 </td>
                             </tr>
                             <tr>
@@ -397,13 +373,13 @@
                                     en las esquinas conforme a la Referencias Normativas de la Norma Técnica (NTF) FONDONORMA 2733:2004 -   
                                     Diseño Norma COVENIN 3656?</td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="rampas_en_aceras_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="rampas_en_aceras_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="rampas_en_aceras_na">
                                 </td>
                             </tr>
                             <tr>
@@ -416,25 +392,25 @@
                                 <td colspan="2">¿La edificación cuenta con señales que orienten y faciliten la transitabilidad 
                                     conforme a la Referencias Normativas de la Norma Técnica (NTF) FONDONORMA 2733:2004 - COVENIN 187; 330; 3296; 3297 y 3298? </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="edificaciones_senales_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="edificaciones_senales_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="edificaciones_senales_na">
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">¿En los sitios visibles de los accesos de la edificación, cuentan con el símbolo internacional de accesibilidad? </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="simbolo_internacional_senalizacion_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="simbolo_internacional_senalizacion_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="simbolo_internacional_senalizacion_na">
                                 </td>
                             </tr>
                             <tr>
@@ -451,13 +427,13 @@
                                     dispuesto en las normas y reglamentaciones técnicas FONDONORMA NTF 2733 y la 
                                     Referencia Normativa de esta - COVENIN 187?</td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="estacionamientos_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="estacionamientos_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="estacionamientos_na">
                                 </td>
                             </tr>
                             <tr>
@@ -470,13 +446,13 @@
                                 <td colspan="2">11.5.1.1.	¿Los accesos a la edificación disponen de rampas conjuntamente con 
                                     escaleras en los desniveles entre la acera y la edificación a nivel de planta baja?</td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="acceso_planta_baja_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="acceso_planta_baja_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="acceso_planta_baja_na">
                                 </td>
                             </tr>
                             <tr>
@@ -484,13 +460,13 @@
                                     conjuntamente con escaleras en los desniveles en la planta baja hasta 
                                     los medios de circulación vertical?</td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="acceso_pb_vertical_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="acceso_pb_vertical_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="acceso_pb_vertical_na">
                                 </td>
                             </tr>
                             <tr>
@@ -500,13 +476,13 @@
                                     especificaciones que deben verificarse conforme a lo dispuesto en las reglamentaciones 
                                     técnicas FONDONORMA NTF 2733?</td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_los_pasillos_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_los_pasillos_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_los_pasillos_na">
                                 </td>
                             </tr>
                             <tr>
@@ -515,13 +491,13 @@
                                     las normas y reglamentaciones técnicas FONDONORMA NTF 2733 y las Referencias Normativas 
                                     de esta - COVENIN 3657, 3658, 187 y 3298?</td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_las_escaleras_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_las_escaleras_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_las_escaleras_na">
                                 </td>
                             </tr>
                             <tr>
@@ -535,13 +511,13 @@
                                     ¿Las rampas y escaleras  disponen de barandas firmes, pasamanos con la altura de 80 y 90 cm., 
                                     capacidad de carga ≥ 150 Kg y distanciamiento entre barras ≤ 15 cm. al menos en un sentido?</td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_las_barandas_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_las_barandas_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_las_barandas_na">
                                 </td>
                             </tr>
                             <tr>
@@ -557,13 +533,13 @@
                                     tales como sistemas manuales de apertura y cierre y umbrales, conforme a 
                                     lo dispuesto en las normas y reglamentaciones técnicas FONDONORMA NTF 2733.</td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_las_puertas_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_las_puertas_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_las_puertas_na">
                                 </td>
                             </tr>
                             <tr>
@@ -579,13 +555,13 @@
                                     silla de rueda conforme a lo dispuesto en las normas y reglamentaciones 
                                     técnicas FONDONORMA NTF 2733?.</td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_los_puntos_de_control_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_los_puntos_de_control_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_los_puntos_de_control_na">
                                 </td>
                             </tr>
                             <tr>
@@ -602,13 +578,13 @@
                                     fijos y dispositivos y luminosos; conforme a lo dispuesto en las normas y 
                                     reglamentaciones técnicas FONDONORMA NTF 2733 y referencia normativa de esta - NTF/3656?</td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_los_ascensores_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_los_ascensores_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_los_ascensores_na">
                                 </td>
                             </tr>
                             <tr>
@@ -624,13 +600,13 @@
                                     a las piezas sanitarias y pueda mantenerse en privado conforme a lo dispuesto en 
                                     las normas y reglamentaciones técnicas FONDONORMA NTF 2733? </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_los_servicios_sanitarios_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_los_servicios_sanitarios_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="de_los_servicios_sanitarios_na">
                                 </td>
                             </tr>
                             <tr>
@@ -638,13 +614,13 @@
                                     de uso público de la edificación (accesibles a una persona en silla de ruedas) 
                                     tienen colocados el símbolo internacional de accesibilidad?  </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="senalizacion_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="senalizacion_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="senalizacion_na">
                                 </td>
                             </tr>
                             <tr>
@@ -653,13 +629,13 @@
                                     en sillas de ruedas, conforme a lo dispuesto en las normas y reglamentaciones técnicas 
                                     FONDONORMA NTF 2733?</td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="lavamanos_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="lavamanos_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="lavamanos_na">
                                 </td>
                             </tr>
                             <tr>
@@ -667,13 +643,13 @@
                                     una persona en silla de ruedas, tienen colocados barreras de sostén y cumplen con las dimensiones 
                                     y especificaciones conforme a lo dispuesto en las normas y reglamentaciones técnicas FONDONORMA NTF 2733?</td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="barra_de_sosten_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="barra_de_sosten_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="barra_de_sosten_na">
                                 </td>
                             </tr>
                             <tr>
@@ -681,13 +657,13 @@
                                     dispensador de jabón, secador de manos, dispensador de toallas u otros, están ubicados a una altura 
                                     máxima de 1,00 m sobre el nivel del piso? </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="accesorios_sanitarios_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="accesorios_sanitarios_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="accesorios_sanitarios_na">
                                 </td>
                             </tr>
                             <tr>
@@ -697,13 +673,13 @@
                                     puerta, espacio lateral para la transferencia desde la silla de rueda al WC así como el espacio de giro 
                                     de maniobra; conforme a lo dispuesto en las normas y reglamentaciones técnicas FONDONORMA NTF 2733? </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="excusado_bano_publico_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="excusado_bano_publico_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="excusado_bano_publico_na">
                                 </td>
                             </tr>
                             <tr>
@@ -711,26 +687,26 @@
                                     para varones, al menos uno de los urinarios, cumplen las dimensiones y especificaciones conforme a lo 
                                     dispuesto en las normas y reglamentaciones técnicas? (NTF-2733) </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="urinarios_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="urinarios_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="urinarios_na">
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2"><strong>11.5.8.7.	Duchas: </strong>Las duchas cumplen las especificaciones conforme a lo 
                                     dispuesto en las normas y reglamentaciones técnicas FONDONORMA NTF 2733? </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="duchas_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="duchas_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="duchas_na">
                                 </td>
                             </tr>
                             <tr>
@@ -744,13 +720,13 @@
                                     manipulados por los usuarios, así como el borde inferior de las ventanas en los ambientes de permanencia prolongadas 
                                     por personas ¿cumplen las especificaciones o dimensiones conforme con lo dispuesto en la norma técnica FONDONORMA NTF 2733? </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="altura_cerradura_ventanas_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="altura_cerradura_ventanas_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="altura_cerradura_ventanas_na">
                                 </td>
                             </tr>
                             <tr>
@@ -764,13 +740,13 @@
                                     circuitos de iluminación ¿cumplen las especificaciones o dimensiones conforme con lo dispuesto 
                                     en la norma técnica FONDONORMA NTF 2733? </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="tomas_electricidad_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="tomas_electricidad_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="tomas_electricidad_na">
                                 </td>
                             </tr>
                             <tr>
@@ -784,13 +760,13 @@
                                     auditórium, entre otros, ¿tienen reservados y demarcados lugares para la ubicación de personas en silla de 
                                     ruedas, conforme con lo dispuesto en la norma técnica NTF-2733?</td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="lugar_de_esparcimiento_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="lugar_de_esparcimiento_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="lugar_de_esparcimiento_na">
                                 </td>
                             </tr>
                             <tr>
@@ -798,13 +774,13 @@
                                     horizontales de tal manera que, permita una buena visión hacia el área donde se presenta el evento, 
                                     cumpliendo así las características conforme con lo dispuesto en la norma técnica NTF-2733?</td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="lugares_psr_si">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="lugares_psr_no">
                                 </td>
                                 <td  class=" bold text-center">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <input type="checkbox" v-model="lugares_psr_na">
                                 </td>
                             </tr>
                             <tr>
@@ -875,7 +851,7 @@
  </template>
  <script>
  import VueHtml2pdf from 'vue-html2pdf'
-
+ import guiaModule   from '@/store/modules/guiaModule';
   
  export default {
      components: {
@@ -883,36 +859,151 @@
      },
      data(){
          return{
-             btnSave:'Generar PDF',
-             btn_atras : true,
-             title_section : 'CONSEJO NACIONAL PARA LAS PERSONAS CON DISCAPACIDAD',
-             campo1 : '001',
-             campo2 : '1425',
-             campo3 : 'Central',
-             campo4 : 'Miranda',
-             campo5 : 'Simón Bolívar',
-             campo6 : 'Arrau Tecnology HDD, C.A',
-             headers : [
- 
-             {text: 'Serial Equipo', value: 'serial' },
-             {text: 'Módelo', value: 'serial'},
-             {text: 'Plan', value: 'nombrePlan'},
-             {text: 'Nombre Comercio', value: 'legalName'},
-             {text: 'Falla Reportada', value: 'nameError'},
-             {text: 'Factura', value: 'invoice'},
-             /* {text: 'Fecha Recepción', value: 'ticketDate'}, */
-             ],
-             desserts : [
- 
-             ],
-             detalles : [
- 
-             ],
-             notification : '',
-             sectiontitle : '',
-             nota_entrega_id : '',
-             date : new Date(Date.now()),
-             customer : ''
+            btnSave:'Generar PDF',
+            btn_atras : true,
+            title_section : 'CONSEJO NACIONAL PARA LAS PERSONAS CON DISCAPACIDAD',
+            campo1 : '001',
+            campo2 : '1425',
+            campo3 : 'Central',
+            campo4 : 'Miranda',
+            campo5 : 'Simón Bolívar',
+            campo6 : 'Arrau Tecnology HDD, C.A',
+            headers : [
+
+            {text: 'Serial Equipo', value: 'serial' },
+            {text: 'Módelo', value: 'serial'},
+            {text: 'Plan', value: 'nombrePlan'},
+            {text: 'Nombre Comercio', value: 'legalName'},
+            {text: 'Falla Reportada', value: 'nameError'},
+            {text: 'Factura', value: 'invoice'},
+            /* {text: 'Fecha Recepción', value: 'ticketDate'}, */
+            ],
+            desserts : [
+
+            ],
+            detalles : [
+
+            ],
+            notification : '',
+            sectiontitle : '',
+            nota_entrega_id : '',
+            date : new Date(Date.now()),
+            customer : '',
+            numeroguia:'',
+            fechaguia:'',
+            solicitudnumero:'',
+            unidadfiscalizacion:'',
+            razonsocial:'',
+            rif:'',
+            denominacioncomercial:'',
+            region:'',
+            estado:'',
+            municipio:'',
+            parroquia:'',
+            firstname:'',
+            lastname:'',
+            position:'',
+            identitycard:'',
+            vehicle11 : true,
+            type_ocupation:'',
+            ejecutivos:'',
+            empleados:'',
+            obreros:'',
+            total_nomina:'',
+            de_20_39_si:false,
+            de_20_39_no:false,
+            de_40_59_si:false,
+            de_40_59_no:false,
+            de_60_79_si:false,
+            de_60_79_no:false,
+            de_80_99_si:false,
+            de_80_99_no:false,
+            de_100_119_si:false,
+            de_100_119_no:false,
+            total_discapacidad:'',
+            pleno_acceso:'',
+            buen_trato:'',
+            debida_informacion:'',
+            agilidad_en_los_tramites:'',
+            debida_informacion_si                   : false,
+            debida_informacion_no                   : false,
+            aceras_salientes_si                     : false,
+            aceras_salientes_no                     : false,
+            aceras_salientes_na                     : false,
+            rampas_en_aceras_si                     : false,
+            rampas_en_aceras_no                     : false,
+            rampas_en_aceras_na                     : false,
+            edificaciones_senales_si                : false,
+            edificaciones_senales_no                : false,
+            edificaciones_senales_na                : false,
+            estacionamientos_si                     : false,
+            estacionamientos_no                     : false,
+            estacionamientos_na                     : false,
+            simbolo_internacional_senalizacion_si   : false,
+            simbolo_internacional_senalizacion_no   : false,
+            simbolo_internacional_senalizacion_na   : false,
+            acceso_planta_baja_si                   : false,
+            acceso_planta_baja_no                   : false,
+            acceso_planta_baja_na                   : false,
+            acceso_pb_vertical_si                   : false,
+            acceso_pb_vertical_no                   : false,
+            acceso_pb_vertical_na                   : false,
+            de_los_pasillos_si                      : false,
+            de_los_pasillos_no                      : false,
+            de_los_pasillos_na                      : false,
+            de_las_escaleras_si                     : false,
+            de_las_escaleras_no                     : false,
+            de_las_escaleras_na                     : false,
+            de_las_barandas_si                      : false,
+            de_las_barandas_no                      : false,
+            de_las_barandas_na                      : false,
+            de_las_puertas_si                       : false,
+            de_las_puertas_no                       : false,
+            de_las_puertas_na                       : false,
+            de_los_puntos_de_control_si             : false,
+            de_los_puntos_de_control_no             : false,
+            de_los_puntos_de_control_na             : false,
+            de_los_ascensores_si                    : false,
+            de_los_ascensores_no                    : false,
+            de_los_ascensores_na                    : false,
+            de_los_servicios_sanitarios_si          : false,
+            de_los_servicios_sanitarios_no          : false,
+            de_los_servicios_sanitarios_na          : false,
+            senalizacion_si                         : false,
+            senalizacion_no                         : false,
+            senalizacion_na                         : false,
+            lavamanos_si                            : false,
+            lavamanos_no                            : false,
+            lavamanos_na                            : false,
+            barra_de_sosten_si                      : false,
+            barra_de_sosten_no                      : false,
+            barra_de_sosten_na                      : false,
+            accesorios_sanitarios_si                : false,
+            accesorios_sanitarios_no                : false,
+            accesorios_sanitarios_na                : false,
+            excusado_bano_publico_si                : false,
+            excusado_bano_publico_no                : false,
+            excusado_bano_publico_na                : false,
+            urinarios_si                            : false,
+            urinarios_no                            : false,
+            urinarios_na                            : false,
+            duchas_si                               : false,
+            duchas_no                               : false,
+            duchas_na                               : false,
+            altura_cerradura_ventanas_si            : false,
+            altura_cerradura_ventanas_no            : false,
+            altura_cerradura_ventanas_na            : false,
+            tomas_electricidad_si                   : false,
+            tomas_electricidad_no                   : false,
+            tomas_electricidad_na                   : false,
+            lugar_de_esparcimiento_si               : false,
+            lugar_de_esparcimiento_no               : false,
+            lugar_de_esparcimiento_na               : false,
+            lugares_psr_si                          : false,
+            lugares_psr_no                          : false,
+            lugares_psr_na                          : false,
+
+            
          }
      },
      computed: {
@@ -928,22 +1019,453 @@
          onProgress(event){
              //console.log(event)
          },
-  /*        async getNotificationById(id){
-             const res = await notasModule.getNotaById(id);console.log(res,id)
-             const customer = await invoiceModule.getCustomersById(this.getCustomerId)
-             this.customer  = customer.nameLegal
-             this.desserts = res
-         }, */
          formatofecha(fecha) {
              var date = new Date(fecha);
              let formatted_date = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
              return  formatted_date;
-         }
+         },
+        async getInspectionRequestById(id){  
+            this.overlay = true
+            const {data} = await guiaModule.getInspectionRequestById(id)   
+            console.log(data)
+            this.numeroguia                 = data.data.num_guia
+            this.fechaguia                  = data.data.date_inspection
+            this.solicitudnumero            = data.data.inspection_request.id
+            this.unidadfiscalizacion        = data.data.inspection_unit.name
+            this.razonsocial                = data.data.busine.company_name
+            this.rif                        = data.data.busine.rif
+            this.denominacioncomercial      = data.data.busine.comercial_designation
+            this.region                     = data.data.busine.country.name
+            this.estado                     = data.data.busine.state.name
+            this.municipio                  = data.data.busine.municipality.name
+            this.parroquia                  = data.data.busine.parishe.name
+            this.direccion                  = data.data.busine.location    
+            this.firstname                  = data.data.busine.first_name_rl
+            this.lastname                   = data.data.busine.last_name_rl
+            this.position                   = data.data.busine.position
+            this.identitycard               = data.data.busine.identity_card_rl 
+            this.type_ocupation             = data.data.occupation_type.name
+            this.ejecutivos                 = data.data.guidelaborInsertion.ejecutivos
+            this.empleados                  = data.data.guidelaborInsertion.empleados
+            this.obreros                    = data.data.guidelaborInsertion.obreros
+            this.total_nomina               = data.data.guidelaborInsertion.total_nomina
+            this.total_discapacidad         = (data.data.guidelaborInsertion.total_nomina > 119) ? this.total_nomina : ''
+            this.pleno_acceso               = (data.data.guidePreferentialAttention.pleno_acceso == 0) ? 'Si' : 'No'           
+            this.buen_trato                 = (data.data.guidePreferentialAttention.buen_trato == 0) ? 'Si' : 'No'             
+            this.debida_informacion         = (data.data.guidePreferentialAttention.debida_informacion == 0) ? 'Si' : 'No'            
+            this.agilidad_en_los_tramites   = (data.data.guidePreferentialAttention.agilidad_en_los_tramites == 0) ? 'Si' : 'No'
+            this.agilidad_en_los_tramites   = (data.data.guidePreferentialAttention.agilidad_en_los_tramites == 0) ? 'Si' : 'No'
+            
+            if(data.data.guidePreferentialAttention.debida_informacion == 0){
+                this.debida_informacion_si = true 
+                this.debida_informacion_no = false
+            }else{
+                this.debida_informacion_si = false 
+                this.debida_informacion_no = true
+            }
+            this.checkboxNomina(data.data.guidelaborInsertion)    
+            this.guideAccessibilityReq(data.data.guideAccessibilityReq)                     
+            this.overlay = false 
+        },
+        checkboxNomina(data){
+            if(data.de_20_a_39 == 0){
+                this.de_20_39_si = true 
+                this.de_20_39_no = false
+            }else{
+                this.de_20_39_si = false 
+                this.de_20_39_no = true
+            }
+
+            if(data.de_40_a_59 == 0){
+                this.de_40_59_si = true 
+                this.de_40_59_no = false
+            }else{
+                this.de_40_59_si = false 
+                this.de_40_59_no = true
+            }
+
+            if(data.de_60_a_79 == 0){
+                this.de_60_79_si = true 
+                this.de_60_79_no = false
+            }else{
+                this.de_60_a_79_si = false 
+                this.de_60_a_79_no = true
+            }
+
+            if(data.de_80_a_99 == 0){
+                this.de_80_99_si = true 
+                this.de_80_99_no = false
+            }else{
+                this.de_80_99_si = false 
+                this.de_80_99_no = true
+            }
+
+            if(data.de_100_a_119 == 0){
+                this.de_100_119_si = true 
+                this.de_100_119_no = false
+            }else{
+                this.de_100_119_si = false 
+                this.de_100_119_no = true
+            }
+        },
+                    
+           
+        guideAccessibilityReq(data){
+                if(data.aceras_salientes == 'si'){
+                    this.aceras_salientes_si                                 =  true
+                    this.aceras_salientes_no                                 =  false
+                    this.aceras_salientes_na                                 =  false
+                }else if(data.aceras_salientes == 'no'){            
+                    this.aceras_salientes_si                                 =  false
+                    this.aceras_salientes_no                                 =  true
+                    this.aceras_salientes_na                                 =  false
+                }else{          
+                    this.aceras_salientes_si                                 =  false
+                    this.aceras_salientes_no                                 =  false
+                    this.aceras_salientes_na                                 =  true
+                }
+
+                if(data.rampas_en_aceras == 'si'){
+                    this.rampas_en_aceras_si                                 =  true
+                    this.rampas_en_aceras_no                                 =  false
+                    this.rampas_en_aceras_na                                 =  false
+                }else if(data.rampas_en_aceras == 'no'){            
+                    this.rampas_en_aceras_si                                 =  false
+                    this.rampas_en_aceras_no                                 =  true
+                    this.rampas_en_aceras_na                                 =  false
+                }else{          
+                    this.rampas_en_aceras_si                                 =  false
+                    this.rampas_en_aceras_no                                 =  false
+                    this.rampas_en_aceras_na                                 =  true
+                }
+
+                if(data.edificaciones_senales == 'si'){
+                    this.edificaciones_senales_si                            =  true
+                    this.edificaciones_senales_no                            =  false
+                    this.edificaciones_senales_na                            =  false
+                }else if(data.edificaciones_senales == 'no'){       
+                    this.edificaciones_senales_si                            =  false
+                    this.edificaciones_senales_no                            =  true
+                    this.edificaciones_senales_na                            =  false
+                }else{      
+                    this.edificaciones_senales_si                            =  false
+                    this.edificaciones_senales_no                            =  false
+                    this.edificaciones_senales_na                            =  true
+                }
+                if(data.estacionamientos == 'si'){
+                    this.estacionamientos_si                                 =  true
+                    this.estacionamientos_no                                 =  false
+                    this.estacionamientos_na                                 =  false
+                }else if(data.estacionamientos == 'no'){            
+                    this.estacionamientos_si                                 =  false
+                    this.estacionamientos_no                                 =  true
+                    this.estacionamientos_na                                 =  false
+                }else{          
+                    this.estacionamientos_si                                 =  false
+                    this.estacionamientos_no                                 =  false
+                    this.estacionamientos_na                                 =  true
+                }
+
+                if(data.simbolo_internacional_senalizacion == 'si'){
+                    this.simbolo_internacional_senalizacion_si                     =  true
+                    this.simbolo_internacional_senalizacion_no                     =  false
+                    this.simbolo_internacional_senalizacion_na                     =  false
+                }else if(data.simbolo_internacional_senalizacion == 'no'){
+                    this.simbolo_internacional_senalizacion_si                     =  false
+                    this.simbolo_internacional_senalizacion_no                     =  true
+                    this.simbolo_internacional_senalizacion_na                     =  false
+                }else{
+                    this.simbolo_internacional_senalizacion_si                     =  false
+                    this.simbolo_internacional_senalizacion_no                     =  false
+                    this.simbolo_internacional_senalizacion_na                     =  true
+                }
+
+                if(data.acceso_planta_baja == 'si'){
+                    this.acceso_planta_baja_si                     =  true
+                    this.acceso_planta_baja_no                     =  false
+                    this.acceso_planta_baja_na                     =  false
+                }else if(data.acceso_planta_baja == 'no'){
+                    this.acceso_planta_baja_si                     =  false
+                    this.acceso_planta_baja_no                     =  true
+                    this.acceso_planta_baja_na                     =  false
+                }else{
+                    this.acceso_planta_baja_si                     =  false
+                    this.acceso_planta_baja_no                     =  false
+                    this.acceso_planta_baja_na                     =  true
+                }
+
+                if(data.acceso_pb_vertical == 'si'){
+                    this.acceso_pb_vertical_si                     =  true
+                    this.acceso_pb_vertical_no                     =  false
+                    this.acceso_pb_vertical_na                     =  false
+                }else if(data.acceso_pb_vertical == 'no'){
+                    this.acceso_pb_vertical_si                     =  false
+                    this.acceso_pb_vertical_no                     =  true
+                    this.acceso_pb_vertical_na                     =  false
+                }else{
+                    this.acceso_pb_vertical_si                     =  false
+                    this.acceso_pb_vertical_no                     =  false
+                    this.acceso_pb_vertical_na                     =  true
+                }
+
+                if(data.de_los_pasillos == 'si'){
+                    this.de_los_pasillos_si                     =  true
+                    this.de_los_pasillos_no                     =  false
+                    this.de_los_pasillos_na                     =  false
+                }else if(data.de_los_pasillos == 'no'){
+                    this.de_los_pasillos_si                     =  false
+                    this.de_los_pasillos_no                     =  true
+                    this.de_los_pasillos_na                     =  false
+                }else{
+                    this.de_los_pasillos_si                     =  false
+                    this.de_los_pasillos_no                     =  false
+                    this.de_los_pasillos_na                     =  true
+                }
+
+                if(data.de_las_escaleras == 'si'){
+                    this.de_las_escaleras_si                     =  true
+                    this.de_las_escaleras_no                     =  false
+                    this.de_las_escaleras_na                     =  false
+                }else if(data.de_las_escaleras == 'no'){
+                    this.de_las_escaleras_si                     =  false
+                    this.de_las_escaleras_no                     =  true
+                    this.de_las_escaleras_na                     =  false
+                }else{
+                    this.de_las_escaleras_si                     =  false
+                    this.de_las_escaleras_no                     =  false
+                    this.de_las_escaleras_na                     =  true
+                }
+
+                if(data.de_las_barandas == 'si'){
+                    this.de_las_barandas_si                     =  true
+                    this.de_las_barandas_no                     =  false
+                    this.de_las_barandas_na                     =  false
+                }else if(data.de_las_barandas == 'no'){
+                    this.de_las_barandas_si                     =  false
+                    this.de_las_barandas_no                     =  true
+                    this.de_las_barandas_na                     =  false
+                }else{
+                    this.de_las_barandas_si                     =  false
+                    this.de_las_barandas_no                     =  false
+                    this.de_las_barandas_na                     =  true
+                }
+
+                if(data.de_las_puertas == 'si'){
+                    this.de_las_puertas_si                     =  true
+                    this.de_las_puertas_no                     =  false
+                    this.de_las_puertas_na                     =  false
+                }else if(data.de_las_puertas == 'no'){
+                    this.de_las_puertas_si                     =  false
+                    this.de_las_puertas_no                     =  true
+                    this.de_las_puertas_na                     =  false
+                }else{
+                    this.de_las_puertas_si                     =  false
+                    this.de_las_puertas_no                     =  false
+                    this.de_las_puertas_na                     =  true
+                }
+
+                if(data.de_los_puntos_de_control == 'si'){
+                    this.de_los_puntos_de_control_si                     =  true
+                    this.de_los_puntos_de_control_no                     =  false
+                    this.de_los_puntos_de_control_na                     =  false
+                }else if(data.de_los_puntos_de_control == 'no'){
+                    this.de_los_puntos_de_control_si                     =  false
+                    this.de_los_puntos_de_control_no                     =  true
+                    this.de_los_puntos_de_control_na                     =  false
+                }else{
+                    this.de_los_puntos_de_control_si                     =  false
+                    this.de_los_puntos_de_control_no                     =  false
+                    this.de_los_puntos_de_control_na                     =  true
+                }
+
+                if(data.de_los_ascensores == 'si'){
+                    this.de_los_ascensores_si                     =  true
+                    this.de_los_ascensores_no                     =  false
+                    this.de_los_ascensores_na                     =  false
+                }else if(data.de_los_ascensores == 'no'){
+                    this.de_los_ascensores_si                     =  false
+                    this.de_los_ascensores_no                     =  true
+                    this.de_los_ascensores_na                     =  false
+                }else{
+                    this.de_los_ascensores_si                     =  false
+                    this.de_los_ascensores_no                     =  false
+                    this.de_los_ascensores_na                     =  true
+                }
+
+                if(data.de_los_servicios_sanitarios == 'si'){
+                    this.de_los_servicios_sanitarios_si                     =  true
+                    this.de_los_servicios_sanitarios_no                     =  false
+                    this.de_los_servicios_sanitarios_na                     =  false
+                }else if(data.de_los_servicios_sanitarios == 'no'){
+                    this.de_los_servicios_sanitarios_si                     =  false
+                    this.de_los_servicios_sanitarios_no                     =  true
+                    this.de_los_servicios_sanitarios_na                     =  false
+                }else{
+                    this.de_los_servicios_sanitarios_si                     =  false
+                    this.de_los_servicios_sanitarios_no                     =  false
+                    this.de_los_servicios_sanitarios_na                     =  true
+                }
+
+                if(data.senalizacion == 'si'){
+                    this.senalizacion_si                     =  true
+                    this.senalizacion_no                     =  false
+                    this.senalizacion_na                     =  false
+                }else if(data.senalizacion == 'no'){
+                    this.senalizacion_si                     =  false
+                    this.senalizacion_no                     =  true
+                    this.senalizacion_na                     =  false
+                }else{
+                    this.senalizacion_si                     =  false
+                    this.senalizacion_no                     =  false
+                    this.senalizacion_na                     =  true
+                }
+
+                if(data.lavamanos == 'si'){
+                    this.lavamanos_si                     =  true
+                    this.lavamanos_no                     =  false
+                    this.lavamanos_na                     =  false
+                }else if(data.lavamanos == 'no'){
+                    this.lavamanos_si                     =  false
+                    this.lavamanos_no                     =  true
+                    this.lavamanos_na                     =  false
+                }else{
+                    this.lavamanos_si                     =  false
+                    this.lavamanos_no                     =  false
+                    this.lavamanos_na                     =  true
+                }
+
+                if(data.barra_de_sosten == 'si'){
+                    this.barra_de_sosten_si                     =  true
+                    this.barra_de_sosten_no                     =  false
+                    this.barra_de_sosten_na                     =  false
+                }else if(data.barra_de_sosten == 'no'){
+                    this.barra_de_sosten_si                     =  false
+                    this.barra_de_sosten_no                     =  true
+                    this.barra_de_sosten_na                     =  false
+                }else{
+                    this.barra_de_sosten_si                     =  false
+                    this.barra_de_sosten_no                     =  false
+                    this.barra_de_sosten_na                     =  true
+                }
+
+                if(data.accesorios_sanitarios == 'si'){
+                    this.accesorios_sanitarios_si                     =  true
+                    this.accesorios_sanitarios_no                     =  false
+                    this.accesorios_sanitarios_na                     =  false
+                }else if(data.accesorios_sanitarios == 'no'){
+                    this.accesorios_sanitarios_si                     =  false
+                    this.accesorios_sanitarios_no                     =  true
+                    this.accesorios_sanitarios_na                     =  false
+                }else{
+                    this.accesorios_sanitarios_si                     =  false
+                    this.accesorios_sanitarios_no                     =  false
+                    this.accesorios_sanitarios_na                     =  true
+                }
+
+                if(data.excusado_bano_publico == 'si'){
+                    this.excusado_bano_publico_si                     =  true
+                    this.excusado_bano_publico_no                     =  false
+                    this.excusado_bano_publico_na                     =  false
+                }else if(data.excusado_bano_publico == 'no'){
+                    this.excusado_bano_publico_si                     =  false
+                    this.excusado_bano_publico_no                     =  true
+                    this.excusado_bano_publico_na                     =  false
+                }else{
+                    this.excusado_bano_publico_si                     =  false
+                    this.excusado_bano_publico_no                     =  false
+                    this.excusado_bano_publico_na                     =  true
+                }
+
+                if(data.urinarios == 'si'){
+                    this.urinarios_si                     =  true
+                    this.urinarios_no                     =  false
+                    this.urinarios_na                     =  false
+                }else if(data.urinarios == 'no'){
+                    this.urinarios_si                     =  false
+                    this.urinarios_no                     =  true
+                    this.urinarios_na                     =  false
+                }else{
+                    this.urinarios_si                     =  false
+                    this.urinarios_no                     =  false
+                    this.urinarios_na                     =  true
+                }
+
+                if(data.duchas == 'si'){
+                    this.duchas_si                     =  true
+                    this.duchas_no                     =  false
+                    this.duchas_na                     =  false
+                }else if(data.duchas == 'no'){
+                    this.duchas_si                     =  false
+                    this.duchas_no                     =  true
+                    this.duchas_na                     =  false
+                }else{
+                    this.duchas_si                     =  false
+                    this.duchas_no                     =  false
+                    this.duchas_na                     =  true
+                }
+
+                if(data.altura_cerradura_ventanas == 'si'){
+                    this.altura_cerradura_ventanas_si                     =  true
+                    this.altura_cerradura_ventanas_no                     =  false
+                    this.altura_cerradura_ventanas_na                     =  false
+                }else if(data.altura_cerradura_ventanas == 'no'){
+                    this.altura_cerradura_ventanas_si                     =  false
+                    this.altura_cerradura_ventanas_no                     =  true
+                    this.altura_cerradura_ventanas_na                     =  false
+                }else{
+                    this.altura_cerradura_ventanas_si                     =  false
+                    this.altura_cerradura_ventanas_no                     =  false
+                    this.altura_cerradura_ventanas_na                     =  true
+                }
+
+                if(data.tomas_electricidad == 'si'){
+                    this.tomas_electricidad_si                     =  true
+                    this.tomas_electricidad_no                     =  false
+                    this.tomas_electricidad_na                     =  false
+                }else if(data.tomas_electricidad == 'no'){
+                    this.tomas_electricidad_si                     =  false
+                    this.tomas_electricidad_no                     =  true
+                    this.tomas_electricidad_na                     =  false
+                }else{
+                    this.tomas_electricidad_si                     =  false
+                    this.tomas_electricidad_no                     =  false
+                    this.tomas_electricidad_na                     =  true
+                }
+
+                if(data.lugar_de_esparcimiento == 'si'){
+                    this.lugar_de_esparcimiento_si                     =  true
+                    this.lugar_de_esparcimiento_no                     =  false
+                    this.lugar_de_esparcimiento_na                     =  false
+                }else if(data.lugar_de_esparcimiento == 'no'){
+                    this.lugar_de_esparcimiento_si                     =  false
+                    this.lugar_de_esparcimiento_no                     =  true
+                    this.lugar_de_esparcimiento_na                     =  false
+                }else{
+                    this.lugar_de_esparcimiento_si                     =  false
+                    this.lugar_de_esparcimiento_no                     =  false
+                    this.lugar_de_esparcimiento_na                     =  true
+                }
+
+                if(data.lugares_psr == 'si'){
+                    this.lugares_psr_si                     =  true
+                    this.lugares_psr_no                     =  false
+                    this.lugares_psr_na                     =  false
+                }else if(data.lugares_psr == 'no'){
+                    this.lugares_psr_si                     =  false
+                    this.lugares_psr_no                     =  true
+                    this.lugares_psr_na                     =  false
+                }else{
+                    this.lugares_psr_si                     =  false
+                    this.lugares_psr_no                     =  false
+                    this.lugares_psr_na                     =  true
+                }
+            }
+           
      },
      mounted(){
          this.nota_entrega_id = this.$route.params.id
          this.notification = 'Notification ' + this.nota_entrega_id
-        // this.getNotaById(this.nota_entrega_id)
+         this.getInspectionRequestById(this.nota_entrega_id)
      }
  }
  </script>

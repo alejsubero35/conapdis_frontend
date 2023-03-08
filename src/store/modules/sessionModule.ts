@@ -215,8 +215,8 @@ import {
 			})
 		}
 		@Action
-		async updateStatusBussines(){
-			let status : string = 'approved'
+		async updateStatusBussines(status){
+			//let status : string = 'approved'
 			storageData.remove('_status_busine');
 			storageData.set('_status_busine', status);
 			this.context.commit('setStatusBussine', status);

@@ -429,6 +429,7 @@ async validate(){
                 this.color = 'success'
                 this.snackbar = true
                 this.back();
+                await sessionModule.updateStatusBussines('pending')
                 this.overlay = false 
             } else {
                 this.textmsj = 'Error al Registrar los datos de Usuario.'
