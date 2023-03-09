@@ -28,7 +28,7 @@
           <CIcon name="cil-list"/>
         </CHeaderNavLink>
       </CHeaderNavItem> -->
-      <CHeaderNavItem class="d-md-down-none mx-2">
+      <CHeaderNavItem v-if="nameUser" class="d-md-down-none mx-2">
         <CHeaderNavLink class="rolname">
           {{ nameUser }} 
         </CHeaderNavLink>
@@ -73,7 +73,10 @@ export default {
   },
   mounted(){
     this.rolName  = storageData.get('_rolename')
-    this.nameUser = storageData.get('_nameUser').toUpperCase()
+    if(storageData.get('_nameUser')){
+      this.nameUser = storageData.get('_nameUser').toUpperCase()
+    }
+
   }
 }
 </script>

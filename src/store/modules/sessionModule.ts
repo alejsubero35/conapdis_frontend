@@ -53,7 +53,7 @@ import {
 			return  storageData.get('_nameUser');
 		}
 		get getBussines() {
-			return  storageData.get('_bussines');
+			return  (storageData.get('_bussines')) ? storageData.get('_bussines') : [] ;
 		}
 		get getStatusBussines() {
 			return  this.statusBusine
@@ -104,7 +104,7 @@ import {
 			this.user = user;
 		}
 		@Mutation
-		setStatusBussine(statusBusine: any) {console.log(statusBusine)
+		setStatusBussine(statusBusine: any) {
 			this.statusBusine = statusBusine;
 		}
 
@@ -125,13 +125,22 @@ import {
 					const stoken: string  		= login.access_token;
 					const user: string 			= login.user
 					const user_id: string 		= login.user.id
-					const busine: any     		= login.user.busine[0]
+					console.log(login.user.busine.length)
+					if(login.user.busine.length > 0){
+						const busine: any     		= login.user.busine[0]
+						storageData.set('_bussines', busine);
+						this.context.commit('setBussines', busine);
+					}else{
+						storageData.set('_bussines', login.user.busine);
+						this.context.commit('setBussines', login.user.busine);
+					}
+				
 					const full_name: string 	= login.user.first_name + ' ' + login.user.last_name
 					const statusBusine: string  = login.status_busine;
 
 					storageData.set('_token', stoken);
 					storageData.set('_user_id', user_id);
-					storageData.set('_bussines', busine);
+					
 					storageData.set('_nameUser', full_name);
 					storageData.set('_User', user);
 					storageData.set('_status_busine', statusBusine);
@@ -139,7 +148,7 @@ import {
 					this.context.commit('setToken', stoken);
 					this.context.commit('setTokens', payload.data.data);
 					this.context.commit('setUserId', user_id);
-					this.context.commit('setBussines', busine);
+				
 					this.context.commit('setNameUser', full_name);
 					this.context.commit('setUser', user);
 					this.context.commit('setStatusBussine', statusBusine);

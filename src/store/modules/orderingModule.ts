@@ -43,6 +43,20 @@ import {
 		  }) 
 	   }
 
+     @Action
+     getOrderingBallotById(id) {
+        return new Promise((resolve, reject) => {  
+           http.get(`/ordering-ballots/${id}`)
+           .then(response =>  {
+             if (response.status === 200) {     
+               resolve(response); 
+             }
+           })
+           .catch(error => {
+             reject(error)
+            })
+          }) 
+        }
   }  
   
   export default getModule(orderingModule);

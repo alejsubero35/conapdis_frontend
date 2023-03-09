@@ -582,10 +582,10 @@ export default class Bussines extends Vue {
 			this.bussinesform.is_major = 1
 		}
 	}
-	onComplete() {
-		if (this.FormRequest.id > 0) {
+	onComplete() {console.log(this.FormRequest)
+		if (this.FormRequest.id > 0) {console.log(10)
 			this.updateBussines();
-		} else {
+		} else {console.log(20)
 			this.saveBussines();
 		}	
     }
@@ -698,8 +698,8 @@ export default class Bussines extends Vue {
 		this.getEconomicActivies()
 		this.getTypeCompany()
 		this.getUserType()
-
-		if (storageData.get('_bussines')) {console.log(storageData.get('_bussines'))
+		console.log(storageData.get('_bussines').length)
+		if (storageData.get('_bussines').length > 0) {console.log('aqui')
 			this.overlay = true
 			this.bussinesform = storageData.get('_bussines')
 			if(storageData.get('_bussines').hasOwnProperty('is_major')){

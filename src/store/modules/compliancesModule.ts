@@ -43,6 +43,21 @@ import {
 		  }) 
 	   }
 
+     @Action
+     getCompliancesById(id) {
+        return new Promise((resolve, reject) => {  
+           http.get(`/act-of-compliances/${id}`)
+           .then(response =>  {
+             if (response.status === 200) {     
+               resolve(response); 
+             }
+           })
+           .catch(error => {
+             reject(error)
+            })
+          }) 
+        }
+
   }  
   
   export default getModule(compliancesModule);

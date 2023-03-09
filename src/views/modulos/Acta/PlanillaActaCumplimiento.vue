@@ -253,76 +253,70 @@
  </template>
  <script>
  import VueHtml2pdf from 'vue-html2pdf'
-
+ import compliancesModule            from '@/store/modules/compliancesModule';
   
  export default {
-     components: {
-         VueHtml2pdf
-     },
-     data(){
-         return{
-             btnSave:'Generar PDF',
-             btn_atras : true,
-             title_section : 'CONSEJO NACIONAL PARA LAS PERSONAS CON DISCAPACIDAD',
-             campo1 : '001',
-             campo2 : '1425',
-             campo3 : 'Central',
-             campo4 : 'Miranda',
-             campo5 : 'Simón Bolívar',
-             campo6 : 'Arrau Tecnology HDD, C.A',
-             headers : [
- 
-             {text: 'Serial Equipo', value: 'serial' },
-             {text: 'Módelo', value: 'serial'},
-             {text: 'Plan', value: 'nombrePlan'},
-             {text: 'Nombre Comercio', value: 'legalName'},
-             {text: 'Falla Reportada', value: 'nameError'},
-             {text: 'Factura', value: 'invoice'},
-             /* {text: 'Fecha Recepción', value: 'ticketDate'}, */
-             ],
-             desserts : [
- 
-             ],
-             detalles : [
- 
-             ],
-             notification : '',
-             sectiontitle : '',
-             nota_entrega_id : '',
-             date : new Date(Date.now()),
-             customer : ''
-         }
-     },
-     computed: {
-     /*     getCustomerId() {
-             return sessionModule.getCustomerId; 
-         } */
-     },
-     methods: {
-         generateReport () {
-             this.btn_atras = false
-             this.$refs.html2Pdf.generatePdf()
-         },
-         onProgress(event){
-             //console.log(event)
-         },
-  /*        async getNotificationById(id){
-             const res = await notasModule.getNotaById(id);console.log(res,id)
-             const customer = await invoiceModule.getCustomersById(this.getCustomerId)
-             this.customer  = customer.nameLegal
-             this.desserts = res
-         }, */
-         formatofecha(fecha) {
-             var date = new Date(fecha);
-             let formatted_date = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
-             return  formatted_date;
-         }
-     },
-     mounted(){
-         this.nota_entrega_id = this.$route.params.id
-         this.notification = 'Notification ' + this.nota_entrega_id
-        // this.getNotaById(this.nota_entrega_id)
-     }
+    components: {
+        VueHtml2pdf
+    },
+    data(){
+        return{
+            btnSave:'Generar PDF',
+            btn_atras : true,
+            title_section : 'CONSEJO NACIONAL PARA LAS PERSONAS CON DISCAPACIDAD',
+            campo1 : '001',
+            campo2 : '1425',
+            campo3 : 'Central',
+            campo4 : 'Miranda',
+            campo5 : 'Simón Bolívar',
+            campo6 : 'Arrau Tecnology HDD, C.A',
+            headers : [
+
+            {text: 'Serial Equipo', value: 'serial' },
+            {text: 'Módelo', value: 'serial'},
+            {text: 'Plan', value: 'nombrePlan'},
+            {text: 'Nombre Comercio', value: 'legalName'},
+            {text: 'Falla Reportada', value: 'nameError'},
+            {text: 'Factura', value: 'invoice'},
+            /* {text: 'Fecha Recepción', value: 'ticketDate'}, */
+            ],
+            desserts : [
+
+            ],
+            detalles : [
+
+            ],
+            notification : '',
+            sectiontitle : '',
+            nota_entrega_id : '',
+            date : new Date(Date.now()),
+            customer : ''
+        }
+    },
+
+    methods: {
+        generateReport () {
+            this.btn_atras = false
+            this.$refs.html2Pdf.generatePdf()
+        },
+        onProgress(event){
+            //console.log(event)
+        },
+        async getCompliancesById(id){
+            const {data} = await compliancesModule.getCompliancesById(id);
+            console.log(data)
+        },
+        formatofecha(fecha) {
+            var date = new Date(fecha);
+            let formatted_date = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
+            return  formatted_date;
+        }
+    },
+    mounted(){
+    this.nota_entrega_id = this.$route.params.id
+    this.notification = 'Notification ' + this.nota_entrega_id
+    this.getCompliancesById(this.nota_entrega_id)
+    }
  }
  </script>
  <style scoped>

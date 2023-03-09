@@ -8,35 +8,37 @@ const Dashboard               = () => import('@/views/dashboard/Dashboard.vue')
 //Módulos
 
 // Users  
-const User                    = () => import('@/views/modulos/users/User.vue')
-const CreateUser              = () => import('@/views/modulos/users/CreateUser.vue')
-const EditUser                = () => import('@/views/modulos/users/EditUser.vue')
-const Login                   = () => import('@/views/auth/Login.vue')
-const Logout                  = () => import('@/views/auth/Logout.vue')
-const UpdatePassword          = () => import('@/views/auth/UpdatePassword.vue')
+const User                            = () => import('@/views/modulos/users/User.vue')
+const CreateUser                      = () => import('@/views/modulos/users/CreateUser.vue')
+const EditUser                        = () => import('@/views/modulos/users/EditUser.vue')
+const Login                           = () => import('@/views/auth/Login.vue')
+const Logout                          = () => import('@/views/auth/Logout.vue')
+const UpdatePassword                  = () => import('@/views/auth/UpdatePassword.vue')
 // Bussines
-const Bussines                = () => import('@/views/modulos/Bussines/Bussines.vue')
+const Bussines                        = () => import('@/views/modulos/Bussines/Bussines.vue')
 //requirements
-const Requeriments            = () => import('@/views/modulos/Requeriment/Requeriments.vue')
+const Requeriments                    = () => import('@/views/modulos/Requeriment/Requeriments.vue')
 //Notificaciones
-const Notification            = () => import('@/views/modulos/Notification/Notification.vue')
-const PdfNotification         = () => import('@/views/modulos/Notification/PdfNotification.vue')
-const PlanillaSolicitud       = () => import('@/views/modulos/inspeccion/PlanillaSolicitud.vue')
+const Notification                    = () => import('@/views/modulos/Notification/Notification.vue')
+const PdfNotification                 = () => import('@/views/modulos/Notification/PdfNotification.vue')
+const PlanillaSolicitud               = () => import('@/views/modulos/inspeccion/PlanillaSolicitud.vue')
 //Guia de Inspeccion
-const GuiaInspeccion          = () => import('@/views/modulos/Guia/GuiaInspeccion.vue')
-const PlanillaGuiaInspeccion  = () => import('@/views/modulos/Guia/PlanillaGuiaInspeccion.vue')
+const GuiaInspeccion                  = () => import('@/views/modulos/Guia/GuiaInspeccion.vue')
+const PlanillaGuiaInspeccion          = () => import('@/views/modulos/Guia/PlanillaGuiaInspeccion.vue')
 //Acta de Cumplimiento
-const ActaCumplimiento        = () => import('@/views/modulos/Acta/ActaCumplimiento.vue')
+const ActaCumplimiento                = () => import('@/views/modulos/Acta/ActaCumplimiento.vue')
+const PlanillaActaCumplimiento        = () => import('@/views/modulos/Acta/PlanillaActaCumplimiento.vue')
+
 //Certificado ABI
-const CertificadoAbi          = () => import('@/views/modulos/Certificado/CertificadoAbi.vue')
-const PlanillaCertificadoAbi  = () => import('@/views/modulos/Certificado/PlanillaCertificadoAbi.vue')
+const CertificadoAbi                  = () => import('@/views/modulos/Certificado/CertificadoAbi.vue')
+const PlanillaCertificadoAbi          = () => import('@/views/modulos/Certificado/PlanillaCertificadoAbi.vue')
 
 //Solicitud de Inspeccion
-const SolicitudInspeccion     = () => import('@/views/modulos/inspeccion/SolicitudInspeccion.vue')
+const SolicitudInspeccion             = () => import('@/views/modulos/inspeccion/SolicitudInspeccion.vue')
+
 //Boleta Ordenamiento
-const BoletaOrdenamiento     = () => import('@/views/modulos/ordenamiento/BoletaOrdenamiento.vue')
-
-
+const BoletaOrdenamiento              = () => import('@/views/modulos/ordenamiento/BoletaOrdenamiento.vue')
+const PlanillaBoletaOrdenamiento      = () => import('@/views/modulos/ordenamiento/PlanillaBoletaOrdenamiento.vue')
 
 //requirements Bussines
 const RequerimentsBussines            = () => import('@/views/modulos/RequerimentBussines/RequerimentsBussines.vue')
@@ -159,6 +161,13 @@ const router = new Router({
           component: ActaCumplimiento,
           meta: { Auth: true, title: 'ActaCumplimiento' },
      
+        },
+        {
+          path: 'planillactacumplimiento/:id',
+          name: 'planillactacumplimiento',
+          component: PlanillaActaCumplimiento,
+          meta: { Auth: true, title: 'PlanillaActaCumplimiento' },
+     
         },        
         {
           path: 'certificadoabi',
@@ -186,6 +195,13 @@ const router = new Router({
           name: 'boletaordenamiento',
           component: BoletaOrdenamiento,
           meta: { Auth: true, title: 'BoletaOrdenamiento' },
+     
+        }, 
+        {
+          path: 'planillaboletaordenamiento/:id',
+          name: 'planillaboletaordenamiento',
+          component: PlanillaBoletaOrdenamiento,
+          meta: { Auth: true, title: 'PlanillaBoletaOrdenamiento' },
      
         }, 
            

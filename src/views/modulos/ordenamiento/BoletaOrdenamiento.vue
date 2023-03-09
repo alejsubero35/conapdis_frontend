@@ -152,7 +152,7 @@ export default class Usuario extends Vue {
     }
 
     viewPDF(id) {
-        this.$router.push({ name: "planillasolicitud", params: { id: id } });
+        this.$router.push({ name: "planillaboletaordenamiento", params: { id: id } });
     }
     async dataIndex(){  
     
