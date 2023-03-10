@@ -698,8 +698,8 @@ export default class Bussines extends Vue {
 		this.getEconomicActivies()
 		this.getTypeCompany()
 		this.getUserType()
-		console.log(storageData.get('_bussines').length)
-		if (storageData.get('_bussines').length > 0) {console.log('aqui')
+
+		if (storageData.get('_bussines')) {
 			this.overlay = true
 			this.bussinesform = storageData.get('_bussines')
 			if(storageData.get('_bussines').hasOwnProperty('is_major')){

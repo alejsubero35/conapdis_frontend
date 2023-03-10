@@ -34,10 +34,10 @@
                                         v-bind="attrs"
                                         v-on="on"
                                     >
-                                        <v-icon>mdi-file-pdf-box</v-icon>
+                                        <v-icon>mdi-eye</v-icon>
                                     </v-btn>
                                 </template>
-                                <span>Ver PDF</span>
+                                <span>Ver Guía de Inspección</span>
                             </v-tooltip>
                         </div>
                     </template>

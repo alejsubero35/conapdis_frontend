@@ -8,32 +8,33 @@
          :float-layout="false"
          :enable-download="true"
          :preview-modal="true"
-         :paginate-elements-by-height="1400"
+         :paginate-elements-by-height="1300"
          :filename="notification"
          :pdf-quality="2"
          :manual-pagination="false"
-         pdf-format="letter"
+         pdf-format="legal"
          pdf-orientation="portrait"
          pdf-content-width="100%"
          @progress="onProgress($event)"
          @hasStartedGeneration="hasStartedGeneration()"
          @hasGenerated="hasGenerated($event)"
+         @beforeDownload="beforeDownload($event)"
          ref="html2Pdf"
         >
-            <section slot="pdf-content"  >
+            <section slot="pdf-content">
                 <div class="form_contacto">
                     <TitleSection v-show="btn_atras" :sectiontitle="sectiontitle"/>
                     <div class="logo">
                         <img style="object-fit: cover;" src="img/logos_CONAPDIS/CABECERA.png"  alt="">
                     </div>
                     <div class="title_section">
-                        <h2 class="mt-4">{{ title_section }}</h2>
+                        <h4 class="mt-4">{{ title_section }}</h4>
                     </div><br>
                     <div class="text-center"><h4>1.	ACTA DE CUMPLIMIENTO</h4></div>
                     <div class="inspeccion">
-                        <div>a) Planilla N° : ______________ </div>
-                        <div>b) Fecha : __/__/____</div>
-                        <div>b) Hora : ____:____</div>
+                        <div>a) Planilla N° : <strong>{{numacta}}</strong></div>
+                        <div>b) Fecha : <strong>{{date}}</strong></div>
+                        <div>b) Hora : <strong>{{hour}}</strong></div>
                     </div><br><br>
     
                     <v-row class="table">
@@ -46,8 +47,8 @@
                               <td  colspan="2"  class=" bold">2.2.	R.I.F. N°:</td>
                             </tr>
                             <tr>
-                                <td colspan="4">Empresas Polar</td>
-                                <td colspan="2">J-123456789-0</td>
+                                <td colspan="4">{{razonsocial}}</td>
+                                <td colspan="2">{{rif}}</td>
                             </tr>
                             <tr>
                                 <th class="td-center" colspan="5">2.3 Denominación Comercial:</th>
@@ -59,24 +60,24 @@
                                 <td  class=" bold">2.7 Parroquia</td>
                             </tr>
                             <tr>
-                                <td colspan="2">Central</td>
-                                <td>Miranda</td>
-                                <td>Simón Bolívar</td>
-                                <td>San Antonio de Yare</td>
+                                <td colspan="2">{{region}}</td>
+                                <td>{{estado}}</td>
+                                <td>{{municipio}}</td>
+                                <td>{{parroquia}}</td>
                             </tr>
                             <tr>
                                 <td colspan="5"  class=" bold">2.8 Ubicación</td>
                             </tr>
                             <tr>
-                                <td colspan="5">San Francisco de Yare, Edo. Miranda</td>
+                                <td colspan="5">{{location}}</td>
                             </tr>
                             <tr>
                                 <td class=" bold" colspan="3">2.9 N° Teléfono</td>
                                 <td class=" bold" colspan="3">2.10 Email</td>        
                             </tr>
                             <tr>
-                                <td colspan="3">0414-2513698</td>
-                                <td colspan="3">empresaprueba@gmail.com</td>        
+                                <td colspan="3">{{phone}}</td>
+                                <td colspan="3">{{email}}</td>        
                             </tr>
                             <tr>
                                 <th class="td-center" colspan="5">3. DEL REGISTRO DE LA ENTIDAD DE TRABAJO O RAZÓN SOCIAL:</th>
@@ -87,9 +88,9 @@
                                 <td colspan="2" class="bold">3.3 Unidad de Fiscalización:</td>
                             </tr>
                             <tr>
-                                <td colspan="2">4524785986</td>
-                                <td colspan="2">521</td>
-                                <td colspan="2">1ra AMC</td>
+                                <td colspan="2">{{expedient}}</td>
+                                <td colspan="2">{{inspection}}</td>
+                                <td colspan="2">{{unidad}}</td>
                             </tr>
                             <tr>
                                 <td colspan="2"  class=" bold">3.4 Guía de Inspección Técnica N°:</td>
@@ -98,12 +99,16 @@
                                 <td  class=" bold">3.7 Fecha de la Boleta de ordenamientos:</td>
                             </tr>
                             <tr>
-                                <td colspan="2">0001</td>
-                                <td>06/02/2023</td>
+                                <td colspan="2">{{numinspectiontechnical}}</td>
+                                <td>{{fechaguia}}</td>
                                 <td>5252</td>
                                 <td>06/02/2023</td>
                             </tr>
-                            <tr>
+                        </table>
+                 
+                        <table>
+                            <div class="html2pdf__page-break"/> 
+                            <tr >
                                 <th class="td-center" colspan="5">4.DEL REPRESENTANTE LEGAL DE LA ENTIDAD DE TRABAJO O RAZÓN SOCIAL:</th>
                             </tr>
                             <tr>
@@ -113,10 +118,10 @@
                                 <td  class=" bold">4.4 Cargo</td>
                             </tr>
                             <tr>
-                                <td colspan="2">Juan José</td>
-                                <td>Perez Perez</td>
-                                <td>20222111</td>
-                                <td>Supervisor</td>
+                                <td colspan="2">{{firstname}}</td>
+                                <td>{{lastname}}</td>
+                                <td>{{identitycard}}</td>
+                                <td>{{position}}</td>
                             </tr>
                             <tr>
                                 <th class="td-center" colspan="5">5. DE LOS DATOS DEL ADMINISTRADO (A) DESIGNADO (A) PARA PRACTICAR LA INSPECCIÓN:</th>
@@ -150,33 +155,9 @@
                                 <th class="td-center" colspan="5">6. DE LA CLASIFICACIÓN DE LA EDIFICACIÓN SEGÚN EL TIPO DE OCUPACIÓN</th>
                             </tr>
                             <tr>
-                                <td class="bold">6.1. Comercial:</td>
-                                <td class="bold">6.2. Industrial:</td>
-                                <td class="bold">6.3. Oficinas:</td>
-                                <td class="bold">6.4. Educacional:</td>
-                                <td class="bold">6.5. Recreativo:</td>
+                                <td colspan="5" class="text-center">{{ocupationtype}}</td>
                             </tr>
-                            <tr>
-                                <td>xxxxx</td>
-                                <td>xxxxx</td>
-                                <td>xxxxx</td>
-                                <td>xxxxx</td>
-                                <td>xxxxx</td>
-                            </tr>
-                            <tr>
-                                <td class="bold">6.6. Asistencial:</td>
-                                <td class="bold">6.7. Alojamioento Turístico:</td>
-                                <td class="bold">6.8. Sitio de Reunión:</td>
-                                <td class="bold">6.9. Estacionamiento para vehículos:</td>
-                                <td class="bold">6.10.Otros:</td>
-                            </tr>
-                            <tr>
-                                <td>xxxxx</td>
-                                <td>xxxxx</td>
-                                <td>xxxxx</td>
-                                <td>xxxxx</td>
-                                <td>xxxxx</td>
-                            </tr>
+                            <div class="html2pdf__page-break"/> 
                             <tr>
                                 <th class="td-center" colspan="5">7. DEL CUMPLIMIENTO DE LAS NORMAS Y REGLAMENTACIONES TÉCNICAS DE ACCESIBILIDAD:</th>
                             </tr>
@@ -217,12 +198,14 @@
                                 <td  class=" bold">8.4 Providencia</td>
                             </tr>
                             <tr>
-                                <td colspan="2">Juan José</td>
-                                <td>Perez Perez</td>
-                                <td>20222111</td>
-                                <td>Administrativa 2514</td>
+                                <td colspan="2">{{firstnameinspector}}</td>
+                                <td>{{lastnameinspector}}</td>
+                                <td>{{cedulainspector}}</td>
+                                <td>{{providence}}</td>
                             </tr>
                             
+
+
                             <tr>
                                 <td colspan="2" class="bold">8.5	Firma del Representate Legal:</td>
                                 <td colspan="2" class="bold">8.6 Firma del Inspector</td>
@@ -243,9 +226,9 @@
                             
                         </p>
                     </v-row>
-                  <!--   <div class="mt-5 d-flex justify-end ">
-                        <v-btn  small @click="generateReport" color="success" v-show="btn_atras"  >{{ btnSave }}</v-btn> 
-                    </div> -->
+                    <div class="mt-5 d-flex justify-end ">
+                        <v-btn  small @click="generateReport" color="success"   >{{ btnSave }}</v-btn> 
+                    </div>
                 </div>
             </section>
         </vue-html2pdf>
@@ -264,33 +247,58 @@
             btnSave:'Generar PDF',
             btn_atras : true,
             title_section : 'CONSEJO NACIONAL PARA LAS PERSONAS CON DISCAPACIDAD',
-            campo1 : '001',
-            campo2 : '1425',
-            campo3 : 'Central',
-            campo4 : 'Miranda',
-            campo5 : 'Simón Bolívar',
-            campo6 : 'Arrau Tecnology HDD, C.A',
-            headers : [
-
-            {text: 'Serial Equipo', value: 'serial' },
-            {text: 'Módelo', value: 'serial'},
-            {text: 'Plan', value: 'nombrePlan'},
-            {text: 'Nombre Comercio', value: 'legalName'},
-            {text: 'Falla Reportada', value: 'nameError'},
-            {text: 'Factura', value: 'invoice'},
-            /* {text: 'Fecha Recepción', value: 'ticketDate'}, */
-            ],
-            desserts : [
-
-            ],
-            detalles : [
-
-            ],
+            numacta : '',
+            date : '',
+            hour : '',
+            razonsocial:'',
+            rif:'',
+            region:'',
+            estado:'',
+            municipio:'',
+            parroquia:'',
+            location:'',
+            phone:'',
+            email:'',
+            expedient:'',
+            inspection:'',
+            unidad:'',
+            firstname:'',
+            lastname:'',
+            position:'',
+            identitycard:'',
+            ocupationtype:'',
+            numinspectiontechnical:'',
+            fechaguia:'',
+            firstnameinspector:'',
+            lastnameinspector:'',
+            cedulainspector:'',
+            providence:'',
             notification : '',
             sectiontitle : '',
             nota_entrega_id : '',
             date : new Date(Date.now()),
-            customer : ''
+            customer : '',
+            htmlToPdfOptions: { 
+                margin: 0, 
+                filename: `hehehe.pdf`, 
+                image: { 
+                    type: 'jpeg',  
+                    quality: 0.98 
+                }, 
+
+                enableLinks: false, 
+                html2canvas: { 
+                    scale: 1, 
+                    useCORS: true 
+                }, 
+
+                jsPDF: { 
+                    unit: 'in', 
+                    format: 'a4', 
+                    orientation: 'portrait' 
+                } 
+            } 
+
         }
     },
 
@@ -302,9 +310,46 @@
         onProgress(event){
             //console.log(event)
         },
+        async beforeDownload ({ html2pdf, options, pdfContent }) {
+            await html2pdf().set(options).from(pdfContent).toPdf().get('pdf').then((pdf) => {
+                const totalPages = pdf.internal.getNumberOfPages()
+                for (let i = 1; i <= totalPages; i++) {
+                    pdf.setPage(i)
+                    pdf.setFontSize(10)
+                    pdf.setTextColor(150)
+                    pdf.text('Page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() * 0.88), (pdf.internal.pageSize.getHeight() - 0.3))
+                } 
+            }).save()
+        },
         async getCompliancesById(id){
             const {data} = await compliancesModule.getCompliancesById(id);
             console.log(data)
+            this.numacta        = data.data.num_acta
+            this.date           = data.data.date
+            this.hour           = data.data.hour
+            this.razonsocial    = data.data.busine.company_name     
+            this.rif            = data.data.busine.rif
+            this.region         = data.data.busine.country.name
+            this.estado         = data.data.busine.state.name
+            this.municipio      = data.data.busine.municipality.name    
+            this.parroquia      = data.data.busine.parishe.name 
+            this.location       = data.data.busine.location
+            this.phone          = data.data.busine.phone
+            this.email          = data.data.busine.email  
+            this.expedient      = data.data.expedient.num_expedient
+            this.inspection     = data.data.guide.inspection_request_id
+            this.unidad         = data.data.guide.inspection_unit.name
+            this.firstname      = data.data.busine.first_name_rl
+            this.lastname       = data.data.busine.last_name_rl
+            this.position       = data.data.busine.position
+            this.identitycard   = data.data.busine.identity_card_rl
+            this.ocupationtype  = data.data.guide.occupation_type.name
+            this.numinspectiontechnical = data.data.guide.num_guia
+            this.fechaguia      = data.data.guide.date_inspection
+            this.firstnameinspector         = data.data.user_id_inspector.first_name
+            this.lastnameinspector          = data.data.user_id_inspector.last_name
+            this.cedulainspector            = data.data.user_id_inspector.number_document_identity
+            this.providence                 = data.data.user_id_inspector.providence_administrative
         },
         formatofecha(fecha) {
             var date = new Date(fecha);
@@ -419,6 +464,7 @@
 .inter{
     font-size: 12px;
 }
+
  </style>
 
  

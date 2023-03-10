@@ -7,7 +7,7 @@
             class="laoding"
         ></v-progress-circular>
         </v-overlay>
-        <ButtonOpen  @openView="openView" :title="title" />
+        <!-- <ButtonOpen  @openView="openView" :title="title" /> -->
      <!--    <v-col cols="12">
             <Filtro  :endpoint="endpoint" :headers="headers"  :label="label" :moduleStore="moduleStore" v-on:updateData="handleDataUser"/>
         </v-col> -->
@@ -34,10 +34,10 @@
                                         v-bind="attrs"
                                         v-on="on"
                                     >
-                                        <v-icon>mdi-file-pdf-box</v-icon>
+                                        <v-icon>mdi-eye</v-icon>
                                     </v-btn>
                                 </template>
-                                <span>Ver PDF</span>
+                                <span>Ver Acta de Cumplimiento</span>
                             </v-tooltip>
                         </div>
                     </template>
@@ -205,7 +205,7 @@ export default class Usuario extends Vue {
 }
 .principal_container{
     background-color: white;
-    padding: 15px;
+    padding: 35px;
     border-radius: 13px;
     margin: 0;
 }

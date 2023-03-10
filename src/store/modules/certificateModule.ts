@@ -42,7 +42,21 @@ import {
 	   
 		  }) 
 	   }
-
+     @Action
+     getCertificateById(id) {
+        return new Promise((resolve, reject) => {  
+           http.get(`/certificate-abis/${id}`)
+           .then(response =>  {
+             if (response.status === 200) {     
+               resolve(response); 
+             }
+           })
+           .catch(error => {
+             reject(error)
+            })
+          }) 
+        }
+     
   }  
   
   export default getModule(certificateModule);

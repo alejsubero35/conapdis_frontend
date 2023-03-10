@@ -858,10 +858,13 @@
                                 <th colspan="1" class="text-center">C. I. N°:</th>
                             </tr>
                             <tr>
-                                <td colspan="2"></td>
-                                <td colspan="2"></td>
-                                <td colspan="1"></td>
+                                <td colspan="2">{{firstnameinspector}}</td>
+                                <td colspan="2">{{lastnameinspector}}</td>
+                                <td colspan="1">{{cedulainspector}}</td>
                             </tr>
+                            
+
+
                             <tr>
                                 <td class=" bold"  colspan="2" style="height: 100px;">Cargo:</td>
                                 <td  colspan="2"   class=" bold text-center">Firma</td>
@@ -968,6 +971,9 @@
             buen_trato:'',
             debida_informacion:'',
             agilidad_en_los_tramites:'',
+            firstnameinspector:'',
+            lastnameinspector:'',
+            cedulainspector:'',
             debida_informacion_si                   : false,
             debida_informacion_no                   : false,
             aceras_salientes_si                     : false,
@@ -1101,12 +1107,15 @@
             this.agilidad_en_los_tramites   = (data.data.guidePreferentialAttention.agilidad_en_los_tramites == 0) ? 'Si' : 'No'
             
             if(data.data.guidePreferentialAttention.debida_informacion == 0){
-                this.debida_informacion_si = true 
-                this.debida_informacion_no = false
+                this.debida_informacion_si  = true 
+                this.debida_informacion_no  = false
             }else{
-                this.debida_informacion_si = false 
-                this.debida_informacion_no = true
+                this.debida_informacion_si  = false 
+                this.debida_informacion_no  = true
             }
+            this.firstnameinspector         = data.data.user_id_inspector.first_name
+            this.lastnameinspector          = data.data.user_id_inspector.last_name
+            this.cedulainspector            = data.data.user_id_inspector.number_document_identity
             this.checkboxNomina(data.data.guidelaborInsertion)    
             this.guideAccessibilityReq(data.data.guideAccessibilityReq)                     
             this.overlay = false 
