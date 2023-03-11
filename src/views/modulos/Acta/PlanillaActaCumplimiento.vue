@@ -21,8 +21,8 @@
          @beforeDownload="beforeDownload($event)"
          ref="html2Pdf"
         >
-            <section slot="pdf-content">
-                <div class="form_contacto">
+            <section slot="pdf-content" class="form_contacto">
+                <section class="pdf-item">
                     <TitleSection v-show="btn_atras" :sectiontitle="sectiontitle"/>
                     <div class="logo">
                         <img style="object-fit: cover;" src="img/logos_CONAPDIS/CABECERA.png"  alt="">
@@ -30,205 +30,200 @@
                     <div class="title_section">
                         <h4 class="mt-4">{{ title_section }}</h4>
                     </div><br>
-                    <div class="text-center"><h4>1.	ACTA DE CUMPLIMIENTO</h4></div>
+                    <div class="text-center"><h6>1.	ACTA DE CUMPLIMIENTO</h6></div>
                     <div class="inspeccion">
                         <div>a) Planilla N° : <strong>{{numacta}}</strong></div>
                         <div>b) Fecha : <strong>{{date}}</strong></div>
                         <div>b) Hora : <strong>{{hour}}</strong></div>
                     </div><br><br>
-    
-                    <v-row class="table">
-                        <table>
-                            <tr>
-                              <th class="td-center" colspan="5">2.	DE LOS DATOS DE LA IDENTIDAD DE TRABAJO O RAZÓN SOCIAL OBJETO DE INSPECCIÓN:</th>
-                            </tr>
-                            <tr>
-                              <td  colspan="4"  class=" bold">2.1.	Razón Social:</td>
-                              <td  colspan="2"  class=" bold">2.2.	R.I.F. N°:</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">{{razonsocial}}</td>
-                                <td colspan="2">{{rif}}</td>
-                            </tr>
-                            <tr>
-                                <th class="td-center" colspan="5">2.3 Denominación Comercial:</th>
-                            </tr>
-                            <tr>
-                                <td colspan="2"  class=" bold">2.4 Región</td>
-                                <td  class=" bold">2.5 Estado</td>
-                                <td  class=" bold">2.6 Municipio</td>
-                                <td  class=" bold">2.7 Parroquia</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">{{region}}</td>
-                                <td>{{estado}}</td>
-                                <td>{{municipio}}</td>
-                                <td>{{parroquia}}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="5"  class=" bold">2.8 Ubicación</td>
-                            </tr>
-                            <tr>
-                                <td colspan="5">{{location}}</td>
-                            </tr>
-                            <tr>
-                                <td class=" bold" colspan="3">2.9 N° Teléfono</td>
-                                <td class=" bold" colspan="3">2.10 Email</td>        
-                            </tr>
-                            <tr>
-                                <td colspan="3">{{phone}}</td>
-                                <td colspan="3">{{email}}</td>        
-                            </tr>
-                            <tr>
-                                <th class="td-center" colspan="5">3. DEL REGISTRO DE LA ENTIDAD DE TRABAJO O RAZÓN SOCIAL:</th>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="bold">3.1 Expediente N° :</td>
-                                <td colspan="2" class="bold">3.2 Solicitud de Inspección N°:</td>
-                                <td colspan="2" class="bold">3.3 Unidad de Fiscalización:</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">{{expedient}}</td>
-                                <td colspan="2">{{inspection}}</td>
-                                <td colspan="2">{{unidad}}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"  class=" bold">3.4 Guía de Inspección Técnica N°:</td>
-                                <td  class=" bold">3.5 Fecha de la Guía Inspección:</td>
-                                <td  class=" bold">3.6 Boleta de Ordenamientos N°:</td>
-                                <td  class=" bold">3.7 Fecha de la Boleta de ordenamientos:</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">{{numinspectiontechnical}}</td>
-                                <td>{{fechaguia}}</td>
-                                <td>5252</td>
-                                <td>06/02/2023</td>
-                            </tr>
-                        </table>
-                 
-                        <table>
-                            <div class="html2pdf__page-break"/> 
-                            <tr >
-                                <th class="td-center" colspan="5">4.DEL REPRESENTANTE LEGAL DE LA ENTIDAD DE TRABAJO O RAZÓN SOCIAL:</th>
-                            </tr>
-                            <tr>
-                                <td colspan="2"  class=" bold">4.1 Nombre(s)</td>
-                                <td  class=" bold">4.2 Apellido(s)</td>
-                                <td  class=" bold">4.3 C.I.N°</td>
-                                <td  class=" bold">4.4 Cargo</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">{{firstname}}</td>
-                                <td>{{lastname}}</td>
-                                <td>{{identitycard}}</td>
-                                <td>{{position}}</td>
-                            </tr>
-                            <tr>
-                                <th class="td-center" colspan="5">5. DE LOS DATOS DEL ADMINISTRADO (A) DESIGNADO (A) PARA PRACTICAR LA INSPECCIÓN:</th>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="bold">5.1 Nombre(s):</td>
-                                <td colspan="2" class="bold">5.2 Apellido(s</td>
-                                <td colspan="2" class="bold">5.3 C.I.N°</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Rafael Ramon</td>
-                                <td colspan="2">Urbaneja Galindo</td>
-                                <td colspan="2">14525363</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="bold">5.4 Cargo :</td>
-                                <td colspan="2" class="bold">5.5 Telefono:</td>
-                                <td colspan="2" class="bold">5.6 Email:</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">Coordinador</td>
-                                <td colspan="2">0424-152-36-98</td>
-                                <td colspan="2">coordinador@conapdis.com</td>
-                            </tr>
-                            <tr>
-                                <td class=" bold" colspan="2">a.	Nombre (s):</td>
-                                <td  colspan="2"  class=" bold">b.	Apellido (s):</td>
-                                <td  colspan="2"  class=" bold">c.	C. I. N°:</td>
-                            </tr>
-                            <tr>
-                                <th class="td-center" colspan="5">6. DE LA CLASIFICACIÓN DE LA EDIFICACIÓN SEGÚN EL TIPO DE OCUPACIÓN</th>
-                            </tr>
-                            <tr>
-                                <td colspan="5" class="text-center">{{ocupationtype}}</td>
-                            </tr>
-                            <div class="html2pdf__page-break"/> 
-                            <tr>
-                                <th class="td-center" colspan="5">7. DEL CUMPLIMIENTO DE LAS NORMAS Y REGLAMENTACIONES TÉCNICAS DE ACCESIBILIDAD:</th>
-                            </tr>
-                            <tr>
-                                <td colspan="5">En acatamiento a lo establecido en el artículo 81 de la Constitución de la República Bolivariana de Venezuela de 1999; 
-                                    concatenado con los artículos 3 literales “b” y “f” artículo 4 literal “e” artículo 5 numeral 2 y el artículo 9 numeral 
-                                    1 literal “a” y numeral 2 literales “a”, “b” y “d” de la Convención Sobre los Derechos de las Personas con Discapacidad 
-                                    del 13/12/2006; y, con los artículos: 4, 31, 32 y 35 de la Ley para las Personas con Discapacidad del 05/01/2007; Se deja 
-                                    constancia que inspectores adscritos a la Gerencia de Fiscalización del Consejo Nacional para las Personas con Discapacidad 
-                                    (CONAPDIS), practicaron una inspección técnica especializada en la edificación privada de uso público, entidad de trabajo 
-                                    o razón social más arriba identificada en renglón correspondiente N° 2; A los fines de verificar el cumplimiento de las 
-                                    normas y reglamentaciones técnicas en materia de accesibilidad establecidas en la Norma Técnica FONDONORMA (NTF) 2733 
-                                    “Principios Generales para el Diseño, Proyecto, Construcción, Remodelación y Adecuación de Edificaciones para evitar las 
-                                    Barreras Físicas y que dichos espacios sean completamente Accesible y Transitable con Autonomía, Comodidad y Seguridad 
-                                    por las Personas”; y, según consta en guía de inspección técnica referida más arriba en renglón correspondiente 
-                                    N° 3: 2.4 y 2.5 y después de ordenarse la reparación según boleta de ordenamiento referida más arriba en renglón 
-                                    correspondiente N° 3: 3.6 y 3.7 y, subsanadas las fallas que fueron identificadas durante el desarrollo de la inspección 
-                                    técnica especializada; Se pudo comprobar, por parte entidad de trabajo o razón social más arriba identificada en renglón 
-                                    correspondiente N° 2; el cumplimiento de las normas y reglamentaciones técnicas en materia de accesibilidad contenidas 
-                                    en la norma venezolana NTF FONDONORMA 2733 y demás referencias normativas nacionales que contienen disposiciones que al 
-                                    ser citadas constituyen requisitos de esta norma venezolana (NTF FONDONORMA 2733), así como de las referencias de normativas 
-                                    y reglamentaciones técnicas del Instituto Uruguayo de Normas Técnicas (UNIT) en materia de Accesibilidad al Medio Físico, 
-                                    que son objeto de consulta hasta tanto sea publicada la Norma Venezolana Correspondiente.<br><br>
-                                    La presente acta es válida única y exclusivamente ante esta Institución (CONAPDIS), por cuanto forma parte 
-                                    del proceso de tramitación del “Certificado de Cumplimiento ABI”; No es válida para realizar trámites administrativos 
-                                    ante otros Organismos o Entes del Estado; Para tales fines, el documento que se debe exigir es el “Certificado de Cumplimiento ABI” 
-                                    que es el documento definitivo expedido por el CONAPDIS, válido por un año.
-                                </td>
-                         
-                            </tr>
-                            <tr>
-                                <th class="td-center" colspan="5">8. DE LAS FIRMAS DEL INSPECTOR ACTUANTE Y DE LA  ENTIDAD DE TRABAJO O RAZÓN SOCIAL</th>
-                            </tr>
-                            <tr>
-                                <td colspan="2"  class=" bold">8.1 Nombre(s)</td>
-                                <td  class=" bold">8.2 Apellido(s)</td>
-                                <td  class=" bold">8.3 C.I.N°</td>
-                                <td  class=" bold">8.4 Providencia</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">{{firstnameinspector}}</td>
-                                <td>{{lastnameinspector}}</td>
-                                <td>{{cedulainspector}}</td>
-                                <td>{{providence}}</td>
-                            </tr>
-                            
+                    <table>
+                        <tr>
+                            <th class="td-center" colspan="5">2.	DE LOS DATOS DE LA IDENTIDAD DE TRABAJO O RAZÓN SOCIAL OBJETO DE INSPECCIÓN:</th>
+                          </tr>
+                          <tr>
+                            <td  colspan="4"  class=" bold">2.1.	Razón Social:</td>
+                            <td  colspan="2"  class=" bold">2.2.	R.I.F. N°:</td>
+                          </tr>
+                          <tr>
+                              <td colspan="4">{{razonsocial}}</td>
+                              <td colspan="2">{{rif}}</td>
+                          </tr>
+                          <tr>
+                              <th class="td-center" colspan="5">2.3 Denominación Comercial:</th>
+                          </tr>
+                          <tr>
+                              <td colspan="2"  class=" bold">2.4 Región</td>
+                              <td  class=" bold">2.5 Estado</td>
+                              <td  class=" bold">2.6 Municipio</td>
+                              <td  class=" bold">2.7 Parroquia</td>
+                          </tr>
+                          <tr>
+                              <td colspan="2">{{region}}</td>
+                              <td>{{estado}}</td>
+                              <td>{{municipio}}</td>
+                              <td>{{parroquia}}</td>
+                          </tr>
+                          <tr>
+                              <td colspan="5"  class=" bold">2.8 Ubicación</td>
+                          </tr>
+                          <tr>
+                              <td colspan="5">{{location}}</td>
+                          </tr>
+                          <tr>
+                              <td class=" bold" colspan="3">2.9 N° Teléfono</td>
+                              <td class=" bold" colspan="3">2.10 Email</td>        
+                          </tr>
+                          <tr>
+                              <td colspan="3">{{phone}}</td>
+                              <td colspan="3">{{email}}</td>        
+                          </tr>
+                          <tr>
+                              <th class="td-center" colspan="5">3. DEL REGISTRO DE LA ENTIDAD DE TRABAJO O RAZÓN SOCIAL:</th>
+                          </tr>
+                          <tr>
+                              <td colspan="2" class="bold">3.1 Expediente N° :</td>
+                              <td colspan="2" class="bold">3.2 Solicitud de Inspección N°:</td>
+                              <td colspan="2" class="bold">3.3 Unidad de Fiscalización:</td>
+                          </tr>
+                          <tr>
+                              <td colspan="2">{{expedient}}</td>
+                              <td colspan="2">{{inspection}}</td>
+                              <td colspan="2">{{unidad}}</td>
+                          </tr>
+                          <tr>
+                              <td colspan="2"  class=" bold">3.4 Guía de Inspección Técnica N°:</td>
+                              <td  class=" bold">3.5 Fecha de la Guía Inspección:</td>
+                              <td  class=" bold">3.6 Boleta de Ordenamientos N°:</td>
+                              <td  class=" bold">3.7 Fecha de la Boleta de ordenamientos:</td>
+                          </tr>
+                          <tr>
+                              <td colspan="2">{{numinspectiontechnical}}</td>
+                              <td>{{fechaguia}}</td>
+                              <td>5252</td>
+                              <td>06/02/2023</td>
+                          </tr>
+                          <tr >
+                            <th class="td-center" colspan="5">4.DEL REPRESENTANTE LEGAL DE LA ENTIDAD DE TRABAJO O RAZÓN SOCIAL:</th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"  class=" bold">4.1 Nombre(s)</td>
+                            <td  class=" bold">4.2 Apellido(s)</td>
+                            <td  class=" bold">4.3 C.I.N°</td>
+                            <td  class=" bold">4.4 Cargo</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">{{firstname}}</td>
+                            <td>{{lastname}}</td>
+                            <td>{{identitycard}}</td>
+                            <td>{{position}}</td>
+                        </tr>
+                        <tr>
+                            <th class="td-center" colspan="5">5. DE LOS DATOS DEL ADMINISTRADO (A) DESIGNADO (A) PARA PRACTICAR LA INSPECCIÓN:</th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="bold">5.1 Nombre(s):</td>
+                            <td colspan="2" class="bold">5.2 Apellido(s</td>
+                            <td colspan="2" class="bold">5.3 C.I.N°</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Rafael Ramon</td>
+                            <td colspan="2">Urbaneja Galindo</td>
+                            <td colspan="2">14525363</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="bold">5.4 Cargo :</td>
+                            <td colspan="2" class="bold">5.5 Telefono:</td>
+                            <td colspan="2" class="bold">5.6 Email:</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Coordinador</td>
+                            <td colspan="2">0424-152-36-98</td>
+                            <td colspan="2">coordinador@conapdis.com</td>
+                        </tr>
+                        <tr>
+                            <td class=" bold" colspan="2">a.	Nombre (s):</td>
+                            <td  colspan="2"  class=" bold">b.	Apellido (s):</td>
+                            <td  colspan="2"  class=" bold">c.	C. I. N°:</td>
+                        </tr>
+                    </table>
+                </section>
+                <div class="html2pdf__page-break"/>
+                <section class="pdf-item mt-3">
+                    <table>
 
-
-                            <tr>
-                                <td colspan="2" class="bold">8.5	Firma del Representate Legal:</td>
-                                <td colspan="2" class="bold">8.6 Firma del Inspector</td>
-                                <td colspan="2" class="bold">8.7 Sello Troquelado</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" rowspan="4">xxxxxxxxx</td>
-                                <td colspan="2" rowspan="4">xxxxxxxxxx</td>
-                                <td colspan="2" rowspan="4">xxxxxxxxxx</td>
-                              
-                            </tr>
-                        </table>
-                    </v-row>
-                    <v-row class="mt-5 parrafo">
-                        <p class="text-center inter">Av. Casanova con Calle Villa Flor. Edificio Centro Profesional del Este. Piso Mezzanina 1. Oficina Edificio Anexo. Sector El Recreo
-                            Caracas Distrito Capital. Zona Postal 1050. Números telefónicos: (0212) 762.00.39 / 762.96.45
-                            www.conapdis.gob.ve  /  fiscalizacion@conapdis.gob.ve  /  @conapdis
-                            
-                        </p>
-                    </v-row>
-                    <div class="mt-5 d-flex justify-end ">
-                        <v-btn  small @click="generateReport" color="success"   >{{ btnSave }}</v-btn> 
-                    </div>
+                        <tr>
+                            <th class="td-center" colspan="5">6. DE LA CLASIFICACIÓN DE LA EDIFICACIÓN SEGÚN EL TIPO DE OCUPACIÓN</th>
+                        </tr>
+                        <tr>
+                            <td colspan="5" class="text-center">{{ocupationtype}}</td>
+                        </tr>
+                        <tr>
+                            <th class="td-center" colspan="5">7. DEL CUMPLIMIENTO DE LAS NORMAS Y REGLAMENTACIONES TÉCNICAS DE ACCESIBILIDAD:</th>
+                        </tr>
+                        <tr>
+                            <td colspan="5">En acatamiento a lo establecido en el artículo 81 de la Constitución de la República Bolivariana de Venezuela de 1999; 
+                                concatenado con los artículos 3 literales “b” y “f” artículo 4 literal “e” artículo 5 numeral 2 y el artículo 9 numeral 
+                                1 literal “a” y numeral 2 literales “a”, “b” y “d” de la Convención Sobre los Derechos de las Personas con Discapacidad 
+                                del 13/12/2006; y, con los artículos: 4, 31, 32 y 35 de la Ley para las Personas con Discapacidad del 05/01/2007; Se deja 
+                                constancia que inspectores adscritos a la Gerencia de Fiscalización del Consejo Nacional para las Personas con Discapacidad 
+                                (CONAPDIS), practicaron una inspección técnica especializada en la edificación privada de uso público, entidad de trabajo 
+                                o razón social más arriba identificada en renglón correspondiente N° 2; A los fines de verificar el cumplimiento de las 
+                                normas y reglamentaciones técnicas en materia de accesibilidad establecidas en la Norma Técnica FONDONORMA (NTF) 2733 
+                                “Principios Generales para el Diseño, Proyecto, Construcción, Remodelación y Adecuación de Edificaciones para evitar las 
+                                Barreras Físicas y que dichos espacios sean completamente Accesible y Transitable con Autonomía, Comodidad y Seguridad 
+                                por las Personas”; y, según consta en guía de inspección técnica referida más arriba en renglón correspondiente 
+                                N° 3: 2.4 y 2.5 y después de ordenarse la reparación según boleta de ordenamiento referida más arriba en renglón 
+                                correspondiente N° 3: 3.6 y 3.7 y, subsanadas las fallas que fueron identificadas durante el desarrollo de la inspección 
+                                técnica especializada; Se pudo comprobar, por parte entidad de trabajo o razón social más arriba identificada en renglón 
+                                correspondiente N° 2; el cumplimiento de las normas y reglamentaciones técnicas en materia de accesibilidad contenidas 
+                                en la norma venezolana NTF FONDONORMA 2733 y demás referencias normativas nacionales que contienen disposiciones que al 
+                                ser citadas constituyen requisitos de esta norma venezolana (NTF FONDONORMA 2733), así como de las referencias de normativas 
+                                y reglamentaciones técnicas del Instituto Uruguayo de Normas Técnicas (UNIT) en materia de Accesibilidad al Medio Físico, 
+                                que son objeto de consulta hasta tanto sea publicada la Norma Venezolana Correspondiente.<br><br>
+                                La presente acta es válida única y exclusivamente ante esta Institución (CONAPDIS), por cuanto forma parte 
+                                del proceso de tramitación del “Certificado de Cumplimiento ABI”; No es válida para realizar trámites administrativos 
+                                ante otros Organismos o Entes del Estado; Para tales fines, el documento que se debe exigir es el “Certificado de Cumplimiento ABI” 
+                                que es el documento definitivo expedido por el CONAPDIS, válido por un año.
+                            </td>
+                     
+                        </tr>
+                        <tr>
+                            <th class="td-center" colspan="5">8. DE LAS FIRMAS DEL INSPECTOR ACTUANTE Y DE LA  ENTIDAD DE TRABAJO O RAZÓN SOCIAL</th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"  class=" bold">8.1 Nombre(s)</td>
+                            <td  class=" bold">8.2 Apellido(s)</td>
+                            <td  class=" bold">8.3 C.I.N°</td>
+                            <td  class=" bold">8.4 Providencia</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">{{firstnameinspector}}</td>
+                            <td>{{lastnameinspector}}</td>
+                            <td>{{cedulainspector}}</td>
+                            <td>{{providence}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="bold">8.5	Firma del Representate Legal:</td>
+                            <td colspan="2" class="bold">8.6 Firma del Inspector</td>
+                            <td colspan="2" class="bold">8.7 Sello Troquelado</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" rowspan="4">xxxxxxxxx</td>
+                            <td colspan="2" rowspan="4">xxxxxxxxxx</td>
+                            <td colspan="2" rowspan="4">xxxxxxxxxx</td>
+                          
+                        </tr>
+                    </table>
+                </section>
+                <v-row class="mt-5 parrafo">
+                    <p class="text-center inter">Av. Casanova con Calle Villa Flor. Edificio Centro Profesional del Este. Piso Mezzanina 1. Oficina Edificio Anexo. Sector El Recreo
+                        Caracas Distrito Capital. Zona Postal 1050. Números telefónicos: (0212) 762.00.39 / 762.96.45
+                        www.conapdis.gob.ve  /  fiscalizacion@conapdis.gob.ve  /  @conapdis
+                        
+                    </p>
+                </v-row>
+                <div class="mt-5 d-flex justify-end ">
+                    <v-btn  small @click="generateReport" color="success"   >{{ btnSave }}</v-btn> 
                 </div>
             </section>
         </vue-html2pdf>
@@ -359,7 +354,7 @@
     },
     mounted(){
     this.nota_entrega_id = this.$route.params.id
-    this.notification = 'Notification ' + this.nota_entrega_id
+    this.notification = 'Acta de Cumplimiento'
     this.getCompliancesById(this.nota_entrega_id)
     }
  }

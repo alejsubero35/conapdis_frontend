@@ -7,7 +7,11 @@
             class="laoding"
         ></v-progress-circular>
         </v-overlay>
-        <ButtonOpen  @openView="openView" :title="title" />
+        <div class="title"> 
+            <v-col cols="12" sm="12" md="12">
+                <h3 class="title_section">BOLETAS DE ORDENAMIENTO</h3><br>
+            </v-col>
+        </div>
      <!--    <v-col cols="12">
             <Filtro  :endpoint="endpoint" :headers="headers"  :label="label" :moduleStore="moduleStore" v-on:updateData="handleDataUser"/>
         </v-col> -->
@@ -208,5 +212,12 @@ export default class Usuario extends Vue {
     padding: 15px;
     border-radius: 13px;
     margin: 0;
+}
+.title{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 20px;
 }
 </style>

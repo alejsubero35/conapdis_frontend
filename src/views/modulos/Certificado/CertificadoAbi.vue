@@ -7,7 +7,12 @@
             class="laoding"
         ></v-progress-circular>
         </v-overlay>
-   <!--      <ButtonOpen  @openView="openView" :title="title" /> -->
+        <div class="title"> 
+            <v-col cols="12" sm="12" md="12">
+                <h3 class="title_section">CERTIFICADOS ABI</h3><br>
+            </v-col>
+        </div>
+        <hr>
      <!--    <v-col cols="12">
             <Filtro  :endpoint="endpoint" :headers="headers"  :label="label" :moduleStore="moduleStore" v-on:updateData="handleDataUser"/>
         </v-col> -->
@@ -54,7 +59,7 @@
                 </v-data-table>
             </template>
         </v-col>
-        <ModalDelete @deleteData="deleteInspeccion" :titlemodal="titlemodal" :textbody="textbody" :dialogDelete="dialogDelete" @cerrarModal="cerrarModal"/>
+        <ModalDelete  :titlemodal="titlemodal" :textbody="textbody" :dialogDelete="dialogDelete" @cerrarModal="cerrarModal"/>
         <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color"/>
     </v-row>
 </template>
@@ -124,19 +129,6 @@ export default class Usuario extends Vue {
     cerrarModal(event){
         this.dialogDelete = event;
     }
-     async deleteInspeccion(event){
-/*         let dataUpdate : any = []
-        this.dialogDelete = event;
-        //this.overlay = true
-        const res : any = await certificateModule.delete(this.id_delete);
-        console.log(res.data.data)
-        dataUpdate = res.data.data
-        this.desserts = dataUpdate;
-        this.textmsj = 'Usuario Eliminado con Éxito.'
-        this.snackbar = true
-        this.closeSnackbar()
-        this.overlay = false */
-    } 
     closeSnackbar(){
         setTimeout(() => {
             this.snackbar = false
@@ -208,5 +200,12 @@ export default class Usuario extends Vue {
     padding: 15px;
     border-radius: 13px;
     margin: 0;
+}
+.title{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 20px;
 }
 </style>

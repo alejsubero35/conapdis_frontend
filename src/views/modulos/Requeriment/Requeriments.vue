@@ -54,7 +54,7 @@
                         <v-file-input
                             :rules="(doc.is_required) ? rules : Notrules"
                             :disabled="(doc.approved == 1) ? disabledFile : !disabledFile"
-                            accept="image/png, image/jpeg, image/jpg, application/pdf"
+                            accept=".pdf,.jpg,.png,.jpeg"
                             outlined 
                             dense
                             :label="(doc.approved == 1) ? 'Documento Adjuntado en Revisión' : placeholder"
