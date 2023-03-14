@@ -71,8 +71,9 @@
                             target="_blank"
                             :color="(doc.status == 'pending') ? 'warning' : 'green'"
                             text-color="white"
+                            style="width: 100%;"
                         >
-                        {{ doc.title }}
+                       {{ doc.title }}
                        </v-chip>
                     </v-col>
                    </v-row>
@@ -243,6 +244,7 @@ export default class RequerimentsDocuments extends Vue {
     back() {
         setTimeout(() => {
             this.snackbar = false
+            this.$router.push({ name: 'dashboard' });
         },2000);
     }
     backClear(doc) {

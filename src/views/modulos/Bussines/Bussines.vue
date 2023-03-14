@@ -424,6 +424,38 @@
             </form-wizard> 
         </div>
     	<Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color"/>
+		<v-dialog
+		v-model="dialog" max-width="400">
+		<v-card>
+		  <v-card-title class="text-h5">
+			Empresa Registrada con Éxito
+		  </v-card-title>
+  
+		  <v-card-text>
+			Se le ha enviado un Email a su Correo Electrónico, por favor indique si desea cargar los documentos 
+		  </v-card-text>
+  
+		  <v-card-actions>
+			<v-spacer></v-spacer>
+  
+			<v-btn
+			  color="danger"
+			  text
+			  @click="goHome()"
+			>
+			  No
+			</v-btn>
+  
+			<v-btn
+			  color="primary"
+			  text
+			  @click="goDocuments()"
+			>
+			  Si
+			</v-btn>
+		  </v-card-actions>
+		</v-card>
+	  </v-dialog>
     </div>
 </template>
 <script lang="ts">
@@ -594,12 +626,13 @@ export default class Bussines extends Vue {
     	const data = await bussinesModule.save(this.FormRequest)
 		console.log(data)
 		if(data.code == 201){
-			this.textmsj = 'Empresa Creada con Éxito.'
+	/* 		this.textmsj = 'Empresa Creada con Éxito.'
 			this.color = 'success'
 			this.snackbar = true
-			this.back();
+			this.back(); */
 			await sessionModule.updateStatusBussines('registered')
 			this.overlay = false 
+			this.dialog = true
 		} else {
 			this.textmsj = 'Error al Registrar los datos de la Empresa.'
 			this.color = 'error'
@@ -612,14 +645,12 @@ export default class Bussines extends Vue {
  		this.overlay = true
     	const data = await bussinesModule.update(this.FormRequest)
 	
-		if(data.code == 202){
+		if(data.code == 201){
 			this.textmsj = 'Empresa Actualizada con Éxito.'
 			this.color = 'success'
 			this.snackbar = true
 			this.back();
-			//await sessionModule.updateStatusBussines(data) // esta peticion esta aqui mientras hago las pruebas
-			this.overlay = false 
-		
+			this.overlay = false 		
 		} else {
 			this.textmsj = 'Error al Actualizar los datos de la Empresa.'
 			this.color = 'error'
@@ -629,6 +660,13 @@ export default class Bussines extends Vue {
 		}
 		//this.reset();
        
+	}
+	async goDocuments(){
+		this.$router.push({ name: 'requeriments' });
+	}
+	async goHome(){
+		this.dialog = false
+		this.$router.push({ name: 'Dashboard' });
 	}
 	async getStates(){
 		const states : any = await bussinesModule.getStatesAll()
@@ -665,7 +703,7 @@ export default class Bussines extends Vue {
     };
     back() {
         setTimeout(() => {
-            this.$router.push({ name: 'pdfnotification' });
+           // this.$router.push({ name: 'pdfnotification' });
             this.snackbar = false
         },2000);
     }

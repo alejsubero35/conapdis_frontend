@@ -202,48 +202,58 @@
 	
 			})
 		}
-		/* @Action
-		searchByErrors(data:any){
-			return new Promise((resolve, reject) => {
-				if (data.endpoint == 'tickets') {
-
-				}
-			http.get(`/tickets?filter[error_id]=${data.id}&filter[customer_id]=${this.getCustomerId}&include=customers,serials,plans,errors,ticketstatuses`)
-			.then(response  => {
-
-				if (response.status === 200) {   
-					
-					resolve(response);  
+		@Action
+		getNotificationsAll() {
+			return new Promise((resolve, reject) => {  
+				http.get(`/notifications`)
+				.then(response =>  {
+	
+					if (response.status === 200) {     
+						resolve(response); 
+					}
+				})
+				.catch(error => {
+					reject(error)
+				})
 			
-				}
-			})
-			.catch(error => {
-			reject(error)
-			})
-		})
+		
+			}) 
+		}
+		
+		@Action
+		getNotificationsById(id) {
+			return new Promise((resolve, reject) => {  
+				http.get(`/notifications/${id}/markNotification`)
+				.then(response =>  {
+	
+					if (response.status === 200) {     
+						resolve(response); 
+					}
+				})
+				.catch(error => {
+					reject(error)
+				})
 			
+		
+			}) 
 		}
 		@Action
-		searchBySerials(data:any){
-			return new Promise((resolve, reject) => {
-				if (data.endpoint == 'tickets') {
-
-				}
-			http.get(`/tickets?filter[serial_id]=${data.id}&filter[customer_id]=${this.getCustomerId}&include=customers,serials,plans,errors,ticketstatuses`)
-			.then(response  => {
-
-				if (response.status === 200) {   
-					
-					resolve(response);  
+		getNotificationsByIdModel(id) {
+			return new Promise((resolve, reject) => {  
+				http.get(`/notifications/${id}/markNotification`)
+				.then(response =>  {
+	
+					if (response.status === 200) {     
+						resolve(response); 
+					}
+				})
+				.catch(error => {
+					reject(error)
+				})
 			
-				}
-			})
-			.catch(error => {
-			reject(error)
-			})
-		})
-			
-		} */
+		
+			}) 
+		}
   }  
   
   export default getModule(globalModule);
