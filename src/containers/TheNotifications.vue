@@ -36,7 +36,7 @@
   </template>
   <script lang="ts">
   
-  import { Component, Vue } from 'vue-property-decorator';
+  import { Component, Vue, Watch } from 'vue-property-decorator';
   import Logout from '@/views/auth/Logout.vue';
   import globalModule from '@/store/modules/globalModule';
   import sessionModule from '@/store/modules/sessionModule';
@@ -50,9 +50,12 @@
   
   export default class TheNotifications extends Vue {
     arrayNotifications = [];
+    intervalID : any = ''
+    getTpken = storageData.get('_token')
     get getToken() {
         return sessionModule.getTokens; 
     }
+
   async viewNotifications(item){
     const data: any = await globalModule.getNotificationsById(item.id_notification);
                       await globalModule.getNotificationsByIdModel(item.id_model);
@@ -74,19 +77,18 @@
     const data: any = await globalModule.getNotificationsAll();
     this.arrayNotifications = data.data.data
     console.log(data.data.data)
- 
+  }
+  start(){
+    this.intervalID = setInterval(this.getNotificationsAll, 15000);
+  }
+  stop(){
+        clearInterval(this.intervalID);
   }
   mounted(){
-
-    this.getNotificationsAll()
-    if(storageData.get('_token') != 'null'){
-      setInterval(() => {
-          console.log(storageData.get('_token'))
-        this.getNotificationsAll()
-      },5000 );
-    }
-
- 
+    this.start()
+  }
+  destroyed() {
+    this.stop()
   }
   
   }

@@ -17,12 +17,13 @@
       />
     </CSidebarBrand>
       <div>
-        <CRenderFunction  flat :content-to-render="$options.certificateapproved"/>
-<!--      <CRenderFunction v-if="isBussines      == 'pending'" flat :content-to-render="$options.estandar"/>
+        <!-- <CRenderFunction  flat :content-to-render="$options.certificateapproved"/> -->
+          <CRenderFunction v-if="isBussines      == 'pending'" flat :content-to-render="$options.estandar"/>
           <CRenderFunction v-else-if="isBussines == 'registered'" flat :content-to-render="$options.admin"/>
+          <CRenderFunction v-else-if="isBussines == 'inspection_request'" flat :content-to-render="$options.inspeccionRequest"/>
           <CRenderFunction v-else-if="isBussines == 'document_aproved'" flat :content-to-render="$options.approved"/>
           <CRenderFunction v-else-if="isBussines == 'certificate_pending'" flat :content-to-render="$options.certificatepending"/>
-          <CRenderFunction v-else flat :content-to-render="$options.certificateapproved"/> -->
+          <CRenderFunction v-else flat :content-to-render="$options.certificateapproved"/>
 
       </div>
     <CSidebarMinimizer
@@ -35,6 +36,7 @@
 
 <script>
 import admin   from './optionmenu/_admin'
+import inspeccionRequest from './optionmenu/_inspection_request'
 import certificatepending from './optionmenu/_certificate_pending'
 import certificateapproved from './optionmenu/_certificate_approved'
 import estandar  from './optionmenu/_estandar'
@@ -45,7 +47,7 @@ import sessionModule from '@/store/modules/sessionModule';
 
 export default {
   name: 'TheSidebar',
-  admin,certificatepending,estandar,approved,certificateapproved,
+  admin,certificatepending,estandar,approved,certificateapproved,inspeccionRequest,
   
   components:{
   

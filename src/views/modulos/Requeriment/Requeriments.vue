@@ -22,7 +22,7 @@
                         <v-text-field :disabled="disabled" label="Nombre Documento" placeholder="Nombre Documento" outlined dense :rules="rules" v-model="doc.title">
                         </v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col v-if="doc.url == ''" cols="12" sm="6" md="4">
                         <v-menu
                             :close-on-content-click="true"
                             :nudge-right="40"
@@ -187,7 +187,9 @@ export default class RequerimentsDocuments extends Vue {
         const data    = await documentModule.saveDocuments(dataDoc)  
         if(data.code == 201 ){
             this.textmsj  = 'Documentos Cargados con Éxito.'
+            this.color = 'success'
             this.snackbar = true
+            await sessionModule.updateStatusBussines('inspection_request')
             this.back();
             this.disabledBtn = true
             this.overlay  = false
@@ -244,7 +246,7 @@ export default class RequerimentsDocuments extends Vue {
     back() {
         setTimeout(() => {
             this.snackbar = false
-            this.$router.push({ name: 'dashboard' });
+            this.$router.push({ name: 'Dashboard' });
         },2000);
     }
     backClear(doc) {
