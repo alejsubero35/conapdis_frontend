@@ -130,9 +130,6 @@ import {
 						const busine: any     		= login.user.busine[0]
 						storageData.set('_bussines', busine);
 						this.context.commit('setBussines', busine);
-					}else{
-						storageData.set('_bussines', login.user.busine);
-						this.context.commit('setBussines', login.user.busine);
 					}
 				
 					const full_name: string 	= login.user.first_name + ' ' + login.user.last_name

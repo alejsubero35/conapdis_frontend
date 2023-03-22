@@ -60,7 +60,7 @@
                             :label="(doc.approved == 1) ? 'Documento Adjuntado en Revisión' : placeholder"
                             @change="updateDocument(doc)"
                             v-model="doc.name"
-                            
+                            show-size
                         >
                      </v-file-input>
                     </v-col>
@@ -134,6 +134,7 @@ export default class RequerimentsDocuments extends Vue {
     dataModalAlert = ''
     dialogOpen = false
     tempDoc = {}
+    arrayExtension = [ 'pdf','jpg','png','jpeg']
     data(){
         return{
             rules: [
@@ -224,16 +225,29 @@ export default class RequerimentsDocuments extends Vue {
         this.documents[index].file =  imgbase64; 
         this.documents[index].name =  fileName;     
     }
-    getBase64(file,doc) { 
-        const _this = this
-        var reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-        _this.getImgBase(reader.result,doc,file) 
-        };
-        reader.onerror = function (error) {
-            console.log('Error: ', error);
-        };
+    getBase64(file,doc) {
+        for(var i=0; i<this.arrayExtension.length;i++){ 
+            if(this.arrayExtension[i] == file.name.split('.').pop() ){
+                const _this = this
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function () {
+                _this.getImgBase(reader.result,doc,file) 
+                };
+                reader.onerror = function (error) {
+                    console.log('Error: ', error);
+                };
+               return true
+            }else{
+                this.dialogOpen = true
+                this.dataModalAlert = 'Extensión NO permitida'
+                this.backClear(doc)
+                return false
+            }  
+        }
+        
+
+  
     }
     closeModal(){
         this.dialogOpen = false
