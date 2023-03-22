@@ -59,10 +59,10 @@
                             dense
                             :label="(doc.approved == 1) ? 'Documento Adjuntado en Revisión' : placeholder"
                             @change="updateDocument(doc)"
-                            v-model="doc.name"
-                            show-size
+                            v-model="doc.name"                            
                         >
                      </v-file-input>
+                     <span class="d-flex justify-end" style="margin-top:-25px">{{validation}} |  {{ doc.max_size.substring(0, doc.max_size.length - 6) }} MB</span>
                     </v-col>
                     <v-col v-else cols="12" sm="6" md="4">
                          <v-chip
@@ -108,6 +108,7 @@ export default class RequerimentsDocuments extends Vue {
     [x: string]: unknown;
     value = ''
     label = 'prueba'
+    validation = '(Solo png,jpg,jpeg,pdf)'
     overlay = false;
     show : Boolean =  false;
     bussines_id  = ''
