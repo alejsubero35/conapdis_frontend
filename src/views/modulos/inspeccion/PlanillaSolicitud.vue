@@ -199,20 +199,21 @@
     
             this.overlay = true
             const {data} = await inspeccionModule.getSolicitudById(id)   
-            console.log(data)
+            let busine = (data.data.bussine) ? data.data.bussine : null
+
             this.numeroplanilla         = data.data.id
             this.fechaplanilla          = data.data.date
-            this.expediente             = data.data.expedient.num_expedient
+            this.expediente             = (data.data.expedient) ? data.data.expedient.num_expedient : ''
             this.solicitud              = data.data.id
-            this.unidadfiscalizacion    = data.data.inspection_unit.name
-            this.razonsocial            = data.data.bussine.company_name
-            this.rif                    = data.data.bussine.rif
-            this.denominacioncomercial  = data.data.bussine.comercial_designation
-            this.region                 = data.data.country.name
-            this.estado                 = data.data.state.name
-            this.municipio              = data.data.municipality.name
-            this.parroquia              = data.data.parishe.name
-            this.direccion              = data.data.bussine.location    
+            this.unidadfiscalizacion    = (data.data.inspection_unit) ? data.data.inspection_unit.name : ''
+            this.razonsocial            = (busine) ? busine.company_name : ''
+            this.rif                    = (busine) ? busine.rif : ''
+            this.denominacioncomercial  = (busine) ? busine.comercial_designation : ''
+            this.region                 = (data.data.country) ? data.data.country.name : ''
+            this.estado                 = (data.data.state) ? data.data.state.name: ''
+            this.municipio              = (data.data.municipality) ? data.data.municipality.name : ''
+            this.parroquia              = (data.data.parishe) ? data.data.parishe.name : ''
+            this.direccion              = (busine) ? busine.company_name : ''.location    
             this.firstname              = this.currentUser.first_name
             this.lastname               = this.currentUser.last_name
             this.position               = this.currentUser.position.name
@@ -227,7 +228,7 @@
         this.notification = 'Notification ' + this.nota_entrega_id
         this.getSolicitudById(this.$route.params.id)
         this.currentUser = storageData.get('_User');
-        console.log(this.currentUser)
+        
 
      }
  }
