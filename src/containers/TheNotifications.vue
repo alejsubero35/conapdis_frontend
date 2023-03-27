@@ -4,6 +4,7 @@
       class="c-header-nav-items"
       placement="bottom-end"
       add-menu-classes="pt-0"
+      v-if="arrayNotifications.length > 0"
     >
       <template #toggler>
         <CHeaderNavLink>
@@ -25,11 +26,8 @@
           </div>
         </CHeaderNavLink>
       </template>
-      <CDropdownItem  class="item" v-for="(item,index) in arrayNotifications" :key="index">
-        <p class="item-notify"  @click="viewNotifications(item)">{{item.title}}</p>
-  <!--  <ul v-for="(array,index) in arrayNotifications" :key="index">
-          <li style="list-style:none" @click="viewNotifications(index)"></li>
-        </ul> -->
+      <CDropdownItem class="item" v-for="(item,index) in arrayNotifications" :key="index">
+        <p   class="item-notify"  @click="viewNotifications(item)">{{item.title}}</p>
       </CDropdownItem>    
 
     </CDropdown>

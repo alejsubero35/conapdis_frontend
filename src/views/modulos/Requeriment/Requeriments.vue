@@ -35,24 +35,25 @@
                                 v-model="doc.registration_date"
                                 label="Fecha Vencimiento"
                                 append-icon="mdi-calendar"
-                                readonly
                                 v-bind="attrs"
                                 v-on="on"
                                 dense 
                                 outlined
-                                :rules="(doc.url == '') ? rules : Notrules"
+                                :rules="(doc.url == '' && doc.is_required == 1) ? rules : Notrules"
                             ></v-text-field>
                             </template>
                             <v-date-picker
                             v-model="date"
                             @change="updateFecha(doc.id)"
                             no-title
+                            :allowed-dates="disablePastDates"
+                            locale="es"
                             ></v-date-picker>
                         </v-menu>
                     </v-col>
                     <v-col v-if="doc.url == ''" cols="12" sm="6" md="4">
                         <v-file-input
-                            :rules="(doc.is_required) ? rules : Notrules"
+                            :rules="(doc.is_required == 1) ? rules : Notrules"
                             :disabled="(doc.approved == 1) ? disabledFile : !disabledFile"
                             accept=".pdf,.jpg,.png,.jpeg"
                             outlined 
@@ -62,7 +63,7 @@
                             v-model="doc.name"                            
                         >
                      </v-file-input>
-                     <span class="d-flex justify-end" style="margin-top:-25px">{{validation}} |  {{ doc.max_size.substring(0, doc.max_size.length - 6) }} MB</span>
+                     <span class="d-flex justify-end" style="margin-top:-25px;color:#4B4B4B">{{validation}} |  {{ doc.max_size.substring(0, doc.max_size.length - 6) }} MB</span>
                     </v-col>
                     <v-col v-else cols="12" sm="6" md="4">
                          <v-chip
@@ -135,7 +136,13 @@ export default class RequerimentsDocuments extends Vue {
     dataModalAlert = ''
     dialogOpen = false
     tempDoc = {}
-    arrayExtension = [ 'pdf','jpg','png','jpeg']
+    arrayExtension = [ 'pdf','jpg','png','jpeg','PNG']
+    dateP = new Date().toISOString().substr(0,10)
+    max = new Date(Date.now() - 315569260000).toISOString().substr(0,10)
+    arrayDates = []
+    disablePastDates(val) {
+       return val >= new Date().toISOString().substr(0, 10)
+    }
     data(){
         return{
             rules: [
@@ -165,6 +172,7 @@ export default class RequerimentsDocuments extends Vue {
         this.overlay  = true
         const documents : any = await  documentModule.getDocumentsAll();
         this.documents = documents.data.data;
+        this.validateBtn()
         this.overlay  = false
     }
 
@@ -173,27 +181,29 @@ export default class RequerimentsDocuments extends Vue {
         delete this.FormRequestDocuments.name
         const events = []
         for(var i=0; i<this.FormRequestDocuments.length;i++){ 
-            if(this.FormRequestDocuments[i].url == '' ){
+            if(this.FormRequestDocuments[i].url == '' && this.FormRequestDocuments[i].bussines_id != undefined ){
                 events.push(this.FormRequestDocuments[i])
             }  
         }
-        console.log(events)
-        if (valid) {
-            this.saveDocuments(events)
+        if(events.length > 0){
+            if (valid) {
+                this.saveDocuments(events)
+            }
         }
+    
     }
 
     async saveDocuments(dataDoc) { 
     
         this.overlay  = true
         const data    = await documentModule.saveDocuments(dataDoc)  
-        if(data.code == 201 ){
+        if(data.code == 200 || data.code == 201 ){
             this.textmsj  = 'Documentos Cargados con Éxito.'
             this.color = 'success'
             this.snackbar = true
             await sessionModule.updateStatusBussines('inspection_request')
             this.back();
-            this.disabledBtn = true
+          //  this.disabledBtn = true
             this.overlay  = false
         } else {
             
@@ -226,9 +236,9 @@ export default class RequerimentsDocuments extends Vue {
         this.documents[index].file =  imgbase64; 
         this.documents[index].name =  fileName;     
     }
-    getBase64(file,doc) {
+    getBase64(file,doc) {console.log(file.name.split('.').pop())
         for(var i=0; i<this.arrayExtension.length;i++){ 
-            if(this.arrayExtension[i] == file.name.split('.').pop() ){
+            if(this.arrayExtension[i] === file.name.split('.').pop() ){
                 const _this = this
                 var reader = new FileReader();
                 reader.readAsDataURL(file);
@@ -246,9 +256,6 @@ export default class RequerimentsDocuments extends Vue {
                 return false
             }  
         }
-        
-
-  
     }
     closeModal(){
         this.dialogOpen = false
@@ -269,10 +276,23 @@ export default class RequerimentsDocuments extends Vue {
             doc.name = null
         },1500);
     }
+    async validateBtn(){
+        const events = []
+        for(var i=0; i<this.FormRequestDocuments.length;i++){ 
+            if(this.FormRequestDocuments[i].url == ''){
+                events.push(this.FormRequestDocuments[i])
+            }  
+        }
+        if (events.length > 0){
+            this.disabledBtn = false
+        } else {
+            this.disabledBtn = true
+        }
+    }
     mounted() {
         this.getDocuments()
-        if(this.getBussines){
-            storageData.set('bussines_id',this.getBussines.id)
+        if(storageData.get('_bussines') !== undefined){
+            storageData.set('bussines_id',storageData.get('_bussines').id)
         }
 
     }

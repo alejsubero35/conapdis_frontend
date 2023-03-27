@@ -615,7 +615,7 @@ export default class Bussines extends Vue {
 		}
 	}
 	onComplete() {console.log(this.FormRequest)
-		if (this.FormRequest.id > 0) {console.log(10)
+		if (this.FormRequest.id > 0) {
 			this.updateBussines();
 		} else {console.log(20)
 			this.saveBussines();
@@ -703,7 +703,7 @@ export default class Bussines extends Vue {
     };
     back() {
         setTimeout(() => {
-           // this.$router.push({ name: 'pdfnotification' });
+			this.tabIndex = 0
             this.snackbar = false
         },2000);
     }
@@ -736,13 +736,13 @@ export default class Bussines extends Vue {
 		this.getEconomicActivies()
 		this.getTypeCompany()
 		this.getUserType()
-		console.log(storageData.get('_bussines'))
-		if (storageData.get('_bussines') !== null) {alert('dentro del if')
+
+		if (storageData.get('_bussines') !== null) {
 			this.overlay = true
 			this.bussinesform = storageData.get('_bussines')
 			if(storageData.get('_bussines').hasOwnProperty('is_major')){
-				this.sucursal = (this.getBussines.is_major == false) ? true : false
-				this.showSucursal = true
+				this.sucursal = (this.getBussines.is_major == false) ? false : true
+				this.showSucursal = (this.getBussines.is_major == false) ? false : true
 				let cadena  = this.getBussines.code_branch_office;
 				var result  = (cadena) ? cadena.split('-')[1] : '';
 				var result2 = (cadena) ? cadena.split('-')[2] : '';
