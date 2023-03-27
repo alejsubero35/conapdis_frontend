@@ -148,7 +148,7 @@ export default class Usuario extends Vue {
             this.snackbar = false
         },2000);
     }
-    handleDataUser(event){console.log(event)
+    handleDataUser(event){
         this.desserts = event;
         this.loadTable = false;
     }
