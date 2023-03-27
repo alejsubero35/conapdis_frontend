@@ -80,7 +80,12 @@ http.interceptors.response.use( (response) => {
   return response;
 
 }, async (error: any) => {
-  return error.response.data;
+  const { config, response: { status } } = error;
+
+  if (status === 401) {
+     await session.redirectLogin();
+     return error;
+  } 
 });
 
 

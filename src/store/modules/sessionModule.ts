@@ -6,12 +6,15 @@ import {
 	Action,
 	VuexModule,
   } from 'vuex-module-decorators';
-  import store from '@/store';
-  import { UserSubmit } from '../interfaces/Auth';
-  import { UserToken } from '../interfaces/UserToken';
-  import { http } from '@/utils/http';
-  import { User } from '../interfaces/User';
-  import storageData from '@/store/services/storageService'
+import store from '@/store';
+import router from '@/router';
+import VueRouter from 'vue-router'
+const { isNavigationFailure, NavigationFailureType } = VueRouter
+import { UserSubmit } from '../interfaces/Auth';
+import { UserToken } from '../interfaces/UserToken';
+import { http } from '@/utils/http';
+import { User } from '../interfaces/User';
+import storageData from '@/store/services/storageService'
   
   @Module({
 	namespaced: true,
@@ -239,6 +242,15 @@ import {
 				reject(error)
 			})
 			}) */
+		}
+		@Action
+		async redirectLogin() {
+			localStorage.clear();
+			router.push('/login').catch((e) => {
+				if (!isNavigationFailure(e, NavigationFailureType.redirected)) {
+					Promise.reject(e)
+				}
+			});;
 		}
 		
 	  
