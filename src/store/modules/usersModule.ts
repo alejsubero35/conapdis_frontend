@@ -33,7 +33,11 @@ import {
 			if(payload){
 				dataUsers.code = payload.status
 				const stoken: string  = payload.data.data.access_token;
+				const user: string  = payload.data.data.user;
+				const full_name	= payload.data.data.user.first_name + ' ' + payload.data.data.user.last_name
 				storageData.set('_token', stoken);
+				storageData.set('_User', user);
+				storageData.set('_nameUser', full_name);
 			} else {
 				dataUsers.code = 500;
 				dataUsers.message = 'Error al procesar la Solicitud';

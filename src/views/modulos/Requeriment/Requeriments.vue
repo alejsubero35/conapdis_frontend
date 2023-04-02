@@ -219,43 +219,43 @@ export default class RequerimentsDocuments extends Vue {
         let index  = this.documents.findIndex(({ id })  => id == doc.id)
         const _this = this
         var event = event || window.event;
-
-        if(event.target.files[0].size < this.documents[index].max_size){
-            if(event.target.files[0] != undefined && event.target.files.length == 1){
-                let base64 = await this.getBase64(event.target.files[0],doc)  
+            if(event.target.files[0].type === 'image/png' || event.target.files[0].type === 'image/jpg' || event.target.files[0].type === 'image/jpeg' || event.target.files[0].type === 'application/pdf' ){
+                if(event.target.files[0].size < this.documents[index].max_size){
+                    if(event.target.files[0] != undefined && event.target.files.length == 1){
+                        let base64 = await this.getBase64(event.target.files[0],doc)  
+                    }
+                }else{
+                    this.dialogOpen = true
+                    this.dataModalAlert = 'El Documento excede el tamaño permitido'
+                    this.backClear(doc)
+                }
+            }else{
+                this.dialogOpen = true
+                this.dataModalAlert = 'Extensión NO permitida'
+                this.backClear(doc)
+                return false
             }
-        }else{
-            this.dialogOpen = true
-            this.dataModalAlert = 'El Documento excede el tamaño permitido'
-            this.backClear(doc)
         }
-    }
+
 
     async getImgBase(imgbase64,doc,fileName){  
         let index  = this.documents.findIndex(({ id })  => id == doc.id)
         this.documents[index].file =  imgbase64; 
         this.documents[index].name =  fileName;     
     }
-    getBase64(file,doc) {console.log(file.name.split('.').pop())
-        for(var i=0; i<this.arrayExtension.length;i++){ 
-            if(this.arrayExtension[i] === file.name.split('.').pop() ){
-                const _this = this
-                var reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = function () {
-                _this.getImgBase(reader.result,doc,file) 
-                };
-                reader.onerror = function (error) {
-                    console.log('Error: ', error);
-                };
-               return true
-            }else{
-                this.dialogOpen = true
-                this.dataModalAlert = 'Extensión NO permitida'
-                this.backClear(doc)
-                return false
-            }  
-        }
+    getBase64(file,doc) {
+
+        const _this = this
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+        _this.getImgBase(reader.result,doc,file) 
+        };
+        reader.onerror = function (error) {
+            console.log('Error: ', error);
+        };
+        return true
+
     }
     closeModal(){
         this.dialogOpen = false

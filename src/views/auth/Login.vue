@@ -77,6 +77,7 @@
                                     placeholder="Cédula / Pasaporte"
                                     outlined
                                     dense
+                                    type="number"
                                     :rules="numberRule"
                                     v-model="usersForm.number_document_identity"
                                 ></v-text-field>
@@ -373,17 +374,16 @@ async validate(){
 }
 
     async login() {
-      
         const valid : any =  this.$refs.loginForm.validate();
         this.LoginRequest.email.replace(/\s+/g, '')
         if (valid) { 
             this.overlay = true
             const data : any = await sessionModule.login(this.LoginRequest)
        
-            if (data.code == 200) {
+            if (data.code == 200) {console.log(1)
                 this.$router.push({ name: 'Dashboard' });
                 this.overlay = false
-            } else {
+            } else {console.log(2)
                 this.alert = true
                 this.text = data.message
                 this.overlay = false

@@ -54,18 +54,24 @@
         return sessionModule.getTokens; 
     }
 
-  async viewNotifications(item){
+  async viewNotifications(item){console.log(item)
     const data: any = await globalModule.getNotificationsById(item.id_notification);
-                      await globalModule.getNotificationsByIdModel(item.id_model);
+                      //await globalModule.getNotificationsByIdModel(item.id_model);
     switch (item.type) {
       case 'busine_register':
         this.$router.push({ name: "pdfnotification" });
       break;
-      case '':
-        this.$router.push({ name: "updatepassword" });
+      case 'documents_aproved':
+        this.$router.push({ name: "requeriments" });
       break;
-      case '':
-        this.$router.push({ name: "updatepassword" });
+      case 'ordeing_ballot':
+        this.$router.push({ name: "boletaordenamiento" });
+      break;
+      case 'act_of_compliance':
+        this.$router.push({ name: "actacumplimiento" });
+      break;
+      case 'certificate_abi':
+        this.$router.push({ name: "certificadoabi" });
       break;
       default:
         alert( "Desconozco estos valores" );
