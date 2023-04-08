@@ -214,27 +214,35 @@ export default class RequerimentsDocuments extends Vue {
         let index  = this.documents.findIndex(({ id })  => id == id_)
         this.documents[index].registration_date = this.date
         this.documents[index].bussines_id = (storageData.get('bussines_id')) ? storageData.get('bussines_id') : this.getBussines.id
+        console.log(storageData.get('bussines_id'))
     }
-    async updateDocument(doc){
+    async updateDocument(doc){console.log(doc)
         let index  = this.documents.findIndex(({ id })  => id == doc.id)
         const _this = this
         var event = event || window.event;
-            if(event.target.files[0].type === 'image/png' || event.target.files[0].type === 'image/jpg' || event.target.files[0].type === 'image/jpeg' || event.target.files[0].type === 'application/pdf' ){
-                if(event.target.files[0].size < this.documents[index].max_size){
-                    if(event.target.files[0] != undefined && event.target.files.length == 1){
-                        let base64 = await this.getBase64(event.target.files[0],doc)  
+      
+        if(event.target.files != undefined){
+            if(event.target.files.length > 0){
+                if(event.target.files[0].type === 'image/png' || event.target.files[0].type === 'image/jpg' || event.target.files[0].type === 'image/jpeg' || event.target.files[0].type === 'application/pdf' ){
+                    if(event.target.files[0].size < this.documents[index].max_size){
+                        if(event.target.files[0] != undefined && event.target.files.length == 1){
+                            let base64 = await this.getBase64(event.target.files[0],doc)  
+                        }
+                    }else{
+                        this.dialogOpen = true
+                        this.dataModalAlert = 'El Documento excede el tamaño permitido'
+                        this.backClear(doc)
                     }
                 }else{
                     this.dialogOpen = true
-                    this.dataModalAlert = 'El Documento excede el tamaño permitido'
+                    this.dataModalAlert = 'Extensión NO permitida'
                     this.backClear(doc)
+                    return false
                 }
-            }else{
-                this.dialogOpen = true
-                this.dataModalAlert = 'Extensión NO permitida'
-                this.backClear(doc)
-                return false
             }
+ 
+        }
+
         }
 
 

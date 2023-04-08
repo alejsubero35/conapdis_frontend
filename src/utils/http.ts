@@ -83,9 +83,11 @@ http.interceptors.response.use( (response) => {
   const { config, response: { status } } = error;
 
   if (status === 401) {
-     await session.redirectLogin();
-     return error;
-  } 
+    await session.redirectLogin();
+    return  error;
+ }else{
+   return  error.response.data;
+ }
 });
 
 

@@ -380,10 +380,10 @@ async validate(){
             this.overlay = true
             const data : any = await sessionModule.login(this.LoginRequest)
        
-            if (data.code == 200) {console.log(1)
+            if (data.code == 200) {
                 this.$router.push({ name: 'Dashboard' });
                 this.overlay = false
-            } else {console.log(2)
+            } else {
                 this.alert = true
                 this.text = data.message
                 this.overlay = false
