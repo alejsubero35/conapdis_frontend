@@ -24,7 +24,7 @@
                 <section style="width:100%" class="pdf-item">
                     <TitleSection v-show="btn_atras" :sectiontitle="sectiontitle"/>
                     <div class="logo">
-                        <img style="object-fit: cover;" src="img/logos_CONAPDIS/CABECERA.png"  alt="">
+                        <img style="object-fit: cover;" src="img/logos_conapdis/CABECERA.png"  alt="">
                     </div>
                     <div class="title_section">
                         <h4 class="mt-3">{{ title_section }}</h4>

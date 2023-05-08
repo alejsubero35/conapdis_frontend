@@ -24,7 +24,7 @@
                 <div class="form_contacto">
                     <TitleSection v-show="btn_atras" :sectiontitle="sectiontitle"/>
                     <div class="logo">
-                        <img style="object-fit: cover;" src="img/logos_CONAPDIS/CABECERA.png"  alt="">
+                        <img style="object-fit: cover;" src="img/logos_conapdis/CABECERA.png"  alt="">
                     </div>
                     <div class="title_section">
                         <h2 class="mt-4">{{ title_section }}</h2>

@@ -720,7 +720,7 @@ export default class Bussines extends Vue {
         ],
 		emailRules: [
 			v => !!v || 'E-mail is requerido',
-			v => /.+@.+/.test(v) || 'E-mail must be valid',
+			v => /.+@.+/.test(v) || 'El email debe ser válido',
 		], 
         numberRule: [
             v => !!v || 'campo requerido',

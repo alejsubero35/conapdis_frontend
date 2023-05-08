@@ -15,12 +15,12 @@ export default [
         to: '/bussines',
         icon: 'cibDraugiemLv'
       },
-     {
+ /*     {
         _name: 'CSidebarNavItem',
         name: 'Notificaciones',
         to: '/notification',
         icon: 'cilLan'
-      },
+      }, */
 /*      {
         _name: 'CSidebarNavItem',
         name: 'Solicitudes de Inspección',

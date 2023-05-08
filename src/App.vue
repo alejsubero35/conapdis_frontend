@@ -3,7 +3,7 @@
     <transition name="page" mode="out-in">
       <v-main>
         <router-view/>
-        <add-to-home/>
+        <!-- <add-to-home/> -->
       </v-main>
     </transition>
   </v-app>
