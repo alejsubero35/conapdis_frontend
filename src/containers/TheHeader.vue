@@ -87,4 +87,5 @@ export default {
 .c-header.c-header-fixed{
   position: fixed !important;
 }
+
 </style>

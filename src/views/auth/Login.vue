@@ -208,10 +208,14 @@
                     <v-icon left>mdi-arrow-left-bold-box-outline</v-icon>
                     Login
                 </v-btn>
-                <v-btn  v-show="loginShow"  class="mb-4 btn-login register" @click="registerUser" block color="info" dark>
+                <v-btn  v-show="loginShow"  class="mb-4 btn-login register" @click="registerBussines" block color="info" dark>
+                    <v-icon left>mdi-domain-plus</v-icon>
+                    Registrar Empresa
+                </v-btn>
+              <!--   <v-btn  v-show="loginShow"  class="mb-4 btn-login register" @click="registerUser" block color="info" dark>
                     <v-icon left>mdi-account-outline</v-icon>
                     Registrar Usuario
-                </v-btn>
+                </v-btn> -->
                 <v-alert type="error" v-model="alert" dismissible>
                 {{ text }}
                 </v-alert> 
@@ -399,6 +403,9 @@ async validate(){
         this.registerShow = true
         this.sm = '6'
         this.md = '6'
+    }
+    async registerBussines(){
+        this.$router.push({ name: 'bussines' });
     }
     getIdRole(event) {
         this.usersForm.roles = event

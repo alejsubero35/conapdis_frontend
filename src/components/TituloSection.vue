@@ -34,16 +34,19 @@ export default {
     flex-direction: row;
     align-items: baseline;
     justify-content: space-between;
+    background-color: #3f51b5;
+    color: white;
+    height: 64px;
 }
 .btn_atras{
-    background-color: #fbc907;
-    border: #fbc907
+    background-color: #3f51b5;
+    border: #3f51b5;
 }
 .title_section{
-    color:#000000;
-    font-size: 18px;
+    color:#ffff;
+    font-size: 20px;
+    margin-top: 7px;
 }
-
 @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
     .btn_atras{
         margin-left: 13px;

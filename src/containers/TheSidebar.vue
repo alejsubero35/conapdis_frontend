@@ -17,13 +17,13 @@
       />
     </CSidebarBrand>
       <div>
-        <!-- <CRenderFunction  flat :content-to-render="$options.certificateapproved"/> -->
-          <CRenderFunction v-if="isBussines      == 'pending'" flat :content-to-render="$options.estandar"/>
+        <CRenderFunction  flat :content-to-render="$options.certificateapproved"/>
+          <!-- <CRenderFunction v-if="isBussines      == 'pending'" flat :content-to-render="$options.estandar"/>
           <CRenderFunction v-else-if="isBussines == 'registered'" flat :content-to-render="$options.admin"/>
           <CRenderFunction v-else-if="isBussines == 'inspection_request'" flat :content-to-render="$options.inspeccionRequest"/>
           <CRenderFunction v-else-if="isBussines == 'document_aproved'" flat :content-to-render="$options.approved"/>
           <CRenderFunction v-else-if="isBussines == 'certificate_pending'" flat :content-to-render="$options.certificatepending"/>
-          <CRenderFunction v-else flat :content-to-render="$options.certificateapproved"/>
+          <CRenderFunction v-else flat :content-to-render="$options.certificateapproved"/> -->
 
       </div>
     <CSidebarMinimizer
@@ -106,5 +106,11 @@ export default {
 .c-sidebar .c-sidebar-nav-link:hover, .c-sidebar .c-sidebar-nav-dropdown-toggle:hover {
     color: #fff;
     background: #A8C1C9;
+    border-radius: 35px 0px 0px 35px;
+}
+.c-sidebar .c-sidebar-nav-link.c-active, .c-sidebar .c-active.c-sidebar-nav-dropdown-toggle {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 35px 0px 0px 35px;
 }
 </style>

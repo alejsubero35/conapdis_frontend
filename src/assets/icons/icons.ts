@@ -34,6 +34,7 @@ import {
   cibLibreoffice,
   cibReadTheDocs,
   cibBuffer
+
   
 } from '@coreui/icons'
 
@@ -94,6 +95,8 @@ import {
   cilXCircle,
   cilTrash,
   cilNotes,
+  cilFingerprint
+
   
 
 } from '@coreui/icons'
@@ -150,8 +153,9 @@ export const iconsSet = Object.assign(
     cilUserFollow,
     cilXCircle,
     cilTrash,
-    cilNotes
-  },
+    cilNotes,
+    cilFingerprint 
+   },
   {
     cifUs,
     cifBr,

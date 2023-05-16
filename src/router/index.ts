@@ -42,6 +42,12 @@ const PlanillaBoletaOrdenamiento      = () => import('@/views/modulos/ordenamien
 
 //requirements Bussines
 const RequerimentsBussines            = () => import('@/views/modulos/RequerimentBussines/RequerimentsBussines.vue')
+
+//vincular / desvincular
+const Vincular                        = () => import('@/views/modulos/Vinculaciones/Vincular.vue')
+
+//Declaraciones
+const Declaraciones                   = () => import('@/views/modulos/Declaraciones/Declaraciones.vue')
 // Errors
 const Page404 = () => import('@/views/errors/Page404.vue')
 const Page500 = () => import('@/views/errors/Page500.vue')
@@ -97,7 +103,7 @@ const router = new Router({
           path: 'bussines',
           name: 'bussines',
           component: Bussines,
-          meta: { Auth: true, title: 'Bussines' },
+          meta: { Auth: false, title: 'Bussines' },
      
         },  
         {
@@ -202,6 +208,20 @@ const router = new Router({
           name: 'planillaboletaordenamiento',
           component: PlanillaBoletaOrdenamiento,
           meta: { Auth: true, title: 'PlanillaBoletaOrdenamiento' },
+     
+        }, 
+        {
+          path: 'vincular',
+          name: 'vincular',
+          component: Vincular,
+          meta: { Auth: false, title: 'VincularDesvincular' },
+     
+        }, 
+        {
+          path: 'declaraciones',
+          name: 'declaraciones',
+          component: Declaraciones,
+          meta: { Auth: false, title: 'Declaraciones' },
      
         }, 
            

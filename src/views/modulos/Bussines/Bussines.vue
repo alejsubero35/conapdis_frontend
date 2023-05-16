@@ -17,12 +17,13 @@
             @on-loading="setLoading"
             @on-validate="handleValidation"
             @on-complete="onComplete" 
-            color="#64A14D" 
+            color="#3f51b5" 
             shape="tab" 
             finish-button-text="Guardar" 
             back-button-text="Atrás" 
-            next-button-text="Siguiente">
-                <tab-content title="Información Básica"  icon="mdi mdi-cube-send" :before-change="beforeTabSwitch">
+            next-button-text="Siguiente"
+			>
+                <tab-content title="INFORMACIÓN BÁSICA"  icon="mdi mdi-cube-send" :before-change="beforeTabSwitch">
                     <v-form class="formCliente" ref="validateStepForm"  lazy-validation >	
 						<input type="hidden" v-model="bussinesform.id" value:any="0" >
 						<input type="hidden" v-model="bussinesform.country_id" value:any="237" >
@@ -35,7 +36,6 @@
 								label="Tipo de Rif"
 								placeholder="Tipo de Rif"
 								v-model="bussinesform.type_rif"
-								outlined
 								dense
 								:rules="rules"
 								required
@@ -44,53 +44,23 @@
 							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Rif"
-									placeholder="Rif"
-									outlined
+									placeholder="#-########-#"
+
 									dense
 									:rules="rules"
 									v-model="bussinesform.rif"
-									v-mask="'############'"
+									v-mask="'N-########-#'"
+									@keyup="validateRif(bussinesform.rif)"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="6">
 								<v-text-field
 									label="Razón social"
 									placeholder="Razón social"
-									outlined
+
 									dense
 									:rules="rules"
 									v-model="bussinesform.company_name"
-								></v-text-field>
-							</v-col>
-							<v-col cols="12" sm="6" md="3">
-								<v-switch
-								label="¿Es una Sucursal?"
-								v-model="sucursal"
-								color="success"
-								:value="is_sucursal"  
-								hide-details
-								@change="typeSucursal()"
-								></v-switch>
-							</v-col>
-							<v-col cols="12" sm="6" md="3">
-								<v-text-field
-									v-show="showSucursal"
-									label="N° de Sucursal"
-									placeholder="N° de Sucursal"
-									outlined
-									dense
-									v-model="numero_sucursal"
-									v-mask="'############'"
-								></v-text-field>
-							</v-col>
-							<v-col cols="12" sm="6" md="3">
-								<v-text-field
-									v-show="showSucursal"
-									label="Nombre Sucursal"
-									placeholder="Nombre Sucursal"
-									outlined
-									dense
-									v-model="nombre_sucursal"
 								></v-text-field>
 							</v-col>
 						</v-row>
@@ -105,7 +75,7 @@
 								<v-text-field
 									label="Tomo"
 									placeholder="Tomo"
-									outlined
+
 									dense
 									:rules="rules"
 									v-model="bussinesform.tomo"
@@ -116,7 +86,7 @@
 								<v-text-field
 									label="Folio"
 									placeholder="Folio"
-									outlined
+
 									dense
 									:rules="rules"
 									v-model="bussinesform.folio"
@@ -127,7 +97,7 @@
 								<v-text-field
 									label="Número"
 									placeholder="Número"
-									outlined
+
 									dense
 									:rules="rules"
 									v-model="bussinesform.number"
@@ -152,7 +122,7 @@
 										v-bind="attrs"
 										v-on="on"
 										dense 
-										outlined
+	
 							   
 									></v-text-field>
 									</template>
@@ -170,7 +140,7 @@
 								<v-text-field
 									label="Duración en años"
 									placeholder="Duración en años"
-									outlined
+
 									dense
 									:rules="rules"
 									v-model="bussinesform.duration"
@@ -181,7 +151,7 @@
 								<v-text-field
 									label="Organismo Inscrito a:"
 									placeholder="Organismo Inscrito a:"
-									outlined
+
 									dense
 									:rules="rules"
 									v-model="bussinesform.attached_body"
@@ -191,7 +161,7 @@
 								<v-text-field
 									label="Página Web"
 									placeholder="Página Web"
-									outlined
+
 									dense
 									v-model="bussinesform.web"
 								></v-text-field>
@@ -200,7 +170,6 @@
 								<v-text-field
 								label="Email Empresarial"
 								placeholder="Email Empresarial"
-								outlined
 								dense
 								:rules="emailRules"
 								v-model="bussinesform.email"
@@ -214,7 +183,7 @@
 									label="Sector Económico"
 									placeholder="Sector Económico"
 									v-model="bussinesform.economic_sectors_id"
-									outlined
+
 									dense
 									:rules="rules"
 									required
@@ -228,7 +197,7 @@
 									label="Tipo de Empresa"
 									placeholder="Tipo de Empresa"
 									v-model="bussinesform.company_types_id"
-									outlined
+
 									dense
 									:rules="rules"
 									required
@@ -238,7 +207,7 @@
 								<v-text-field
 									label="Número Patronal  IVSS"
 									placeholder="Número Patronal  IVSS"
-									outlined
+
 									dense
 									:rules="rules"
 									v-model="bussinesform.employer_number_ivss"
@@ -252,7 +221,7 @@
 									label="Actividad Económica"
 									placeholder="Actividad Económica"
 									v-model="bussinesform.economic_activity_id"
-									outlined
+
 									dense
 									:rules="rules"
 									required
@@ -268,7 +237,7 @@
 									label="Tipo de Usuario"
 									placeholder="Tipo de Usuario"
 									v-model="bussinesform.user_type_id"
-									outlined
+
 									dense
 									:rules="rules"
 									required
@@ -278,18 +247,54 @@
 							<v-textarea
 								label="Objeto de la Empresa"
 								placeholder="Objeto de la Empresa"
-								outlined
 								dense
 								:rules="rules"
 								v-model="bussinesform.comercial_designation"
-								rows="3"
+								rows="1"
 							></v-textarea>
 							</v-col>
 						</v-row>
                 	</v-form>
 				</tab-content>
-                <tab-content title="Direccion y Teléfonos"  icon="mdi mdi-cellphone-marker">
+				<tab-content title="RESPOSANBLE DE LA APLICACIÓN"  icon="mdi mdi-account" :before-change="beforeTabSwitchTwo">
                     <v-form class="formCliente" ref="validateStepFormTwo"  lazy-validation >	
+						<input type="hidden" v-model="bussinesform.id" value:any="0" >
+						<v-row>
+							<v-col cols="12" sm="6" md="6">
+								<v-text-field
+									label="Nombre"
+									placeholder="Nombres Responsable de la Aplicación"
+									dense
+									:rules="rules"
+									v-model="bussinesform.first_name"
+								></v-text-field>
+							</v-col>
+							<v-col cols="12" sm="6" md="6">
+								<v-text-field
+									label="Apellido"
+									placeholder="Apellidos Responsable de la Aplicación"
+									dense
+									:rules="rules"
+									v-model="bussinesform.last_name"
+								></v-text-field>
+							</v-col>
+							<v-col cols="12" sm="6" md="6">
+								<v-text-field
+								label="Email"
+								placeholder="Email"
+								dense
+								v-model="bussinesform.email_r"
+							></v-text-field>
+							</v-col>
+							<v-col cols="12" sm="6" md="6">
+								<v-text-field   :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"   :type="show ? 'text' : 'password'"  label="Password" placeholder="Password"  dense :rules="rules" v-model="bussinesform.password"  @click:append="show = !show">
+							   </v-text-field>
+						   </v-col>
+						</v-row>
+                	</v-form>
+				</tab-content>
+                <tab-content title="DIRECCIÓN Y TELÉFONOS"  icon="mdi mdi-cellphone-marker"  :before-change="beforeTabSwitchThree">
+                    <v-form class="formCliente" ref="validateStepFormThree"  lazy-validation >	
 						<v-row>
 							<v-col cols="12" sm="6" md="3">
 								<v-select
@@ -299,7 +304,7 @@
 									label="Estado"
 									placeholder="Estado"
 									v-model="bussinesform.state_id"
-									outlined
+
 									dense
 									:rules="rules"
 									required
@@ -314,7 +319,7 @@
 									label="Municipio"
 									placeholder="Municipio"
 									v-model="bussinesform.municipality_id"
-									outlined
+
 									dense
 									:rules="rules"
 									required
@@ -329,7 +334,7 @@
 									label="Parroquia"
 									placeholder="Parroquia"
 									v-model="bussinesform.parishe_id"
-									outlined
+
 									dense
 									:rules="rules"
 									required
@@ -338,18 +343,18 @@
 							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Teléfono"
-									outlined
+									placeholder="####-#######'"
 									dense
 									:rules="rules"
 									v-model="bussinesform.phone"
-									
+									v-mask="'####-#######'"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="12" md="12">
 								<v-textarea
 									label="Dirección"
 									placeholder="Dirección"
-									outlined
+
 									dense
 									:rules="rules"
 									v-model="bussinesform.location"
@@ -359,8 +364,8 @@
 						</v-row>
                     </v-form>
 				</tab-content>
-				<tab-content title="Representante Legal " icon="mdi mdi-account-box-outline" :before-change="beforeTabSwitchThree">
-					<v-form class="formCliente" ref="validateStepFormThree"  lazy-validation >	
+				<tab-content title="REPRESENTANTE LEGAL" icon="mdi mdi-account-box-outline" :before-change="beforeTabSwitchFour">
+					<v-form class="formCliente" ref="validateStepFormFour"  lazy-validation >	
 						<v-row>
 							<v-col cols="12" sm="6" md="3">
 								<v-select
@@ -370,7 +375,7 @@
 									label="Tipo Documento"
 									placeholder="Tipo Documento"
 									v-model="bussinesform.type_identity_card"
-									outlined
+
 									dense
 									:rules="rules"
 									required
@@ -380,7 +385,7 @@
 								<v-text-field
 									label="Cédula / Pasaporte"
 									placeholder="###########"
-									outlined
+
 									dense
 									:rules="rules"
 									v-model="bussinesform.identity_card_rl"
@@ -391,7 +396,7 @@
 								<v-text-field
 									label="Nombres"
 									placeholder="nombres"
-									outlined
+
 									dense
 									:rules="rules"
 									v-model="bussinesform.first_name_rl"
@@ -402,7 +407,7 @@
 								<v-text-field
 									label="Apellidos"
 									placeholder="Apellidos"
-									outlined
+
 									dense
 									:rules="rules"
 									v-model="bussinesform.last_name_rl"
@@ -412,11 +417,192 @@
 								<v-text-field
 								label="Email"
 								placeholder="Email"
-								outlined
 								dense
 								:rules="emailRules"
 								v-model="bussinesform.email_rl"
 							></v-text-field>
+							</v-col>
+						</v-row>
+					</v-form>	
+				</tab-content>
+				<tab-content title="ACCESIBILIDAD EN EL ENTORNO FISICO" icon="mdi mdi-stairs-up" :before-change="beforeTabSwitchFive">
+					<v-form class="formCliente" ref="validateStepFormFive"  lazy-validation >	
+						<v-row>
+							<v-col style="margin-top: -4%;"  cols="12" sm="12" md="12">
+								<v-row>    
+									<v-col cols="12" sm="6" md="6">
+										<v-switch
+										v-model="bussinesform.rampas"
+										:label="'Rampas: ' + rampasShow"
+										color="success"
+										hide-details
+										class="pl-3 pr-3"
+										:value="rampas"
+										@change="setItem('rampas')"
+										></v-switch>
+										<v-switch
+										v-model="bussinesform.accesibilidad"
+										:label="'Accesibilidad: ' + accesibilidadShow"
+										color="success"
+										hide-details
+										class="pl-3 pr-3"
+										:value="accesibilidad"
+										@change="setItem('accesibilidad')"
+										></v-switch>
+										<v-switch
+										v-model="bussinesform.acceso_directo"
+										:label="`Acceso Directo: ${acceso_directoShow}`"
+										color="success"
+										hide-details
+										class="pl-3 pr-3"
+										:value="acceso_directo"
+										@change="setItem('acceso_directo')"
+										></v-switch>
+										<v-switch
+										v-model="bussinesform.transporte_publico"
+										:label="`Transporte Público: ${transporte_publicoShow}`"
+										color="success"
+										hide-details
+										class="pl-3 pr-3"
+										:value="transporte_publico"
+										@change="setItem('transporte_publico')"
+										></v-switch>
+										<v-switch
+										v-model="bussinesform.transporte_empresa"
+										:label="`Transporte Empresa: ${transporte_empresaShow}`"
+										color="success"
+										hide-details
+										class="pl-3 pr-3"
+										:value="transporte_empresa"
+										@change="setItem('transporte_empresa')"
+										></v-switch>
+										<v-switch
+										v-model="bussinesform.vialidad"
+										:label="`Vialidad: ${vialidadShow}`"
+										color="success"
+										hide-details
+										class="pl-3 pr-3"
+										:value="vialidad"
+										@change="setItem('vialidad')"
+										></v-switch>
+										<v-switch
+										v-model="bussinesform.banos_acondicionados"
+										:label="`Baños acondicionados para discapacidad motora: ${banos_acondicionadosShow}`"
+										color="success"
+										hide-details
+										class="pl-3 pr-3"
+										:value="banos_acondicionados"
+										@change="setItem('banos_acondicionados')"
+										></v-switch>
+										<v-switch
+										v-model="bussinesform.escaleras"
+										:label="`Escaleras: ${escalerasShow}`"
+										color="success"
+										hide-details
+										class="pl-3 pr-3"
+										:value="escaleras"
+										@change="setItem('escaleras')"
+										></v-switch>
+										<v-switch
+										v-model="bussinesform.pasamanos"
+										:label="`Pasamanos: ${pasamanosShow}`"
+										color="success"
+										hide-details
+										class="pl-3 pr-3"
+										:value="pasamanos"
+										@change="setItem('pasamanos')"
+										></v-switch>
+									</v-col>
+									<v-col cols="12" sm="6" md="6">
+										<v-switch
+										v-model="bussinesform.pasillos"
+										:label="`Pasillos: ${pasillosShow}`"
+										color="success"
+										hide-details
+										class="pl-3 pr-3"
+										:value="pasillos"
+										@change="setItem('pasillos')"
+										></v-switch>
+										<v-switch
+										v-model="bussinesform.ascensores"
+										:label="`Ascensores: ${ascensoresShow}`"
+										color="success"
+										hide-details
+										class="pl-3 pr-3"
+										:value="ascensores"
+										@change="setItem('ascensores')"
+										></v-switch>
+										<v-switch
+										v-model="bussinesform.puertas_adaptadas"
+										:label="`Puertas Adaptadas: ${puertas_adaptadasShow}`"
+										color="success"
+										hide-details
+										class="pl-3 pr-3"
+										:value="puertas_adaptadas"
+										@change="setItem('puertas_adaptadas')"
+										></v-switch>
+										<v-switch
+										v-model="bussinesform.buena_iluminacion"
+										:label="`Buena Iluminación: ${buena_iluminacionShow}`"
+										color="success"
+										hide-details
+										class="pl-3 pr-3"
+										:value="buena_iluminacion"
+										@change="setItem('buena_iluminacion')"
+										></v-switch>
+										<v-switch
+										v-model="bussinesform.senalizaciones_luminosas"
+										:label="`Señalizaciones Luminosas: ${senalizaciones_luminosasShow}`"
+										color="success"
+										hide-details
+										class="pl-3 pr-3"
+										:value="senalizaciones_luminosas"
+										@change="setItem('senalizaciones_luminosas')"
+										></v-switch>
+										<v-switch
+										v-model="bussinesform.puestos_de_estacionamiento"
+										:label="`Puestos de Estacionamientos: ${puestos_de_estacionamientoShow}`"
+										color="success"
+										hide-details
+										class="pl-3 pr-3"
+										:value="puestos_de_estacionamiento"
+										@change="setItem('puestos_de_estacionamiento')"
+										></v-switch>
+										<v-switch
+										v-model="bussinesform.senalizacion"
+										:label="`Señalización: ${senalizacionShow}`"
+										color="success"
+										hide-details
+										class="pl-3 pr-3"
+										:value="senalizacion"
+										@change="setItem('senalizacion')"
+										></v-switch>
+										<v-switch
+										v-model="bussinesform.herramientas_tecnologicas"
+										:label="`Herramienta Tecnológica: ${herramientas_tecnologicasShow}`"
+										color="success"
+										hide-details
+										class="pl-3 pr-3"
+										:value="herramientas_tecnologicas"
+										@change="setItem('herramientas_tecnologicas')"
+										></v-switch>
+									</v-col>
+								</v-row>
+							</v-col>
+						</v-row>
+					</v-form>	
+				</tab-content>
+				<tab-content title="OTROS" icon="mdi mdi-all-inclusive" :before-change="beforeTabSwitchSix">
+					<v-form class="formCliente" ref="validateStepFormsix"  lazy-validation >	
+						<v-row>
+							<v-col cols="12" sm="12" md="12">
+								<v-textarea
+									label="Observaciones"
+									dense
+									:rules="rules"
+									v-model="bussinesform.observations"
+									rows="2"
+								></v-textarea>
 							</v-col>
 						</v-row>
 					</v-form>	
@@ -482,14 +668,36 @@ export default class Bussines extends Vue {
 	title : string = '';
 	subtitle : string = ''
 	validateStepForm : any = {inactivo: '1'};
-    bussinesform : any = { code: 0, message:'',country_id : 237}
+    bussinesform : any = { 
+		code: 0, 
+		message:'', 
+		country_id : 237,
+		rampas: 0,
+		accesibilidad: 0,
+		acceso_directo: 0,
+		transporte_publico:0,
+		transporte_empresa:0,
+		vialidad:0,
+		banos_acondicionados:0,
+		escaleras:0,
+		pasamanos:0,
+		pasillos:0,
+		ascensores: 0,
+		puertas_adaptadas:0,
+		buena_iluminacion:0,
+		senalizaciones_luminosas:0,
+		puestos_de_estacionamiento:0,
+		senalizacion:0,
+		herramientas_tecnologicas:0,
+
+
+	}
     loadingWizard = false
 	typerif = [
-        {value: '1', text: 'V'},
-        {value: '2', text: 'J'},
-		{value: '3', text: 'G'},
-		{value: '4', text: 'E'},
-		{value: '5', text: 'P'}
+        {value: '1', text: 'Consejo Comunal'},
+		{value: '2', text: 'Gobierno'},
+        {value: '3', text: 'Jurídico'},
+		{value: '4', text: 'Personal'}
     ];
 
 	inactivo = [
@@ -504,15 +712,40 @@ export default class Bussines extends Vue {
     sectiontitle = 'Registrar Datos de Empresa'
     dialog = false
     tabIndex = 0
-	charger        = false
-    cable_usb      = false
-    battery        = false
-    battery_cover  = false
-    printer_cap    = false
-    simcard        = false
-    box            = false
-    thermal_roll   = false
-    manual         = false
+	herramientas_tecnologicas : boolean = false
+	senalizacion : boolean = false
+	puestos_de_estacionamiento : boolean = false
+	senalizaciones_luminosas : boolean = false
+	buena_iluminacion : boolean = false
+	puertas_adaptadas : boolean = false
+	ascensores : boolean = false
+	pasillos : boolean = false
+	pasamanos : boolean = false
+	escaleras : boolean = false
+	banos_acondicionados : boolean = false
+	vialidad : boolean = false
+	transporte_empresa : boolean = false
+	transporte_publico : boolean = false
+	acceso_directo : boolean = false
+	accesibilidad: boolean = false
+	rampas : boolean = false
+	rampasShow = 'No'
+	accesibilidadShow = 'No'
+	acceso_directoShow = 'No'
+	transporte_publicoShow = 'No'
+	transporte_empresaShow = 'No'
+	vialidadShow = 'No'
+	banos_acondicionadosShow = 'No'
+	escalerasShow = 'No'
+	pasamanosShow = 'No'
+	pasillosShow = 'No'
+	ascensoresShow = 'No'
+	puertas_adaptadasShow = 'No'
+	senalizaciones_luminosasShow = 'No'
+	buena_iluminacionShow  = 'No'
+	puestos_de_estacionamientoShow = 'No'
+	senalizacionShow = 'No'
+	herramientas_tecnologicasShow = 'No'
 	arrayStates = []
 	arrayMunicipality = []
 	arrayParishes = []
@@ -542,6 +775,9 @@ export default class Bussines extends Vue {
         validateStepFormTwo: InstanceType<typeof ValidationObserver>;
 		validateStepFormThree: InstanceType<typeof ValidationObserver>;
 		validateStepFormFour: InstanceType<typeof ValidationObserver>;
+		validateStepFormFive: InstanceType<typeof ValidationObserver>;
+		validateStepFormsix: InstanceType<typeof ValidationObserver>;
+			
 	}
 	get getBussines() {
         return bussinesModule.getBussines; 
@@ -561,6 +797,13 @@ export default class Bussines extends Vue {
     }
 	async updateFecha(){
 		this.bussinesform.registration_date = this.date
+	}
+	validateRif(value){
+		if(value.length == 12){
+			alert('hacer peticion al api')
+			console.log(value)
+
+		}
 	}
     beforeTabSwitch(){
         const valid :any =  this.$refs.validateStepForm.validate();
@@ -605,6 +848,22 @@ export default class Bussines extends Vue {
             return false
         }
     }
+	beforeTabSwitchFive(){
+        const valid :any =  this.$refs.validateStepFormFive.validate();
+        if (valid) {
+           return true
+        }else {
+            return false
+        }
+    }
+	beforeTabSwitchSix(){
+        const valid :any =  this.$refs.validateStepFormsix.validate();
+        if (valid) {
+           return true
+        }else {
+            return false
+        }
+    }
 	async typeSucursal(){
 		if (this.sucursal) {
 			this.showSucursal = true
@@ -617,19 +876,21 @@ export default class Bussines extends Vue {
 	onComplete() {console.log(this.FormRequest)
 		if (this.FormRequest.id > 0) {
 			this.updateBussines();
-		} else {console.log(20)
+		} else {
 			this.saveBussines();
 		}	
     }
- 	async saveBussines() {
- 		this.overlay = true
+ 	async saveBussines() { 
+		this.updateSwitch()
+		console.log(this.FormRequest)
+/*  		this.overlay = true
     	const data = await bussinesModule.save(this.FormRequest)
 		console.log(data)
 		if(data.code == 201){
-	/* 		this.textmsj = 'Empresa Creada con Éxito.'
+			this.textmsj = 'Empresa Creada con Éxito.'
 			this.color = 'success'
 			this.snackbar = true
-			this.back(); */
+			this.back();
 			await sessionModule.updateStatusBussines('registered')
 			this.overlay = false 
 			this.dialog = true
@@ -639,7 +900,7 @@ export default class Bussines extends Vue {
 			this.snackbar = true
 			this.backError();
 			this.overlay = false 
-		}
+		} */
     }; 
 	async updateBussines(){
  		this.overlay = true
@@ -661,6 +922,133 @@ export default class Bussines extends Vue {
 		//this.reset();
        
 	}
+	async setItem(event){
+		switch(event){
+			case 'rampas':
+				if(this.bussinesform.rampas) this.rampasShow = 'Si' 
+				else this.rampasShow = 'No' 
+			break;
+			case 'accesibilidad':
+				if(this.bussinesform.accesibilidad) this.accesibilidadShow = 'Si' 
+				else this.accesibilidadShow = 'No' 
+			break;
+			case 'acceso_directo':
+				if(this.bussinesform.acceso_directo) this.acceso_directoShow = 'Si' 
+				else this.acceso_directoShow = 'No' 
+			break;
+			case 'transporte_publico':
+				if(this.bussinesform.transporte_publico) this.transporte_publicoShow = 'Si' 
+				else this.transporte_publicoShow = 'No' 
+			break;
+			case 'transporte_empresa':
+				if(this.bussinesform.transporte_empresa) this.transporte_empresaShow = 'Si' 
+				else this.transporte_empresaShow = 'No' 
+			break;
+			case 'vialidad':
+				if(this.bussinesform.vialidad) this.vialidadShow = 'Si' 
+				else this.vialidadShow = 'No' 
+			break;
+			case 'banos_acondicionados':
+				if(this.bussinesform.banos_acondicionados) this.banos_acondicionadosShow = 'Si' 
+				else this.banos_acondicionadosShow = 'No' 
+			break;
+			case 'escaleras':
+				if(this.bussinesform.escaleras) this.escalerasShow = 'Si' 
+				else this.escalerasShow = 'No' 
+			break;
+			case 'pasamanos':
+				if(this.bussinesform.pasamanos) this.pasamanosShow = 'Si' 
+				else this.pasamanosShow = 'No' 
+			break;
+			case 'pasillos':
+				if(this.bussinesform.pasillos) this.pasillosShow = 'Si' 
+				else this.pasillosShow = 'No' 
+			break;
+			case 'ascensores':
+				if(this.bussinesform.ascensores) this.ascensoresShow = 'Si' 
+				else this.ascensoresShow = 'No' 
+			break;
+			case 'puertas_adaptadas':
+				if(this.bussinesform.puertas_adaptadas) this.puertas_adaptadasShow = 'Si' 
+				else this.puertas_adaptadasShow = 'No' 
+			break;
+			case 'buena_iluminacion':
+				if(this.bussinesform.buena_iluminacion) this.buena_iluminacionShow = 'Si' 
+				else this.buena_iluminacionShow = 'No' 
+			break;
+			case 'senalizaciones_luminosas':
+				if(this.bussinesform.senalizaciones_luminosas) this.senalizaciones_luminosasShow = 'Si' 
+				else this.senalizaciones_luminosasShow = 'No' 
+			break;
+			case 'puestos_de_estacionamiento':
+				if(this.bussinesform.puestos_de_estacionamiento) this.puestos_de_estacionamientoShow = 'Si' 
+				else this.puestos_de_estacionamientoShow = 'No' 
+			break;
+			case 'senalizacion':
+				if(this.bussinesform.senalizacion) this.senalizacionShow = 'Si' 
+				else this.senalizacionShow = 'No' 
+			break;
+			case 'herramientas_tecnologicas':
+				if(this.bussinesform.herramientas_tecnologicas) this.herramientas_tecnologicasShow = 'Si' 
+				else this.herramientas_tecnologicasShow = 'No' 
+			break;
+
+		}
+	}
+	async updateSwitch(){
+
+		if(this.bussinesform.rampas) this.bussinesform.rampas = 'Si' 
+		else this.bussinesform.rampas = 'No' 
+
+		if(this.bussinesform.accesibilidad) this.bussinesform.accesibilidad = 'Si' 
+		else this.bussinesform.accesibilidad = 'No' 
+
+		if(this.bussinesform.acceso_directo) this.bussinesform.acceso_directo = 'Si' 
+		else this.bussinesform.acceso_directo = 'No' 
+
+		if(this.bussinesform.transporte_publico) this.bussinesform.transporte_publico = 'Si' 
+		else this.bussinesform.transporte_publico = 'No' 
+
+		if(this.bussinesform.transporte_empresa) this.bussinesform.transporte_empresa = 'Si' 
+		else this.bussinesform.transporte_empresa = 'No' 
+
+		if(this.bussinesform.vialidad) this.bussinesform.vialidad = 'Si' 
+		else this.bussinesform.vialidad = 'No' 
+
+		if(this.bussinesform.banos_acondicionados) this.bussinesform.banos_acondicionados = 'Si' 
+		else this.bussinesform.banos_acondicionados = 'No' 
+
+		if(this.bussinesform.escaleras) this.bussinesform.escaleras = 'Si' 
+		else this.bussinesform.escaleras = 'No' 
+
+		if(this.bussinesform.pasamanos) this.bussinesform.pasamanos = 'Si' 
+		else this.bussinesform.pasamanos = 'No' 
+
+		if(this.bussinesform.pasillos) this.bussinesform.pasillos = 'Si' 
+		else this.bussinesform.pasillos = 'No' 
+
+		if(this.bussinesform.ascensores) this.bussinesform.ascensores = 'Si' 
+		else this.bussinesform.ascensores = 'No' 
+
+		if(this.bussinesform.puertas_adaptadas) this.bussinesform.puertas_adaptadas = 'Si' 
+		else this.bussinesform.puertas_adaptadas = 'No' 
+
+		if(this.bussinesform.buena_iluminacion) this.bussinesform.buena_iluminacion = 'Si' 
+		else this.bussinesform.buena_iluminacion = 'No' 
+
+		if(this.bussinesform.senalizaciones_luminosas) this.bussinesform.senalizaciones_luminosas = 'Si' 
+		else this.bussinesform.senalizaciones_luminosas = 'No' 
+
+		if(this.bussinesform.puestos_de_estacionamiento) this.bussinesform.puestos_de_estacionamiento = 'Si' 
+		else this.bussinesform.puestos_de_estacionamiento = 'No' 
+
+		if(this.bussinesform.senalizacion) this.bussinesform.senalizacion = 'Si' 
+		else this.bussinesform.senalizacion = 'No' 
+
+		if(this.bussinesform.herramientas_tecnologicas) this.bussinesform.herramientas_tecnologicas = 'Si' 
+		else this.bussinesform.herramientas_tecnologicas = 'No' 		
+	}
+
 	async goDocuments(){
 		this.$router.push({ name: 'requeriments' });
 	}
@@ -675,6 +1063,7 @@ export default class Bussines extends Vue {
 	async getUserType(){
 		const typeuser : any = await bussinesModule.getUserTypeAll()
 		this.arrayUserType = typeuser.data.data
+		this.initData()
 	}
 	async getEconomicSector(){
 		const economicsector : any = await bussinesModule.getEconomicSectorAll()
@@ -715,6 +1104,7 @@ export default class Bussines extends Vue {
 
 	data(){
     return{
+		show:false,
         rules: [
             (v:any) => !!v || 'Campo requerido'
         ],
@@ -730,13 +1120,46 @@ export default class Bussines extends Vue {
             
         }
     };
+	initData(){
+		this.bussinesform = {
+			type_rif :'1',
+			rif:'j-14610701-2',
+			company_name:'prueba',
+			tomo:10,
+			folio:20,
+			number:30,
+			duration:10,
+			attached_body:'adscrito a algo',
+			web:'www.prueba.com',
+			email:'prueba@gmail.com',
+			economic_sectors_id:1,
+			company_types_id:1,
+			employer_number_ivss:100,
+			economic_activity_id:1,
+			user_type_id:1,
+			comercial_designation:'decripcion prueba',
+			first_name: 'Eulemis',
+			last_name: 'Hernández',
+			email_r:'eulemisalfredo@gmail.com',
+			phone:'04120169750',
+			location:'yare',
+			type_identity_card:'cedula',
+			identity_card_rl:'16092842',
+			first_name_rl:'alejandro',
+			last_name_rl:'subero',
+			email_rl:'juan@gmail.com',
+			observations:'observacion de prueba',
+			password:'12345678'
+		}
+	}
+	
     mounted(){
 		this.getStates()
 		this.getEconomicSector()
 		this.getEconomicActivies()
 		this.getTypeCompany()
 		this.getUserType()
-
+	
 		if (storageData.get('_bussines') !== null) {
 			this.overlay = true
 			this.bussinesform = storageData.get('_bussines')
@@ -761,9 +1184,13 @@ export default class Bussines extends Vue {
 <style lang="scss" scoped>
     .formCliente{
         background: white;
-        padding: 3%;
-        border-radius: 8px;
+        padding: 2%;
+        //border-radius: 8px;
+		//border: 1px solid;
     }
+	.vue-form-wizard{
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	}
     .vue-form-wizard .wizard-header{
         display: none;
     }

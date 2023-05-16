@@ -15,24 +15,25 @@ export default [
         to: '/bussines',
         icon: 'cibDraugiemLv'
       },
-/*      {
+     {
         _name: 'CSidebarNavItem',
-        name: 'Notificaciones',
-        to: '/notification',
-        icon: 'cilLan'
-      }, */
+        name: 'Vincular-Desvincular (PDC)',
+        to: '/vincular',
+        icon: 'cilUserFollow'
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Declaraciones',
+        to: '/declaraciones',
+        icon: 'cilFingerprint'
+      },
      {
         _name: 'CSidebarNavItem',
         name: 'Solicitudes de Inspección',
         to: '/solicitudinspeccion',
         icon: 'cibOpenstreetmap'
       },
-    /*   {
-        _name: 'CSidebarNavItem',
-        name: 'Requisitos',
-        to: '/requerimentsbussines',
-        icon: 'cibReadTheDocs'
-      }, */
+  
       {
         _name: 'CSidebarNavItem',
         name: 'Carga de Documentos',

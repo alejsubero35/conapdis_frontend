@@ -56,6 +56,8 @@ updatePassword(){
   .v-application a {
     color: #0c0c0c;
 }
+
+
 </style>
 
 

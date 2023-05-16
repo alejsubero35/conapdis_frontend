@@ -83,7 +83,7 @@
     console.log(data.data.data)
   }
   start(){
-    this.intervalID = setInterval(this.getNotificationsAll, 15000);
+    //this.intervalID = setInterval(this.getNotificationsAll, 15000);
   }
   stop(){
         clearInterval(this.intervalID);
