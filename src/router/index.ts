@@ -48,6 +48,19 @@ const Vincular                        = () => import('@/views/modulos/Vinculacio
 
 //Declaraciones
 const Declaraciones                   = () => import('@/views/modulos/Declaraciones/Declaraciones.vue')
+
+//OfertasLaborales
+const OfertasLaborales                = () => import('@/views/modulos/Ofertas/OfertaLaboral.vue')
+const CrearOfertaLaboral              = () => import('@/views/modulos/Ofertas/CrearOfertaLaboral.vue')
+
+//SolicitudFormacion
+const SolicitudFormacion              = () => import('@/views/modulos/SolicitudFormacion/SolicitudFormacion.vue')
+const CrearSolicitudFormacion         = () => import('@/views/modulos/SolicitudFormacion/CrearSolicitudFormacion.vue')
+
+
+
+
+
 // Errors
 const Page404 = () => import('@/views/errors/Page404.vue')
 const Page500 = () => import('@/views/errors/Page500.vue')
@@ -224,7 +237,35 @@ const router = new Router({
           meta: { Auth: false, title: 'Declaraciones' },
      
         }, 
-           
+        {
+          path: 'solicitudformacion',
+          name: 'solicitudformacion',
+          component: SolicitudFormacion,
+          meta: { Auth: false, title: 'SolicitudFormacion' },
+     
+        }, 
+        {
+          path: 'crearsolicitudformacion',
+          name: 'crearsolicitudformacion',
+          component: CrearSolicitudFormacion,
+          meta: { Auth: false, title: 'CrearSolicitudFormacion' },
+     
+        }, 
+        {
+          path: 'ofertaslaborales',
+          name: 'ofertaslaborales',
+          component: OfertasLaborales,
+          meta: { Auth: false, title: 'OfertasLaborales' },
+     
+        }, 
+        {
+          path: 'crearofertalaboral',
+          name: 'crearofertalaboral',
+          component: CrearOfertaLaboral,
+          meta: { Auth: false, title: 'CrearOfertaLaboral' },
+     
+        },
+          
       ]
       //
     },

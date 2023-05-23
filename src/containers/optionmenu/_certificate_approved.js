@@ -64,6 +64,18 @@ export default [
         to: '/certificadoabi',
         icon: 'cibLibreoffice'
       },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Solicitudes de Formación',
+        to: '/solicitudformacion',
+        icon: 'cibOctave'
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Ofertas Laborales',
+        to: '/ofertaslaborales',
+        icon: 'cibAnaconda'
+      },
      /*  {
         _name: 'CSidebarNavItem',
         name: 'Guia de Inspección',

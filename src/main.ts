@@ -25,6 +25,8 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import 'sweetalert2/dist/sweetalert2.min.css';
 import VueMask from 'v-mask'
+import CKEditor from 'ckeditor4-vue';
+
 
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
@@ -44,6 +46,7 @@ Vue.use(CoreuiVue);
 Vue.use(FormWizard);
 Vue.use(VueSweetalert2);
 Vue.use(VueMask);
+Vue.use(CKEditor);
 //Vue.config.productionTip = false;
 
 

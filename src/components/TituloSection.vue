@@ -37,6 +37,7 @@ export default {
     background-color: #3f51b5;
     color: white;
     height: 64px;
+    border-radius: 5px;
 }
 .btn_atras{
     background-color: #3f51b5;

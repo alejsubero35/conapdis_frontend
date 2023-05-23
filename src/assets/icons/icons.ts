@@ -33,7 +33,9 @@ import {
   cilSync,
   cibLibreoffice,
   cibReadTheDocs,
-  cibBuffer
+  cibBuffer,
+  cibOctave,
+  cibAnaconda
 
   
 } from '@coreui/icons'
@@ -199,6 +201,8 @@ export const iconsSet = Object.assign(
     cilSync,
     cibLibreoffice,
     cibReadTheDocs,
-    cibBuffer
+    cibBuffer,
+    cibOctave,
+    cibAnaconda
   }
 )
