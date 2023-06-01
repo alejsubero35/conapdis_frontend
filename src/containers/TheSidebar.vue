@@ -61,7 +61,6 @@ export default {
   mounted(){
   this.typeRol = storageData.get('_rolename')
   this.bussine = storageData.get('_bussines')
-  console.log(this.isBussines)
   },
   computed: {
     show () {

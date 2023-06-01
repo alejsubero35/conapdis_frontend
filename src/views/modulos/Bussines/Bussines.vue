@@ -883,7 +883,7 @@ export default class Bussines extends Vue {
  	async saveBussines() { 
 		this.updateSwitch()
 		console.log(this.FormRequest)
-/*  		this.overlay = true
+ 		this.overlay = true
     	const data = await bussinesModule.save(this.FormRequest)
 		console.log(data)
 		if(data.code == 201){
@@ -900,7 +900,7 @@ export default class Bussines extends Vue {
 			this.snackbar = true
 			this.backError();
 			this.overlay = false 
-		} */
+		}
     }; 
 	async updateBussines(){
  		this.overlay = true

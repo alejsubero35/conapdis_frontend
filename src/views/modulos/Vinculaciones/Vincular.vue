@@ -11,22 +11,43 @@
    		<TitleSection :sectiontitle="sectiontitle"/>
            <v-tabs>
                 <v-tab>DATOS DE PERSONA</v-tab>
-                <v-tab>PERSONAS VINCULADAS</v-tab>
+                <v-tab @click="getPersonLinked()">PERSONAS VINCULADAS</v-tab>
      
                 <v-tab-item>
                     <v-container fluid>
                         <v-form class="formCliente" ref="validateStepForm"  lazy-validation >	
                             <input type="hidden" v-model="vincularform.id" value:any="0" >					
                             <v-row>
+                                
                                 <v-col cols="12" sm="6" md="4">
-                                    <v-text-field
-                                        label="Cédula"
-                                        placeholder="Cédula"
-                                        dense
-                                        :rules="rules"
-                                        v-model="vincularform.identity_card_rl"
-                                        v-mask="'###########'"
-                                    ></v-text-field>
+                                    <v-select
+                                    :items="arrayCustomers"
+                                    item-text="cedula"
+                                    item-value="id"
+                                    label="Cédula"
+                                    placeholder="Cédula"
+                                    dense
+                                    :rules="rules"
+                                    required
+                                    @change="getPersonCertificate($event)"
+                                    return-object
+                                    >        
+                                    <template v-slot:prepend-item>
+                                    <v-overlay :value="isLoading">
+                                        <v-progress-circular
+                                            indeterminate
+                                            size="24"
+                                            color="#ff7005"
+                                        ></v-progress-circular>
+                                    </v-overlay>
+                                    <v-list-item>
+                                        <v-list-item-content>
+                                            <v-text-field v-model="searchTerm" placeholder="Buscar Persona Certificada"   @keyup.enter="searchCertificatePerson" autofocus ></v-text-field>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                    <v-divider ></v-divider>
+                                    </template>
+                                    </v-select>
                                 </v-col>
                                 <v-col cols="12" sm="6" md="4">
                                     <v-text-field
@@ -34,7 +55,8 @@
                                         placeholder="Nombre y Apellido"
                                         dense
                                         :rules="rules"
-                                        v-model="vincularform.number"
+                                        v-model="fullname"
+                                        readonly
                                     ></v-text-field>
                                 </v-col>
                                 <v-col cols="12" sm="6" md="4">
@@ -71,12 +93,13 @@
                                 <v-col cols="12" sm="6" md="4">
                                     <v-select
                                         :items="arrayPosition"
-                                        item-text="name"
+                                        item-text="nombre"
                                         item-value="id"
                                         label="Cargo"
                                         placeholder="Cargo"
                                         dense
                                         :rules="rules"
+                                        v-model="vincularform.cargo_personadiscapacidad"
                                         required
                                     ></v-select>
                                 </v-col>
@@ -91,9 +114,22 @@
                                         value="0.00"
                                     ></v-text-field>
                                 </v-col>
+                                <v-col cols="12" sm="6" md="4" style="margin-top:-36px">
+                                    <label>Situación Laboral</label>
+                                    <v-radio-group v-model="vincularform.trabaja_actualmente" row>
+                                    <v-radio
+                                      label="Fijo"
+                                      value="Si"
+                                    ></v-radio>
+                                    <v-radio
+                                      label="Contratado"
+                                      value="No"
+                                    ></v-radio>
+                                  </v-radio-group>
+                                </v-col>
                             </v-row>
                             <v-row class="d-flex justify-end">
-                                <v-btn > <v-icon>mdi-content-save-outline</v-icon> Vincular</v-btn>
+                                <v-btn @click="onSubmit" > <v-icon>mdi-content-save-outline</v-icon> Vincular</v-btn>
                             </v-row>
                         </v-form>
                     </v-container>
@@ -118,7 +154,7 @@
                                         >
                                         <template  v-slot:item.actions="{ item }">
                                             <div class="d-flex">
-                                                <v-tooltip v-if="validateStatusProject !== '4'" top>
+                                                <v-tooltip v-if="item.trabajo_hasta == null" top>
                                                     <template v-slot:activator="{on, attrs}">
                                                         <v-btn
                                                             color="success"
@@ -126,14 +162,14 @@
                                                             v-bind="attrs"
                                                             v-on="on"
                                                             icon
-                                                            @click="edit(item)"   
+                                                            @click="openDialog(item)"   
                                                         >
-                                                            <v-icon>mdi-pencil-box-outline</v-icon>
+                                                            <v-icon>mdi-close-box-outline</v-icon>
                                                         </v-btn>
                                                     </template>
-                                                    <span>Editar Tarea</span>
+                                                    <span>Desvincular</span>
                                                 </v-tooltip>
-                                                <v-tooltip v-if="validateStatusProject !== '4'" top>
+                                                <v-tooltip v-else top>
                                                     <template v-slot:activator="{on, attrs}">
                                                         <v-btn
                                                             color="error"
@@ -141,12 +177,11 @@
                                                             v-bind="attrs"
                                                             v-on="on"
                                                             icon
-                                                            @click="DeleteItem(item)"   
                                                         >
-                                                            <v-icon>mdi-trash-can-outline</v-icon>
+                                                            <v-icon>mdi-account-arrow-right</v-icon>
                                                         </v-btn>
                                                     </template>
-                                                    <span>Eliminar</span>
+                                                    <span>Persona Desvinculada</span>
                                                 </v-tooltip>
                                             </div>
                                         </template>
@@ -158,170 +193,55 @@
                     </v-container>
                 </v-tab-item>
            </v-tabs>
-         <!--    <form-wizard  
-            class="test " 
-            :start-index="tabIndex"
-            :title="title" 
-            :subtitle="subtitle" 
-            @on-loading="setLoading"
-            @on-validate="handleValidation"
-            @on-complete="onComplete" 
-            color="#3f51b5" 
-            shape="tab" 
-            finish-button-text="Guardar" 
-            back-button-text="Atrás" 
-            next-button-text="Siguiente"
-			>
-                <tab-content title="DATOS DE PERSONA"  icon="mdi mdi-card-account-details-outline" :before-change="beforeTabSwitch">
-                    <v-form class="formCliente" ref="validateStepForm"  lazy-validation >	
-						<input type="hidden" v-model="vincularform.id" value:any="0" >					
-                        <v-row>
-                            <v-col cols="12" sm="6" md="4">
-								<v-text-field
-									label="Cédula"
-									placeholder="Cédula"
-									dense
-									:rules="rules"
-									v-model="vincularform.identity_card_rl"
-									v-mask="'###########'"
-								></v-text-field>
-							</v-col>
-							<v-col cols="12" sm="6" md="4">
-								<v-text-field
-									label="Nombre y Apellido"
-									placeholder="Nombre y Apellido"
-									dense
-									:rules="rules"
-									v-model="vincularform.number"
-								></v-text-field>
-							</v-col>
-							<v-col cols="12" sm="6" md="4">
-								<v-menu
-									v-model="menu2"
-									:close-on-content-click="false"
-									:nudge-right="40"
-									transition="scale-transition"
-									offset-y
-									min-width="auto"
-								>
-									<template v-slot:activator="{ on, attrs }">
-									<v-text-field
-										v-model="date"
-										label="Fecha/Ingreso"
-										append-icon="mdi-calendar"
-										readonly
-										v-bind="attrs"
-										v-on="on"
-										dense 
-									></v-text-field>
-									</template>
-									<v-date-picker
-									v-model="date"
-                                    no-title
-                                    locale="es"
-									@input="menu2 = false"
-									@change="updateFecha()"
-									></v-date-picker>
-								</v-menu>
-							</v-col>
-						</v-row>
-                        <v-row>
-                            <v-col cols="12" sm="6" md="4">
-                                <v-select
-                                    :items="arrayPosition"
-                                    item-text="name"
-                                    item-value="id"
-                                    label="Cargo"
-                                    placeholder="Cargo"
-                                    dense
-                                    :rules="rules"
-                                    required
-                                ></v-select>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-								<v-text-field
-									label="Sueldo"
-									placeholder="Sueldo"
-									dense
-									:rules="rules"
-									v-model="vincularform.sueldo"
-									type="number"
-                                    value="0.00"
-								></v-text-field>
-							</v-col>
-						</v-row>
-                	</v-form>
-				</tab-content>
-				<tab-content title="PERSONAS VINCULADAS"  icon="mdi mdi-account" :before-change="beforeTabSwitchTwo">
-                    <v-form class="formCliente" ref="validateStepFormTwo"  lazy-validation >	
-						<input type="hidden" v-model="vincularform.id" value:any="0" >
-                        <v-row>
-                            <v-col  cols="12" sm="12" md="12">
-                                <template>
-                                    <v-data-table
-                                        :headers="headers"
-                                        :items="desserts" 
-                                        class="elevation-1"  
-                                        no-data-text="No hay datos disponibles"  
-                                        :footer-props="{
-                                            'items-per-page-options': [5, 10 -1],
-                                            'items-per-page-text':'Filtro por Página'
-                                            
-                                        }"           
-                                    >
-                                    <template  v-slot:item.actions="{ item }">
-                                        <div class="d-flex">
-                                            <v-tooltip v-if="validateStatusProject !== '4'" top>
-                                                <template v-slot:activator="{on, attrs}">
-                                                    <v-btn
-                                                        color="success"
-                                                        dark
-                                                        v-bind="attrs"
-                                                        v-on="on"
-                                                        icon
-                                                        @click="edit(item)"   
-                                                    >
-                                                        <v-icon>mdi-pencil-box-outline</v-icon>
-                                                    </v-btn>
-                                                </template>
-                                                <span>Editar Tarea</span>
-                                            </v-tooltip>
-                                            <v-tooltip v-if="validateStatusProject !== '4'" top>
-                                                <template v-slot:activator="{on, attrs}">
-                                                    <v-btn
-                                                        color="error"
-                                                        dark
-                                                        v-bind="attrs"
-                                                        v-on="on"
-                                                        icon
-                                                        @click="DeleteItem(item)"   
-                                                    >
-                                                        <v-icon>mdi-trash-can-outline</v-icon>
-                                                    </v-btn>
-                                                </template>
-                                                <span>Eliminar</span>
-                                            </v-tooltip>
-                                        </div>
-                                    </template>
-                                    </v-data-table>
-                                </template>
-                            </v-col>
-                        </v-row>
-                	</v-form>
-				</tab-content>
-            </form-wizard>  -->
         </div>
     	<Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color"/>
 		<v-dialog
 		v-model="dialog" max-width="400">
 		<v-card>
 		  <v-card-title class="text-h5">
-			Empresa Registrada con Éxito
+			Desvincular Persona 
 		  </v-card-title>
-  
-		  <v-card-text>
-			Se le ha enviado un Email a su Correo Electrónico, por favor indique si desea cargar los documentos 
-		  </v-card-text>
+          <v-card-body>
+            <v-col cols="12" sm="12" md="12">
+                <v-menu
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                >
+                    <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                        v-model="dategreso"
+                        label="Fecha/Ingreso"
+                        append-icon="mdi-calendar"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                        dense 
+                    ></v-text-field>
+                    </template>
+                    <v-date-picker
+                    v-model="dategreso"
+                    no-title
+                    locale="es"
+                    @input="menu = false"
+                    @change="updateFechaEgreso()"
+                    ></v-date-picker>
+                </v-menu>
+            </v-col>
+            <v-col cols="12" sm="12" md="12">
+                <v-textarea
+                label="Motivo"
+                placeholder="Motivo"
+                outlined
+                dense
+                v-model="desvincularform.motivo"
+                rows="2"
+            ></v-textarea>
+            </v-col>
+		  </v-card-body>
   
 		  <v-card-actions>
 			<v-spacer></v-spacer>
@@ -329,17 +249,17 @@
 			<v-btn
 			  color="danger"
 			  text
-			  @click="goHome()"
+			  @click="dialog = false"
 			>
-			  No
+			  Cancelar
 			</v-btn>
   
 			<v-btn
 			  color="primary"
 			  text
-			  @click="goDocuments()"
+			  @click="desvincular()"
 			>
-			  Si
+			  Desvincular
 			</v-btn>
 		  </v-card-actions>
 		</v-card>
@@ -348,7 +268,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import bussinesModule from '@/store/modules/bussinesModule';
+import linkedModule from '@/store/modules/linkedModule';
 import sessionModule from '@/store/modules/sessionModule';
 import { ValidationObserver } from 'vee-validate'
 import storageData from '@/store/services/storageService'
@@ -370,6 +290,10 @@ export default class Bussines extends Vue {
 		code: 0, 
 		message:'', 
 	}
+    desvincularform : any = { 
+		code: 0, 
+		message:'', 
+	}
     loadingWizard = false
 
     agente_retencion = ''
@@ -381,30 +305,37 @@ export default class Bussines extends Vue {
     dialog = false
     tabIndex = 0
 	date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
+    dategreso = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
     menu2 : boolean = false
+    menu : boolean = false
     max25chars = v => v.length <= 25 || 'Input too long!'
   
     headers = [
-        {text: 'N° Orden', value: 'id'},
-        {text: 'Cliente', value: 'customers.name_legal'},
-        {text: 'Técnico', value: 'technicals.name'},
-        {text: 'Fecha', value: 'start'},
-        {text: 'Modo de Servicio', value: 'servicemodes.description'},
-        {text: 'Estatus', value: 'serviceorderstatuses.description'},
-        {text: 'Action', value: 'action'}
+        {text: 'Id', value: 'id'},
+        {text: 'Cédula', value: 'cedula'},
+        {text: 'Nombres', value: 'nombres'},
+        {text: 'Apellidos', value: 'apellidos'},
+        {text: 'Trabaja Actualmente', value: 'trabaja_actualmente'},
+        {text: 'Ingreso', value: 'trabaja_desde'},
+        {text: 'Egreso', value: 'trabajo_hasta'},
+        {text: 'Action', value: 'actions'}
     ];
-    desserts = []
+    desserts        = []
+    searchTerm      = ""
+    isLoading       = false;
+    arrayCustomers  = []
+    fullname        = ''
 	$refs!: {
         validateStepForm: InstanceType<typeof ValidationObserver>;
         validateStepFormTwo: InstanceType<typeof ValidationObserver>;			
 	}
-	get getBussines() {
-        return bussinesModule.getBussines; 
-    }
+
 	get FormRequest(): any {
         return this.vincularform;
     }
-
+    get FormRequestDesvincular(): any {
+        return this.desvincularform;
+    }
     get activo() {
         return this.validateStepForm.inactivo = '1'
     }
@@ -415,8 +346,12 @@ export default class Bussines extends Vue {
         console.log('Tab: '+tabIndex+ ' valid: '+isValid)
     }
 	async updateFecha(){
-		this.vincularform.registration_date = this.date
+		this.vincularform.trabaja_desde = this.date
+        console.log(this.vincularform.trabaja_desde)
 	}
+    async updateFechaEgreso(){
+        this.desvincularform.trabajo_hasta = this.dategreso
+    }
 	validateRif(value){
 		if(value.length == 12){
 			alert('hacer peticion al api')
@@ -424,75 +359,77 @@ export default class Bussines extends Vue {
 
 		}
 	}
-    async getPositionAll(){
-		const position : any = await sessionModule.getPositionAll()
-		this.arrayPosition = position.data.data
+    async searchCertificatePerson(val) {
+		this.isLoading = true
+		const data : any = await linkedModule.searchCertificatePerson(this.searchTerm);
+		this.arrayCustomers = data.data
+		this.isLoading = false
 	}
-    beforeTabSwitch(){
-        const valid :any =  this.$refs.validateStepForm.validate();
-			
-        if (valid) {
-           return true
-        }else {
-            return false
-        }
-    } 
-    beforeTabSwitchTwo(){
-        const valid :any =  this.$refs.validateStepFormTwo.validate();
-        if (valid) {
-           return true
-        }else {
-            return false
-        }
-    } 
-	
-	onComplete() {console.log(this.FormRequest)
-		if (this.FormRequest.id > 0) {
-			this.update();
-		} else {
-			this.save();
-		}	
+    getPersonCertificate(event){console.log(event)
+        this.fullname = event.nombres+' '+event.apellidos
+        this.vincularform.personas_discapacidad_id = event.id
+        this.vincularform.empresa_id = 155
+    
+    }
+    async getPositionAll(){
+		const position : any = await linkedModule.getPositionAll()
+        console.log(position)
+		this.arrayPosition = position.data
+	}	
+	onSubmit() {console.log(this.FormRequest)
+        this.save()
     }
  	async save() { 
 		console.log(this.FormRequest)
-/*  		this.overlay = true
-    	const data = await bussinesModule.save(this.FormRequest)
+ 		this.overlay = true
+    	const data = await linkedModule.save(this.FormRequest)
 		console.log(data)
-		if(data.code == 201){
-			this.textmsj = 'Empresa Creada con Éxito.'
+		if(data.code == 200 || data.code == 201){
+			this.textmsj = 'Persona Vinculada con Éxito.'
 			this.color = 'success'
 			this.snackbar = true
 			this.back();
-			await sessionModule.updateStatusBussines('registered')
 			this.overlay = false 
-			this.dialog = true
 		} else {
 			this.textmsj = 'Error al Registrar los datos de la Empresa.'
 			this.color = 'error'
 			this.snackbar = true
 			this.backError();
 			this.overlay = false 
-		} */
+		}
     }; 
+    async getPersonLinked(){
+        const linketAll : any = await  linkedModule.getPersonLinkedByBussine(155)
+        this.desserts = linketAll.data
+     
+    }
+    openDialog(item){
+        this.dialog     = true
+        this.desvincularform.id = item.id
+
+    }
+    desvincular(){
+        this.update()
+    }
 	async update(){
  		this.overlay = true
-    	const data = await bussinesModule.update(this.FormRequest)
+    	const data = await linkedModule.update(this.FormRequestDesvincular)
 	
-		if(data.code == 201){
-			this.textmsj = 'Usuario Vinculado con Éxito.'
-			this.color = 'success'
-			this.snackbar = true
+		if(data.code == 200){
+			this.textmsj    = 'Persona Desvinculada con Éxito.'
+			this.color      = 'success'
+			this.snackbar   = true
+            this.dialog     = false
+            this.getPersonLinked()
 			this.back();
-			this.overlay = false 		
+			this.overlay    = false 		
 		} else {
-			this.textmsj = 'Error al Actualizar los datos de la Empresa.'
-			this.color = 'error'
-			this.snackbar = true
+			this.textmsj    = 'Error al Actualizar los datos de la Empresa.'
+			this.color      = 'error'
+			this.snackbar   = true
 			this.backError();
-			this.overlay = false 
-		}
-		//this.reset();
-       
+			this.overlay    = false 
+		}       
 	}
 
 	reset () {
@@ -509,7 +446,17 @@ export default class Bussines extends Vue {
             this.snackbar = false
         },3500);
 	}
+    formatDate (date) {
+        if (!date) return null
 
+        const [year, month, day] = date.split('-')
+        return `${day}-${month}-${year}`
+    }
+    mounted(){
+        this.getPositionAll()
+        this.formatDate(this.date)
+        this.vincularform.trabaja_desde = this.date
+    }
 	data(){
     return{
 		show:false,
@@ -528,9 +475,7 @@ export default class Bussines extends Vue {
             
         }
     };
-    mounted(){
-        this.getPositionAll()
-    }
+
 }
 </script>
 <style lang="scss" scoped>

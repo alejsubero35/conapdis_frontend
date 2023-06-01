@@ -11,12 +11,12 @@
    		<TitleSection :sectiontitle="sectiontitle"/>
            <v-tabs>
             <v-tab>DATOS DE LA NUEVA DECLARACIÓN</v-tab>
-            <v-tab>DECLARACIONES</v-tab>
+            <v-tab @click="getStatements()">DECLARACIONES</v-tab>
      
            <v-tab-item>
              <v-container fluid>
                 <v-form class="formCliente" ref="validateStepForm"  lazy-validation >	
-                    <input type="hidden" v-model="vincularform.id" value:any="0" >	
+                    <input type="hidden" v-model="declararform.id" value:any="0" >	
                     <v-row>
                         <p class="anuncio">Usted esta a punto de declarar un semestre ante el Conapdis la cantidad de Personas 
                             con Discapacidad que trabajan en su empresa según lo dispone la ley.Si Usted no esta 
@@ -31,8 +31,9 @@
                                 placeholder="Total Nómina de trabajadores sin discapacidad "
                                 dense
                                 :rules="rules"
-                                v-model="vincularform.identity_card_rl"
+                                v-model="declararform.numero_total_trabajadores"
                                 type="number"
+                                @keyup="calcularporcentaje()"
                             ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6" md="6">
@@ -41,22 +42,24 @@
                                 placeholder="Trabajadores con Discapacidad "
                                 dense
                                 :rules="rules"
-                                v-model="vincularform.number"
+                                v-model="declararform.trabajadores_discapacidad"
                                 type="number"
+                                readonly
                             ></v-text-field>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col cols="12" sm="6" md="6">
                             <v-select
-                                :items="arrayPosition"
-                                item-text="name"
+                                :items="arrayPeriods"
+                                item-text="nombre"
                                 item-value="id"
                                 label="Seleccione el Periodo"
                                 placeholder="Seleccione el Periodo"
                                 dense
                                 :rules="rules"
                                 required
+                                @change="getPeriodo($event)"
                             ></v-select>
                         </v-col>
                         <v-col cols="12" sm="6" md="6">
@@ -65,14 +68,14 @@
                                 placeholder="Porcentaje de Trabajadores con Discapacidad"
                                 dense
                                 :rules="rules"
-                                v-model="vincularform.sueldo"
-                                type="number"
-                                value="0.00"
+                                v-model="porcentaje"
+                                readonly
+                                class="porcentaje"
                             ></v-text-field>
                         </v-col>
                     </v-row>
                     <v-row class="d-flex justify-end">
-                        <v-btn > <v-icon>mdi-content-save-outline</v-icon> Declarar</v-btn>
+                        <v-btn :disabled="disabled" @click="declarar()" > <v-icon>mdi-content-save-outline</v-icon> Declarar</v-btn>
                     </v-row>
                 </v-form>
              </v-container>
@@ -96,7 +99,7 @@
                                     >
                                     <template  v-slot:item.actions="{ item }">
                                         <div class="d-flex">
-                                            <v-tooltip v-if="validateStatusProject !== '4'" top>
+                                            <v-tooltip top>
                                                 <template v-slot:activator="{on, attrs}">
                                                     <v-btn
                                                         color="success"
@@ -104,27 +107,12 @@
                                                         v-bind="attrs"
                                                         v-on="on"
                                                         icon
-                                                        @click="edit(item)"   
+                                                        @click="imprimir(item)"   
                                                     >
-                                                        <v-icon>mdi-pencil-box-outline</v-icon>
+                                                        <v-icon>mdi-printer-outline</v-icon>
                                                     </v-btn>
                                                 </template>
-                                                <span>Editar Tarea</span>
-                                            </v-tooltip>
-                                            <v-tooltip v-if="validateStatusProject !== '4'" top>
-                                                <template v-slot:activator="{on, attrs}">
-                                                    <v-btn
-                                                        color="error"
-                                                        dark
-                                                        v-bind="attrs"
-                                                        v-on="on"
-                                                        icon
-                                                        @click="DeleteItem(item)"   
-                                                    >
-                                                        <v-icon>mdi-trash-can-outline</v-icon>
-                                                    </v-btn>
-                                                </template>
-                                                <span>Eliminar</span>
+                                                <span>Imprimir Declaración</span>
                                             </v-tooltip>
                                         </div>
                                     </template>
@@ -138,44 +126,12 @@
          </v-tabs>
         </div>
     	<Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color"/>
-		<v-dialog
-		v-model="dialog" max-width="400">
-		<v-card>
-		  <v-card-title class="text-h5">
-			Empresa Registrada con Éxito
-		  </v-card-title>
-  
-		  <v-card-text>
-			Se le ha enviado un Email a su Correo Electrónico, por favor indique si desea cargar los documentos 
-		  </v-card-text>
-  
-		  <v-card-actions>
-			<v-spacer></v-spacer>
-  
-			<v-btn
-			  color="danger"
-			  text
-			  @click="goHome()"
-			>
-			  No
-			</v-btn>
-  
-			<v-btn
-			  color="primary"
-			  text
-			  @click="goDocuments()"
-			>
-			  Si
-			</v-btn>
-		  </v-card-actions>
-		</v-card>
-	  </v-dialog>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import bussinesModule from '@/store/modules/bussinesModule';
-import sessionModule from '@/store/modules/sessionModule';
+import statementsModule from '@/store/modules/statementsModule';
 import { ValidationObserver } from 'vee-validate'
 import storageData from '@/store/services/storageService'
 
@@ -191,10 +147,10 @@ export default class Bussines extends Vue {
 	title : string = '';
 	subtitle : string = ''
 	validateStepForm : any = {inactivo: '1'};
-    arrayPosition = []
-    vincularform : any = { 
-		code: 0, 
-		message:'', 
+    arrayPeriods = []
+    declararform : any = { 
+        empresa_id : '',
+        fecha_registro : (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
 	}
     loadingWizard = false
 
@@ -212,13 +168,19 @@ export default class Bussines extends Vue {
   
     headers = [
         {text: 'Código', value: 'id'},
-        {text: 'Fecha de Registro', value: 'customers.name_legal'},
-        {text: 'Periodo', value: 'technicals.name'},
-        {text: 'Cantidad Trabajadores', value: 'start'},
-        {text: 'Personas con Discapacidad', value: 'servicemodes.description'},
-        {text: 'Action', value: 'action'}
+        {text: 'Fecha de Registro', value: 'fecha_registro'},
+        {text: 'Periodo', value: 'nombre'},
+        {text: 'Cantidad Trabajadores', value: 'numero_total_trabajadores'},
+        {text: 'Personas con Discapacidad', value: 'personas_discapacidades'},
+        {text: 'Action', value: 'actions'}
     ];
     desserts = []
+    porcentaje = ''
+    disabled = true
+    dataValidate = {
+        empresa_id:155,
+        periodo_id:''
+    }
 	$refs!: {
         validateStepForm: InstanceType<typeof ValidationObserver>;
         validateStepFormTwo: InstanceType<typeof ValidationObserver>;			
@@ -227,77 +189,73 @@ export default class Bussines extends Vue {
         return bussinesModule.getBussines; 
     }
 	get FormRequest(): any {
-        return this.vincularform;
+        return this.declararform;
     }
 
     get activo() {
         return this.validateStepForm.inactivo = '1'
     }
-    setLoading(value) {
-       this.loadingWizard = value
-   }
-    handleValidation(isValid, tabIndex){
-        console.log('Tab: '+tabIndex+ ' valid: '+isValid)
-    }
-	async updateFecha(){
-		this.vincularform.registration_date = this.date
-	}
-	validateRif(value){
-		if(value.length == 12){
-			alert('hacer peticion al api')
-			console.log(value)
+    async getPeriodo(event){
+        this.dataValidate.periodo_id = event
+        const validate : any = await  statementsModule.validateStatement(this.dataValidate)
+        if(validate.length > 0){
+            this.textmsj = 'El Periodo Seleccionado ya fue Declarado.'
+			this.color = 'warning'
+			this.snackbar = true
+			this.back();
+            this.disabled = true
+        }else{
+            this.declararform.periodo = event
+            this.declararform.empresa_id = 155
+            this.calcularporcentaje()
+        }
 
-		}
-	}
-    async getPositionAll(){
-		const position : any = await sessionModule.getPositionAll()
-		this.arrayPosition = position.data.data
-	}
-    beforeTabSwitch(){
-        const valid :any =  this.$refs.validateStepForm.validate();
-			
-        if (valid) {
-           return true
-        }else {
-            return false
-        }
-    } 
-    beforeTabSwitchTwo(){
-        const valid :any =  this.$refs.validateStepFormTwo.validate();
-        if (valid) {
-           return true
-        }else {
-            return false
-        }
-    } 
-	
-	onComplete() {console.log(this.FormRequest)
-		if (this.FormRequest.id > 0) {
-			this.update();
-		} else {
-			this.save();
-		}	
     }
- 	async save() { 
+    async calcularporcentaje(){
+        let porcentajeley : number  = parseInt(this.declararform.numero_total_trabajadores) * (5 / 100)
+
+        if(porcentajeley >  parseFloat(this.declararform.trabajadores_discapacidad)  ){
+            this.porcentaje = 'Total = '+porcentajeley+' '+' - No cumple con el 5% estipulado por la  Ley'
+            this.disabled = true
+        }else{
+            this.porcentaje = 'Total = '+porcentajeley+' '+'- Cumple con el 5% estipulado por la  Ley'
+            this.disabled = false
+        }
+    }
+    async getPeriods(){
+		const periods : any = await statementsModule.getPeriodsAll()
+		this.arrayPeriods = periods.data
+	}
+    async getPeopleLinkedByBussinesId(){
+		const peoplelinked : any = await statementsModule.getPeopleLinkedByBussinesId()
+        console.log(peoplelinked.data.length)
+        if(peoplelinked.data.length > 0){
+            this.declararform.trabajadores_discapacidad = peoplelinked.data.length
+            this.declararform.personas_discapacidades   = peoplelinked.data.length
+        }else{
+            alert('debe vincular trabajadores')
+        }
+
+	}
+ 	async declarar() { 
 		console.log(this.FormRequest)
-/*  		this.overlay = true
-    	const data = await bussinesModule.save(this.FormRequest)
-		console.log(data)
-		if(data.code == 201){
-			this.textmsj = 'Empresa Creada con Éxito.'
+ 		this.overlay = true
+    	const data = await statementsModule.save(this.FormRequest)
+
+		if(data.code == 200 || data.code == 201){
+			this.textmsj = 'Declaración Creada con Éxito.'
 			this.color = 'success'
 			this.snackbar = true
 			this.back();
-			await sessionModule.updateStatusBussines('registered')
 			this.overlay = false 
 			this.dialog = true
 		} else {
-			this.textmsj = 'Error al Registrar los datos de la Empresa.'
+			this.textmsj = 'Error al Registrar la Declaración.'
 			this.color = 'error'
 			this.snackbar = true
 			this.backError();
 			this.overlay = false 
-		} */
+		}
     }; 
 	async update(){
  		this.overlay = true
@@ -319,7 +277,15 @@ export default class Bussines extends Vue {
 		//this.reset();
        
 	}
+    async getStatements(){
+        const statementAll : any = await  statementsModule.getStatementByBussine(155)
+        console.log(statementAll)
+        this.desserts = statementAll.data
+     
+    }
+    imprimir(item){
 
+    }
 	reset () {
         this.$refs.validateStepForm.reset()
     };
@@ -354,7 +320,8 @@ export default class Bussines extends Vue {
         }
     };
     mounted(){
-        this.getPositionAll()
+        this.getPeriods()
+        this.getPeopleLinkedByBussinesId()
     }
 }
 </script>
@@ -379,5 +346,8 @@ export default class Bussines extends Vue {
         background-color: red;
         height: 100%;
         width: 100%;
+    }
+    .porcentaje{
+        color: red;
     }
 </style>
