@@ -39,27 +39,47 @@
                                     <v-btn
                                         color="success"
                                         dark
-                                        @click="viewPDF(item.id)"   
+                                        @click="editar(item)"   
                                         icon
                                         v-bind="attrs"
                                         v-on="on"
                                     >
-                                        <v-icon>mdi-eye</v-icon>
+                                        <v-icon>mdi-pencil-box-outline</v-icon>
                                     </v-btn>
                                 </template>
-                                <span>Ver Boleta de Ordenamiento</span>
+                                <span>Ver Oferta</span>
+                            </v-tooltip>
+                            <v-tooltip top>
+                                <template v-slot:activator="{on, attrs}">
+                                    <v-btn
+                                        color="warning"
+                                        dark
+                                        @click="postulantes(item)"   
+                                        icon
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >
+                                        <v-icon>mdi-account-group-outline</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Ver Postulantes</span>
+                            </v-tooltip>
+                            <v-tooltip top>
+                                <template v-slot:activator="{on, attrs}">
+                                    <v-btn
+                                        color="error"
+                                        dark
+                                        @click="eliminar(item)"   
+                                        icon
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >
+                                        <v-icon>mdi-trash-can-outline</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Eliminar</span>
                             </v-tooltip>
                         </div>
-                    </template>
-                    <template   v-slot:item.price="{item}">
-                        <template>
-                            {{ setDecimales(item.price) }}
-                        </template>
-                    </template>
-                    <template   v-slot:item.quantity="{item}">
-                        <template>
-                            {{ setDecimales(item.quantity) }}
-                        </template>
                     </template>
                 </v-data-table>
             </template>
@@ -71,7 +91,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch }     from 'vue-property-decorator';
-import formacionModule            from '@/store/modules/formacionModule';
+import ofertModule from '@/store/modules/ofertModule';
 
 
 @Component({
@@ -82,14 +102,14 @@ import formacionModule            from '@/store/modules/formacionModule';
 export default class Usuario extends Vue {
 	@Prop() item?: Object;
     headers = [
-            {text: 'Id', value: 'num_boleta'},
-            {text: 'Fecha ', value: 'date'},
-            {text: 'Cargo', value: 'hour'},
-            {text: 'Cantidad', value: 'expedient.num_expedient'},
-            {text: 'Postulados', value: 'guide.num_guia'},
-            {text: 'Profesión', value: 'guide.num_guia'},
+            {text: 'Id', value: 'id_postula_oferta'},
+            {text: 'Fecha ', value: 'fecha_postula_oferta'},
+            {text: 'Cargo', value: 'desc_cargo_postula'},
+            {text: 'Cantidad', value: 'cantidad_postula_oferta'},
+            {text: 'Postulados', value: 'cantidad_postula_oferta'},
+            {text: 'Profesión', value: 'desc_profesion_postula'},
             {text: 'Status', value: 'status'},
-            {text: '', value: 'action'}
+            {text: 'Acciones', value: 'action'}
             ];
     section : string = 'Usuarios'
     overlay = false;
@@ -109,7 +129,7 @@ export default class Usuario extends Vue {
     color = ''
     timeout = 2000
     label = 'Buscar Solicitud'
-    moduleStore = formacionModule
+    moduleStore = ofertModule
     per_page = 10
     endpoint : string = 'users'
     options = {}
@@ -132,6 +152,12 @@ export default class Usuario extends Vue {
         this.textbody = 'Confirme que desea eliminar la solicitud'
         this.titlemodal = 'Eliminar Registro de Solicitud'
         this.id_delete = id
+    }
+    editar(item){
+        this.$router.push({ name: "editarofertalaboral", params: { id: item.id_postula_oferta } });
+    }
+    eliminar(){
+
     }
     cerrarModal(event){
         this.dialogDelete = event;
@@ -169,7 +195,8 @@ export default class Usuario extends Vue {
     async dataIndex(){  
         this.overlay = true
             let paginateData : any = [];
-            const {data,status} : any = await formacionModule.getAll()   
+            const data : any = await ofertModule.getAll()  
+            console.log(data) 
             this.desserts = data.data
         this.overlay = false 
     }
@@ -177,7 +204,7 @@ export default class Usuario extends Vue {
         console.log(page)
     }
     mounted(){
-        //this.dataIndex()
+        this.dataIndex()
     }
 
 }

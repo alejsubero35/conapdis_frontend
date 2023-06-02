@@ -128,30 +128,25 @@ import storageData from '@/store/services/storageService'
 					const stoken: string  		= login.access_token;
 					const user: string 			= login.user
 					const user_id: string 		= login.user.id
-					console.log(login.user.busine.length)
-					if(login.user.busine.length > 0){
-						const busine: any     		= login.user.busine[0]
-						storageData.set('_bussines', busine);
-						this.context.commit('setBussines', busine);
-					}
-				
+			
+					const busine: any     		= login.user.busine
+					storageData.set('_bussines', busine);
+					this.context.commit('setBussines', busine);
+
 					const full_name: string 	= login.user.first_name + ' ' + login.user.last_name
-					const statusBusine: string  = login.status_busine;
 
 					storageData.set('_token', stoken);
 					storageData.set('_user_id', user_id);
 					
 					storageData.set('_nameUser', full_name);
 					storageData.set('_User', user);
-					storageData.set('_status_busine', statusBusine);
 			
 					this.context.commit('setToken', stoken);
 					this.context.commit('setTokens', payload.data.data);
 					this.context.commit('setUserId', user_id);
 				
 					this.context.commit('setNameUser', full_name);
-					this.context.commit('setUser', user);
-					this.context.commit('setStatusBussine', statusBusine);
+					this.context.commit('setUser', user)
 			
 				} 
 			  } else {

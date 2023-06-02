@@ -1063,7 +1063,7 @@ export default class Bussines extends Vue {
 	async getUserType(){
 		const typeuser : any = await bussinesModule.getUserTypeAll()
 		this.arrayUserType = typeuser.data.data
-		this.initData()
+		//this.initData()
 	}
 	async getEconomicSector(){
 		const economicsector : any = await bussinesModule.getEconomicSectorAll()
