@@ -66,7 +66,7 @@
 						</v-row>
 						<v-row>
 							<v-col  cols="12" sm="12" md="12">
-								<h5>Registro Mercantil</h5>
+								<h5 style="font-size: 14px; color: rgb(255,64,129); font-weight:bold">Registro Mercantil</h5>
 								<v-divider></v-divider>
 							</v-col>
 						</v-row>
@@ -116,14 +116,12 @@
 									<template v-slot:activator="{ on, attrs }">
 									<v-text-field
 										v-model="date"
-										label="Año de constitución"
+										label="Año"
 										append-icon="mdi-calendar"
 										readonly
 										v-bind="attrs"
 										v-on="on"
 										dense 
-	
-							   
 									></v-text-field>
 									</template>
 									<v-date-picker
@@ -136,18 +134,7 @@
 				
 						</v-row>
 						<v-row>
-							<v-col cols="12" sm="6" md="3">
-								<v-text-field
-									label="Duración en años"
-									placeholder="Duración en años"
-
-									dense
-									:rules="rules"
-									v-model="bussinesform.duration"
-									type="number"
-								></v-text-field>
-							</v-col>
-							<v-col cols="12" sm="6" md="3">
+							<v-col cols="12" sm="6" md="4">
 								<v-text-field
 									label="Organismo Inscrito a:"
 									placeholder="Organismo Inscrito a:"
@@ -157,7 +144,7 @@
 									v-model="bussinesform.attached_body"
 								></v-text-field>
 							</v-col>
-							<v-col cols="12" sm="6" md="3">
+							<v-col cols="12" sm="6" md="4">
 								<v-text-field
 									label="Página Web"
 									placeholder="Página Web"
@@ -166,16 +153,8 @@
 									v-model="bussinesform.web"
 								></v-text-field>
 							</v-col>
-							<v-col cols="12" sm="6" md="3">
-								<v-text-field
-								label="Email Empresarial"
-								placeholder="Email Empresarial"
-								dense
-								:rules="emailRules"
-								v-model="bussinesform.email"
-							></v-text-field>
-							</v-col>
-							<v-col cols="12" sm="6" md="3">
+							
+							<v-col cols="12" sm="6" md="4">
 								<v-select
 									:items="arrayEconomicSector"
 									item-text="name"
@@ -189,6 +168,8 @@
 									required
 								></v-select>
 							</v-col>
+						</v-row>
+						<v-row>
 							<v-col cols="12" sm="6" md="3">
 								<v-select
 									:items="arrayTypeCompany"
@@ -213,7 +194,19 @@
 									v-model="bussinesform.employer_number_ivss"
 								></v-text-field>
 							</v-col>
-							<v-col cols="12" sm="6" md="3">
+							<v-col cols="12" sm="12" md="6">
+								<v-textarea
+									label="Objeto de la Empresa"
+									placeholder="Objeto de la Empresa"
+									dense
+									:rules="rules"
+									v-model="bussinesform.comercial_designation"
+									rows="1"
+								></v-textarea>
+								</v-col>
+						</v-row>
+						<v-row>
+							<v-col cols="12" sm="6" md="12">
 								<v-select
 									:items="arrayEconomicActivies"
 									item-text="name"
@@ -227,32 +220,7 @@
 									required
 								></v-select>
 							</v-col>
-						</v-row>
-						<v-row>
-							<v-col cols="12" sm="6" md="3">
-								<v-select
-									:items="arrayUserType"
-									item-text="name"
-									item-value="id"
-									label="Tipo de Usuario"
-									placeholder="Tipo de Usuario"
-									v-model="bussinesform.user_type_id"
-
-									dense
-									:rules="rules"
-									required
-								></v-select>
-							</v-col>
-							<v-col cols="12" sm="12" md="9">
-							<v-textarea
-								label="Objeto de la Empresa"
-								placeholder="Objeto de la Empresa"
-								dense
-								:rules="rules"
-								v-model="bussinesform.comercial_designation"
-								rows="1"
-							></v-textarea>
-							</v-col>
+							
 						</v-row>
                 	</v-form>
 				</tab-content>
@@ -287,9 +255,24 @@
 							></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="6">
-								<v-text-field   :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"   :type="show ? 'text' : 'password'"  label="Password" placeholder="Password"  dense :rules="rules" v-model="bussinesform.password"  @click:append="show = !show">
+								<v-text-field
+								label="Username"
+								placeholder="username"
+								dense
+								v-model="bussinesform.username"
+							></v-text-field>
+							</v-col>
+							<!-- <v-col cols="12" sm="6" md="6">
+								<v-text-field   
+								:append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"   
+								:type="show ? 'text' : 'password'"  
+								label="Password" 
+								placeholder="Password"  
+								dense 
+								:rules="rules" 
+								v-model="bussinesform.password"  @click:append="show = !show">
 							   </v-text-field>
-						   </v-col>
+						   </v-col> -->
 						</v-row>
                 	</v-form>
 				</tab-content>
@@ -689,7 +672,7 @@ export default class Bussines extends Vue {
 		puestos_de_estacionamiento:0,
 		senalizacion:0,
 		herramientas_tecnologicas:0,
-
+		username:'',
 
 	}
     loadingWizard = false
@@ -1060,11 +1043,11 @@ export default class Bussines extends Vue {
 		const states : any = await bussinesModule.getStatesAll()
 		this.arrayStates = states.data.data
 	}
-	async getUserType(){
+	/* async getUserType(){
 		const typeuser : any = await bussinesModule.getUserTypeAll()
 		this.arrayUserType = typeuser.data.data
 		this.initData()
-	}
+	} */
 	async getEconomicSector(){
 		const economicsector : any = await bussinesModule.getEconomicSectorAll()
 		this.arrayEconomicSector = economicsector.data.data
@@ -1120,8 +1103,8 @@ export default class Bussines extends Vue {
             
         }
     };
-	initData(){
-		this.bussinesform = {
+	/*initData(){
+		 this.bussinesform = {
 			type_rif :'1',
 			rif:'j-14610701-2',
 			company_name:'prueba',
@@ -1150,15 +1133,15 @@ export default class Bussines extends Vue {
 			email_rl:'juan@gmail.com',
 			observations:'observacion de prueba',
 			password:'12345678'
-		}
-	}
+		} 
+	}*/
 	
     mounted(){
 		this.getStates()
 		this.getEconomicSector()
 		this.getEconomicActivies()
 		this.getTypeCompany()
-		this.getUserType()
+		//this.getUserType()
 	
 		if (storageData.get('_bussines') !== null) {
 			this.overlay = true

@@ -35,7 +35,7 @@ import storageData from '@/store/services/storageService'
 	  	nameuser : any = '';
 		bussines: User[] = [];
 		user : any = '';
-		statusBusine :  string | null = storageData.get('_status_busine');
+		//statusBusine :  string | null = storageData.get('_status_busine');
   
 		get getTokens() {
 			return storageData.get('_token');
@@ -58,9 +58,9 @@ import storageData from '@/store/services/storageService'
 		get getBussines() {
 			return  (storageData.get('_bussines')) ? storageData.get('_bussines') : [] ;
 		}
-		get getStatusBussines() {
+		/* get getStatusBussines() {
 			return  this.statusBusine
-		}
+		} */
 		@Mutation
 		setTokens(tokens: UserToken[]) {
 			this.tokens = tokens;
@@ -107,9 +107,9 @@ import storageData from '@/store/services/storageService'
 			this.user = user;
 		}
 		@Mutation
-		setStatusBussine(statusBusine: any) {
+		/* setStatusBussine(statusBusine: any) {
 			this.statusBusine = statusBusine;
-		}
+		} */
 
   
 		@Action
@@ -128,22 +128,22 @@ import storageData from '@/store/services/storageService'
 					const stoken: string  		= login.access_token;
 					const user: string 			= login.user
 					const user_id: string 		= login.user.id
-					console.log(login.user.busine.length)
-					if(login.user.busine.length > 0){
-						const busine: any     		= login.user.busine[0]
+					//console.log(login.user.busine.length, login.user.busine, login.user.length)
+					if(login.user.busine){
+						const busine: any     		= login.user.busine
 						storageData.set('_bussines', busine);
 						this.context.commit('setBussines', busine);
 					}
 				
 					const full_name: string 	= login.user.first_name + ' ' + login.user.last_name
-					const statusBusine: string  = login.status_busine;
+					//const statusBusine: string  = login.status_busine;
 
 					storageData.set('_token', stoken);
 					storageData.set('_user_id', user_id);
 					
 					storageData.set('_nameUser', full_name);
 					storageData.set('_User', user);
-					storageData.set('_status_busine', statusBusine);
+					//storageData.set('_status_busine', statusBusine);
 			
 					this.context.commit('setToken', stoken);
 					this.context.commit('setTokens', payload.data.data);
@@ -151,7 +151,7 @@ import storageData from '@/store/services/storageService'
 				
 					this.context.commit('setNameUser', full_name);
 					this.context.commit('setUser', user);
-					this.context.commit('setStatusBussine', statusBusine);
+					//this.context.commit('setStatusBussine', statusBusine);
 			
 				} 
 			  } else {
