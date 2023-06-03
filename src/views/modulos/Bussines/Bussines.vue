@@ -76,7 +76,7 @@
 								<v-text-field
 									label="Tomo"
 									placeholder="Tomo"
-
+									min=1
 									dense
 									:rules="rulesNum"
 									v-model="bussinesform.tomo"
@@ -87,7 +87,7 @@
 								<v-text-field
 									label="Folio"
 									placeholder="Folio"
-
+									min=1
 									dense
 									:rules="rulesNum"
 									v-model="bussinesform.folio"
@@ -98,7 +98,7 @@
 								<v-text-field
 									label="Número"
 									placeholder="Número"
-
+									min=1
 									dense
 									:rules="rulesNum"
 									v-model="bussinesform.number"
