@@ -226,56 +226,56 @@ const router = new Router({
           path: 'vincular',
           name: 'vincular',
           component: Vincular,
-          meta: { Auth: false, title: 'VincularDesvincular' },
+          meta: { Auth: true, title: 'VincularDesvincular' },
      
         }, 
         {
           path: 'declaraciones',
           name: 'declaraciones',
           component: Declaraciones,
-          meta: { Auth: false, title: 'Declaraciones' },
+          meta: { Auth: true, title: 'Declaraciones' },
      
         }, 
         {
           path: 'solicitudformacion',
           name: 'solicitudformacion',
           component: SolicitudFormacion,
-          meta: { Auth: false, title: 'SolicitudFormacion' },
+          meta: { Auth: true, title: 'SolicitudFormacion' },
      
         }, 
         {
           path: 'crearsolicitudformacion',
           name: 'crearsolicitudformacion',
           component: CrearSolicitudFormacion,
-          meta: { Auth: false, title: 'CrearSolicitudFormacion' },
+          meta: { Auth: true, title: 'CrearSolicitudFormacion' },
      
         }, 
         {
           path: 'ofertaslaborales',
           name: 'ofertaslaborales',
           component: OfertasLaborales,
-          meta: { Auth: false, title: 'OfertasLaborales' },
+          meta: { Auth: true, title: 'OfertasLaborales' },
      
         }, 
         {
           path: 'crearofertalaboral',
           name: 'crearofertalaboral',
           component: CrearOfertaLaboral,
-          meta: { Auth: false, title: 'CrearOfertaLaboral' },
+          meta: { Auth: true, title: 'CrearOfertaLaboral' },
      
         },
         {
           path: 'editarofertalaboral/:id',
           name: 'editarofertalaboral',
           component: EditarOfertaLaboral,
-          meta: { Auth: false, title: 'EditarOfertaLaboral' },
+          meta: { Auth: true, title: 'EditarOfertaLaboral' },
      
         },
         {
           path: 'versolicitudformacion/:id',
           name: 'versolicitudformacion',
           component: VerSolicitudformacion,
-          meta: { Auth: false, title: 'VerSolicitudformacion' },
+          meta: { Auth: true, title: 'VerSolicitudformacion' },
      
         },
         

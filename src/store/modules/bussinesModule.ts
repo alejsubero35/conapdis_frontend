@@ -278,7 +278,24 @@ import {
 				  }
 			  })
 			  return dataDocuments;
-		  }  
+		  }
+		  @Action
+		  existRif(value) {
+			 return new Promise((resolve, reject) => {  
+					http.get(`/busines/validate_rif/${value}`)
+					.then(response =>  {
+	  
+						if (response.status === 200) {     
+							resolve(response); 
+						}
+					})
+					.catch(error => {
+						reject(error)
+					})
+			  
+			 
+				}) 
+			 }
 		
 
   }  

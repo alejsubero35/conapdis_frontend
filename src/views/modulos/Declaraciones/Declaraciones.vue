@@ -206,7 +206,7 @@ export default class Bussines extends Vue {
             this.disabled = true
         }else{
             this.declararform.periodo = event
-            this.declararform.empresa_id = 155
+            this.declararform.empresa_id = storageData.get('_bussines_id') 
             this.calcularporcentaje()
         }
 
@@ -226,8 +226,8 @@ export default class Bussines extends Vue {
 		const periods : any = await statementsModule.getPeriodsAll()
 		this.arrayPeriods = periods.data
 	}
-    async getPeopleLinkedByBussinesId(){
-		const peoplelinked : any = await statementsModule.getPeopleLinkedByBussinesId()
+    async getPeopleLinkedByBussinesId(id){
+		const peoplelinked : any = await statementsModule.getPeopleLinkedByBussinesId(id)
         console.log(peoplelinked.data.length)
         if(peoplelinked.data.length > 0){
             this.declararform.trabajadores_discapacidad = peoplelinked.data.length
@@ -321,7 +321,8 @@ export default class Bussines extends Vue {
     };
     mounted(){
         this.getPeriods()
-        this.getPeopleLinkedByBussinesId()
+        this.getPeopleLinkedByBussinesId(storageData.get('_bussines_id'))
+        this.declararform.empresa_id = storageData.get('_bussines_id')
     }
 }
 </script>

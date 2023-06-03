@@ -310,7 +310,7 @@ export default class EditarCliente extends Vue {
     setItem(){
 
     }
-    mounted(){
+    mounted(){console.log(storageData.get('_bussines'))
         this.comboboxAll(); 
         this.empresaname = storageData.get('_bussines').rif + '-' +storageData.get('_bussines').nombre  
         this.dataForm.id_postula_empresa = storageData.get('_bussines').id

@@ -34,6 +34,7 @@ import storageData from '@/store/services/storageService'
 	  	customer_id : any = '';
 	  	nameuser : any = '';
 		bussines: User[] = [];
+		bussine_id : any = '';
 		user : any = '';
 		//statusBusine :  string | null = storageData.get('_status_busine');
   
@@ -103,6 +104,10 @@ import storageData from '@/store/services/storageService'
 			this.bussines = bussines;
 		}
 		@Mutation
+		setBussinesId(bussine_id:any){
+			this.bussine_id = bussine_id;
+		}
+		@Mutation
 		setUser(user: any) {
 			this.user = user;
 		}
@@ -128,10 +133,12 @@ import storageData from '@/store/services/storageService'
 					const stoken: string  		= login.access_token;
 					const user: string 			= login.user
 					const user_id: string 		= login.user.id
-			
-					const busine: any     		= login.user.busine
+					const busine: any     		= login.user.busine[0]
+					const busine_id: any        = login.user.empresa_id
 					storageData.set('_bussines', busine);
 					this.context.commit('setBussines', busine);
+					storageData.set('_bussines_id', busine_id);
+					this.context.commit('setBussinesId', busine_id);
 
 					const full_name: string 	= login.user.first_name + ' ' + login.user.last_name
 

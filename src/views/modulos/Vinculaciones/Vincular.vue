@@ -347,7 +347,6 @@ export default class Bussines extends Vue {
     }
 	async updateFecha(){
 		this.vincularform.trabaja_desde = this.date
-        console.log(this.vincularform.trabaja_desde)
 	}
     async updateFechaEgreso(){
         this.desvincularform.trabajo_hasta = this.dategreso
@@ -368,7 +367,7 @@ export default class Bussines extends Vue {
     getPersonCertificate(event){console.log(event)
         this.fullname = event.nombres+' '+event.apellidos
         this.vincularform.personas_discapacidad_id = event.id
-        this.vincularform.empresa_id = 155
+        this.vincularform.empresa_id = storageData.get('_bussines_id') 
     
     }
     async getPositionAll(){
@@ -399,14 +398,14 @@ export default class Bussines extends Vue {
 		}
     }; 
     async getPersonLinked(){
-        const linketAll : any = await  linkedModule.getPersonLinkedByBussine(155)
+        const linketAll : any = await  linkedModule.getPersonLinkedByBussine(storageData.get('_bussines_id'))
         this.desserts = linketAll.data
      
     }
     openDialog(item){
         this.dialog     = true
         this.desvincularform.id = item.id
-
+        this.desvincularform.trabajo_hasta = this.dategreso
     }
     desvincular(){
         this.update()

@@ -52,6 +52,7 @@
 									v-mask="'N-########-#'"
 									@keyup="validateRif(bussinesform.rif)"
 								></v-text-field>
+								<span v-show="validateRifDB" style="margin-top:-19px;color:red">El Rif Existe en BD </span>
 							</v-col>
 							<v-col cols="12" sm="6" md="6">
 								<v-text-field
@@ -134,17 +135,15 @@
 				
 						</v-row>
 						<v-row>
-							<v-col cols="12" sm="6" md="4">
+							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Organismo Inscrito a:"
 									placeholder="Organismo Inscrito a:"
-
 									dense
-									:rules="rules"
 									v-model="bussinesform.attached_body"
 								></v-text-field>
 							</v-col>
-							<v-col cols="12" sm="6" md="4">
+							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Página Web"
 									placeholder="Página Web"
@@ -153,8 +152,7 @@
 									v-model="bussinesform.web"
 								></v-text-field>
 							</v-col>
-							
-							<v-col cols="12" sm="6" md="4">
+							<v-col cols="12" sm="6" md="3">
 								<v-select
 									:items="arrayEconomicSector"
 									item-text="name"
@@ -162,14 +160,33 @@
 									label="Sector Económico"
 									placeholder="Sector Económico"
 									v-model="bussinesform.economic_sectors_id"
-
 									dense
 									:rules="rules"
 									required
 								></v-select>
 							</v-col>
-						</v-row>
-						<v-row>
+								
+								<!-- <v-col cols="12" sm="6" md="3">
+									<v-tooltip top>
+										<template v-slot:activator="{ on, attrs }">
+											<v-select
+												:items="arrayEconomicSector"
+												item-text="name"
+												item-value="id"
+												label="Sector Económico"
+												placeholder="Sector Económico"
+												v-model="bussinesform.economic_sectors_id"
+												v-bind="attrs"
+												v-on="on"
+												dense
+												:rules="rules"
+												required
+											></v-select>
+										</template>
+										<span>Tooltip</span>
+									</v-tooltip>
+								</v-col> -->
+						
 							<v-col cols="12" sm="6" md="3">
 								<v-select
 									:items="arrayTypeCompany"
@@ -184,13 +201,14 @@
 									required
 								></v-select>
 							</v-col>
-							<v-col cols="12" sm="6" md="3">
+						</v-row>
+						<v-row>
+				
+							<v-col cols="12" sm="6" md="6">
 								<v-text-field
 									label="Número Patronal  IVSS"
 									placeholder="Número Patronal  IVSS"
-
 									dense
-									:rules="rules"
 									v-model="bussinesform.employer_number_ivss"
 								></v-text-field>
 							</v-col>
@@ -279,7 +297,7 @@
                 <tab-content title="DIRECCIÓN Y TELÉFONOS"  icon="mdi mdi-cellphone-marker"  :before-change="beforeTabSwitchThree">
                     <v-form class="formCliente" ref="validateStepFormThree"  lazy-validation >	
 						<v-row>
-							<v-col cols="12" sm="6" md="3">
+							<v-col cols="12" sm="6" md="4">
 								<v-select
 									:items="arrayStates"
 									item-text="name"
@@ -294,7 +312,7 @@
 									@change="getMunicipalityByState($event)"
 								></v-select>
 							</v-col>
-							<v-col cols="12" sm="6" md="3">
+							<v-col cols="12" sm="6" md="4">
 								<v-select
 									:items="arrayMunicipality"
 									item-text="name"
@@ -309,7 +327,7 @@
 									@change="getParishesByMunicipality($event)"
 								></v-select>
 							</v-col>
-							<v-col cols="12" sm="6" md="3">
+							<v-col cols="12" sm="6" md="4">
 								<v-select
 									:items="arrayParishes"
 									item-text="name"
@@ -323,13 +341,31 @@
 									required
 								></v-select>
 							</v-col>
-							<v-col cols="12" sm="6" md="3">
+							<v-col cols="12" sm="6" md="4">
 								<v-text-field
 									label="Teléfono"
 									placeholder="####-#######'"
 									dense
 									:rules="rules"
 									v-model="bussinesform.phone"
+									v-mask="'####-#######'"
+								></v-text-field>
+							</v-col>
+							<v-col cols="12" sm="6" md="4">
+								<v-text-field
+									label="Teléfono 2"
+									placeholder="####-#######'"
+									dense
+									v-model="bussinesform.telefono2"
+									v-mask="'####-#######'"
+								></v-text-field>
+							</v-col>
+							<v-col cols="12" sm="6" md="4">
+								<v-text-field
+									label="Teléfono 3"
+									placeholder="####-#######'"
+									dense
+									v-model="bussinesform.telefono3"
 									v-mask="'####-#######'"
 								></v-text-field>
 							</v-col>
@@ -398,12 +434,54 @@
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
 								<v-text-field
+									label="Teléfono"
+									placeholder="####-#######'"
+									dense
+									:rules="rules"
+									v-model="bussinesform.telefono1_representante_legal"
+									v-mask="'####-#######'"
+								></v-text-field>
+							</v-col>
+							<v-col cols="12" sm="6" md="3">
+								<v-text-field
+									label="Teléfono 2"
+									placeholder="####-#######'"
+									dense
+									v-model="bussinesform.telefono2_representante_legal"
+									v-mask="'####-#######'"
+								></v-text-field>
+							</v-col>
+							<v-col cols="12" sm="6" md="3">
+								<v-text-field
+									label="Teléfono 3"
+									placeholder="####-#######'"
+									dense
+									v-model="bussinesform.telefono3_representante_legal"
+									v-mask="'####-#######'"
+								></v-text-field>
+							</v-col>
+							<v-col cols="12" sm="6" md="3">
+								<v-text-field
 								label="Email"
 								placeholder="Email"
 								dense
 								:rules="emailRules"
 								v-model="bussinesform.email_rl"
 							></v-text-field>
+							</v-col>
+							<v-col cols="12" sm="6" md="4">
+								<v-select
+									:items="arrayPosition"
+									item-text="name"
+									item-value="id"
+									label="Cargo"
+									placeholder="Cargo"
+									v-model="bussinesform.cargo_representante_legal"
+
+									dense
+									:rules="rules"
+									required
+								></v-select>
 							</v-col>
 						</v-row>
 					</v-form>	
@@ -601,26 +679,18 @@
 		  </v-card-title>
   
 		  <v-card-text>
-			Se le ha enviado un Email a su Correo Electrónico, por favor indique si desea cargar los documentos 
+			Será redirigido al Login, debe esperar que CONAPDIS active la empresa...
 		  </v-card-text>
   
 		  <v-card-actions>
 			<v-spacer></v-spacer>
   
 			<v-btn
-			  color="danger"
+			  color="primary"
 			  text
 			  @click="goHome()"
 			>
-			  No
-			</v-btn>
-  
-			<v-btn
-			  color="primary"
-			  text
-			  @click="goDocuments()"
-			>
-			  Si
+			  Ok
 			</v-btn>
 		  </v-card-actions>
 		</v-card>
@@ -677,10 +747,10 @@ export default class Bussines extends Vue {
 	}
     loadingWizard = false
 	typerif = [
-        {value: '1', text: 'Consejo Comunal'},
-		{value: '2', text: 'Gobierno'},
-        {value: '3', text: 'Jurídico'},
-		{value: '4', text: 'Personal'}
+		{value: '1', text: 'Personal'},
+		{value: '2', text: 'Jurídico'},
+		{value: '3', text: 'Gobierno'},
+        {value: '4', text: 'Consejo Comunal'},	
     ];
 
 	inactivo = [
@@ -736,6 +806,7 @@ export default class Bussines extends Vue {
 	arrayEconomicActivies = []
 	arrayTypeCompany = []
 	arrayUserType = []
+	arrayPosition = []
 	is_sucursal = false
 	sucursal    = false
 	tipodocumentos  = [
@@ -751,6 +822,7 @@ export default class Bussines extends Vue {
 	showSucursal = false
 	date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
     menu2 : boolean = false
+	validateRifDB = false
     max25chars = v => v.length <= 25 || 'Input too long!'
 
 	$refs!: {
@@ -781,11 +853,15 @@ export default class Bussines extends Vue {
 	async updateFecha(){
 		this.bussinesform.registration_date = this.date
 	}
-	validateRif(value){
+	async validateRif(value){
 		if(value.length == 12){
-			alert('hacer peticion al api')
-			console.log(value)
-
+			const data : any = await bussinesModule.existRif(value)
+			if(data.data.length > 0){
+				this.validateRifDB = true
+				this.bussinesform.rif = ''
+			}else{
+				this.validateRifDB = false
+			}
 		}
 	}
     beforeTabSwitch(){
@@ -1054,7 +1130,7 @@ export default class Bussines extends Vue {
 	}
 	async getEconomicActivies(){
 		const economicactivies : any = await bussinesModule.getEconomicActiviesAll()
-		this.arrayEconomicActivies = economicactivies.data.data
+		this.ordenarArray(economicactivies.data.data)
 	}
 	async getTypeCompany(){
 		const typecompany : any = await bussinesModule.getTypeCompanyAll()
@@ -1069,7 +1145,15 @@ export default class Bussines extends Vue {
 		this.arrayParishes = parishes.data.data
 		this.overlay = false
 	}
-	
+	async ordenarArray(array){
+        const newArray = array.sort((a,b) => a.name.localeCompare(b.name))
+        this.arrayEconomicActivies = newArray
+		this.arrayPosition = newArray
+    }
+	async getPositionAll(){
+		const position : any = await sessionModule.getPositionAll()
+		this.ordenarArray(position.data.data)
+	}
 	reset () {
         this.$refs.validateStepForm.reset()
     };
@@ -1101,12 +1185,13 @@ export default class Bussines extends Vue {
             v => v <= 100  || 'El valor debe ser menor a 100'
         ],
 		rulesNum: [
-            v => v >= 0  || 'Campo Requerido',
+			(v:any) => !!v || 'Campo requerido',
+            v => v >= 0  || 'No Acepta numeros negativos',
         ],
             
         }
     };
-	/*initData(){
+	initData(){
 		 this.bussinesform = {
 			type_rif :'1',
 			rif:'j-14610701-2',
@@ -1137,19 +1222,21 @@ export default class Bussines extends Vue {
 			observations:'observacion de prueba',
 			password:'12345678'
 		} 
-	}*/
+	}
 	
     mounted(){
 		this.getStates()
 		this.getEconomicSector()
 		this.getEconomicActivies()
 		this.getTypeCompany()
+		this.getPositionAll()
+		this.initData()
 		//this.getUserType()
 	
 		if (storageData.get('_bussines') !== null) {
 			this.overlay = true
 			this.bussinesform = storageData.get('_bussines')
-			if(storageData.get('_bussines').hasOwnProperty('is_major')){
+/* 			if(storageData.get('_bussines').hasOwnProperty('is_major')){
 				this.sucursal = (this.getBussines.is_major == false) ? false : true
 				this.showSucursal = (this.getBussines.is_major == false) ? false : true
 				let cadena  = this.getBussines.code_branch_office;
@@ -1159,7 +1246,7 @@ export default class Bussines extends Vue {
 				this.numero_sucursal = result2
 				this.nombre_sucursal = result
 			}
-			
+			 */
 			this.getMunicipalityByState(this.bussinesform.state_id)
 			this.getParishesByMunicipality(this.bussinesform.municipality_id)
 			

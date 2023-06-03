@@ -57,9 +57,9 @@ import {
             }) 
         }
     @Action
-    getPeopleLinkedByBussinesId() {
+    getPeopleLinkedByBussinesId(id) {
         return new Promise((resolve, reject) => {  
-            http.get(`/positions/get_people_linked`)
+            http.get(`/positions/get_people_linked/${id}`)
             .then(response =>  {
             if (response.status === 200) {     
                 resolve(response); 

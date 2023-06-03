@@ -17,7 +17,8 @@
       />
     </CSidebarBrand>
       <div>
-        <CRenderFunction  flat :content-to-render="$options.certificateapproved"/>
+        <CRenderFunction v-if="token"  flat :content-to-render="$options.certificateapproved"/>
+        <CRenderFunction v-else  flat :content-to-render="$options.estandar"/>
           <!-- <CRenderFunction v-if="isBussines      == 'pending'" flat :content-to-render="$options.estandar"/>
           <CRenderFunction v-else-if="isBussines == 'registered'" flat :content-to-render="$options.admin"/>
           <CRenderFunction v-else-if="isBussines == 'inspection_request'" flat :content-to-render="$options.inspeccionRequest"/>
@@ -55,12 +56,14 @@ export default {
   data(){
     return{
       typeRol : '',
-      bussine : ''
+      bussine : '',
+      token   : ''
     }
   },
   mounted(){
   this.typeRol = storageData.get('_rolename')
   this.bussine = storageData.get('_bussines')
+  this.token   = storageData.get('_token')
   },
   computed: {
     show () {

@@ -347,8 +347,8 @@ export default class EditarCliente extends Vue {
     mounted(){
         this.comboboxAll(); 
         this.getStates()
-        this.dataForm.id_postula_empresa = 3994  
-        this.empresaname = 'Paradise Breach'
+        this.dataForm.id_postula_empresa = storageData.get('_bussines').id  
+        this.empresaname = storageData.get('_bussines').rif + '-' +storageData.get('_bussines').nombre
         this.dataForm.fecha_formacion_solicitud = this.date
     }
 	data(){
