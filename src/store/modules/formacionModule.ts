@@ -25,27 +25,15 @@ import {
   
     token: string | null = localStorage.getItem('_token');
 
-	@Action
-	getAll() {
-	   return new Promise((resolve, reject) => {  
-			  http.get(`/guide-inspections`)
-			  .then(response =>  {
-
-				  if (response.status === 200) {     
-					  resolve(response); 
-				  }
-			  })
-			  .catch(error => {
-				  reject(error)
-			  })
-		
-	   
-		  }) 
-	   }
+    @Action({rawError: true})
+    async getAll() { 
+        const response =  await http.get(`/positions/get_request_all`)
+        return response;
+    }
      @Action
-     getInspectionRequestById(id) {
+     getWorkshopsAll() {
         return new Promise((resolve, reject) => {  
-           http.get(`/guide-inspections/${id}`)
+           http.get(`/positions/get_workshops`)
            .then(response =>  {
              if (response.status === 200) {     
                resolve(response); 
@@ -55,7 +43,35 @@ import {
              reject(error)
             })
           }) 
-        }
+	}
+	@Action
+	async save(dataRequest: any) { 
+		await http.post(`positions/save_request`, dataRequest)
+		.then((payload: any) => {
+		if(payload){
+			dataRequest.code = payload.status
+		} else {
+			dataRequest.code = 500;
+			dataRequest.message = 'Error al procesar la Solicitud';
+		}
+		})
+		return dataRequest;
+	}
+	@Action
+    getRequestById(id) {
+        return new Promise((resolve, reject) => {  
+            http.get(`/positions/get_request_by_id/${id}`)
+            .then(response =>  {
+                if (response.status === 200) {     
+                    resolve(response); 
+                }
+            })
+            .catch(error => {
+                reject(error)
+            })
+        }) 
+    }
+	
 
   }  
   

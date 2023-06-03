@@ -34,6 +34,7 @@
                         :rules="rulesNum"
                         required
                         class="mr-2"
+                        readonly
                     ></v-select>
                 </v-col>
                 <v-col cols="12" sm="4"	md="4">
@@ -44,6 +45,7 @@
                         dense
                         :rules="rules"
                         v-model="dataForm.responsable_formacion_solicitud"
+                        readonly
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4">
@@ -55,6 +57,7 @@
                         :rules="rules"
                         v-model="dataForm.telefono_formacion_solicitud"
                         type="number"
+                        readonly
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4"	md="4">
@@ -66,51 +69,44 @@
                         :rules="rulesNum"
                         v-model="dataForm.cantidad_formacion_solicitud"
                         type="number"
+                        readonly
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4">
-                    <v-select
-                        :items="arrayStates"
-                        item-text="name"
-                        item-value="id"
+                    <v-text-field
                         label="Estado"
                         placeholder="Estado"
-                        v-model="dataForm.id_estado_formacion_solicitud"
+                        v-model="dataForm.estado"
                         outlined
                         dense
                         :rules="rules"
                         required
-                        @change="getMunicipalityByState($event)"
-                    ></v-select>
+                        readonly
+                    ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4">
-                    <v-select
-                        :items="arrayMunicipality"
-                        item-text="name"
-                        item-value="id"
+                    <v-text-field
                         label="Municipio"
                         placeholder="Municipio"
-                        v-model="dataForm.id_municipio_formacion_solicitud"
+                        v-model="dataForm.municipio"
                         outlined
                         dense
                         :rules="rules"
                         required
-                        @change="getParishesByMunicipality($event)"
-                    ></v-select>
+                        readonly
+                    ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4">
-                    <v-select
-                        :items="arrayParishes"
-                        item-text="name"
-                        item-value="id"
+                    <v-text-field
                         label="Parroquia"
                         placeholder="Parroquia"
-                        v-model="dataForm.id_parroquia_formacion_solicitud"
+                        v-model="dataForm.parroquia"
                         outlined
                         dense
                         :rules="rules"
                         required
-                    ></v-select>
+                        readonly
+                    ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                     <v-menu
@@ -139,6 +135,7 @@
                         locale="es"
                         @input="menu2 = false"
                         @change="updateFecha()"
+                        readonly
                         ></v-date-picker>
                     </v-menu>
                 </v-col>
@@ -151,6 +148,7 @@
                         :rules="rules"
                         v-model="dataForm.hora_inicio_formacion_solicitud"
                         type="time"
+                        readonly
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4">
@@ -162,6 +160,7 @@
                         :rules="rules"
                         v-model="dataForm.hora_final_formacion_solicitud"
                         type="time"
+                        readonly
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12" md="12">
@@ -173,6 +172,7 @@
                         :rules="rules"
                         v-model="dataForm.direccion_formacion_solicitud"
                         rows="3"
+                        readonly
                     ></v-textarea>
                 </v-col>				
  
@@ -184,6 +184,7 @@
                         dense
                         :rules="rules"
                         v-model="dataForm.pto_referencia_formacion_solicitud"
+                        readonly
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6"	md="4">
@@ -199,12 +200,13 @@
                         :rules="rules"
                         required
                         @change="setItem()"
+                        readonly
                     ></v-select>
                 </v-col>
             </v-row>
-            <v-row class="d-flex justify-center p-5">
+<!--             <v-row class="d-flex justify-center p-5">
                 <v-btn @click="onSubmit"  color="primary" small>Guardar</v-btn>
-            </v-row>
+            </v-row> -->
         </v-form>
     <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color" />
     <!-- <ModalApproved @confirm="confirm" :titleModalDelete="titleModalDelete" :textbody="textbody" :dialogDelete="openDialog" @cerrarModal="cerrarModal"/> -->
@@ -246,7 +248,7 @@ export default class EditarCliente extends Vue {
     textmsj = ''
     color = ''
     timeout = 2000
-    sectiontitle = 'AÑADIR SOLICITUD DE FORMACIÓN'
+    sectiontitle = 'VISUALIZAR SOLICITUD DE FORMACIÓN'
     dialog = false
     openDialog = false
     textbody = ''
@@ -344,9 +346,16 @@ export default class EditarCliente extends Vue {
     go() {
         this.$router.go(-1)
     }
+    async getRequestTraining(id){
+        const data : any = await formacionModule.getRequestById(id)
+        console.log(data)
+        this.dataForm = data.data
+    }
     mounted(){
+
         this.comboboxAll(); 
         this.getStates()
+        this.getRequestTraining(this.$route.params.id)
         this.dataForm.id_postula_empresa = 3994  
         this.empresaname = 'Paradise Breach'
         this.dataForm.fecha_formacion_solicitud = this.date

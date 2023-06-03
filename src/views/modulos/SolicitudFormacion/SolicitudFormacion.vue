@@ -32,35 +32,55 @@
                         'items-per-page-text':'Filtro por Página'       
                     }"                     
                 >
-                    <template v-slot:item.action="{ item }">
-                        <div class="d-flex">
-                            <v-tooltip top>
-                                <template v-slot:activator="{on, attrs}">
-                                    <v-btn
-                                        color="success"
-                                        dark
-                                        @click="viewPDF(item.id)"   
-                                        icon
-                                        v-bind="attrs"
-                                        v-on="on"
-                                    >
-                                        <v-icon>mdi-eye</v-icon>
-                                    </v-btn>
-                                </template>
-                                <span>Ver Boleta de Ordenamiento</span>
-                            </v-tooltip>
-                        </div>
-                    </template>
-                    <template   v-slot:item.price="{item}">
-                        <template>
-                            {{ setDecimales(item.price) }}
-                        </template>
-                    </template>
-                    <template   v-slot:item.quantity="{item}">
-                        <template>
-                            {{ setDecimales(item.quantity) }}
-                        </template>
-                    </template>
+                <template v-slot:item.action="{ item }">
+                    <div class="d-flex">
+                        <v-tooltip top>
+                            <template v-slot:activator="{on, attrs}">
+                                <v-btn
+                                    color="success"
+                                    dark
+                                    @click="ver(item)"   
+                                    icon
+                                    v-bind="attrs"
+                                    v-on="on"
+                                >
+                                    <v-icon>mdi-eye-outline</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>Ver Solicitud de Formación</span>
+                        </v-tooltip>
+                        <v-tooltip top>
+                            <template v-slot:activator="{on, attrs}">
+                                <v-btn
+                                    color="info"
+                                    dark
+                                    @click="asistencias(item)"   
+                                    icon
+                                    v-bind="attrs"
+                                    v-on="on"
+                                >
+                                    <v-icon>mdi-account-multiple-plus-outline</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>Ver Asistencias</span>
+                        </v-tooltip>
+                        <!-- <v-tooltip top>
+                            <template v-slot:activator="{on, attrs}">
+                                <v-btn
+                                    color="error"
+                                    dark
+                                    @click="eliminar(item)"   
+                                    icon
+                                    v-bind="attrs"
+                                    v-on="on"
+                                >
+                                    <v-icon>mdi-trash-can-outline</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>Eliminar</span>
+                        </v-tooltip> -->
+                    </div>
+                </template>
                 </v-data-table>
             </template>
         </v-col>
@@ -82,13 +102,14 @@ import formacionModule            from '@/store/modules/formacionModule';
 export default class Usuario extends Vue {
 	@Prop() item?: Object;
     headers = [
-            {text: 'Id', value: 'num_boleta'},
-            {text: 'Fecha ', value: 'date'},
-            {text: 'Taller', value: 'hour'},
-            {text: 'Responsable', value: 'expedient.num_expedient'},
-            {text: 'Cantidad', value: 'guide.num_guia'},
-            {text: 'Status', value: 'action'}
-            ];
+        {text: 'Id', value: 'id_formacion_solicitud'},
+        {text: 'Fecha ', value: 'fecha_propuesta_formacion_solicitud'},
+        {text: 'Taller', value: 'desc_formacion_taller'},
+        {text: 'Responsable', value: 'responsable_formacion_solicitud'},
+        {text: 'Cantidad', value: 'cantidad_formacion_solicitud'},
+        {text: 'Status', value: 'status_formacion_taller'},
+        {text: 'Acciones', value: 'action'}
+    ];
     section : string = 'Usuarios'
     overlay = false;
     desserts : any = [];
@@ -113,18 +134,18 @@ export default class Usuario extends Vue {
     options = {}
     textbody = ''
     titlemodal = ''
-    @Watch('options', { immediate: false })
-        handler (val) {
-        if (val.page != 1) {
-            this.dataIndex()
-        }
-    }
+
     
 
     openView(){
         this.$router.push({ name: "crearsolicitudformacion"});
     }
+    ver(item){
+        this.$router.push({ name: "versolicitudformacion", params: { id: item.id_formacion_solicitud } });
+    }
+    asistencias(item){
 
+    }
     Delete(id){
         this.dialogDelete = true;
         this.textbody = 'Confirme que desea eliminar la solicitud'
@@ -166,16 +187,16 @@ export default class Usuario extends Vue {
     }
     async dataIndex(){  
         this.overlay = true
-            let paginateData : any = [];
-            const {data,status} : any = await formacionModule.getAll()   
-            this.desserts = data.data
+        const data : any = await formacionModule.getAll()  
+        console.log(data) 
+        this.desserts = data.data
         this.overlay = false 
     }
     async setQueryPage(page:number){
         console.log(page)
     }
     mounted(){
-        //this.dataIndex()
+        this.dataIndex()
     }
 
 }

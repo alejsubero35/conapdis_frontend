@@ -35,6 +35,7 @@
                         class="ml-4"
                         return-object
                         @change="getChargeObject($event)"
+                        v-model="cargo_id"
                     ></v-select>
                 </v-col>
                 <v-col cols="12" sm="6"	md="6">
@@ -51,6 +52,7 @@
                         class="mr-2"
                         return-object
                         @change="getProfesionObject($event)"
+                        v-model="profesion_id"
                     ></v-select>
                 </v-col>
  
@@ -91,7 +93,7 @@
                         placeholder="Vacantes"
                         outlined
                         dense
-                        :rules="rules"
+                        :rules="rulesNum"
                         v-model="dataForm.cantidad_postula_oferta"
                         type="number"
                     ></v-text-field>
@@ -102,7 +104,6 @@
                         placeholder="Experiencia"
                         outlined
                         dense
-                        :rules="rules"
                         v-model="dataForm.experiencia_postula_oferta"
                         type="number"
                     ></v-text-field>
@@ -111,20 +112,17 @@
             <v-row class="d-flex justify-center"><h5>Discapacidades</h5></v-row>
             <v-row>
                 <v-col v-for="(discapacidades,index) in arrayDiscapacidades" :key="index" cols="12" sm="4" md="4">
-                    <v-checkbox
-                    :label="discapacidades.nombre"
-                    color="indigo"
-                    :value="discapacidades.id"
-                    hide-details
-                    class="ml-5"
-                    dense
-                    @change="selectChk(discapacidades,index)"
-                    ></v-checkbox>
+                    <v-chip
+                    class="ma-2"
+                    color="info"
+                  >
+                   {{ discapacidades.nombre }}
+                  </v-chip>
                 </v-col>
              
             </v-row>
             <v-row class="d-flex justify-center p-5">
-                <v-btn @click="onSubmit"  color="primary" small>Guardar</v-btn>
+               <!--  <v-btn @click="onSubmit"  color="primary" small>Guardar</v-btn> -->
             </v-row>
         </v-form>
     <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color" />
@@ -159,7 +157,7 @@ export default class EditarCliente extends Vue {
     textmsj = ''
     color = ''
     timeout = 2000
-    sectiontitle = 'AÑADIR OFERTA'
+    sectiontitle = 'VISUALIZAR OFERTA'
     dialog = false
     openDialog = false
     textbody = ''
@@ -189,6 +187,8 @@ export default class EditarCliente extends Vue {
 
     }
     arrayChk = []   
+    cargo_id = ''
+    profesion_id = ''
 	$refs!: {
         dataForm: InstanceType<typeof ValidationObserver>;
     };
@@ -259,8 +259,16 @@ export default class EditarCliente extends Vue {
         this.arrayCharges = charges.data
         const profession : any = await ofertModule.getprofession();
         this.arrayProfession = profession.data
-        const discapacidades : any = await ofertModule.getDiscapacidades();
-        this.arrayDiscapacidades = discapacidades.data
+        /* const discapacidades : any = await ofertModule.getDiscapacidades();
+        this.arrayDiscapacidades = discapacidades.data */
+    }
+    async getOferta(id){
+        const data : any = await ofertModule.getOfertById(id)
+        console.log(data)
+        this.dataForm = data.data.oferts
+        this.cargo_id = data.data.oferts.id_cargo_postula_oferta
+        this.profesion_id = data.data.oferts.id_profesion_postula_oferta
+        this.arrayDiscapacidades = data.data.discapacidades
     }
 
 	reset () {
@@ -281,7 +289,13 @@ export default class EditarCliente extends Vue {
     go() {
         this.$router.go(-1)
     }
-
+    mounted(){
+        this.comboboxAll(); 
+        this.getOferta(this.$route.params.id)
+        this.empresaname = storageData.get('_bussines').rif + '-' +storageData.get('_bussines').nombre  
+        this.dataForm.id_postula_empresa = storageData.get('_bussines').id
+        this.dataForm.fecha_postula_oferta = this.date
+    }
 	data(){
     return{
         rules: [
@@ -307,15 +321,8 @@ export default class EditarCliente extends Vue {
             
         }
     };
-    setItem(){
 
-    }
-    mounted(){
-        this.comboboxAll(); 
-        this.empresaname = storageData.get('_bussines').rif + '-' +storageData.get('_bussines').nombre  
-        this.dataForm.id_postula_empresa = storageData.get('_bussines').id
-        this.dataForm.fecha_postula_oferta = this.date
-    }
+
 }
 </script>
 <style lang="scss" scoped>
