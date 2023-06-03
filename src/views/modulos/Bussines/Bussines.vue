@@ -268,6 +268,7 @@
 								<v-text-field
 								label="Email"
 								placeholder="Email"
+								type="email"
 								dense
 								v-model="bussinesform.email_r"
 							></v-text-field>
@@ -466,6 +467,7 @@
 								placeholder="Email"
 								dense
 								:rules="emailRules"
+								type="email"
 								v-model="bussinesform.email_rl"
 							></v-text-field>
 							</v-col>
