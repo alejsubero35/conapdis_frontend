@@ -77,7 +77,7 @@
 									placeholder="Tomo"
 
 									dense
-									:rules="rules"
+									:rules="rulesNum"
 									v-model="bussinesform.tomo"
 									 type="number"
 								></v-text-field>
@@ -88,7 +88,7 @@
 									placeholder="Folio"
 
 									dense
-									:rules="rules"
+									:rules="rulesNum"
 									v-model="bussinesform.folio"
 									 type="number"
 								></v-text-field>
@@ -99,7 +99,7 @@
 									placeholder="Número"
 
 									dense
-									:rules="rules"
+									:rules="rulesNum"
 									v-model="bussinesform.number"
 									 type="number"
 								></v-text-field>
@@ -142,7 +142,7 @@
 									placeholder="Duración en años"
 
 									dense
-									:rules="rules"
+									:rules="rulesNum"
 									v-model="bussinesform.duration"
 									type="number"
 								></v-text-field>
@@ -1116,7 +1116,10 @@ export default class Bussines extends Vue {
             v => !!v || 'campo requerido',
             v => v > 0  || 'El valor debe ser mayor a cero',
             v => v <= 100  || 'El valor debe ser menor a 100'
-        ]
+        ],
+		rulesNum: [
+            v => v >= 0  || 'Campo Requerido',
+        ],
             
         }
     };

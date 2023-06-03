@@ -57,6 +57,20 @@ import {
 		return dataOfert;
 	}
     @Action
+    delete(id) {
+        return new Promise((resolve, reject) => {  
+            http.post(`/positions/delete_ofert/${id}`)
+            .then(response =>  {
+                if (response.status === 200) {     
+                    resolve(response); 
+                }
+            })
+            .catch(error => {
+                reject(error)
+            })
+        }) 
+    }
+    @Action
     getCharges() {
         return new Promise((resolve, reject) => {  
         http.get(`/positions/get_charges`)
@@ -96,18 +110,18 @@ import {
     }
     @Action
     getOfertById(id) {
-       return new Promise((resolve, reject) => {  
-          http.get(`/positions/get_ofert_by_id/${id}`)
-          .then(response =>  {
-            if (response.status === 200) {     
-              resolve(response); 
-            }
-          })
-          .catch(error => {
-            reject(error)
-           })
-         }) 
-       }
+        return new Promise((resolve, reject) => {  
+            http.get(`/positions/get_ofert_by_id/${id}`)
+            .then(response =>  {
+                if (response.status === 200) {     
+                    resolve(response); 
+                }
+            })
+            .catch(error => {
+                reject(error)
+            })
+        }) 
+    }
  
   }  
   

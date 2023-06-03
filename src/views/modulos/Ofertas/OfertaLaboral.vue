@@ -84,7 +84,7 @@
                 </v-data-table>
             </template>
         </v-col>
-        <ModalDelete @deleteData="deleteInspeccion" :titlemodal="titlemodal" :textbody="textbody" :dialogDelete="dialogDelete" @cerrarModal="cerrarModal"/>
+        <ModalDelete @deleteData="deleteData" :titlemodal="titlemodal" :textbody="textbody" :dialogDelete="dialogDelete" @cerrarModal="cerrarModal"/>
         <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color"/>
     </v-row>
 </template>
@@ -147,33 +147,32 @@ export default class Usuario extends Vue {
         this.$router.push({ name: "crearofertalaboral"});
     }
 
-    Delete(id){
+    eliminar(item){
         this.dialogDelete = true;
-        this.textbody = 'Confirme que desea eliminar la solicitud'
-        this.titlemodal = 'Eliminar Registro de Solicitud'
-        this.id_delete = id
+        this.textbody = 'Confirme que desea eliminar la Oferta'
+        this.titlemodal = 'Eliminar Registro de Oferta'
+        this.id_delete = item.id_postula_oferta
     }
     editar(item){
         this.$router.push({ name: "editarofertalaboral", params: { id: item.id_postula_oferta } });
     }
-    eliminar(){
 
-    }
     cerrarModal(event){
         this.dialogDelete = event;
     }
-     async deleteInspeccion(event){
-/*         let dataUpdate : any = []
-        this.dialogDelete = event;
-        //this.overlay = true
-        const res : any = await formacionModule.delete(this.id_delete);
-        console.log(res.data.data)
-        dataUpdate = res.data.data
-        this.desserts = dataUpdate;
-        this.textmsj = 'Usuario Eliminado con Éxito.'
-        this.snackbar = true
-        this.closeSnackbar()
-        this.overlay = false */
+     async deleteData(event){
+      
+        this.overlay = true
+        const res : any = await ofertModule.delete(this.id_delete);
+        if(res.status == 200){
+            this.dialogDelete = event;
+            this.dataIndex()
+            this.color = 'success'
+            this.textmsj = 'Usuario Eliminado con Éxito.'
+            this.snackbar = true
+            this.closeSnackbar()
+            this.overlay = false
+        }
     } 
     closeSnackbar(){
         setTimeout(() => {

@@ -52,14 +52,12 @@ const Declaraciones                   = () => import('@/views/modulos/Declaracio
 //OfertasLaborales
 const OfertasLaborales                = () => import('@/views/modulos/Ofertas/OfertaLaboral.vue')
 const CrearOfertaLaboral              = () => import('@/views/modulos/Ofertas/CrearOfertaLaboral.vue')
-const EditarOfertaLaboral              = () => import('@/views/modulos/Ofertas/EditarOferta.vue')
+const EditarOfertaLaboral             = () => import('@/views/modulos/Ofertas/EditarOferta.vue')
 
 //SolicitudFormacion
 const SolicitudFormacion              = () => import('@/views/modulos/SolicitudFormacion/SolicitudFormacion.vue')
 const CrearSolicitudFormacion         = () => import('@/views/modulos/SolicitudFormacion/CrearSolicitudFormacion.vue')
-
-
-
+const VerSolicitudformacion           = () => import('@/views/modulos/SolicitudFormacion/VerSolicitudformacion.vue')
 
 
 // Errors
@@ -273,7 +271,14 @@ const router = new Router({
           meta: { Auth: false, title: 'EditarOfertaLaboral' },
      
         },
-          
+        {
+          path: 'versolicitudformacion/:id',
+          name: 'versolicitudformacion',
+          component: VerSolicitudformacion,
+          meta: { Auth: false, title: 'VerSolicitudformacion' },
+     
+        },
+        
       ]
       //
     },
