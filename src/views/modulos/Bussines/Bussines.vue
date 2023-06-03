@@ -30,9 +30,9 @@
 						<v-row>
 							<v-col cols="12" sm="6" md="3">
 							<v-select
-								:items="typerif"
-								item-text="text"
-								item-value="value"
+								:items="arrayTyperif"
+								item-text="nombre"
+								item-value="id"
 								label="Tipo de Rif"
 								placeholder="Tipo de Rif"
 								v-model="bussinesform.type_rif"
@@ -807,6 +807,7 @@ export default class Bussines extends Vue {
 	arrayEconomicSector = []
 	arrayEconomicActivies = []
 	arrayTypeCompany = []
+	arrayTyperif = []
 	arrayUserType = []
 	arrayPosition = []
 	is_sucursal = false
@@ -1138,6 +1139,10 @@ export default class Bussines extends Vue {
 		const typecompany : any = await bussinesModule.getTypeCompanyAll()
 		this.arrayTypeCompany = typecompany.data.data
 	}
+	async getTyperif(){
+		const typerif : any = await bussinesModule.getTyperifAll()
+		this.arrayTyperif = typerif.data
+	}
 	async getMunicipalityByState(event){
 		const municipality : any = await bussinesModule.getMunicipality(event)
 		this.arrayMunicipality = municipality.data.data
@@ -1231,6 +1236,7 @@ export default class Bussines extends Vue {
 		this.getEconomicSector()
 		this.getEconomicActivies()
 		this.getTypeCompany()
+		this.getTyperif()
 		this.getPositionAll()
 		this.initData()
 		//this.getUserType()

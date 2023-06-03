@@ -229,6 +229,22 @@ import {
 		})
 	}
 	@Action
+	getTyperifAll(){
+		return new Promise((resolve, reject) => {
+			http.get(`/positions/get_typerif`).then(response => {
+	
+				if (response.status === 200) {      
+		
+					resolve(response);
+				
+				}
+		})
+		.catch(error => {
+			reject(error)
+		})
+		})
+	}
+	@Action
 	getAll() {
 	   return new Promise((resolve, reject) => {  
 			  http.get(`/busines`)
