@@ -133,7 +133,7 @@ import storageData from '@/store/services/storageService'
 					const stoken: string  		= login.access_token;
 					const user: string 			= login.user
 					const user_id: string 		= login.user.id
-					const busine: any     		= login.user.busine[0]
+					const busine: any     		= login.user.busine
 					const busine_id: any        = login.user.empresa_id
 					storageData.set('_bussines', busine);
 					this.context.commit('setBussines', busine);

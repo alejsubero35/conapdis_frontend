@@ -245,6 +245,22 @@ import {
 		})
 	}
 	@Action
+	getTypeDocumentAll(){
+		return new Promise((resolve, reject) => {
+			http.get(`/positions/get_typeDocument`).then(response => {
+	
+				if (response.status === 200) {      
+		
+					resolve(response);
+				
+				}
+		})
+		.catch(error => {
+			reject(error)
+		})
+		})
+	}
+	@Action
 	getAll() {
 	   return new Promise((resolve, reject) => {  
 			  http.get(`/busines`)

@@ -76,33 +76,32 @@
 								<v-text-field
 									label="Tomo"
 									placeholder="Tomo"
-									min=1
+								
 									dense
-									:rules="rulesNum"
+									
 									v-model="bussinesform.tomo"
-									 type="number"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Folio"
 									placeholder="Folio"
-									min=1
+									
 									dense
-									:rules="rulesNum"
+									
 									v-model="bussinesform.folio"
-									 type="number"
+									
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Número"
 									placeholder="Número"
-									min=1
+									
 									dense
-									:rules="rulesNum"
+									
 									v-model="bussinesform.number"
-									 type="number"
+									
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
@@ -389,9 +388,9 @@
 						<v-row>
 							<v-col cols="12" sm="6" md="3">
 								<v-select
-									:items="tipodocumentos"
-									item-text="text"
-									item-value="value"
+									:items="arrayTypeDocument"
+									item-text="nombre"
+									item-value="id"
 									label="Tipo Documento"
 									placeholder="Tipo Documento"
 									v-model="bussinesform.type_identity_card"
@@ -662,7 +661,6 @@
 								<v-textarea
 									label="Observaciones"
 									dense
-									:rules="rules"
 									v-model="bussinesform.observations"
 									rows="2"
 								></v-textarea>
@@ -808,6 +806,7 @@ export default class Bussines extends Vue {
 	arrayEconomicActivies = []
 	arrayTypeCompany = []
 	arrayTyperif = []
+	arrayTypeDocument = []
 	arrayUserType = []
 	arrayPosition = []
 	is_sucursal = false
@@ -1143,6 +1142,10 @@ export default class Bussines extends Vue {
 		const typerif : any = await bussinesModule.getTyperifAll()
 		this.arrayTyperif = typerif.data
 	}
+	async getTypeDocument(){
+		const typeDocument : any = await bussinesModule.getTypeDocumentAll()
+		this.arrayTypeDocument = typeDocument.data
+	}
 	async getMunicipalityByState(event){
 		const municipality : any = await bussinesModule.getMunicipality(event)
 		this.arrayMunicipality = municipality.data.data
@@ -1237,6 +1240,7 @@ export default class Bussines extends Vue {
 		this.getEconomicActivies()
 		this.getTypeCompany()
 		this.getTyperif()
+		this.getTypeDocument()
 		this.getPositionAll()
 		this.initData()
 		//this.getUserType()
