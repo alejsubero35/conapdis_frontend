@@ -52,7 +52,7 @@
 									v-mask="'N-########-#'"
 									@keyup="validateRif(bussinesform.rif)"
 								></v-text-field>
-								<span v-show="validateRifDB" style="margin-top:-19px;color:red">El Rif Existe en BD </span>
+								<span v-show="validateRifDB" style="margin-top:-19px;color:red">El Rif Existe</span>
 							</v-col>
 							<v-col cols="12" sm="6" md="6">
 								<v-text-field
@@ -305,7 +305,6 @@
 									label="Estado"
 									placeholder="Estado"
 									v-model="bussinesform.state_id"
-
 									dense
 									:rules="rules"
 									required
@@ -320,7 +319,6 @@
 									label="Municipio"
 									placeholder="Municipio"
 									v-model="bussinesform.municipality_id"
-
 									dense
 									:rules="rules"
 									required
@@ -335,7 +333,20 @@
 									label="Parroquia"
 									placeholder="Parroquia"
 									v-model="bussinesform.parishe_id"
-
+									dense
+									:rules="rules"
+									required
+									@change="getSectoresByParishes($event)"
+								></v-select>
+							</v-col>
+							<v-col cols="12" sm="6" md="4">
+								<v-select
+									:items="arraySectores"
+									item-text="name"
+									item-value="id"
+									label="Sector"
+									placeholder="Sector"
+									v-model="bussinesform.sector_id"
 									dense
 									:rules="rules"
 									required
@@ -369,15 +380,14 @@
 									v-mask="'####-#######'"
 								></v-text-field>
 							</v-col>
-							<v-col cols="12" sm="12" md="12">
+							<v-col cols="12" sm="8" md="8">
 								<v-textarea
 									label="Dirección"
 									placeholder="Dirección"
-
 									dense
 									:rules="rules"
 									v-model="bussinesform.location"
-									rows="2"
+									rows="1"
 								></v-textarea>
 							</v-col>
 						</v-row>
@@ -743,7 +753,6 @@ export default class Bussines extends Vue {
 		senalizacion:0,
 		herramientas_tecnologicas:0,
 		username:'',
-
 	}
     loadingWizard = false
 	typerif = [
@@ -802,6 +811,7 @@ export default class Bussines extends Vue {
 	arrayStates = []
 	arrayMunicipality = []
 	arrayParishes = []
+	arraySectores = []
 	arrayEconomicSector = []
 	arrayEconomicActivies = []
 	arrayTypeCompany = []
@@ -1154,6 +1164,11 @@ export default class Bussines extends Vue {
 		const parishes : any = await bussinesModule.getParishes(event)
 		this.arrayParishes = parishes.data.data
 		this.overlay = false
+	}
+	async getSectoresByParishes(event){
+		const sectors : any = await bussinesModule.getSectores(event)
+		console.log(sectors)
+		this.arraySectores = sectors.data
 	}
 	async ordenarArray(array){
         const newArray = array.sort((a,b) => a.name.localeCompare(b.name))

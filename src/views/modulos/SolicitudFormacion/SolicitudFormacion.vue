@@ -185,18 +185,15 @@ export default class Usuario extends Vue {
     viewPDF(id) {
         this.$router.push({ name: "planillaboletaordenamiento", params: { id: id } });
     }
-    async dataIndex(){  
+    async dataIndexRequest(){  
         this.overlay = true
-        const data : any = await formacionModule.getAll()  
-        console.log(data) 
+        const data : any = await formacionModule.getRequestAll()  
         this.desserts = data.data
         this.overlay = false 
     }
-    async setQueryPage(page:number){
-        console.log(page)
-    }
+
     mounted(){
-        this.dataIndex()
+        this.dataIndexRequest()
     }
 
 }

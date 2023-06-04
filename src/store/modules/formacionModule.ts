@@ -16,7 +16,7 @@ import {
   
   @Module({
     namespaced: true,
-    name: 'solicitudformacion',
+    name: 'formacionModule',
     store,
     dynamic: true,
   })
@@ -26,7 +26,7 @@ import {
     token: string | null = localStorage.getItem('_token');
 
     @Action({rawError: true})
-    async getAll() { 
+    async getRequestAll() { 
         const response =  await http.get(`/positions/get_request_all`)
         return response;
     }
