@@ -181,6 +181,22 @@ import {
 		})
 	}
 	@Action
+	getSectores(id){
+		return new Promise((resolve, reject) => {
+			http.get(`/parishes/sectror_for_parishes/${id}`).then(response => {
+	
+				if (response.status === 200) {      
+		
+					resolve(response);
+				
+				}
+		})
+		.catch(error => {
+			reject(error)
+		})
+		})
+	}
+	@Action
 	getEconomicSectorAll(){
 		return new Promise((resolve, reject) => {
 			http.get(`/economic-sectors`).then(response => {
