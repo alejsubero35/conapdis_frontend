@@ -28,6 +28,8 @@ import VueMask from 'v-mask'
 import CKEditor from 'ckeditor4-vue';
 
 
+
+
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
 Vue.component('UploadFileMultiple', UploadFileMultiple);
@@ -47,6 +49,8 @@ Vue.use(FormWizard);
 Vue.use(VueSweetalert2);
 Vue.use(VueMask);
 Vue.use(CKEditor);
+
+
 //Vue.config.productionTip = false;
 
 

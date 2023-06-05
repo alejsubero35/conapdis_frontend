@@ -24,26 +24,66 @@
         return sessionModule.getUserId; 
     }
 
-	@Action
-	    getFilterSearch(data:any) {
-			return new Promise((resolve, reject) => {
-  
-          	http.get(`/${data.endpoint}?filter[${data.filter}]=${data.query}&sort=-id`)
-          	.then(response =>  {
-        
-				if (response.status === 200) {      
-					let search : any = [];
-					search = deserialize(response.data)
-					resolve(search);
-				}
-          	})
-          	.catch(error => {
-            reject(error)
-          })
-        
 
-		})
-	  }
+	@Action({rawError: true})
+	async searchFilter(query) { 
+		const response =  await http.post(`/positions/get_search_filter`,query)
+		return response;
+		
+	}
+	@Action({rawError: true})
+	async getGenerateReport(dataReport:any) { 
+	let data : any = deserialize(dataReport,{changeCase:'camelCase'});
+	let format = data.format
+	let id =   storageData.get('report_id') 
+	const response =  await http.post(`reports/${id}/-actions/generate`,dataReport,{
+		responseType: 'arraybuffer'
+	})
+		if (response.status === 200 || response.status === 201){
+			if(format == 'pdf'){
+				let blob = new Blob([response.data], {
+					type: 'application/pdf'
+				})
+				let link = document.createElement('a')
+				link.href = window.URL.createObjectURL(blob)
+				link.download = 'Reporte-'+id+'.pdf'
+				link.click()
+			}else{
+				const fileURL = window.URL.createObjectURL(new Blob([response.data]));
+				const link = document.createElement("a");
+				link.href = fileURL;
+				link.setAttribute("download", 'Reporte-'+id+'.xlsx');
+				document.body.appendChild(link);
+				link.click();
+			}
+  
+		}else{
+			dataReport.code = 500;
+			dataReport.message = 'No hay datos para mostrar el reporte'; 
+			return dataReport
+		}
+	 
+	}  
+	@Action
+	getFilterSearch(data:any) {
+		return new Promise((resolve, reject) => {
+
+		  http.get(`/${data.endpoint}?filter[${data.filter}]=${data.query}&sort=-id`)
+		  .then(response =>  {
+	
+			if (response.status === 200) {      
+				let search : any = [];
+				search = deserialize(response.data)
+				resolve(search);
+			}
+		  })
+		  .catch(error => {
+		reject(error)
+	  })
+	
+
+	})
+  }
     @Action
     getSearchContacByclient(data:any) {
       	return new Promise((resolve, reject) => {

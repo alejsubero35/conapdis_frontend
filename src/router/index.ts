@@ -59,6 +59,9 @@ const SolicitudFormacion              = () => import('@/views/modulos/SolicitudF
 const CrearSolicitudFormacion         = () => import('@/views/modulos/SolicitudFormacion/CrearSolicitudFormacion.vue')
 const VerSolicitudformacion           = () => import('@/views/modulos/SolicitudFormacion/VerSolicitudformacion.vue')
 
+//Reportes
+const Reportes                        = () => import('@/views/modulos/reportes/Reportes.vue')
+
 
 // Errors
 const Page404 = () => import('@/views/errors/Page404.vue')
@@ -276,6 +279,13 @@ const router = new Router({
           name: 'versolicitudformacion',
           component: VerSolicitudformacion,
           meta: { Auth: true, title: 'VerSolicitudformacion' },
+     
+        },
+        {
+          path: 'reportes',
+          name: 'reportes',
+          component: Reportes,
+          meta: { Auth: true, title: 'Reportes' },
      
         },
         

@@ -17,6 +17,7 @@
     "axios": "^0.19.2",
     "ckeditor4-vue": "^2.3.0",
     "core-js": "^3.6.4",
+    "export-json-excel": "^0.1.13",
     "html2canvas": "^1.4.1",
     "inflected": "^1.1.6",
     "jsonapi-fractal": "^1.0.19",

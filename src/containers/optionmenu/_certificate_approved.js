@@ -76,13 +76,13 @@ export default [
         to: '/ofertaslaborales',
         icon: 'cibAnaconda'
       },
-     /*  {
-        _name: 'CSidebarNavItem',
-        name: 'Guia de Inspección',
-        to: '/guiainspeccion',
-        icon: 'cibReadTheDocs'
-      },
       {
+        _name: 'CSidebarNavItem',
+        name: 'Reportes',
+        to: '/reportes',
+        icon: 'cibLibreoffice'
+      },
+       /*  {
         _name: 'CSidebarNavItem',
         name: 'Acta de Cumplimiento',
         to: '/actacumplimiento',

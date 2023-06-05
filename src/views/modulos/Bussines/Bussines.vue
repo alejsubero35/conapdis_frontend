@@ -539,13 +539,13 @@
 										@change="setItem('transporte_empresa')"
 										></v-switch>
 										<v-switch
-										v-model="bussinesform.vialidad"
-										:label="`Vialidad: ${vialidadShow}`"
+										v-model="bussinesform.viabilidad"
+										:label="`Viabilidad: ${viabilidadShow}`"
 										color="success"
 										hide-details
 										class="pl-3 pr-3"
-										:value="vialidad"
-										@change="setItem('vialidad')"
+										:value="viabilidad"
+										@change="setItem('viabilidad')"
 										></v-switch>
 										<v-switch
 										v-model="bussinesform.banos_acondicionados"
@@ -730,7 +730,7 @@ export default class Bussines extends Vue {
 		acceso_directo: 0,
 		transporte_publico:0,
 		transporte_empresa:0,
-		vialidad:0,
+		viabilidad:0,
 		banos_acondicionados:0,
 		escaleras:0,
 		pasamanos:0,
@@ -776,7 +776,7 @@ export default class Bussines extends Vue {
 	pasamanos : boolean = false
 	escaleras : boolean = false
 	banos_acondicionados : boolean = false
-	vialidad : boolean = false
+	viabilidad : boolean = false
 	transporte_empresa : boolean = false
 	transporte_publico : boolean = false
 	acceso_directo : boolean = false
@@ -787,7 +787,7 @@ export default class Bussines extends Vue {
 	acceso_directoShow = 'No'
 	transporte_publicoShow = 'No'
 	transporte_empresaShow = 'No'
-	vialidadShow = 'No'
+	viabilidadShow = 'No'
 	banos_acondicionadosShow = 'No'
 	escalerasShow = 'No'
 	pasamanosShow = 'No'
@@ -972,7 +972,8 @@ export default class Bussines extends Vue {
 			this.color = 'success'
 			this.snackbar = true
 			this.back();
-			this.overlay = false 		
+			this.overlay = false 
+			this.tabIndex = 0		
 		} else {
 			this.textmsj = 'Error al Actualizar los datos de la Empresa.'
 			this.color = 'error'
@@ -1005,9 +1006,9 @@ export default class Bussines extends Vue {
 				if(this.bussinesform.transporte_empresa) this.transporte_empresaShow = 'Si' 
 				else this.transporte_empresaShow = 'No' 
 			break;
-			case 'vialidad':
-				if(this.bussinesform.vialidad) this.vialidadShow = 'Si' 
-				else this.vialidadShow = 'No' 
+			case 'viabilidad':
+				if(this.bussinesform.viabilidad) this.viabilidadShow = 'Si' 
+				else this.viabilidadShow = 'No' 
 			break;
 			case 'banos_acondicionados':
 				if(this.bussinesform.banos_acondicionados) this.banos_acondicionadosShow = 'Si' 
@@ -1073,8 +1074,8 @@ export default class Bussines extends Vue {
 		if(this.bussinesform.transporte_empresa) this.bussinesform.transporte_empresa = 'Si' 
 		else this.bussinesform.transporte_empresa = 'No' 
 
-		if(this.bussinesform.vialidad) this.bussinesform.vialidad = 'Si' 
-		else this.bussinesform.vialidad = 'No' 
+		if(this.bussinesform.viabilidad) this.bussinesform.viabilidad = 'Si' 
+		else this.bussinesform.viabilidad = 'No' 
 
 		if(this.bussinesform.banos_acondicionados) this.bussinesform.banos_acondicionados = 'Si' 
 		else this.bussinesform.banos_acondicionados = 'No' 
@@ -1233,6 +1234,42 @@ export default class Bussines extends Vue {
 			password:'12345678'
 		} 
 	}
+	async updataSwitchBussines(data){
+		this.bussinesform.accesibilidad      			= (data.accesibilidad == 0) ? false : true
+		this.accesibilidadShow               			= (data.accesibilidad == 0) ? 'No'  : 'Si'
+		this.bussinesform.ascensores         			= (data.ascensores == 0) ? false : true
+		this.ascensoresShow                  			= (data.ascensores == 0) ? 'No'  : 'Si'
+		this.bussinesform.rampas   						= (data.rampas == 0) ? false : true
+		this.rampasShow       							= (data.rampas == 0) ? 'No'  : 'Si'  
+		this.bussinesform.acceso_directo   				= (data.acceso_directo == 0) ? false : true
+		this.acceso_directoShow       					= (data.acceso_directo == 0) ? 'No'  : 'Si'  
+		this.bussinesform.transporte_publico   			= (data.transporte_publico == 0) ? false : true
+		this.transporte_publicoShow       				= (data.transporte_publico == 0) ? 'No'  : 'Si'  
+		this.bussinesform.transporte_empresa   			= (data.transporte_empresa == 0) ? false : true
+		this.transporte_empresaShow       				= (data.transporte_empresa == 0) ? 'No'  : 'Si'  
+		this.bussinesform.viabilidad   					= (data.viabilidad == 0) ? false : true
+		this.viabilidadShow       						= (data.viabilidad == 0) ? 'No'  : 'Si'  
+		this.bussinesform.banos_acondicionados  		= (data.banos_acondicionados == 0) ? false : true
+		this.banos_acondicionadosShow       			= (data.banos_acondicionados == 0) ? 'No'  : 'Si'  
+		this.bussinesform.escaleras   					= (data.escaleras == 0) ? false : true
+		this.escalerasShow       						= (data.escaleras == 0) ? 'No'  : 'Si'  
+		this.bussinesform.pasamanos   					= (data.pasamanos == 0) ? false : true
+		this.pasamanosShow       						= (data.pasamanos == 0) ? 'No'  : 'Si'  
+		this.bussinesform.pasillos   					= (data.pasillos == 0) ? false : true
+		this.pasillosShow       						= (data.pasillos == 0) ? 'No'  : 'Si'  
+		this.bussinesform.puertas_adaptadas   			= (data.puertas_adaptadas == 0) ? false : true
+		this.puertas_adaptadasShow       				= (data.puertas_adaptadas == 0) ? 'No'  : 'Si'  
+		this.bussinesform.buena_iluminacion   			= (data.buena_iluminacion == 0) ? false : true
+		this.buena_iluminacionShow       				= (data.buena_iluminacion == 0) ? 'No'  : 'Si'  
+		this.bussinesform.senalizaciones_luminosas   	= (data.senalizaciones_luminosas == 0) ? false : true
+		this.senalizaciones_luminosasShow       		= (data.senalizaciones_luminosas == 0) ? 'No'  : 'Si'  
+		this.bussinesform.puestos_de_estacionamiento   	= (data.puestos_de_estacionamiento == 0) ? false : true
+		this.puestos_de_estacionamientoShow       		= (data.puestos_de_estacionamiento == 0) ? 'No'  : 'Si'  
+		this.bussinesform.senalizacion   				= (data.senalizacion == 0) ? false : true
+		this.senalizacionShow       					= (data.senalizacion == 0) ? 'No'  : 'Si'  
+		this.bussinesform.herramientas_tecnologicas   	= (data.herramientas_tecnologicas == 0) ? false : true
+		this.herramientas_tecnologicasShow       		= (data.herramientas_tecnologicas == 0) ? 'No'  : 'Si'  
+	}
 	
     mounted(){
 		this.getStates()
@@ -1242,23 +1279,14 @@ export default class Bussines extends Vue {
 		this.getTyperif()
 		this.getTypeDocument()
 		this.getPositionAll()
-		this.initData()
+		//this.initData()
 		//this.getUserType()
-	
+	console.log(storageData.get('_bussines'))
 		if (storageData.get('_bussines') !== null) {
 			this.overlay = true
+			this. sectiontitle = 'Actualizar Datos de Empresa'
 			this.bussinesform = storageData.get('_bussines')
-/* 			if(storageData.get('_bussines').hasOwnProperty('is_major')){
-				this.sucursal = (this.getBussines.is_major == false) ? false : true
-				this.showSucursal = (this.getBussines.is_major == false) ? false : true
-				let cadena  = this.getBussines.code_branch_office;
-				var result  = (cadena) ? cadena.split('-')[1] : '';
-				var result2 = (cadena) ? cadena.split('-')[2] : '';
-				this. sectiontitle = 'Actualizar Datos de Empresa'
-				this.numero_sucursal = result2
-				this.nombre_sucursal = result
-			}
-			 */
+			this.updataSwitchBussines(storageData.get('_bussines'))
 			this.getMunicipalityByState(this.bussinesform.state_id)
 			this.getParishesByMunicipality(this.bussinesform.municipality_id)
 			
