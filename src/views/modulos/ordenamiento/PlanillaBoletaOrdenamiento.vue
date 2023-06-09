@@ -22,8 +22,6 @@
         >
             <section slot="pdf-content" class="form_contacto" >
                 <section class="pdf-item mt-3">
-
-                    <TitleSection v-show="btn_atras" :sectiontitle="sectiontitle"/>
                     <div class="logo">
                         <img style="object-fit: cover;" src="img/logos_conapdis/CABECERA.png"  alt="">
                     </div>
@@ -160,33 +158,33 @@
                         <tr>
                             <td class="check" >
                                 <label for="vehicle1">Si</label>&nbsp;
-                                <input type="checkbox" v-model="de_20_39_si">&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" :disabled="disabled" v-model="de_20_39_si">&nbsp;&nbsp;&nbsp;
                                 <label for="vehicle1">No</label>&nbsp;
-                                <input type="checkbox" v-model="de_20_39_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_20_39_no">
                             </td>
                             <td class="check">
                                 <label for="vehicle1">Si</label>&nbsp;
-                                <input type="checkbox" v-model="de_40_59_si">&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" :disabled="disabled" v-model="de_40_59_si">&nbsp;&nbsp;&nbsp;
                                 <label for="vehicle1">No</label>&nbsp;
-                                <input type="checkbox" v-model="de_40_59_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_40_59_no">
                             </td>
                             <td class="check">
                                 <label for="vehicle1">Si</label>&nbsp;
-                                <input type="checkbox" v-model="de_60_79_si">&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" :disabled="disabled" v-model="de_60_79_si">&nbsp;&nbsp;&nbsp;
                                 <label for="vehicle1">No</label>&nbsp;
-                                <input type="checkbox" v-model="de_60_79_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_60_79_no">
                             </td>
                             <td class="check">
                                 <label for="vehicle1">Si</label>&nbsp;
-                                <input type="checkbox" v-model="de_80_99_si">&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" :disabled="disabled" v-model="de_80_99_si">&nbsp;&nbsp;&nbsp;
                                 <label for="vehicle1">No</label>&nbsp;
-                                <input type="checkbox" v-model="de_80_99_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_80_99_no">
                             </td>
                             <td class="check">
                                 <label for="vehicle1">Si</label>&nbsp;
-                                <input type="checkbox" v-model="de_100_119_si">&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" :disabled="disabled" v-model="de_100_119_si">&nbsp;&nbsp;&nbsp;
                                 <label for="vehicle1">No</label>&nbsp;
-                                <input type="checkbox" v-model="de_100_119_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_100_119_no">
                             </td>
                         </tr>
                         <tr>
@@ -238,26 +236,26 @@
                                 de 1,60 mts. sin obstáculos, ni ningún elemento (publicitario, poster o tensores, cabinas telefónicas, 
                                 ni cestas o recolectores de basuras, entre otros) que interrumpan el paso libre indicado. Según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="aceras_salientes_si">
+                                <input type="checkbox" :disabled="disabled" v-model="aceras_salientes_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="aceras_salientes_no">
+                                <input type="checkbox" :disabled="disabled" v-model="aceras_salientes_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="aceras_salientes_na">
+                                <input type="checkbox" :disabled="disabled" v-model="aceras_salientes_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">7.1.2.	Deberá adecuar la pendiente de la acera transversal y longitudinal máxima hasta 2%, y no debe existir descarga 
                                 de lluvias, ni drenaje directamente sobre las mismas, Según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="rampas_en_aceras_si">
+                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="rampas_en_aceras_no">
+                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="rampas_en_aceras_na">
+                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_na">
                             </td>
                         </tr>
                         <tr>
@@ -265,13 +263,13 @@
                                 si el pavimento no fuera continuo las juntas no deben ser mayores a 1 cm, ni debe tener una profundidad mayor a 5 mm. Según Norma 
                                 COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="rampas_en_aceras_si">
+                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="rampas_en_aceras_no">
+                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="rampas_en_aceras_na">
+                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_na">
                             </td>
                         </tr>
                         <tr>
@@ -280,13 +278,13 @@
                                 mediante un cambio de textura en el acabado de 1 metro de largo en los bordes de aceras y cruces en las esquinas, Según Norma 
                                 COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                         </tr>
                         <tr>
@@ -294,39 +292,39 @@
                                 de la superficie del pavimento y a su vez las tapas de tanquillas no podrá tener separaciones superiores a 1 centímetro, según Norma  
                                 COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="rampas_en_aceras_si">
+                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="rampas_en_aceras_no">
+                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="rampas_en_aceras_na">
+                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">7.1.6.	Deberá colocarse rampas sobre las aceras en los accesos a las edificaciones que no estén a nivel de las mismas, 
                                 así como en los cruces de una acera a otra y en las esquinas, Según Norma COVENIN 3656.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">7.1.7.	Se deberá disponer de rampas y plataforma de descanso que facilite la circulación de personas en sillas de ruedas 
                                 en las aceras y en los corredores de uso públicos, cuando se presenten desniveles considerables, Según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                         </tr>
                     </table>
@@ -338,13 +336,13 @@
                             <td colspan="2">7.1.8.	Deberá en caso de modificaciones y/o remodelaciones se admitirá un ancho mínimo de 0,90 metros. Todo diseño de la 
                                 rampa debe ser conforme a lo establecido en la Norma COVENIN 3656.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                         </tr>
                                                 
@@ -358,13 +356,13 @@
                             <td colspan="2">7.2.1 Se deberá colocar señales a fin de orientar y facilitar la transitabilidad de las 
                                 personas en las edificaciones conforme a lo dispuesto en la Norma COVENIN 2733-2004. </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="edificaciones_senales_si">
+                                <input type="checkbox" :disabled="disabled" v-model="edificaciones_senales_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="edificaciones_senales_no">
+                                <input type="checkbox" :disabled="disabled" v-model="edificaciones_senales_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="edificaciones_senales_na">
+                                <input type="checkbox" :disabled="disabled" v-model="edificaciones_senales_na">
                             </td>
                         </tr>
                         <tr>
@@ -372,13 +370,13 @@
                                 las edificaciones y en los distintos espacios, en los cuales se hallan dispuestos facilidades de accesibilidad 
                                 y de transitabilidad de las personas conforme a la presente Norma.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="simbolo_internacional_senalizacion_no">
+                                <input type="checkbox" :disabled="disabled" v-model="simbolo_internacional_senalizacion_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="simbolo_internacional_senalizacion_si">
+                                <input type="checkbox" :disabled="disabled" v-model="simbolo_internacional_senalizacion_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="simbolo_internacional_senalizacion_na">
+                                <input type="checkbox" :disabled="disabled" v-model="simbolo_internacional_senalizacion_na">
                             </td>
                         </tr>
                         <tr>
@@ -392,13 +390,13 @@
                                 movilidad reducida cumpliendo con las debidas especificaciones tales como dimensiones, ubicación y señalización de puestos; 
                                 conforme a lo dispuesto en las normas y reglamentaciones técnicas FONDONORMA NTF 2733, y la Referencia Normativa - COVENIN 187.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="estacionamientos_si">
+                                <input type="checkbox" :disabled="disabled" v-model="estacionamientos_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="estacionamientos_no">
+                                <input type="checkbox" :disabled="disabled" v-model="estacionamientos_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="estacionamientos_na">
+                                <input type="checkbox" :disabled="disabled" v-model="estacionamientos_na">
                             </td>
                         </tr>
                         <tr>
@@ -406,13 +404,13 @@
                                 de esta Ley, cuyas medidas no deben ser menores a 30 x 45 cm y ubicado a una altura no mayor de 1,80 metros ni menor a 1 metro, 
                                 esto entre el nivel del piso y la parte superior del cartel. Conforme a lo dispuesto a la Norma COVENIN 187.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                         </tr>
                         <tr>
@@ -426,51 +424,51 @@
                                 entre la acera y la edificación a nivel de planta baja, en los accesos a las edificaciones, 
                                 prescrito en la Norma COVENIN 3656.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="acceso_planta_baja_si">
+                                <input type="checkbox" :disabled="disabled" v-model="acceso_planta_baja_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="acceso_planta_baja_no">
+                                <input type="checkbox" :disabled="disabled" v-model="acceso_planta_baja_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="acceso_planta_baja_na">
+                                <input type="checkbox" :disabled="disabled" v-model="acceso_planta_baja_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">7.4.1.2.	Debe disponer de rampas conjuntamente con escaleras en los desniveles desde 
                                 la planta baja hasta los medios de circulación vertical, según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="acceso_pb_vertical_si">
+                                <input type="checkbox" :disabled="disabled" v-model="acceso_pb_vertical_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="acceso_pb_vertical_no">
+                                <input type="checkbox" :disabled="disabled" v-model="acceso_pb_vertical_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="acceso_pb_vertical_na">
+                                <input type="checkbox" :disabled="disabled" v-model="acceso_pb_vertical_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">7.4.2	<strong>De los Pasillos:</strong> Deberá existir en los pasillos iluminación natural o artificial, según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_pasillos_si">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_pasillos_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_pasillos_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_pasillos_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_pasillos_na">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_pasillos_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">7.4.3.	Los pasillos deberán tener un ancho mínimo de 1,50 metros y en los extremos de los pasillos debe preverse el giro de una persona en 
                                 silla de rueda, por lo cual en cada extremo del pasillo debe disponer de un diámetro libre mínimo de 1,50 metros. Según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                         </tr>
                     </table>
@@ -484,13 +482,13 @@
                                 y de pelo largo, de ser necesaria su colocación estas deben ser de pelo corto y adherida al piso, principalmente los bordes, véase también en la 
                                 Norma COVENIN 3655.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                         </tr>
                         <tr>
@@ -498,26 +496,26 @@
                                 su huella entre 28 y 32 centímetro y su contra huella entre 14 y 18 centímetro, sin salientes. La contra huella debe ser llena (no vacía) con
                                 tope para el pie del usuario. Según Norma COVENIN 2733-2004. </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_las_escaleras_si">
+                                <input type="checkbox" :disabled="disabled" v-model="de_las_escaleras_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_las_escaleras_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_las_escaleras_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_las_escaleras_na">
+                                <input type="checkbox" :disabled="disabled" v-model="de_las_escaleras_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">7.4.7.	Toda escalera deberá disponer de pasamanos en toda su longitud y ambos sentidos de circulación, a una altura entre 80 y 90 centímetros, 
                                 medidos entre la superficie del piso y con una separación de la pared de 5 centímetros, Según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                         </tr>
                         <tr>
@@ -530,13 +528,13 @@
                             <td colspan="2">7.4.8.1.	Deberá presentar en las rampas y escaleras barras firmes, pasamanos con la altura de 80 y 90 cm., capacidad de carga ≥ 150 Kg 
                                 y distanciamiento entre barras ≤ 15 cm. al menos en un sentido, Según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_las_barandas_si">
+                                <input type="checkbox" :disabled="disabled" v-model="de_las_barandas_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_las_barandas_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_las_barandas_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_las_barandas_na">
+                                <input type="checkbox" :disabled="disabled" v-model="de_las_barandas_na">
                             </td>
                         </tr>
                         <tr>
@@ -555,13 +553,13 @@
                             <td colspan="2">Deberá estar libre de obstáculos para el paso de personas en sillas de ruedas, debe proveer un paso en aquellos sitios donde se establezcan o existan 
                                 puntos de control con un ancho mínimo de 90 centímetro, Según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_las_puertas_si">
+                                <input type="checkbox" :disabled="disabled" v-model="de_las_puertas_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_las_puertas_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_las_puertas_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_las_puertas_na">
+                                <input type="checkbox" :disabled="disabled" v-model="de_las_puertas_na">
                             </td>
                         </tr>
                         <tr>
@@ -575,13 +573,13 @@
                                 botón de emergencia y de parada, botón de llamada en cada nivel, pasamanos en los cerramientos fijos y dispositivos y luminosos; conforme a lo dispuesto en las normas 
                                 y reglamentaciones técnicas FONDONORMA NTF 2733 y referencia Normativa de esta - NTF/3656?  </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_ascensores_si">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_ascensores_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_ascensores_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_ascensores_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_ascensores_na">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_ascensores_na">
                             </td>
                         </tr>
                     </table>
@@ -600,26 +598,26 @@
                                 cierre la puerta, ¿se dirija desde una posición frontal o lateral a las piezas sanitarias y pueda mantenerse en privado conforme a lo dispuesto en las Normas y 
                                 reglamentaciones técnicas FONDONORMA NTF 2733? </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_servicios_sanitarios_si">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_servicios_sanitarios_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_servicios_sanitarios_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_servicios_sanitarios_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_servicios_sanitarios_na">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_servicios_sanitarios_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2"><strong>7.4.12.1 Señalización:</strong>Deberá colocarse en las entradas de los servicios sanitarios de uso público y privado el símbolo internacional 
                                 de accesibilidad, según Norma COVENIN 2733-2004  </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="senalizacion_si">
+                                <input type="checkbox" :disabled="disabled" v-model="senalizacion_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="senalizacion_no">
+                                <input type="checkbox" :disabled="disabled" v-model="senalizacion_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="senalizacion_na">
+                                <input type="checkbox" :disabled="disabled" v-model="senalizacion_na">
                             </td>
                         </tr>
                         <tr>
@@ -627,13 +625,13 @@
                                 La altura del borde inferior o de cualquier otro accesorio debe estar entre 70 y 75 centímetros, y al menos un grifo de los lavamanos debe ser de tipo palanca, 
                                 según Norma COVENIN 2733-2004</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="lavamanos_si">
+                                <input type="checkbox" :disabled="disabled" v-model="lavamanos_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="lavamanos_no">
+                                <input type="checkbox" :disabled="disabled" v-model="lavamanos_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="lavamanos_na">
+                                <input type="checkbox" :disabled="disabled" v-model="lavamanos_na">
                             </td>
                         </tr>
                         <tr>
@@ -641,26 +639,26 @@
                                 a una altura entre 80 y 90 centímetros sobre el nivel del piso. Su diámetro será entre 3 y 5 centímetros, y soportar sin doblarse ni desprenderse una fuerza de 150 Kg., 
                                 según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="barra_de_sosten_si">
+                                <input type="checkbox" :disabled="disabled" v-model="barra_de_sosten_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="barra_de_sosten_no">
+                                <input type="checkbox" :disabled="disabled" v-model="barra_de_sosten_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="barra_de_sosten_na">
+                                <input type="checkbox" :disabled="disabled" v-model="barra_de_sosten_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2"><strong>7.4.12.4	Accesorios Sanitarios: </strong>Deberá ubicarse a una altura máxima de 1 metro sobre la altura del piso, esto a lo correspondiente a los
                                 accesorios sanitarios tales como dispensador de jabón, secador de manos, dispensador de toallas u otros, según Norma COVENIN 2733-2004 </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="accesorios_sanitarios_si">
+                                <input type="checkbox" :disabled="disabled" v-model="accesorios_sanitarios_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="accesorios_sanitarios_no">
+                                <input type="checkbox" :disabled="disabled" v-model="accesorios_sanitarios_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="accesorios_sanitarios_na">
+                                <input type="checkbox" :disabled="disabled" v-model="accesorios_sanitarios_na">
                             </td>
                         </tr>
                         <tr>
@@ -670,13 +668,13 @@
                                 deben ser de 1.20 m x 0.80 m. y  así como el espacio de giro de maniobra entre las puerta y las piezas de 1.5 m. de diámetro( solo en los casos de espacios a remodelar se debe 
                                 procurar sea posible el giro de al menos de 1.2 m de diámetros) conforme a lo dispuesto en las Normas y reglamentaciones técnicas FONDONORMA NTF 2733? </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="excusado_bano_publico_si">
+                                <input type="checkbox" :disabled="disabled" v-model="excusado_bano_publico_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="excusado_bano_publico_no">
+                                <input type="checkbox" :disabled="disabled" v-model="excusado_bano_publico_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="excusado_bano_publico_na">
+                                <input type="checkbox" :disabled="disabled" v-model="excusado_bano_publico_na">
                             </td>
                         </tr>
                     </table>
@@ -689,13 +687,13 @@
                                 la distancia entre el borde superior de los urinarios y el piso no debe exceder de 45 centímetros, en urinarios colgados a la pared se deben instalar barras de sostén a cada lado del 
                                 artefacto sanitario. Un extremo de cada barra se debe fijar al piso y el otro, a la pared, ¿en lo dispuesto en las Normas y reglamentaciones técnicas (NTF-2733) </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="urinarios_si">
+                                <input type="checkbox" :disabled="disabled" v-model="urinarios_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="urinarios_no">
+                                <input type="checkbox" :disabled="disabled" v-model="urinarios_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="urinarios_na">
+                                <input type="checkbox" :disabled="disabled" v-model="urinarios_na">
                             </td>
                         </tr>
                         <tr>
@@ -704,13 +702,13 @@
                                 especificaciones dadas para la barra de sostén. En los sectores de duchas dispuestos para el uso de personas con discapacidad no deben existir brocales ni ningún otro obstáculo en el piso, 
                                 el acceso a las duchas debe ser sin desniveles con pendiente suave hacia el drenaje y piso anti resbalante. Según Norma COVENIN 2733-2004. </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="duchas_si">
+                                <input type="checkbox" :disabled="disabled" v-model="duchas_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="duchas_no">
+                                <input type="checkbox" :disabled="disabled" v-model="duchas_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="duchas_na">
+                                <input type="checkbox" :disabled="disabled" v-model="duchas_na">
                             </td>
                         </tr>
                         <tr>
@@ -723,13 +721,13 @@
                             <td colspan="2"><strong>7.4.13.1	La altura de las cerraduras de ventanas, controles y accesorios</strong>Debe existir ventanas con controles, cerraduras y accesorios a una altura comprendida 
                                 entre 0.50 y 1.20 metros para que puedan ser manipulados por los usuarios. </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="altura_cerradura_ventanas_si">
+                                <input type="checkbox" :disabled="disabled" v-model="altura_cerradura_ventanas_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="altura_cerradura_ventanas_no">
+                                <input type="checkbox" :disabled="disabled" v-model="altura_cerradura_ventanas_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="altura_cerradura_ventanas_na">
+                                <input type="checkbox" :disabled="disabled" v-model="altura_cerradura_ventanas_na">
                             </td>
                         </tr>
                           
@@ -737,13 +735,13 @@
                             <td colspan="2">7.4.13.2	7.4.13.2.	Deberá existir en el borde inferior de la ventana una altura que no debe superar los 90 centímetros por encima del nivel del piso, esto en aquellos 
                                 ambientes de permanencia prolongada por las personas, según Norma COVENIN 2733-2004</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                         </tr>
                         <tr>
@@ -756,13 +754,13 @@
                             <td colspan="2">7.4.13.4.	Deberá situarse a una altura entre 75 y 90 centímetros por encima del nivel del piso toda la toma de electricidad y de comunicaciones, Deberá situarse entre 90 y 110 
                                 centímetros por encima del nivel del piso los interruptores de los circuitos de iluminación, según Norma COVENIN 2733-2004. </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="tomas_electricidad_si">
+                                <input type="checkbox" :disabled="disabled" v-model="tomas_electricidad_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="tomas_electricidad_no">
+                                <input type="checkbox" :disabled="disabled" v-model="tomas_electricidad_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="tomas_electricidad_na">
+                                <input type="checkbox" :disabled="disabled" v-model="tomas_electricidad_na">
                             </td>
                         </tr>
                     </table>
@@ -783,13 +781,13 @@
                                 Deberá tener en los bancos brazos firmes en los extremos, con agarraderas de ancho o diámetro no menor de 3.5 centímetro, según la Norma COVENIN 2733-2004. 
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="lugar_de_esparcimiento_si">
+                                <input type="checkbox" :disabled="disabled" v-model="lugar_de_esparcimiento_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="lugar_de_esparcimiento_no">
+                                <input type="checkbox" :disabled="disabled" v-model="lugar_de_esparcimiento_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="lugar_de_esparcimiento_na">
+                                <input type="checkbox" :disabled="disabled" v-model="lugar_de_esparcimiento_na">
                             </td>
                         </tr>
                         <tr>
@@ -802,26 +800,26 @@
                             <td colspan="2">7.4.15.2.	Deberán reservar y demarcar lugares para la ubicación de personas en sillas de ruedas en los lugares de esparcimientos y recreación cerrados, tales como teatros, cines, auditórium, 
                                 o en las graderías de instalaciones deportivas de acuerdo a lo especificado en la Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">7.4.15.3.	Deberá ubicar en zonas horizontales a las personas en sillas de ruedas, sin obstruir el tránsito en los pasillos y puertas, y cercas de las entradas o salidas principales, que permita una 
                                 buena visión hacia el área donde se presenta el evento tal como se muestra en la Norma COVENIN 2733-2004. </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="lugares_psr_si">
+                                <input type="checkbox" :disabled="disabled" v-model="lugares_psr_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="lugares_psr_no">
+                                <input type="checkbox" :disabled="disabled" v-model="lugares_psr_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="lugares_psr_na">
+                                <input type="checkbox" :disabled="disabled" v-model="lugares_psr_na">
                             </td>
                         </tr>
                         <tr>
@@ -838,13 +836,13 @@
                                 •	Persona con discapacidad visual.
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox">
+                                <input type="checkbox" :disabled="disabled">
                             </td>
                         </tr>
                     </table>
@@ -937,6 +935,7 @@
             {text: 'Factura', value: 'invoice'},
             /* {text: 'Fecha Recepción', value: 'ticketDate'}, */
             ],
+            disabled : true,
             desserts : [
 
             ],

@@ -292,7 +292,7 @@ export default class EditarCliente extends Vue {
     mounted(){
         this.comboboxAll(); 
         this.getOferta(this.$route.params.id)
-        this.empresaname = storageData.get('_bussines').rif + '-' +storageData.get('_bussines').nombre  
+        this.empresaname = storageData.get('_bussines').rif + '-' +storageData.get('_bussines').company_name  
         this.dataForm.id_postula_empresa = storageData.get('_bussines').id
         this.dataForm.fecha_postula_oferta = this.date
     }

@@ -22,8 +22,6 @@
         >
             <section slot="pdf-content" class="form_contacto" >
                 <section class="pdf-item">
-                
-                        <TitleSection v-show="btn_atras" :sectiontitle="sectiontitle"/>
                         <div class="logo">
                             <img style="object-fit: cover;" src="img/logos_conapdis/CABECERA.png"  alt="">
                         </div>
@@ -184,9 +182,9 @@
             this.firstnameinspector         = data.data.user_id_inspector.first_name+' '+data.data.user_id_inspector.last_name
             this.date_certificate           = data.data.date_certificate
             this.due_date                   = data.data.due_date
-            this.providence                 = data.data.user_id_inspector.inspection_unit.providence_administrative
-            this.expedient                  = data.data.busine.expedient.num_expedient
-            this.unidad                     = data.data.user_id_inspector.inspection_unit.name
+            this.providence                 = data.data.user_id_inspector.providence_administrative
+            this.expedient                  = data.data.guide.expedient.num_expedient
+            this.unidad                     = data.data.guide.inspection_unit.name
             console.log(data)
 
         },

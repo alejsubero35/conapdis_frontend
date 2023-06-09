@@ -80,7 +80,7 @@ export default class Usuario extends Vue {
             {text: 'Fecha Inspección', value: 'date_inspection'},
             {text: 'Unidad de Inspección', value: 'inspection_unit.name'},
             {text: 'Solicitud de Inspección', value: 'inspection_request.payroll_number'},
-            {text: 'Empresa', value: 'busine.nombre'},
+            {text: 'Empresa', value: 'busine.company_name'},
             {text: 'Acciones', value: 'action'}
             ];
     section : string = 'Usuarios'

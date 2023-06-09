@@ -357,7 +357,7 @@ export default class EditarCliente extends Vue {
         this.getStates()
         this.getRequestTraining(this.$route.params.id)
         this.dataForm.id_postula_empresa = 3994  
-        this.empresaname = storageData.get('_bussines').rif + '-' +storageData.get('_bussines').nombre
+        this.empresaname = storageData.get('_bussines').rif + '-' +storageData.get('_bussines').company_name
         this.dataForm.fecha_formacion_solicitud = this.date
     }
 	data(){

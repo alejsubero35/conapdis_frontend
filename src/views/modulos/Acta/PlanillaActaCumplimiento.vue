@@ -139,11 +139,7 @@
                             <td colspan="2">0424-152-36-98</td>
                             <td colspan="2">coordinador@conapdis.com</td>
                         </tr>
-                        <tr>
-                            <td class=" bold" colspan="2">a.	Nombre (s):</td>
-                            <td  colspan="2"  class=" bold">b.	Apellido (s):</td>
-                            <td  colspan="2"  class=" bold">c.	C. I. N°:</td>
-                        </tr>
+    
                     </table>
                 </section>
                 <div class="html2pdf__page-break"/>
@@ -342,7 +338,7 @@
             this.fechaguia      = data.data.guide.date_inspection
             this.firstnameinspector         = data.data.user_id_inspector.first_name
             this.lastnameinspector          = data.data.user_id_inspector.last_name
-            this.cedulainspector            = data.data.user_id_inspector.number_document_identity
+            this.cedulainspector            = data.data.user_id_inspector.cedula
             this.providence                 = data.data.user_id_inspector.providence_administrative
         },
         formatofecha(fecha) {

@@ -39,18 +39,19 @@
 								dense
 								:rules="rules"
 								required
+								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 							></v-select>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Rif"
 									placeholder="#-########-#"
-
 									dense
 									:rules="rules"
 									v-model="bussinesform.rif"
 									v-mask="'N-########-#'"
 									@keyup="validateRif(bussinesform.rif)"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 								<span v-show="validateRifDB" style="margin-top:-19px;color:red">El Rif Existe</span>
 							</v-col>
@@ -58,10 +59,10 @@
 								<v-text-field
 									label="Razón social"
 									placeholder="Razón social"
-
 									dense
 									:rules="rules"
 									v-model="bussinesform.company_name"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
 						</v-row>
@@ -76,32 +77,27 @@
 								<v-text-field
 									label="Tomo"
 									placeholder="Tomo"
-								
 									dense
-									
 									v-model="bussinesform.tomo"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Folio"
 									placeholder="Folio"
-									
 									dense
-									
 									v-model="bussinesform.folio"
-									
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Número"
-									placeholder="Número"
-									
-									dense
-									
+									placeholder="Número"									
+									dense									
 									v-model="bussinesform.number"
-									
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
@@ -128,6 +124,9 @@
 									v-model="date"
 									@input="menu2 = false"
 									@change="updateFecha()"
+									:disabled="(validateInput == 1) ? disabled = true : disabled = false"
+									locale="es"
+									no-title
 									></v-date-picker>
 								</v-menu>
 							</v-col>
@@ -140,6 +139,7 @@
 									placeholder="Organismo Inscrito a:"
 									dense
 									v-model="bussinesform.attached_body"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
@@ -149,6 +149,7 @@
 
 									dense
 									v-model="bussinesform.web"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
@@ -162,6 +163,7 @@
 									dense
 									:rules="rules"
 									required
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-select>
 							</v-col>
 								
@@ -198,6 +200,7 @@
 									dense
 									:rules="rules"
 									required
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-select>
 							</v-col>
 						</v-row>
@@ -209,6 +212,7 @@
 									placeholder="Número Patronal  IVSS"
 									dense
 									v-model="bussinesform.employer_number_ivss"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="12" md="6">
@@ -219,6 +223,7 @@
 									:rules="rules"
 									v-model="bussinesform.comercial_designation"
 									rows="1"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-textarea>
 								</v-col>
 						</v-row>
@@ -235,6 +240,7 @@
 									dense
 									:rules="rules"
 									required
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-select>
 							</v-col>
 							
@@ -252,6 +258,7 @@
 									dense
 									:rules="rules"
 									v-model="bussinesform.first_name"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="6">
@@ -261,6 +268,7 @@
 									dense
 									:rules="rules"
 									v-model="bussinesform.last_name"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="6">
@@ -278,6 +286,7 @@
 								placeholder="username"
 								dense
 								v-model="bussinesform.username"
+								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 							></v-text-field>
 							</v-col>
 							<!-- <v-col cols="12" sm="6" md="6">
@@ -309,6 +318,7 @@
 									:rules="rules"
 									required
 									@change="getMunicipalityByState($event)"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-select>
 							</v-col>
 							<v-col cols="12" sm="6" md="4">
@@ -323,6 +333,7 @@
 									:rules="rules"
 									required
 									@change="getParishesByMunicipality($event)"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-select>
 							</v-col>
 							<v-col cols="12" sm="6" md="4">
@@ -337,6 +348,7 @@
 									:rules="rules"
 									required
 									@change="getSectoresByParishes($event)"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-select>
 							</v-col>
 							<v-col cols="12" sm="6" md="4">
@@ -350,6 +362,7 @@
 									dense
 									:rules="rules"
 									required
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-select>
 							</v-col>
 							<v-col cols="12" sm="6" md="4">
@@ -360,6 +373,7 @@
 									:rules="rules"
 									v-model="bussinesform.phone"
 									v-mask="'####-#######'"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="4">
@@ -369,6 +383,7 @@
 									dense
 									v-model="bussinesform.telefono2"
 									v-mask="'####-#######'"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="4">
@@ -378,6 +393,7 @@
 									dense
 									v-model="bussinesform.telefono3"
 									v-mask="'####-#######'"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="8" md="8">
@@ -388,6 +404,7 @@
 									:rules="rules"
 									v-model="bussinesform.location"
 									rows="1"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-textarea>
 							</v-col>
 						</v-row>
@@ -404,42 +421,41 @@
 									label="Tipo Documento"
 									placeholder="Tipo Documento"
 									v-model="bussinesform.type_identity_card"
-
 									dense
 									:rules="rules"
 									required
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-select>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Cédula / Pasaporte"
 									placeholder="###########"
-
 									dense
 									:rules="rules"
 									v-model="bussinesform.identity_card_rl"
 									v-mask="'###########'"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Nombres"
 									placeholder="nombres"
-
 									dense
 									:rules="rules"
 									v-model="bussinesform.first_name_rl"
-							
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
 								<v-text-field
 									label="Apellidos"
 									placeholder="Apellidos"
-
 									dense
 									:rules="rules"
 									v-model="bussinesform.last_name_rl"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
@@ -450,6 +466,7 @@
 									:rules="rules"
 									v-model="bussinesform.telefono1_representante_legal"
 									v-mask="'####-#######'"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
@@ -459,6 +476,7 @@
 									dense
 									v-model="bussinesform.telefono2_representante_legal"
 									v-mask="'####-#######'"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
@@ -468,6 +486,7 @@
 									dense
 									v-model="bussinesform.telefono3_representante_legal"
 									v-mask="'####-#######'"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
@@ -478,6 +497,7 @@
 								:rules="emailRules"
 								type="email"
 								v-model="bussinesform.email_rl"
+								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 							></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="4">
@@ -488,10 +508,10 @@
 									label="Cargo"
 									placeholder="Cargo"
 									v-model="bussinesform.cargo_representante_legal"
-
 									dense
 									:rules="rules"
 									required
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-select>
 							</v-col>
 						</v-row>
@@ -511,6 +531,7 @@
 										class="pl-3 pr-3"
 										:value="rampas"
 										@change="setItem('rampas')"
+										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 										></v-switch>
 										<v-switch
 										v-model="bussinesform.accesibilidad"
@@ -520,6 +541,7 @@
 										class="pl-3 pr-3"
 										:value="accesibilidad"
 										@change="setItem('accesibilidad')"
+										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 										></v-switch>
 										<v-switch
 										v-model="bussinesform.acceso_directo"
@@ -529,6 +551,7 @@
 										class="pl-3 pr-3"
 										:value="acceso_directo"
 										@change="setItem('acceso_directo')"
+										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 										></v-switch>
 										<v-switch
 										v-model="bussinesform.transporte_publico"
@@ -538,6 +561,7 @@
 										class="pl-3 pr-3"
 										:value="transporte_publico"
 										@change="setItem('transporte_publico')"
+										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 										></v-switch>
 										<v-switch
 										v-model="bussinesform.transporte_empresa"
@@ -547,6 +571,7 @@
 										class="pl-3 pr-3"
 										:value="transporte_empresa"
 										@change="setItem('transporte_empresa')"
+										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 										></v-switch>
 										<v-switch
 										v-model="bussinesform.viabilidad"
@@ -556,6 +581,7 @@
 										class="pl-3 pr-3"
 										:value="viabilidad"
 										@change="setItem('viabilidad')"
+										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 										></v-switch>
 										<v-switch
 										v-model="bussinesform.banos_acondicionados"
@@ -565,6 +591,7 @@
 										class="pl-3 pr-3"
 										:value="banos_acondicionados"
 										@change="setItem('banos_acondicionados')"
+										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 										></v-switch>
 										<v-switch
 										v-model="bussinesform.escaleras"
@@ -574,6 +601,7 @@
 										class="pl-3 pr-3"
 										:value="escaleras"
 										@change="setItem('escaleras')"
+										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 										></v-switch>
 										<v-switch
 										v-model="bussinesform.pasamanos"
@@ -583,6 +611,7 @@
 										class="pl-3 pr-3"
 										:value="pasamanos"
 										@change="setItem('pasamanos')"
+										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 										></v-switch>
 									</v-col>
 									<v-col cols="12" sm="6" md="6">
@@ -594,6 +623,7 @@
 										class="pl-3 pr-3"
 										:value="pasillos"
 										@change="setItem('pasillos')"
+										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 										></v-switch>
 										<v-switch
 										v-model="bussinesform.ascensores"
@@ -603,6 +633,7 @@
 										class="pl-3 pr-3"
 										:value="ascensores"
 										@change="setItem('ascensores')"
+										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 										></v-switch>
 										<v-switch
 										v-model="bussinesform.puertas_adaptadas"
@@ -612,6 +643,7 @@
 										class="pl-3 pr-3"
 										:value="puertas_adaptadas"
 										@change="setItem('puertas_adaptadas')"
+										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 										></v-switch>
 										<v-switch
 										v-model="bussinesform.buena_iluminacion"
@@ -621,6 +653,7 @@
 										class="pl-3 pr-3"
 										:value="buena_iluminacion"
 										@change="setItem('buena_iluminacion')"
+										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 										></v-switch>
 										<v-switch
 										v-model="bussinesform.senalizaciones_luminosas"
@@ -630,6 +663,7 @@
 										class="pl-3 pr-3"
 										:value="senalizaciones_luminosas"
 										@change="setItem('senalizaciones_luminosas')"
+										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 										></v-switch>
 										<v-switch
 										v-model="bussinesform.puestos_de_estacionamiento"
@@ -639,6 +673,7 @@
 										class="pl-3 pr-3"
 										:value="puestos_de_estacionamiento"
 										@change="setItem('puestos_de_estacionamiento')"
+										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 										></v-switch>
 										<v-switch
 										v-model="bussinesform.senalizacion"
@@ -648,6 +683,7 @@
 										class="pl-3 pr-3"
 										:value="senalizacion"
 										@change="setItem('senalizacion')"
+										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 										></v-switch>
 										<v-switch
 										v-model="bussinesform.herramientas_tecnologicas"
@@ -657,6 +693,7 @@
 										class="pl-3 pr-3"
 										:value="herramientas_tecnologicas"
 										@change="setItem('herramientas_tecnologicas')"
+										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 										></v-switch>
 									</v-col>
 								</v-row>
@@ -837,6 +874,7 @@ export default class Bussines extends Vue {
 	validateRifDB = false
     max25chars = v => v.length <= 25 || 'Input too long!'
 	btnText = 'Guardar'
+	validateInput = 0
 	$refs!: {
         validateStepForm: InstanceType<typeof ValidationObserver>;
         validateStepFormTwo: InstanceType<typeof ValidationObserver>;
@@ -983,7 +1021,7 @@ export default class Bussines extends Vue {
 			this.snackbar = true
 			this.back();
 			this.overlay = false 
-			this.tabIndex = 0		
+				
 		} else {
 			this.textmsj = 'Error al Actualizar los datos de la Empresa.'
 			this.color = 'error'
@@ -1250,40 +1288,40 @@ export default class Bussines extends Vue {
 		} 
 	}
 	async updataSwitchBussines(data){
-		this.bussinesform.accesibilidad      			= (data.accesibilidad == 0) ? false : true
-		this.accesibilidadShow               			= (data.accesibilidad == 0) ? 'No'  : 'Si'
-		this.bussinesform.ascensores         			= (data.ascensores == 0) ? false : true
-		this.ascensoresShow                  			= (data.ascensores == 0) ? 'No'  : 'Si'
-		this.bussinesform.rampas   						= (data.rampas == 0) ? false : true
-		this.rampasShow       							= (data.rampas == 0) ? 'No'  : 'Si'  
-		this.bussinesform.acceso_directo   				= (data.acceso_directo == 0) ? false : true
-		this.acceso_directoShow       					= (data.acceso_directo == 0) ? 'No'  : 'Si'  
-		this.bussinesform.transporte_publico   			= (data.transporte_publico == 0) ? false : true
-		this.transporte_publicoShow       				= (data.transporte_publico == 0) ? 'No'  : 'Si'  
-		this.bussinesform.transporte_empresa   			= (data.transporte_empresa == 0) ? false : true
-		this.transporte_empresaShow       				= (data.transporte_empresa == 0) ? 'No'  : 'Si'  
-		this.bussinesform.viabilidad   					= (data.viabilidad == 0) ? false : true
-		this.viabilidadShow       						= (data.viabilidad == 0) ? 'No'  : 'Si'  
-		this.bussinesform.banos_acondicionados  		= (data.banos_acondicionados == 0) ? false : true
-		this.banos_acondicionadosShow       			= (data.banos_acondicionados == 0) ? 'No'  : 'Si'  
-		this.bussinesform.escaleras   					= (data.escaleras == 0) ? false : true
-		this.escalerasShow       						= (data.escaleras == 0) ? 'No'  : 'Si'  
-		this.bussinesform.pasamanos   					= (data.pasamanos == 0) ? false : true
-		this.pasamanosShow       						= (data.pasamanos == 0) ? 'No'  : 'Si'  
-		this.bussinesform.pasillos   					= (data.pasillos == 0) ? false : true
-		this.pasillosShow       						= (data.pasillos == 0) ? 'No'  : 'Si'  
-		this.bussinesform.puertas_adaptadas   			= (data.puertas_adaptadas == 0) ? false : true
-		this.puertas_adaptadasShow       				= (data.puertas_adaptadas == 0) ? 'No'  : 'Si'  
-		this.bussinesform.buena_iluminacion   			= (data.buena_iluminacion == 0) ? false : true
-		this.buena_iluminacionShow       				= (data.buena_iluminacion == 0) ? 'No'  : 'Si'  
-		this.bussinesform.senalizaciones_luminosas   	= (data.senalizaciones_luminosas == 0) ? false : true
-		this.senalizaciones_luminosasShow       		= (data.senalizaciones_luminosas == 0) ? 'No'  : 'Si'  
-		this.bussinesform.puestos_de_estacionamiento   	= (data.puestos_de_estacionamiento == 0) ? false : true
-		this.puestos_de_estacionamientoShow       		= (data.puestos_de_estacionamiento == 0) ? 'No'  : 'Si'  
-		this.bussinesform.senalizacion   				= (data.senalizacion == 0) ? false : true
-		this.senalizacionShow       					= (data.senalizacion == 0) ? 'No'  : 'Si'  
-		this.bussinesform.herramientas_tecnologicas   	= (data.herramientas_tecnologicas == 0) ? false : true
-		this.herramientas_tecnologicasShow       		= (data.herramientas_tecnologicas == 0) ? 'No'  : 'Si'  
+		this.bussinesform.accesibilidad      			= (data.accesibilidad == 'No') ? false : true
+		this.accesibilidadShow               			= (data.accesibilidad == 'No') ? 'No'  : 'Si'
+		this.bussinesform.ascensores         			= (data.ascensores == 'No') ? false : true
+		this.ascensoresShow                  			= (data.ascensores == 'No') ? 'No'  : 'Si'
+		this.bussinesform.rampas   						= (data.rampas == 'No') ? false : true
+		this.rampasShow       							= (data.rampas == 'No') ? 'No'  : 'Si'  
+		this.bussinesform.acceso_directo   				= (data.acceso_directo == 'No') ? false : true
+		this.acceso_directoShow       					= (data.acceso_directo == 'No') ? 'No'  : 'Si'  
+		this.bussinesform.transporte_publico   			= (data.transporte_publico == 'No') ? false : true
+		this.transporte_publicoShow       				= (data.transporte_publico == 'No') ? 'No'  : 'Si'  
+		this.bussinesform.transporte_empresa   			= (data.transporte_empresa == 'No') ? false : true
+		this.transporte_empresaShow       				= (data.transporte_empresa == 'No') ? 'No'  : 'Si'  
+		this.bussinesform.viabilidad   					= (data.viabilidad == 'No') ? false : true
+		this.viabilidadShow       						= (data.viabilidad == 'No') ? 'No'  : 'Si'  
+		this.bussinesform.banos_acondicionados  		= (data.banos_acondicionados == 'No') ? false : true
+		this.banos_acondicionadosShow       			= (data.banos_acondicionados == 'No') ? 'No'  : 'Si'  
+		this.bussinesform.escaleras   					= (data.escaleras == 'No') ? false : true
+		this.escalerasShow       						= (data.escaleras == 'No') ? 'No'  : 'Si'  
+		this.bussinesform.pasamanos   					= (data.pasamanos == 'No') ? false : true
+		this.pasamanosShow       						= (data.pasamanos == 'No') ? 'No'  : 'Si'  
+		this.bussinesform.pasillos   					= (data.pasillos == 'No') ? false : true
+		this.pasillosShow       						= (data.pasillos == 'No') ? 'No'  : 'Si'  
+		this.bussinesform.puertas_adaptadas   			= (data.puertas_adaptadas == 'No') ? false : true
+		this.puertas_adaptadasShow       				= (data.puertas_adaptadas == 'No') ? 'No'  : 'Si'  
+		this.bussinesform.buena_iluminacion   			= (data.buena_iluminacion == 'No') ? false : true
+		this.buena_iluminacionShow       				= (data.buena_iluminacion == 'No') ? 'No'  : 'Si'  
+		this.bussinesform.senalizaciones_luminosas   	= (data.senalizaciones_luminosas == 'No') ? false : true
+		this.senalizaciones_luminosasShow       		= (data.senalizaciones_luminosas == 'No') ? 'No'  : 'Si'  
+		this.bussinesform.puestos_de_estacionamiento   	= (data.puestos_de_estacionamiento == 'No') ? false : true
+		this.puestos_de_estacionamientoShow       		= (data.puestos_de_estacionamiento == 'No') ? 'No'  : 'Si'  
+		this.bussinesform.senalizacion   				= (data.senalizacion == 'No') ? false : true
+		this.senalizacionShow       					= (data.senalizacion == 'No') ? 'No'  : 'Si'  
+		this.bussinesform.herramientas_tecnologicas   	= (data.herramientas_tecnologicas == 'No') ? false : true
+		this.herramientas_tecnologicasShow       		= (data.herramientas_tecnologicas == 'No') ? 'No'  : 'Si'  
 	}
 	
     mounted(){
@@ -1304,7 +1342,8 @@ export default class Bussines extends Vue {
 			this.updataSwitchBussines(storageData.get('_bussines'))
 			this.getMunicipalityByState(this.bussinesform.state_id)
 			this.getParishesByMunicipality(this.bussinesform.municipality_id)
-			this.btnText = 'Actualizar'
+			this.btnText       = 'Actualizar'
+			this.validateInput = 1
 		}
     }
 }

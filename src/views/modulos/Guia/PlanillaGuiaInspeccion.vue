@@ -260,9 +260,9 @@
                             <td colspan="2"   class=" bold">f.	Constancia del Segundo Semestre:</td>
                         </tr>
                         <tr>
-                            <td colspan="2"  class=" bold">g.</td>
-                            <td class=" bold">h.</td>
-                            <td colspan="2"   class=" bold">i.</td>
+                            <td colspan="2"  class=" bold text-center">{{ ult_semestre}}</td>
+                            <td class=" bold text-center">{{ primer_semestre}}</td>
+                            <td colspan="2"   class=" bold text-center">{{segundo_semestre}}</td>
                         </tr>
                         <tr>
                             <th class="td-center" colspan="5">10.	DE LAS NORMAS Y REGLAMENTACIONES TÉCNICAS DE ACCESIBILIDAD</th>
@@ -804,15 +804,13 @@
                             <th colspan="1" class="text-center">C. I. N°:</th>
                         </tr>
                         <tr>
-                            <td colspan="2"></td>
-                            <td colspan="2"></td>
-                            <td colspan="1"></td>
+                            <td colspan="2" class="text-center">{{name_admin}}</td>
+                            <td colspan="2" class="text-center">{{last_admin}}</td>
+                            <td colspan="1" class="text-center">{{ci_admin}}</td>
                         </tr>
+                   
                         <tr>
-                            <th class="td-center" colspan="5">11.6.	DE LOS DATOS DEL ADMINISTRADO (A) DESIGNADO (A) PARA EL ACOMPAÑAMIENTO DURANTE LA PRACTICA DE LA INSPECCIÓN:</th>
-                        </tr>
-                        <tr>
-                            <td class=" bold"  colspan="2" style="height: 100px;">Cargo:</td>
+                            <td class=" bold"  colspan="2" style="height: 100px;">Cargo: {{cargo_admin}}</td>
                             <td  colspan="2"   class=" bold text-center">Firma</td>
                             <td  colspan="2"  class=" bold text-center">Impresión Dactilar:</td>
                         </tr>
@@ -825,21 +823,19 @@
                             <th colspan="1" class="text-center">C. I. N°:</th>
                         </tr>
                         <tr>
-                            <td colspan="2"></td>
-                            <td colspan="2"></td>
-                            <td colspan="1"></td>
+                            <td colspan="2"  class="text-center">{{name_inspector}}</td>
+                            <td colspan="2"  class="text-center">{{name_inspector}}</td>
+                            <td colspan="1"  class="text-center">{{ci_inspector}}</td>
                         </tr>
+                     
                         <tr>
-                            <th class="td-center" colspan="5">11.6.	DE LOS DATOS DEL ADMINISTRADO (A) DESIGNADO (A) PARA EL ACOMPAÑAMIENTO DURANTE LA PRACTICA DE LA INSPECCIÓN:</th>
-                        </tr>
-                        <tr>
-                            <td class=" bold"  colspan="2" style="height: 100px;">Cargo:</td>
+                            <td class=" bold"  colspan="2" style="height: 100px;">Cargo: {{cargo_inspector}}</td>
                             <td  colspan="2"   class=" bold text-center">Firma</td>
                             <td  colspan="2"  class=" bold text-center">Sello Humedo</td>
                         </tr>
                         <tr>
-                            <td  colspan="3"  >Providencia Administrativa N°:</td>
-                            <td  colspan="2" >Fecha y Hora</td>  
+                            <td  colspan="3"  >Providencia Administrativa N°: {{ providence_administrative }}</td>
+                            <td  colspan="2" >Fecha y Hora : {{ providence_date }}</td>  
                         </tr>
                     </table>
                 <v-row>
@@ -1043,8 +1039,19 @@
             lugares_psr_si                          : false,
             lugares_psr_no                          : false,
             lugares_psr_na                          : false,
-
-            
+            name_inspector : '',
+            last_inspector : '',
+            ci_inspector   : '',
+            cargo_inspector : '',
+            name_admin : '',
+            last_admin : '',
+            ci_admin   : '',
+            cargo_admin : '',
+            providence_administrative : '',
+            providence_date : '',
+            primer_semestre : '',
+            segundo_semestre : '',
+            ult_semestre : '',
          }
      },
      computed: {
@@ -1096,7 +1103,21 @@
             this.debida_informacion         = (data.data.guidePreferentialAttention.debida_informacion == 0) ? 'Si' : 'No'            
             this.agilidad_en_los_tramites   = (data.data.guidePreferentialAttention.agilidad_en_los_tramites == 0) ? 'Si' : 'No'
             this.agilidad_en_los_tramites   = (data.data.guidePreferentialAttention.agilidad_en_los_tramites == 0) ? 'Si' : 'No'
+            this.name_inspector             = data.data.user_id_inspector.first_name 
+            this.last_inspector             = data.data.user_id_inspector.last_name                 
+            this.ci_inspector               = data.data.user_id_inspector.cedula 
+            this.cargo_inspector            = data.data.user_id_inspector.position.nombre
+            this.name_admin                 = data.data.name_admin_designe  
+            this.last_admin                 = data.data.last_name_admin_designe  
+            this.ci_admin                   = data.data.identity_card_admin   
+            this.cargo_admin                = data.data.busine.position.name
+            this.providence_administrative  = data.data.inspection_unit.providence_administrative
+            this.providence_date            = data.data.inspection_unit.providence_date
+            this.primer_semestre            = (data.data.guideWorkerRegistration.constancia_primer_sem) ? data.data.guideWorkerRegistration.date_primer_sem : 'NO'
+            this.segundo_semestre           = (data.data.guideWorkerRegistration.constancia_segundo_sem) ? data.data.guideWorkerRegistration.date_segundo_sem : 'NO'
+            this.ult_semestre               = data.data.guideWorkerRegistration.ultimo_periodo_inf
             
+
             if(data.data.guidePreferentialAttention.debida_informacion == 0){
                 this.debida_informacion_si = true 
                 this.debida_informacion_no = false
@@ -1109,7 +1130,7 @@
             this.overlay = false 
         },
         checkboxNomina(data){
-            if(data.de_20_a_39 == 0){
+            if(data.de_20_a_39 == 'si'){
                 this.de_20_39_si = true 
                 this.de_20_39_no = false
             }else{
@@ -1117,7 +1138,7 @@
                 this.de_20_39_no = true
             }
 
-            if(data.de_40_a_59 == 0){
+            if(data.de_40_a_59 == 'si'){
                 this.de_40_59_si = true 
                 this.de_40_59_no = false
             }else{
@@ -1125,7 +1146,7 @@
                 this.de_40_59_no = true
             }
 
-            if(data.de_60_a_79 == 0){
+            if(data.de_60_a_79 == 'si'){
                 this.de_60_79_si = true 
                 this.de_60_79_no = false
             }else{
@@ -1133,7 +1154,7 @@
                 this.de_60_a_79_no = true
             }
 
-            if(data.de_80_a_99 == 0){
+            if(data.de_80_a_99 == 'si'){
                 this.de_80_99_si = true 
                 this.de_80_99_no = false
             }else{
@@ -1141,7 +1162,7 @@
                 this.de_80_99_no = true
             }
 
-            if(data.de_100_a_119 == 0){
+            if(data.de_100_a_119 == 'si'){
                 this.de_100_119_si = true 
                 this.de_100_119_no = false
             }else{
