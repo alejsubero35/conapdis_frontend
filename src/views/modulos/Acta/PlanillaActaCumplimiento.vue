@@ -23,7 +23,6 @@
         >
             <section slot="pdf-content" class="form_contacto">
                 <section class="pdf-item">
-                    <TitleSection v-show="btn_atras" :sectiontitle="sectiontitle"/>
                     <div class="logo">
                         <img style="object-fit: cover;" src="img/logos_conapdis/CABECERA.png"  alt="">
                     </div>

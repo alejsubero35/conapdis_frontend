@@ -19,7 +19,7 @@
             @on-complete="onComplete" 
             color="#3f51b5" 
             shape="tab" 
-            finish-button-text="Guardar" 
+            :finish-button-text="btnText" 
             back-button-text="Atrás" 
             next-button-text="Siguiente"
 			>
@@ -836,7 +836,7 @@ export default class Bussines extends Vue {
     menu2 : boolean = false
 	validateRifDB = false
     max25chars = v => v.length <= 25 || 'Input too long!'
-
+	btnText = 'Guardar'
 	$refs!: {
         validateStepForm: InstanceType<typeof ValidationObserver>;
         validateStepFormTwo: InstanceType<typeof ValidationObserver>;
@@ -1304,7 +1304,7 @@ export default class Bussines extends Vue {
 			this.updataSwitchBussines(storageData.get('_bussines'))
 			this.getMunicipalityByState(this.bussinesform.state_id)
 			this.getParishesByMunicipality(this.bussinesform.municipality_id)
-			
+			this.btnText = 'Actualizar'
 		}
     }
 }

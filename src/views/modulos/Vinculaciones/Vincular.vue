@@ -264,6 +264,26 @@
 		  </v-card-actions>
 		</v-card>
 	  </v-dialog>
+      <v-dialog v-model="dialogOpen" max-width="350">
+        <v-card>
+            <v-card-title class="text-h5">
+                Notificación
+            </v-card-title>
+            <v-card-text>
+                Esta Cédula no esta Certificada 
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                    color="green darken-1"
+                    text
+                    @click="dialogOpen = false"
+                >
+                    Aceptar
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
     </div>
 </template>
 <script lang="ts">
@@ -303,6 +323,7 @@ export default class Bussines extends Vue {
     timeout = 2000
     sectiontitle = 'Vincular - Desvincular (PCD)'
     dialog = false
+    dialogOpen = false
     tabIndex = 0
 	date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
     dategreso = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
@@ -361,8 +382,16 @@ export default class Bussines extends Vue {
     async searchCertificatePerson(val) {
 		this.isLoading = true
 		const data : any = await linkedModule.searchCertificatePerson(this.searchTerm);
-		this.arrayCustomers = data.data
-		this.isLoading = false
+  
+        if(data.data.length > 0){
+            this.arrayCustomers = data.data
+		    this.isLoading = false
+        }else{
+            this.dialogOpen = true
+            this.isLoading = false
+            this.searchTerm = ''
+        }
+
 	}
     getPersonCertificate(event){console.log(event)
         this.fullname = event.nombres+' '+event.apellidos

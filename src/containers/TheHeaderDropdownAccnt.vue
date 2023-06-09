@@ -4,6 +4,7 @@
     class="c-header-nav-items"
     placement="bottom-end"
     add-menu-classes="pt-0"
+    v-if="token"
   >
     <template #toggler>
       <CHeaderNavLink>
@@ -34,7 +35,7 @@
 
 import { Component, Vue } from 'vue-property-decorator';
 import Logout from '@/views/auth/Logout.vue';
-
+import storageData from '@/store/services/storageService'
 @Component({
   components: {
     Logout
@@ -43,6 +44,11 @@ import Logout from '@/views/auth/Logout.vue';
 })
 
 export default class TheHeaderDropdownAccnt extends Vue {
+
+token   = ''
+mounted(){
+  this.token   = storageData.get('_token')
+}
 updatePassword(){
   this.$router.push({ name: "updatepassword" });
 }
