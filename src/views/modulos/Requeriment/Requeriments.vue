@@ -13,7 +13,7 @@
             enctype='multipart/form-data'
           >
             <TitleSection :sectiontitle="sectiontitle"/>
-            <v-container v-if="documents.length > 0" >
+            <v-container v-if="documents.length > 0" class="mt-5" >
                 <v-layout  v-for="(doc,index) in documents" :key="index" row wrap >
                    <v-row>
                     <input type="hidden" v-model="doc.id">
@@ -83,7 +83,7 @@
             <v-container v-else>
                 <h1 class="text-center">No hay documentos requeridos</h1>
             </v-container>
-            <div v-if="documents.length > 0" class="mt-5 d-flex justify-end">
+            <div  class="mt-5 d-flex justify-end">
                 <v-btn small @click="save" :disabled="disabledBtn" color="success">Guardar y Solicitar Inspección </v-btn> 
             </div>
         </v-form>
@@ -176,7 +176,7 @@ export default class RequerimentsDocuments extends Vue {
         this.overlay  = false
     }
 
-    async save(){
+    async save(){console.log(this.FormRequestDocuments)
         const valid = await this.$refs.documents.validate();
         delete this.FormRequestDocuments.name
         const events = []
@@ -193,7 +193,7 @@ export default class RequerimentsDocuments extends Vue {
     
     }
 
-    async saveDocuments(dataDoc) { 
+    async saveDocuments(dataDoc) { console.log(dataDoc)
     
         this.overlay  = true
         const data    = await documentModule.saveDocuments(dataDoc)  
@@ -211,10 +211,11 @@ export default class RequerimentsDocuments extends Vue {
      
     }
     async updateFecha(id_){
+
         let index  = this.documents.findIndex(({ id })  => id == id_)
         this.documents[index].registration_date = this.date
         this.documents[index].bussines_id = (storageData.get('bussines_id')) ? storageData.get('bussines_id') : this.getBussines.id
-        console.log(storageData.get('bussines_id'))
+ 
     }
     async updateDocument(doc){console.log(doc)
         let index  = this.documents.findIndex(({ id })  => id == doc.id)

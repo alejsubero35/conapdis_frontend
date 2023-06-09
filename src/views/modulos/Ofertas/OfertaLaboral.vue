@@ -191,6 +191,10 @@ export default class Usuario extends Vue {
     viewPDF(id) {
         this.$router.push({ name: "planillaboletaordenamiento", params: { id: id } });
     }
+    postulantes(item){
+        this.$router.push({ name: "verpostulantesoferta", params: { id: item.id_postula_oferta } });
+        
+    }
     async dataIndex(){  
         this.overlay = true
             let paginateData : any = [];

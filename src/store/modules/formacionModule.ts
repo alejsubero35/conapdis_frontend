@@ -71,7 +71,62 @@ import {
             })
         }) 
     }
-	
+		@Action
+	async saveAttendance(dataRequest: any) { 
+		await http.post(`positions/save_attendance`, dataRequest)
+		.then((payload: any) => {
+		if(payload){
+			dataRequest.code = payload.status
+		} else {
+			dataRequest.code = 500;
+			dataRequest.message = 'Error al procesar la Solicitud';
+		}
+		})
+		return dataRequest;
+	}
+  @Action
+  getAttendancesByIdRequest(id) {
+      return new Promise((resolve, reject) => {  
+          http.get(`/positions/get_attendance_by_request_id/${id}`)
+          .then(response =>  {
+              if (response.status === 200) {     
+                  resolve(response); 
+              }
+          })
+          .catch(error => {
+              reject(error)
+          })
+      }) 
+  }
+  @Action
+  deleteAttendances(id) {
+      return new Promise((resolve, reject) => {  
+          http.get(`/positions/delete_attendance/${id}`)
+          .then(response =>  {
+              if (response.status === 200) {     
+                  resolve(response); 
+              }
+          })
+          .catch(error => {
+              reject(error)
+          })
+      }) 
+  }
+  @Action
+  getCitasByBussinesId(id) {
+      return new Promise((resolve, reject) => {  
+          http.get(`/positions/get_citas_by_bussine_id/${id}`)
+          .then(response =>  {
+              if (response.status === 200) {     
+                  resolve(response); 
+              }
+          })
+          .catch(error => {
+              reject(error)
+          })
+      }) 
+  }
+  
 
   }  
   

@@ -38,6 +38,7 @@ export default {
     color: white;
     height: 64px;
     border-radius: 5px;
+    margin-bottom: 5%;
 }
 .btn_atras{
     background-color: #3f51b5;

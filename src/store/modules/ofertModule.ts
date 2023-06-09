@@ -122,7 +122,52 @@ import {
             })
         }) 
     }
- 
+    @Action
+    getPostulantesById(id) {
+        return new Promise((resolve, reject) => {  
+            http.get(`/positions/get_postulantes_by_id/${id}`)
+            .then(response =>  {
+                if (response.status === 200) {     
+                    resolve(response); 
+                }
+            })
+            .catch(error => {
+                reject(error)
+            })
+        }) 
+    }
+    @Action
+    getSexosAll() {
+        return new Promise((resolve, reject) => {  
+            http.get(`/positions/get_sex_all`)
+            .then(response =>  {
+                if (response.status === 200) {     
+                    resolve(response); 
+                }
+            })
+            .catch(error => {
+                reject(error)
+            })
+        }) 
+    }
+    @Action
+    getDiscapacidadesAll() {
+        return new Promise((resolve, reject) => {  
+            http.get(`/positions/get_discapacidades`)
+            .then(response =>  {
+                console.log(response)
+                if (response.status === 200) {     
+                    resolve(response); 
+                }
+            })
+            .catch(error => {
+                reject(error)
+            })
+        }) 
+    }
+  
+
+   
   }  
   
   export default getModule(ofertModule);

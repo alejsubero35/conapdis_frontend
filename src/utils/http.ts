@@ -9,7 +9,7 @@ const URLBASE =  'https://conapdis.test' // url del ambiente local
 //const URL     =  'https://conapdis.filicabh.com.ve/api/v1'
 //const URLBASE =  'https://conapdis.filicabh.com.ve'
 
-const http = axios.create({
+const http  = axios.create({
   baseURL: URL
 });
 

@@ -126,6 +126,26 @@
          </v-tabs>
         </div>
     	<Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color"/>
+        <v-dialog v-model="dialogOpen" max-width="350">
+            <v-card>
+                <v-card-title class="text-h5">
+                    Notificación
+                </v-card-title>
+                <v-card-text>
+                    Debe vincular trabajadores para poder declarar 
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="green darken-1"
+                        text
+                        @click="dialogOpen = false"
+                    >
+                        Aceptar
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 <script lang="ts">
@@ -181,6 +201,7 @@ export default class Bussines extends Vue {
         empresa_id:155,
         periodo_id:''
     }
+    dialogOpen = false
 	$refs!: {
         validateStepForm: InstanceType<typeof ValidationObserver>;
         validateStepFormTwo: InstanceType<typeof ValidationObserver>;			
@@ -233,7 +254,7 @@ export default class Bussines extends Vue {
             this.declararform.trabajadores_discapacidad = peoplelinked.data.length
             this.declararform.personas_discapacidades   = peoplelinked.data.length
         }else{
-            alert('debe vincular trabajadores')
+            this.dialogOpen = true
         }
 
 	}

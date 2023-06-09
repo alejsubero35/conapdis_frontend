@@ -53,14 +53,19 @@ const Declaraciones                   = () => import('@/views/modulos/Declaracio
 const OfertasLaborales                = () => import('@/views/modulos/Ofertas/OfertaLaboral.vue')
 const CrearOfertaLaboral              = () => import('@/views/modulos/Ofertas/CrearOfertaLaboral.vue')
 const EditarOfertaLaboral             = () => import('@/views/modulos/Ofertas/EditarOferta.vue')
+const VerPostulantesOferta            = () => import('@/views/modulos/Ofertas/PostulantesOferta.vue')
 
 //SolicitudFormacion
 const SolicitudFormacion              = () => import('@/views/modulos/SolicitudFormacion/SolicitudFormacion.vue')
 const CrearSolicitudFormacion         = () => import('@/views/modulos/SolicitudFormacion/CrearSolicitudFormacion.vue')
 const VerSolicitudformacion           = () => import('@/views/modulos/SolicitudFormacion/VerSolicitudformacion.vue')
+const CrearAsistencias                = () => import('@/views/modulos/SolicitudFormacion/CrearAsistencias.vue')
 
 //Reportes
 const Reportes                        = () => import('@/views/modulos/reportes/Reportes.vue')
+
+//Citas
+const Citas                           = () => import('@/views/modulos/citas/Citas.vue')
 
 
 // Errors
@@ -288,7 +293,27 @@ const router = new Router({
           meta: { Auth: true, title: 'Reportes' },
      
         },
-        
+        {
+          path: 'verpostulantesoferta/:id',
+          name: 'verpostulantesoferta',
+          component: VerPostulantesOferta,
+          meta: { Auth: true, title: 'VerPostulantesOferta' },
+     
+        },
+        {
+          path: 'crearasistencia/:id',
+          name: 'crearasistencia',
+          component: CrearAsistencias,
+          meta: { Auth: true, title: 'CrearAsistencias' },
+     
+        },  
+        {
+          path: 'citas',
+          name: 'citas',
+          component: Citas,
+          meta: { Auth: true, title: 'Citas' },
+     
+        },     
       ]
       //
     },

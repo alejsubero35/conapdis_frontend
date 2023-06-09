@@ -85,7 +85,10 @@ export default {
     margin-left: -23px;
   }
   .c-sidebar-nav-item{
-      margin-left: -10%;
+      margin-left: -3%;
+  }
+  .c-sidebar-nav-dropdown{
+    margin-left: -18%;
   }
   .c-sidebar .c-sidebar-nav-link, .c-sidebar .c-sidebar-nav-dropdown-toggle {
     color: white;

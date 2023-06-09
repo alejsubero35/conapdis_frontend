@@ -35,7 +35,8 @@ import {
   cibReadTheDocs,
   cibBuffer,
   cibOctave,
-  cibAnaconda
+  cibAnaconda,
+  cibMyspace
 
   
 } from '@coreui/icons'
@@ -203,6 +204,7 @@ export const iconsSet = Object.assign(
     cibReadTheDocs,
     cibBuffer,
     cibOctave,
-    cibAnaconda
+    cibAnaconda,
+    cibMyspace
   }
 )

@@ -144,7 +144,7 @@ export default class Usuario extends Vue {
         this.$router.push({ name: "versolicitudformacion", params: { id: item.id_formacion_solicitud } });
     }
     asistencias(item){
-
+        this.$router.push({ name: "crearasistencia", params: { id: item.id_formacion_solicitud } });    
     }
     Delete(id){
         this.dialogDelete = true;

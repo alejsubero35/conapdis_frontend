@@ -22,7 +22,6 @@
         >
             <section slot="pdf-content"  class="form_contacto" >
                 <section style="width:100%" class="pdf-item">
-                    <TitleSection v-show="btn_atras" :sectiontitle="sectiontitle"/>
                     <div class="logo">
                         <img style="object-fit: cover;" src="img/logos_conapdis/CABECERA.png"  alt="">
                     </div>
@@ -179,33 +178,33 @@
                         <tr>
                             <td class="check" >
                                 <label for="vehicle1">Si</label>&nbsp;
-                                <input type="checkbox" v-model="de_20_39_si">&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" :disabled="disabled" v-model="de_20_39_si">&nbsp;&nbsp;&nbsp;
                                 <label for="vehicle1">No</label>&nbsp;
-                                <input type="checkbox" v-model="de_20_39_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_20_39_no">
                             </td>
                             <td class="check">
                                 <label for="vehicle1">Si</label>&nbsp;
-                                <input type="checkbox" v-model="de_40_59_si">&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" :disabled="disabled" v-model="de_40_59_si">&nbsp;&nbsp;&nbsp;
                                 <label for="vehicle1">No</label>&nbsp;
-                                <input type="checkbox" v-model="de_40_59_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_40_59_no">
                             </td>
                             <td class="check">
                                 <label for="vehicle1">Si</label>&nbsp;
-                                <input type="checkbox" v-model="de_60_79_si">&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" :disabled="disabled" v-model="de_60_79_si">&nbsp;&nbsp;&nbsp;
                                 <label for="vehicle1">No</label>&nbsp;
-                                <input type="checkbox" v-model="de_60_79_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_60_79_no">
                             </td>
                             <td class="check">
                                 <label for="vehicle1">Si</label>&nbsp;
-                                <input type="checkbox" v-model="de_80_99_si">&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" :disabled="disabled" v-model="de_80_99_si">&nbsp;&nbsp;&nbsp;
                                 <label for="vehicle1">No</label>&nbsp;
-                                <input type="checkbox" v-model="de_80_99_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_80_99_no">
                             </td>
                             <td class="check">
                                 <label for="vehicle1">Si</label>&nbsp;
-                                <input type="checkbox" v-model="de_100_119_si">&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" :disabled="disabled" v-model="de_100_119_si">&nbsp;&nbsp;&nbsp;
                                 <label for="vehicle1">No</label>&nbsp;
-                                <input type="checkbox" v-model="de_100_119_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_100_119_no">
                             </td>
                         </tr>
                         <tr>
@@ -248,11 +247,11 @@
                             <td colspan="3"  class=" bold">a.	¿La entidad de trabajo ha informado al CONAPDIS?:  </td>
                             <td  class=" bold">   
                                 <label for="vehicle1">b. ¿Si?</label>&nbsp;
-                                <input type="checkbox" v-model="debida_informacion_si">&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" :disabled="disabled" v-model="debida_informacion_si">&nbsp;&nbsp;&nbsp;
                             </td>
                             <td  class=" bold">
                                 <label for="vehicle1">c.  ¿No?</label>&nbsp;
-                                <input type="checkbox" v-model="debida_informacion_no">&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" :disabled="disabled" v-model="debida_informacion_no">&nbsp;&nbsp;&nbsp;
                             </td>
                         </tr>
                         <tr>
@@ -351,13 +350,13 @@
                                 ¿Las aceras ubicadas en las salientes de la edificación se encuentran libres y sin obstáculos, 
                                 lo que pudiera determinar barreras urbanísticas hacia el ambiente o entorno urbano?</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="aceras_salientes_si">
+                                <input type="checkbox" :disabled="disabled" v-model="aceras_salientes_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="aceras_salientes_no">
+                                <input type="checkbox" :disabled="disabled" v-model="aceras_salientes_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="aceras_salientes_na">
+                                <input type="checkbox" :disabled="disabled" v-model="aceras_salientes_na">
                             </td>
                         </tr>
                         <tr>
@@ -366,13 +365,13 @@
                                 en las esquinas conforme a la Referencias Normativas de la Norma Técnica (NTF) FONDONORMA 2733:2004 -   
                                 Diseño Norma COVENIN 3656?</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="rampas_en_aceras_si">
+                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="rampas_en_aceras_no">
+                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="rampas_en_aceras_na">
+                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_na">
                             </td>
                         </tr>
                         <tr>
@@ -385,25 +384,25 @@
                             <td colspan="2">¿La edificación cuenta con señales que orienten y faciliten la transitabilidad 
                                 conforme a la Referencias Normativas de la Norma Técnica (NTF) FONDONORMA 2733:2004 - COVENIN 187; 330; 3296; 3297 y 3298? </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="edificaciones_senales_si">
+                                <input type="checkbox" :disabled="disabled" v-model="edificaciones_senales_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="edificaciones_senales_no">
+                                <input type="checkbox" :disabled="disabled" v-model="edificaciones_senales_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="edificaciones_senales_na">
+                                <input type="checkbox" :disabled="disabled" v-model="edificaciones_senales_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">¿En los sitios visibles de los accesos de la edificación, cuentan con el símbolo internacional de accesibilidad? </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="simbolo_internacional_senalizacion_no">
+                                <input type="checkbox" :disabled="disabled" v-model="simbolo_internacional_senalizacion_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="simbolo_internacional_senalizacion_si">
+                                <input type="checkbox" :disabled="disabled" v-model="simbolo_internacional_senalizacion_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="simbolo_internacional_senalizacion_na">
+                                <input type="checkbox" :disabled="disabled" v-model="simbolo_internacional_senalizacion_na">
                             </td>
                         </tr>
                         <tr>
@@ -420,13 +419,13 @@
                                 dispuesto en las normas y reglamentaciones técnicas FONDONORMA NTF 2733 y la 
                                 Referencia Normativa de esta - COVENIN 187?</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="estacionamientos_si">
+                                <input type="checkbox" :disabled="disabled" v-model="estacionamientos_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="estacionamientos_no">
+                                <input type="checkbox" :disabled="disabled" v-model="estacionamientos_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="estacionamientos_na">
+                                <input type="checkbox" :disabled="disabled" v-model="estacionamientos_na">
                             </td>
                         </tr>
                         <tr>
@@ -439,13 +438,13 @@
                             <td colspan="2">11.5.1.1.	¿Los accesos a la edificación disponen de rampas conjuntamente con 
                                 escaleras en los desniveles entre la acera y la edificación a nivel de planta baja?</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="acceso_planta_baja_si">
+                                <input type="checkbox" :disabled="disabled" v-model="acceso_planta_baja_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="acceso_planta_baja_no">
+                                <input type="checkbox" :disabled="disabled" v-model="acceso_planta_baja_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="acceso_planta_baja_na">
+                                <input type="checkbox" :disabled="disabled" v-model="acceso_planta_baja_na">
                             </td>
                         </tr>
                         <tr>
@@ -453,13 +452,13 @@
                                 conjuntamente con escaleras en los desniveles en la planta baja hasta 
                                 los medios de circulación vertical?</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="acceso_pb_vertical_si">
+                                <input type="checkbox" :disabled="disabled" v-model="acceso_pb_vertical_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="acceso_pb_vertical_no">
+                                <input type="checkbox" :disabled="disabled" v-model="acceso_pb_vertical_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="acceso_pb_vertical_na">
+                                <input type="checkbox" :disabled="disabled" v-model="acceso_pb_vertical_na">
                             </td>
                         </tr>
                         <tr>
@@ -469,13 +468,13 @@
                                 especificaciones que deben verificarse conforme a lo dispuesto en las reglamentaciones 
                                 técnicas FONDONORMA NTF 2733?</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_pasillos_si">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_pasillos_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_pasillos_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_pasillos_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_pasillos_na">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_pasillos_na">
                             </td>
                         </tr>
                     </table>
@@ -489,13 +488,13 @@
                                 las normas y reglamentaciones técnicas FONDONORMA NTF 2733 y las Referencias Normativas 
                                 de esta - COVENIN 3657, 3658, 187 y 3298?</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_las_escaleras_si">
+                                <input type="checkbox" :disabled="disabled" v-model="de_las_escaleras_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_las_escaleras_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_las_escaleras_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_las_escaleras_na">
+                                <input type="checkbox" :disabled="disabled" v-model="de_las_escaleras_na">
                             </td>
                         </tr>
                         <tr>
@@ -509,13 +508,13 @@
                                 ¿Las rampas y escaleras  disponen de barandas firmes, pasamanos con la altura de 80 y 90 cm., 
                                 capacidad de carga ≥ 150 Kg y distanciamiento entre barras ≤ 15 cm. al menos en un sentido?</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_las_barandas_si">
+                                <input type="checkbox" :disabled="disabled" v-model="de_las_barandas_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_las_barandas_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_las_barandas_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_las_barandas_na">
+                                <input type="checkbox" :disabled="disabled" v-model="de_las_barandas_na">
                             </td>
                         </tr>
                         <tr>
@@ -531,13 +530,13 @@
                                 tales como sistemas manuales de apertura y cierre y umbrales, conforme a 
                                 lo dispuesto en las normas y reglamentaciones técnicas FONDONORMA NTF 2733.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_las_puertas_si">
+                                <input type="checkbox" :disabled="disabled" v-model="de_las_puertas_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_las_puertas_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_las_puertas_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_las_puertas_na">
+                                <input type="checkbox" :disabled="disabled" v-model="de_las_puertas_na">
                             </td>
                         </tr>
                         <tr>
@@ -553,13 +552,13 @@
                                 silla de rueda conforme a lo dispuesto en las normas y reglamentaciones 
                                 técnicas FONDONORMA NTF 2733?.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_puntos_de_control_si">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_puntos_de_control_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_puntos_de_control_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_puntos_de_control_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_puntos_de_control_na">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_puntos_de_control_na">
                             </td>
                         </tr>
                         <tr>
@@ -576,13 +575,13 @@
                                 fijos y dispositivos y luminosos; conforme a lo dispuesto en las normas y 
                                 reglamentaciones técnicas FONDONORMA NTF 2733 y referencia normativa de esta - NTF/3656?</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_ascensores_si">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_ascensores_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_ascensores_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_ascensores_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_ascensores_na">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_ascensores_na">
                             </td>
                         </tr>
                     </table>
@@ -603,13 +602,13 @@
                                 a las piezas sanitarias y pueda mantenerse en privado conforme a lo dispuesto en 
                                 las normas y reglamentaciones técnicas FONDONORMA NTF 2733? </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_servicios_sanitarios_si">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_servicios_sanitarios_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_servicios_sanitarios_no">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_servicios_sanitarios_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="de_los_servicios_sanitarios_na">
+                                <input type="checkbox" :disabled="disabled" v-model="de_los_servicios_sanitarios_na">
                             </td>
                         </tr>
                         <tr>
@@ -617,13 +616,13 @@
                                 de uso público de la edificación (accesibles a una persona en silla de ruedas) 
                                 tienen colocados el símbolo internacional de accesibilidad?  </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="senalizacion_si">
+                                <input type="checkbox" :disabled="disabled" v-model="senalizacion_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="senalizacion_no">
+                                <input type="checkbox" :disabled="disabled" v-model="senalizacion_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="senalizacion_na">
+                                <input type="checkbox" :disabled="disabled" v-model="senalizacion_na">
                             </td>
                         </tr>
                         <tr>
@@ -632,13 +631,13 @@
                                 en sillas de ruedas, conforme a lo dispuesto en las normas y reglamentaciones técnicas 
                                 FONDONORMA NTF 2733?</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="lavamanos_si">
+                                <input type="checkbox" :disabled="disabled" v-model="lavamanos_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="lavamanos_no">
+                                <input type="checkbox" :disabled="disabled" v-model="lavamanos_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="lavamanos_na">
+                                <input type="checkbox" :disabled="disabled" v-model="lavamanos_na">
                             </td>
                         </tr>
                         <tr>
@@ -646,13 +645,13 @@
                                 una persona en silla de ruedas, tienen colocados barreras de sostén y cumplen con las dimensiones 
                                 y especificaciones conforme a lo dispuesto en las normas y reglamentaciones técnicas FONDONORMA NTF 2733?</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="barra_de_sosten_si">
+                                <input type="checkbox" :disabled="disabled" v-model="barra_de_sosten_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="barra_de_sosten_no">
+                                <input type="checkbox" :disabled="disabled" v-model="barra_de_sosten_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="barra_de_sosten_na">
+                                <input type="checkbox" :disabled="disabled" v-model="barra_de_sosten_na">
                             </td>
                         </tr>
                         <tr>
@@ -660,13 +659,13 @@
                                 dispensador de jabón, secador de manos, dispensador de toallas u otros, están ubicados a una altura 
                                 máxima de 1,00 m sobre el nivel del piso? </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="accesorios_sanitarios_si">
+                                <input type="checkbox" :disabled="disabled" v-model="accesorios_sanitarios_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="accesorios_sanitarios_no">
+                                <input type="checkbox" :disabled="disabled" v-model="accesorios_sanitarios_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="accesorios_sanitarios_na">
+                                <input type="checkbox" :disabled="disabled" v-model="accesorios_sanitarios_na">
                             </td>
                         </tr>
                         <tr>
@@ -676,13 +675,13 @@
                                 puerta, espacio lateral para la transferencia desde la silla de rueda al WC así como el espacio de giro 
                                 de maniobra; conforme a lo dispuesto en las normas y reglamentaciones técnicas FONDONORMA NTF 2733? </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="excusado_bano_publico_si">
+                                <input type="checkbox" :disabled="disabled" v-model="excusado_bano_publico_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="excusado_bano_publico_no">
+                                <input type="checkbox" :disabled="disabled" v-model="excusado_bano_publico_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="excusado_bano_publico_na">
+                                <input type="checkbox" :disabled="disabled" v-model="excusado_bano_publico_na">
                             </td>
                         </tr>
                         <tr>
@@ -690,26 +689,26 @@
                                 para varones, al menos uno de los urinarios, cumplen las dimensiones y especificaciones conforme a lo 
                                 dispuesto en las normas y reglamentaciones técnicas? (NTF-2733) </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="urinarios_si">
+                                <input type="checkbox" :disabled="disabled" v-model="urinarios_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="urinarios_no">
+                                <input type="checkbox" :disabled="disabled" v-model="urinarios_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="urinarios_na">
+                                <input type="checkbox" :disabled="disabled" v-model="urinarios_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2"><strong>11.5.8.7.	Duchas: </strong>Las duchas cumplen las especificaciones conforme a lo 
                                 dispuesto en las normas y reglamentaciones técnicas FONDONORMA NTF 2733? </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="duchas_si">
+                                <input type="checkbox" :disabled="disabled" v-model="duchas_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="duchas_no">
+                                <input type="checkbox" :disabled="disabled" v-model="duchas_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="duchas_na">
+                                <input type="checkbox" :disabled="disabled" v-model="duchas_na">
                             </td>
                         </tr>
                     </table>
@@ -728,13 +727,13 @@
                                 manipulados por los usuarios, así como el borde inferior de las ventanas en los ambientes de permanencia prolongadas 
                                 por personas ¿cumplen las especificaciones o dimensiones conforme con lo dispuesto en la norma técnica FONDONORMA NTF 2733? </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="altura_cerradura_ventanas_si">
+                                <input type="checkbox" :disabled="disabled" v-model="altura_cerradura_ventanas_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="altura_cerradura_ventanas_no">
+                                <input type="checkbox" :disabled="disabled" v-model="altura_cerradura_ventanas_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="altura_cerradura_ventanas_na">
+                                <input type="checkbox" :disabled="disabled" v-model="altura_cerradura_ventanas_na">
                             </td>
                         </tr>
                         <tr>
@@ -748,13 +747,13 @@
                                 circuitos de iluminación ¿cumplen las especificaciones o dimensiones conforme con lo dispuesto 
                                 en la norma técnica FONDONORMA NTF 2733? </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="tomas_electricidad_si">
+                                <input type="checkbox" :disabled="disabled" v-model="tomas_electricidad_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="tomas_electricidad_no">
+                                <input type="checkbox" :disabled="disabled" v-model="tomas_electricidad_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="tomas_electricidad_na">
+                                <input type="checkbox" :disabled="disabled" v-model="tomas_electricidad_na">
                             </td>
                         </tr>
                         <tr>
@@ -768,13 +767,13 @@
                                 auditórium, entre otros, ¿tienen reservados y demarcados lugares para la ubicación de personas en silla de 
                                 ruedas, conforme con lo dispuesto en la norma técnica NTF-2733?</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="lugar_de_esparcimiento_si">
+                                <input type="checkbox" :disabled="disabled" v-model="lugar_de_esparcimiento_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="lugar_de_esparcimiento_no">
+                                <input type="checkbox" :disabled="disabled" v-model="lugar_de_esparcimiento_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="lugar_de_esparcimiento_na">
+                                <input type="checkbox" :disabled="disabled" v-model="lugar_de_esparcimiento_na">
                             </td>
                         </tr>
                         <tr>
@@ -782,13 +781,13 @@
                                 horizontales de tal manera que, permita una buena visión hacia el área donde se presenta el evento, 
                                 cumpliendo así las características conforme con lo dispuesto en la norma técnica NTF-2733?</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="lugares_psr_si">
+                                <input type="checkbox" :disabled="disabled" v-model="lugares_psr_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="lugares_psr_no">
+                                <input type="checkbox" :disabled="disabled" v-model="lugares_psr_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" v-model="lugares_psr_na">
+                                <input type="checkbox" :disabled="disabled" v-model="lugares_psr_na">
                             </td>
                         </tr>
                     </table>
@@ -900,6 +899,7 @@
      },
      data(){
          return{
+            disabled : true,
             btnSave:'Generar PDF',
             btn_atras : true,
             title_section : 'CONSEJO NACIONAL PARA LAS PERSONAS CON DISCAPACIDAD',
