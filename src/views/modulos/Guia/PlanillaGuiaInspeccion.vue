@@ -1090,7 +1090,7 @@
             this.direccion                  = data.data.busine.location    
             this.firstname                  = data.data.busine.first_name_rl
             this.lastname                   = data.data.busine.last_name_rl
-            this.position                   = data.data.busine.position
+            this.position                   = data.data.busine.position.name
             this.identitycard               = data.data.busine.identity_card_rl 
             this.type_ocupation             = data.data.occupation_type.name
             this.ejecutivos                 = data.data.guidelaborInsertion.ejecutivos

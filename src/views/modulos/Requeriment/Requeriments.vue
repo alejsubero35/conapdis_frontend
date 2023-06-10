@@ -201,7 +201,7 @@ export default class RequerimentsDocuments extends Vue {
             this.textmsj  = 'Documentos Cargados con Éxito.'
             this.color = 'success'
             this.snackbar = true
-            await sessionModule.updateStatusBussines('inspection_request')
+            //await sessionModule.updateStatusBussines('inspection_request')
             this.back();
           //  this.disabledBtn = true
             this.overlay  = false
@@ -214,7 +214,12 @@ export default class RequerimentsDocuments extends Vue {
 
         let index  = this.documents.findIndex(({ id })  => id == id_)
         this.documents[index].registration_date = this.date
-        this.documents[index].bussines_id = (storageData.get('bussines_id')) ? storageData.get('bussines_id') : this.getBussines.id
+        if(storageData.get('_bussines')){
+            this.documents[index].bussines_id = (storageData.get('_bussines')) ? storageData.get('_bussines').id : this.getBussines.id
+        }else{
+            await sessionModule.redirectLogin();
+        }
+      
  
     }
     async updateDocument(doc){console.log(doc)
@@ -300,10 +305,7 @@ export default class RequerimentsDocuments extends Vue {
     }
     mounted() {
         this.getDocuments()
-        if(storageData.get('_bussines') !== undefined){
-            storageData.set('bussines_id',storageData.get('_bussines').id)
-        }
-
+        console.log(storageData.get('_bussines'))
     }
 }
 
