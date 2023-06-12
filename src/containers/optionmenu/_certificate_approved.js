@@ -32,13 +32,7 @@ export default [
             name: 'Declaraciones',
             to: '/declaraciones',
             icon: 'cilFingerprint'
-          },
-          {
-            _name: 'CSidebarNavItem',
-            name: 'Reportes',
-            to: '/reportes',
-            icon: 'cibLibreoffice'
-          },
+          }
         ]
       },
       {

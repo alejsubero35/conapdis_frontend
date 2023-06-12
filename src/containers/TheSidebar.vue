@@ -16,17 +16,13 @@
         viewBox="0 0 110 134" 
       />
     </CSidebarBrand>
-      <div>
+    <div v-if="currentRouteName != 'reportes'">
         <CRenderFunction v-if="token"  flat :content-to-render="$options.certificateapproved"/>
         <CRenderFunction v-else  flat :content-to-render="$options.estandar"/>
-          <!-- <CRenderFunction v-if="isBussines      == 'pending'" flat :content-to-render="$options.estandar"/>
-          <CRenderFunction v-else-if="isBussines == 'registered'" flat :content-to-render="$options.admin"/>
-          <CRenderFunction v-else-if="isBussines == 'inspection_request'" flat :content-to-render="$options.inspeccionRequest"/>
-          <CRenderFunction v-else-if="isBussines == 'document_aproved'" flat :content-to-render="$options.approved"/>
-          <CRenderFunction v-else-if="isBussines == 'certificate_pending'" flat :content-to-render="$options.certificatepending"/>
-          <CRenderFunction v-else flat :content-to-render="$options.certificateapproved"/> -->
-
-      </div>
+    </div>
+    <div v-else>
+        <CRenderFunction  flat :content-to-render="$options.approved"/>
+    </div>
     <CSidebarMinimizer
       class="d-md-down-none"
       @click.native="$store.commit('set', ['sidebarMinimize', !minimize])"
@@ -64,6 +60,7 @@ export default {
   this.typeRol = storageData.get('_rolename')
   this.bussine = storageData.get('_bussines')
   this.token   = storageData.get('_token')
+
   },
   computed: {
     show () {
@@ -73,8 +70,10 @@ export default {
       return this.$store.state.sidebarMinimize 
     },
     isBussines(){
-      return sessionModule.getStatusBussines;
-      
+      return sessionModule.getStatusBussines; 
+    },
+    currentRouteName() {
+      return this.$route.name;
     }
   },
 

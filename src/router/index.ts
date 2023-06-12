@@ -290,7 +290,7 @@ const router = new Router({
           path: 'reportes',
           name: 'reportes',
           component: Reportes,
-          meta: { Auth: true, title: 'Reportes' },
+          meta: { Auth: false, title: 'Reportes' },
      
         },
         {

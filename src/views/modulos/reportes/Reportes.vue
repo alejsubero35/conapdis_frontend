@@ -482,11 +482,13 @@ export default class Bussines extends Vue {
 		const municipality : any = await bussinesModule.getMunicipality(event)
 		this.arrayMunicipality = municipality.data.data
         this.dataFilter.state_id = event
+       // this.filter()
 	}
 	async getParishesByMunicipality(event){
 		const parishes : any = await bussinesModule.getParishes(event)
 		this.arrayParishes = parishes.data.data
 		this.dataFilter.municipality_id = event
+       // this.filter()
 	}
     async getParishesId(event){
         this.dataFilter.parishe_id = event
