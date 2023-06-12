@@ -11,7 +11,7 @@
    		<TitleSection :sectiontitle="sectiontitle"/>
            <v-tabs>
                 <v-tab>PERSONAS CON DISCAPACIDAD</v-tab>
-                <v-tab @click="getPersonLinked()">EMPRESAS REGISTRADAS</v-tab>
+                <v-tab>EMPRESAS REGISTRADAS</v-tab>
      
                 <v-tab-item>
                     <v-container fluid>
@@ -257,6 +257,40 @@
                                     </v-menu>
                                 </v-col>
                             </v-row>
+                            <v-row class="d-flex justify-end">
+                                <v-btn @click="onSubmit" class="mr-3" > <v-icon>mdi-account-search-outline</v-icon> Buscar</v-btn>
+                                <!-- <v-btn v-if="desserts.length > 0" @click="onSubmit" color="success" > <v-icon>mdi-microsoft-excel</v-icon> Descargar Excel</v-btn> -->
+                                <v-btn v-if="desserts.length > 0" color="success">
+                                    <v-icon>mdi-microsoft-excel</v-icon>
+                                    <export-json-excel
+                                        :data="exportDataBussine"
+                                        :fields="fieldsBussine"
+                                        name="filename"
+                                        :beforeExport="startDownload"
+                                        target="_blank"
+                                        >
+                                        Descargar Excel 
+                                    </export-json-excel>
+                                </v-btn>
+                            </v-row>
+                            <v-row>
+                                <v-col  cols="12" sm="12" md="12" class="p-0 mt-4">
+                                    <template>
+                                        <v-data-table
+                                            :headers="headersBussine"
+                                            :items="dessertsBussine" 
+                                            class="elevation-1"  
+                                            no-data-text="No hay datos disponibles"  
+                                            :footer-props="{
+                                                'items-per-page-options': [5, 10 -1],
+                                                'items-per-page-text':'Filtro por Página'
+                                                
+                                            }"           
+                                        >
+                                        </v-data-table>
+                                    </template>
+                                </v-col>
+                            </v-row>
                         </v-form>
                     </v-container>
                 </v-tab-item>
@@ -360,6 +394,12 @@ export default class Bussines extends Vue {
         {text: 'Apellidos', value: 'apellidos'},
     ];
     desserts        = []
+    headersBussine = [
+        {text: 'Id', value: 'id'},
+        {text: 'Nombre', value: 'cedula'},
+        {text: 'Rif', value: 'nombres'},
+    ];
+    dessertsBussine        = []
     searchTerm      = ""
     isLoading       = false;
     arrayStates = []
@@ -384,6 +424,7 @@ export default class Bussines extends Vue {
         sexo_id         : ''
      }   
     exportData = []
+    exportDataBussine = []
     fields = [
             {
               'title': 'Cédula',
@@ -398,6 +439,16 @@ export default class Bussines extends Vue {
               'name': 'apellidos', 
             }
         ]
+    fieldsBussine = [
+        {
+            'title': 'Nombre Empresa',
+            'name': 'nombre', 
+        },
+        {
+            'title': 'Rif',
+            'name': 'rif', 
+        }
+    ]
 	$refs!: {
         validateStepForm: InstanceType<typeof ValidationObserver>;
         validateStepFormTwo: InstanceType<typeof ValidationObserver>;			
@@ -424,18 +475,19 @@ export default class Bussines extends Vue {
     async updateFechaHasta(){
         this.dataFilter.fecha_hasta = this.dateH
     }
-
-	
 	onSubmit() {console.log(this.FormRequest)
         this.filter()
+    }
+    onSubmitBussines() {console.log(this.FormRequest)
+        this.filterBussines()
     }
  	async filter() { 
         this.overlay = true
     	const data = await globalModule.searchFilter(this.FormRequest)
 		console.log(data)
 		if(data.data.length > 0){
-            this.exportData = data.data
-            this.desserts = data.data
+            this.exportData = await data.data
+            this.desserts =  await data.data
 			this.overlay = false 
 		} else {
 			this.textmsj = 'No se encontraron registros.'
@@ -445,6 +497,22 @@ export default class Bussines extends Vue {
 			this.overlay = false 
 		}
     }; 
+    async filterBussines() { 
+        this.overlay = true
+    	const data = await globalModule.searchFilterBussines(this.FormRequest)
+		console.log(data)
+		if(data.data.length > 0){
+            this.exportDataBussine = await data.data
+            this.dessertsBussine = await data.data
+			this.overlay = false 
+		} else {
+			this.textmsj = 'No se encontraron registros.'
+			this.color = 'error'
+			this.snackbar = true
+			this.backError();
+			this.overlay = false 
+		}
+    };
     startDownload(){
         //window.preventDefault();
     }

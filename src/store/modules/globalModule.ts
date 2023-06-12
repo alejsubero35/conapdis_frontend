@@ -43,6 +43,24 @@
 		
 	}
 	@Action({rawError: true})
+	async searchFilterBussines(query) { 
+/* 		const response =  await http.post(`/positions/get_search_filter`,query,{
+			responseType: 'arraybuffer'
+		})
+		console.log(response.data)
+		const fileURL = window.URL.createObjectURL(new Blob([response.data]));
+		const link = document.createElement("a");
+		link.href = fileURL;
+		link.setAttribute("download", 'Reporte.xlsx');
+		document.body.appendChild(link);
+		link.click(); */
+
+		const response =  await http.post(`/positions/get_search_filter_bussines`,query)
+		return response;
+		
+	}
+	
+	@Action({rawError: true})
 	async getGenerateReport(dataReport:any) { 
 	let data : any = deserialize(dataReport,{changeCase:'camelCase'});
 	let format = data.format
