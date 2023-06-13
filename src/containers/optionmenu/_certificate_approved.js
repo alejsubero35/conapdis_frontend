@@ -11,7 +11,7 @@ export default [
       },
       {
         _name: 'CSidebarNavDropdown',
-        name: 'Certificación',
+        name: 'Registro',
         route: '/base',
         icon: 'cibElasticStack',
         items: [
@@ -32,6 +32,12 @@ export default [
             name: 'Declaraciones',
             to: '/declaraciones',
             icon: 'cilFingerprint'
+          },
+          {
+            _name: 'CSidebarNavItem',
+            name: 'Ofertas Laborales',
+            to: '/ofertaslaborales',
+            icon: 'cibAnaconda'
           }
         ]
       },
@@ -91,12 +97,6 @@ export default [
             name: 'Solicitudes de Formación',
             to: '/solicitudformacion',
             icon: 'cibOctave'
-          },
-          {
-            _name: 'CSidebarNavItem',
-            name: 'Ofertas Laborales',
-            to: '/ofertaslaborales',
-            icon: 'cibAnaconda'
           },
           {
             _name: 'CSidebarNavItem',

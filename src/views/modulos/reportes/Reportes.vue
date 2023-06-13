@@ -258,15 +258,15 @@
                                 </v-col>
                             </v-row>
                             <v-row class="d-flex justify-end">
-                                <v-btn @click="onSubmit" class="mr-3" > <v-icon>mdi-account-search-outline</v-icon> Buscar</v-btn>
+                                <v-btn @click="onSubmitBussines" class="mr-3" > <v-icon>mdi-account-search-outline</v-icon> Buscar</v-btn>
                                 <!-- <v-btn v-if="desserts.length > 0" @click="onSubmit" color="success" > <v-icon>mdi-microsoft-excel</v-icon> Descargar Excel</v-btn> -->
-                                <v-btn v-if="desserts.length > 0" color="success">
+                                <v-btn v-if="dessertsBussine.length > 0" color="success">
                                     <v-icon>mdi-microsoft-excel</v-icon>
                                     <export-json-excel
                                         :data="exportDataBussine"
                                         :fields="fieldsBussine"
                                         name="filename"
-                                        :beforeExport="startDownload"
+                                        :beforeExport="startDownloadBussine"
                                         target="_blank"
                                         >
                                         Descargar Excel 
@@ -396,8 +396,8 @@ export default class Bussines extends Vue {
     desserts        = []
     headersBussine = [
         {text: 'Id', value: 'id'},
-        {text: 'Nombre', value: 'cedula'},
-        {text: 'Rif', value: 'nombres'},
+        {text: 'Nombre', value: 'nombre'},
+        {text: 'Rif', value: 'rif'},
     ];
     dessertsBussine        = []
     searchTerm      = ""
@@ -515,6 +515,9 @@ export default class Bussines extends Vue {
     };
     startDownload(){
         //window.preventDefault();
+    }
+    startDownloadBussine(){
+        
     }
     openDialog(item){
         this.dialog     = true
