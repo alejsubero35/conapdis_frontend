@@ -1,5 +1,5 @@
 const path = require('path')
-const name = 'Filmarket' // TODO: get this variable from setting.ts
+const name = 'Conapdis' // TODO: get this variable from setting.ts
 
 module.exports = {
   //publicPath: process.env.NODE_ENV === 'production' ? '' : '/',

@@ -40,6 +40,8 @@
 								:rules="rules"
 								required
 								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
+								@change="getRifType($event)"
+								return-object
 							></v-select>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
@@ -231,7 +233,7 @@
 							<v-col cols="12" sm="6" md="12">
 								<v-select
 									:items="arrayEconomicActivies"
-									item-text="name"
+									item-text="nombre"
 									item-value="id"
 									label="Actividad Económica"
 									placeholder="Actividad Económica"
@@ -286,7 +288,7 @@
 								placeholder="username"
 								dense
 								v-model="bussinesform.username"
-								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
+								readonly
 							></v-text-field>
 							</v-col>
 							<!-- <v-col cols="12" sm="6" md="6">
@@ -498,6 +500,7 @@
 								type="email"
 								v-model="bussinesform.email_rl"
 								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
+								@blur="validatEmail()"
 							></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="4">
@@ -742,6 +745,26 @@
 		  </v-card-actions>
 		</v-card>
 	  </v-dialog>
+	  <v-dialog v-model="dialogOpen" max-width="350">
+        <v-card>
+            <v-card-title class="text-h5">
+                Notificación
+            </v-card-title>
+            <v-card-text>
+                Este Correo ya existe 
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                    color="green darken-1"
+                    text
+                    @click="dialogOpen = false"
+                >
+                    Aceptar
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
     </div>
 </template>
 <script lang="ts">
@@ -810,7 +833,7 @@ export default class Bussines extends Vue {
     timeout = 2000
     sectiontitle = 'Registrar Datos de Empresa'
     dialog = false
-    tabIndex = 0
+    tabIndex = 3
 	herramientas_tecnologicas : boolean = false
 	senalizacion : boolean = false
 	puestos_de_estacionamiento : boolean = false
@@ -875,6 +898,7 @@ export default class Bussines extends Vue {
     max25chars = v => v.length <= 25 || 'Input too long!'
 	btnText = 'Guardar'
 	validateInput = 0
+	dialogOpen = false
 	$refs!: {
         validateStepForm: InstanceType<typeof ValidationObserver>;
         validateStepFormTwo: InstanceType<typeof ValidationObserver>;
@@ -903,6 +927,22 @@ export default class Bussines extends Vue {
 	async updateFecha(){
 		this.bussinesform.registration_date = this.date
 	}
+	async getRifType(event){console.log(event)
+/* 		switch(event){
+			case 4:
+
+			break;
+			case 5:
+				
+			break;
+			case 6:
+				
+			break;
+			case 7:
+				
+			break;
+		} */
+	}
 	async validateRif(value){
 		if(value.length == 12){
 			const data : any = await bussinesModule.existRif(value)
@@ -916,12 +956,8 @@ export default class Bussines extends Vue {
 	}
     beforeTabSwitch(){
         const valid :any =  this.$refs.validateStepForm.validate();
-		if(this.nombre_sucursal != '' && this.numero_sucursal != '') {
-			let code_office =  this.bussinesform.rif + '-' + this.nombre_sucursal.toUpperCase() + '-' + this.numero_sucursal
-			this.bussinesform.code_branch_office = code_office
-			this.bussinesform.branch_name = this.nombre_sucursal;
-			this.bussinesform.branch_number = this.numero_sucursal;
-		}
+			this.bussinesform.username =  this.bussinesform.rif.replaceAll('-',"")
+			console.log(this.bussinesform.username)
 
 			Math.ceil(this.bussinesform.tomo)
 			Math.ceil(this.bussinesform.folio)
@@ -973,13 +1009,16 @@ export default class Bussines extends Vue {
             return false
         }
     }
-	async typeSucursal(){
-		if (this.sucursal) {
-			this.showSucursal = true
-			this.bussinesform.is_major = 0
+	
+
+	async validatEmail(){
+		const validate : any = await bussinesModule.validateEmailRL(this.bussinesform.email_rl)
+		console.log(validate.data.length)
+		if (validate.data.length > 0) {
+			this.dialogOpen = true
+			this.bussinesform.email_rl = ''
 		} else {
-			this.showSucursal = false
-			this.bussinesform.is_major = 1
+
 		}
 	}
 	onComplete() {console.log(this.FormRequest)
@@ -1181,7 +1220,7 @@ export default class Bussines extends Vue {
 	}
 	async getEconomicActivies(){
 		const economicactivies : any = await bussinesModule.getEconomicActiviesAll()
-		this.ordenarArray(economicactivies.data.data)
+		this.ordenarArray(economicactivies.data)
 	}
 	async getTypeCompany(){
 		const typecompany : any = await bussinesModule.getTypeCompanyAll()
@@ -1210,14 +1249,17 @@ export default class Bussines extends Vue {
 		this.arraySectores = sectors.data
 	}
 	async ordenarArray(array){
-        const newArray = array.sort((a,b) => a.name.localeCompare(b.name))
+        const newArray = array.sort((a,b) => a.nombre.localeCompare(b.nombre))
         this.arrayEconomicActivies = newArray
-		this.arrayPosition = newArray
     }
 	async getPositionAll(){
 		const position : any = await sessionModule.getPositionAll()
-		this.ordenarArray(position.data.data)
+		this.ordenarArray2(position.data.data)
 	}
+	async ordenarArray2(array){
+        const newArray = array.sort((a,b) => a.name.localeCompare(b.name))
+		this.arrayPosition = newArray
+    }
 	reset () {
         this.$refs.validateStepForm.reset()
     };

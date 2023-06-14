@@ -215,7 +215,7 @@ import {
 	@Action
 	getEconomicActiviesAll(){
 		return new Promise((resolve, reject) => {
-			http.get(`/economic-activies`).then(response => {
+			http.get(`positions/economic-activies`).then(response => {
 	
 				if (response.status === 200) {      
 		
@@ -344,6 +344,24 @@ import {
 			 
 				}) 
 			 }
+			 @Action
+			 validateEmailRL(value) {
+				return new Promise((resolve, reject) => {  
+					   http.get(`/busines/validate_email/${value}`)
+					   .then(response =>  {
+		 
+						   if (response.status === 200) {     
+							   resolve(response); 
+						   }
+					   })
+					   .catch(error => {
+						   reject(error)
+					   })
+				 
+				
+				   }) 
+				}
+			 
 		
 
   }  
