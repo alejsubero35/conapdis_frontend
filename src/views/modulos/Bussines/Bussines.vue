@@ -833,7 +833,7 @@ export default class Bussines extends Vue {
     timeout = 2000
     sectiontitle = 'Registrar Datos de Empresa'
     dialog = false
-    tabIndex = 3
+    tabIndex = 0
 	herramientas_tecnologicas : boolean = false
 	senalizacion : boolean = false
 	puestos_de_estacionamiento : boolean = false
