@@ -6,6 +6,8 @@ axios.defaults.withCredentials = true;
 
 const URL     =  'http://fiscaprueba.sytes.net/api/v1' // url del ambiente local
 const URLBASE =  'http://fiscaprueba.sytes.net' // url del ambiente local
+//const URL     =  'http://conapdis.test/api/v1' // url del ambiente local
+//const URLBASE =  'https://conapdis.test' // url del ambiente local
 //const URL     =  'https://conapdis.filicabh.com.ve/api/v1'
 //const URLBASE =  'https://conapdis.filicabh.com.ve'
 

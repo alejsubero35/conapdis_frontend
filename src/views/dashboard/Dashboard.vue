@@ -1,195 +1,126 @@
 <template>
   <div>
-    <CRow>
-      <CCol sm="6" lg="3">
-        <CWidgetDropdown color="primary" header="5520" text="Empresas Registradas">
-          <template #default>
-            <CDropdown
-              color="transparent p-0"
-              placement="bottom-end"
-            >
-              <template #toggler-content>
-                <CIcon name="cil-settings"/>
+ <!--    <div class="cabecera">
+      <img style="object-fit: cover;" src="img/logos_conapdis/CABECERA.png"  alt="">
+    </div> -->
+    <div class="contenedor">
+      <div class="div1">
+          <h4>Infografía Historia del Conapdis</h4>
+          <v-timeline dense clipped>
+            <v-timeline-item fill-dot class="white--text mb-2" color="#fdbd1a" large>
+              <template v-slot:icon>
+                <span>2015</span>
               </template>
-              <CDropdownItem>Action</CDropdownItem>
-              <CDropdownItem>Another action</CDropdownItem>
-              <CDropdownItem>Something else here...</CDropdownItem>
-              <CDropdownItem disabled>Disabled action</CDropdownItem>
-            </CDropdown>
-          </template>
-          <template #footer>
-            <CChartLineSimple
-              pointed
-              class="mt-3 mx-3"
-              style="height:70px"
-              :data-points="[65, 59, 84, 84, 51, 55, 40]"
-              point-hover-background-color="primary"
-              label="Members"
-              labels="months"
-            />
-          </template>
-        </CWidgetDropdown>
-      </CCol>
-      <CCol sm="6" lg="3">
-        <CWidgetDropdown color="info" header="4210" text="Certificados ABI Solicitados">
-          <template #default>
-            <CDropdown
-              color="transparent p-0"
-              placement="bottom-end"
-              :caret="false"
-            >
-              <template #toggler-content>
-                <CIcon name="cil-location-pin"/>
+              <div class="spam">
+                <span>Instalacion del Consejo Presidencial de personas con discapacidad, encientros estadales en 13 entidades federales</span>
+              </div>
+            </v-timeline-item>
+            <v-timeline-item fill-dot class="white--text mb-2" color="#4f9cb9" large>
+              <template v-slot:icon>
+                <span>2014</span>
               </template>
-              <CDropdownItem>Action</CDropdownItem>
-              <CDropdownItem>Another action</CDropdownItem>
-              <CDropdownItem>Something else here...</CDropdownItem>
-              <CDropdownItem disabled>Disabled action</CDropdownItem>
-            </CDropdown>
-          </template>
-          <template #footer>
-            <CChartLineSimple
-              pointed
-              class="mt-3 mx-3"
-              style="height:70px"
-              :data-points="[1, 18, 9, 17, 34, 22, 11]"
-              point-hover-background-color="info"
-              :options="{ elements: { line: { tension: 0.00001 }}}"
-              label="Members"
-              labels="months"
-            />
-          </template>
-        </CWidgetDropdown>
-      </CCol>
-      <CCol sm="6" lg="3">
-        <CWidgetDropdown
-          color="warning"
-          header="4120"
-          text="Certificados ABI Aprobados"
-        >
-          <template #default>
-            <CDropdown
-              color="transparent p-0"
-              placement="bottom-end"
-            >
-              <template #toggler-content>
-                <CIcon name="cil-settings"/>
+              <div class="spam">
+                <span>Designada Presidenta del Conapdis y de la MJGH Soc. Soraida Ramírez. Gaceta Oficial N° 40.567</span>
+              </div>
+            </v-timeline-item>
+            <v-timeline-item fill-dot class="white--text mb-2" color="#a9ce58" large>
+              <template v-slot:icon>
+                <span>2013</span>
               </template>
-              <CDropdownItem>Action</CDropdownItem>
-              <CDropdownItem>Another action</CDropdownItem>
-              <CDropdownItem>Something else here...</CDropdownItem>
-              <CDropdownItem disabled>Disabled action</CDropdownItem>
-            </CDropdown>
-          </template>
-          <template #footer>
-            <CChartLineSimple
-              class="mt-3"
-              style="height:70px"
-              background-color="rgba(255,255,255,.2)"
-              :data-points="[78, 81, 80, 45, 34, 12, 40]"
-              :options="{ elements: { line: { borderWidth: 2.5 }}}"
-              point-hover-background-color="warning"
-              label="Members"
-              labels="months"
-            />
-          </template>
-        </CWidgetDropdown>
-      </CCol>
-      <CCol sm="6" lg="3">
-        <CWidgetDropdown
-          color="danger"
-          header="3852"
-          text="Inspecciones Técnicas Realizadas"
-        >
-          <template #default>
-            <CDropdown
-              color="transparent p-0"
-              placement="bottom-end"
-            >
-              <template #toggler-content>
-               <CIcon name="cil-settings"/>
+              <div class="spam">
+                <span>Descentralización del proceso de Certificación: Se inauguran 12 Unidades Regionales de Certificación
+                  Ferias de Empleo para Personas con Discapacidad
+                  Firma de acuerdos con: Fundación Casa del Artísta, INTT, Metro de Caracas y la ONA
+                  Jornadas de Atención Integral para Personas con Discapacidad
+                  Designado Presidente del Conapdis y de la MJGH Abog. Alejandro Zamora. Gaceta Oficial N° 40.283
+                  Suscripción a la Convención Internacional de Derechos de las Personas con Discapacidad ante la ONU
+                  Fortalecimiento del Sistema Nacional de Atención Integral de acuerdo al Nuevo Modelo Socialista Revolucionario</span>
+              </div>
+            </v-timeline-item>
+            <v-timeline-item fill-dot class="white--text mb-2" color="#fdbd1a" large>
+              <template v-slot:icon>
+                <span>2012</span>
               </template>
-              <CDropdownItem>Action</CDropdownItem>
-              <CDropdownItem>Another action</CDropdownItem>
-              <CDropdownItem>Something else here...</CDropdownItem>
-              <CDropdownItem disabled>Disabled action</CDropdownItem>
-            </CDropdown>
-          </template>
-          <template #footer>
-            <CChartBarSimple
-              class="mt-3 mx-3"
-              style="height:70px"
-              background-color="rgb(250, 152, 152)"
-              label="Members"
-              labels="months"
-            />
-          </template>
-        </CWidgetDropdown>
-      </CCol>
+              <div class="spam">
+                <span>Designado Presidente del Conapdis Edgar Araujo. Gaceta Oficial N° 39.666
+                  Discusión para la construcción del Proyecto de Reglamento de Ley en los 24 Estados</span>
+              </div>
+            </v-timeline-item>
+            <v-timeline-item fill-dot class="white--text mb-2" color="#4f9cb9" large>
+              <template v-slot:icon>
+                <span>2011</span>
+              </template>
+              <div class="spam">
+                <span>Conapi pasa a ser Conapdis desde el 05/01 Gaceta Oficial N° 38.598</span>
+              </div>
+            </v-timeline-item>
+            <v-timeline-item fill-dot class="white--text mb-2" color="#d54949" large>
+              <template v-slot:icon>
+                <span>2005</span>
+              </template>
+              <div class="spam">
+                <span>Designada Presidenta del Conapi Ludyt Ramírez
+                  Aprobación en sesión extraordinaria de la Asamblea Nacional de Ley para las Personas con Discapacidad</span>
+              </div>
+            </v-timeline-item>
+            <v-timeline-item fill-dot class="white--text mb-2" color="#a9ce58" large>
+              <template v-slot:icon>
+                <span>2004</span>
+              </template>
+              <div class="spam">
+                <span>Designado Presidente del Conapi Carlos Angulo</span>
+              </div>
+            </v-timeline-item>
+            <v-timeline-item fill-dot class="white--text mb-2" color="#4f9cb9" large>
+              <template v-slot:icon>
+                <span>1999</span>
+              </template>
+              <div class="spam">
+                <span>Designado Presidente del Conapi Lenín Molina
+                  Constitución de la República Bolivariana de Venezuela. Art. 81. Inclusión de las Personas con Discapacidad y sus derechos</span>
+              </div>
+            </v-timeline-item>
+            <v-timeline-item fill-dot class="white--text mb-2" color="#fdbd1a" large>
+              <template v-slot:icon>
+                <span>1994</span>
+              </template>
+              <div class="spam">
+                <span>Se crea el Conapi y se promulga la Ley para la Integración de Personas Incapacitadas LIPI</span>
+              </div>
+            </v-timeline-item>
+          </v-timeline>
+          <div class="logo">
+            <img style="object-fit: cover;" src="img/logos_conapdis/rutaconapdis.png"  alt="">
+          </div>
+      </div>
+      <div class="div2">
       
-    </CRow>
-   
-    <CCard>
-      <CCardBody>
-        <CRow>
-          <CCol sm="5">
-            <h4 id="traffic" class="card-title mb-0">Estadísticas Empresas Registradas</h4>
-            <div class="small text-muted">Noviembre 2022</div>
-          </CCol>
-          <CCol sm="7" class="d-none d-md-block">
-            <CButton color="primary" class="float-right">
-              <CIcon name="cil-cloud-download"/>
-            </CButton>
-            <CButtonGroup class="float-right mr-3">
-              <CButton
-                color="outline-secondary"
-                v-for="(value, key) in ['Day', 'Month', 'Year']"
-                :key="key"
-                class="mx-0"
-                :pressed="value === selected ? true : false"
-                @click="selected = value"
-              >
-                {{value}}
-              </CButton>
-            </CButtonGroup>
-          </CCol>
-        </CRow>
-        <MainChartExample style="height:300px;margin-top:40px;"/>
-      </CCardBody>
-      <CCardFooter>
-        <CRow class="text-center">
-          <CCol md sm="12" class="mb-sm-2 mb-0">
-            <div class="text-muted">Visitas al Sistema</div>
-            <strong>4521 Usuarios (40%)</strong>
-            <CProgress
-              class="progress-xs mt-2"
-              :precision="1"
-              color="success"
-              :value="40"
-            />
-          </CCol>
-          <CCol md sm="12" class="mb-sm-2 mb-0">
-            <div class="text-muted">Nuevos Usuarios</div>
-            <strong>2530 Usuarios (30%)</strong>
-            <CProgress
-              class="progress-xs mt-2"
-              :precision="1"
-              color="danger"
-              :value="80"
-            />
-          </CCol>
-          <CCol md sm="12" class="mb-sm-2 mb-0 d-md-down-none">
-            <div class="text-muted">Certificados ABI en Proceso</div>
-            <strong>1240</strong>
-            <CProgress
-              class="progress-xs mt-2"
-              :precision="1"
-              :value="40"
-            />
-          </CCol>
-        </CRow>
-      </CCardFooter>
-    </CCard>
+          <div class="mision">
+           <h4><strong>Misión</strong></h4>
+           <p>Dignificar la calidad de vida de las personas con discapacidad, mediante las políticas públicas desarrolladas 
+            por el Gobierno Nacional garantizando así, la atención integral, la prevención de la discapacidad y la inclusión 
+            participativa y protagónica de este colectivo y sus familiares en la sociedad de la República Bolivariana de Venezuela.</p>
+          </div>
+          <div class="mision mt-5">
+            <h4><strong>Visión</strong></h4>
+            <p>Ser el órgano nacional de referencia internacional en brindar de manera eficaz y oportuna las respuestas necesarias 
+              en materia de discapacidad a todos los ciudadanos y ciudadanas de la República Bolivariana de Venezuela, enfocados en 
+              generar avances significativos en la prevención, atención y promoción de cambios culturales en relación con la discapacidad, 
+              con base en los principios establecidos en la Ley para las Personas con discapacidad y en la Constitución Nacional.</p>
+           </div>
+           <div class="mision mt-5">
+            <h4><strong>Servicios</strong></h4>
+              <ul>
+                <li>Oficina de Atención Ciudadana</li>
+                <li>Certificación</li>
+                <li>Laboratorio Ortesis y Prótesis</li>
+                <li>Centro Nacional de Genética Médica de Venezuela “Dr. José Gregorio Hernández”</li>
+                <li>Consultoría Jurídica</li>
+              </ul>
+           </div>
+      </div>
+  
+    </div>
   </div>
 </template>
 
@@ -202,90 +133,53 @@ import WidgetsBrand from '../widgets/WidgetsBrand'
 
 export default {
   name: 'Dashboard',
-  components: {
-    MainChartExample,
-    WidgetsDropdown,
-    WidgetsBrand,
-    CChartLineSimple,
-    CChartBarSimple
-  },
-  data () {
-    return {
-      selected: 'Month',
-      tableItems: [
-        {
-          avatar: { url: 'img/avatars/1.jpg', status: 'success' },
-          user: { name: 'Yiorgos Avraamu', new: true, registered: 'Jan 1, 2015' },
-          country: { name: 'USA', flag: 'cif-us' },
-          usage: { value: 50, period: 'Jun 11, 2015 - Jul 10, 2015' },
-          payment: { name: 'Mastercard', icon: 'cib-cc-mastercard' },
-          activity: '10 sec ago'
-        },
-        {
-          avatar: { url: 'img/avatars/2.jpg', status: 'danger' },
-          user: { name: 'Avram Tarasios', new: false, registered: 'Jan 1, 2015' },
-          country: { name: 'Brazil', flag: 'cif-br' },
-          usage: { value: 22, period: 'Jun 11, 2015 - Jul 10, 2015' },
-          payment: { name: 'Visa', icon: 'cib-cc-visa' },
-          activity: '5 minutes ago'
-        },
-        {
-          avatar: { url: 'img/avatars/3.jpg', status: 'warning' },
-          user: { name: 'Quintin Ed', new: true, registered: 'Jan 1, 2015' },
-          country: { name: 'India', flag: 'cif-in' },
-          usage: { value: 74, period: 'Jun 11, 2015 - Jul 10, 2015' },
-          payment: { name: 'Stripe', icon: 'cib-stripe' },
-          activity: '1 hour ago'
-        },
-        {
-          avatar: { url: 'img/avatars/4.jpg', status: '' },
-          user: { name: 'Enéas Kwadwo', new: true, registered: 'Jan 1, 2015' },
-          country: { name: 'France', flag: 'cif-fr' },
-          usage: { value: 98, period: 'Jun 11, 2015 - Jul 10, 2015' },
-          payment: { name: 'PayPal', icon: 'cib-paypal' },
-          activity: 'Last month'
-        },
-        {
-          avatar: { url: 'img/avatars/5.jpg', status: 'success' },
-          user: { name: 'Agapetus Tadeáš', new: true, registered: 'Jan 1, 2015' },
-          country: { name: 'Spain', flag: 'cif-es' },
-          usage: { value: 22, period: 'Jun 11, 2015 - Jul 10, 2015' },
-          payment: { name: 'Google Wallet', icon: 'cib-google-pay' },
-          activity: 'Last week'
-        },
-        {
-          avatar: { url: 'img/avatars/6.jpg', status: 'danger' },
-          user: { name: 'Friderik Dávid', new: true, registered: 'Jan 1, 2015' },
-          country: { name: 'Poland', flag: 'cif-pl' },
-          usage: { value: 43, period: 'Jun 11, 2015 - Jul 10, 2015' },
-          payment: { name: 'Amex', icon: 'cib-cc-amex' },
-          activity: 'Last week'
-        }
-      ],
-      tableFields: [
-        { key: 'avatar', label: '', _classes: 'text-center' },
-        { key: 'user' },
-        { key: 'country', _classes: 'text-center' },
-        { key: 'usage' },
-        { key: 'payment', label: 'Payment method', _classes: 'text-center' },
-        { key: 'activity' },
-      ]
-    }
-  },
-  methods: {
-    color (value) {
-      let $color
-      if (value <= 25) {
-        $color = 'info'
-      } else if (value > 25 && value <= 50) {
-        $color = 'success'
-      } else if (value > 50 && value <= 75) {
-        $color = 'warning'
-      } else if (value > 75 && value <= 100) {
-        $color = 'danger'
-      }
-      return $color
-    }
-  }
 }
 </script>
+<style scoped>
+.spam{
+    background-color: #d3d3d357;
+    padding: 10px;
+    border-radius: 5px;
+    color: black;
+    font-family: "verdana";
+    font-size:14px;
+}
+.contenedor{
+ display: flex;
+}
+.div1{
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  margin-right: 25px;
+}
+.div2{
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+}
+.mision{
+  padding: 10px;
+  box-shadow: 0 10px 10px -8px;
+  font-family: verdana;
+  font-size: 14px;
+}
+ul li {
+  list-style: none;
+  border: 1px solid;
+  padding: 10px;
+}
+.logo{
+  display: flex;
+  justify-content: center;
+}
+.cabecera{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+
+
+}
+</style>
