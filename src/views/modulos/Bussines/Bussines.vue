@@ -41,7 +41,7 @@
 								required
 								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								@change="getRifType($event)"
-								return-object
+							
 							></v-select>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
@@ -927,22 +927,7 @@ export default class Bussines extends Vue {
 	async updateFecha(){
 		this.bussinesform.registration_date = this.date
 	}
-	async getRifType(event){console.log(event)
-/* 		switch(event){
-			case 4:
 
-			break;
-			case 5:
-				
-			break;
-			case 6:
-				
-			break;
-			case 7:
-				
-			break;
-		} */
-	}
 	async validateRif(value){
 		if(value.length == 12){
 			const data : any = await bussinesModule.existRif(value)
