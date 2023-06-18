@@ -39,9 +39,7 @@
 								dense
 								:rules="rules"
 								required
-								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-								@change="getRifType($event)"
-							
+								:readonly="(validateInput == 1) ? readonly = true : readonly = false"							
 							></v-select>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">

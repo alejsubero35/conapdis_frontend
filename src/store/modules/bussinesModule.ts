@@ -57,11 +57,6 @@ import {
 
 			if(payload){
 				dataUsers.code = payload.status
-				const busine: any     = payload.data.data
-				storageData.set('_bussines', busine);
-				this.context.commit('setBussines', busine);
-
-				//this.changeActive()
 			} else {
 				dataUsers.code = 500;
 				dataUsers.message = 'Error al procesar la Solicitud';
