@@ -299,7 +299,7 @@ export default class Bussines extends Vue {
        
 	}
     async getStatements(){
-        const statementAll : any = await  statementsModule.getStatementByBussine(storageData.get('_bussines_id').id)
+        const statementAll : any = await  statementsModule.getStatementByBussine(storageData.get('_bussines_id'))
         console.log(statementAll)
         this.desserts = statementAll.data
      

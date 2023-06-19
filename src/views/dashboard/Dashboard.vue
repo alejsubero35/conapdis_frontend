@@ -12,7 +12,7 @@
                 <span>2015</span>
               </template>
               <div class="spam">
-                <span>Instalacion del Consejo Presidencial de personas con discapacidad, encientros estadales en 13 entidades federales</span>
+                <span>Instalacion del Consejo Presidencial de personas con discapacidad, encuentros estadales en 13 entidades federales</span>
               </div>
             </v-timeline-item>
             <v-timeline-item fill-dot class="white--text mb-2" color="#4f9cb9" large>

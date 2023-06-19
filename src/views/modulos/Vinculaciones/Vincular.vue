@@ -15,7 +15,7 @@
      
                 <v-tab-item>
                     <v-container fluid>
-                        <v-form class="formCliente" ref="validateStepForm"  lazy-validation >	
+                        <v-form class="formCliente" ref="vincularform"  lazy-validation >	
                             <input type="hidden" v-model="vincularform.id" value:any="0" >					
                             <v-row>
                                 
@@ -347,8 +347,8 @@ export default class Bussines extends Vue {
     arrayCustomers  = []
     fullname        = ''
 	$refs!: {
-        validateStepForm: InstanceType<typeof ValidationObserver>;
-        validateStepFormTwo: InstanceType<typeof ValidationObserver>;			
+        vincularform: InstanceType<typeof ValidationObserver>;
+        desvincularform: InstanceType<typeof ValidationObserver>;			
 	}
 
 	get FormRequest(): any {
@@ -404,11 +404,12 @@ export default class Bussines extends Vue {
         console.log(position)
 		this.arrayPosition = position.data
 	}	
-	onSubmit() {console.log(this.FormRequest)
-        this.save()
+	onSubmit() {
+        const valid :any =  this.$refs.vincularform.validate();
+        if(valid)  this.save()
+  
     }
  	async save() { 
-		console.log(this.FormRequest)
  		this.overlay = true
     	const data = await linkedModule.save(this.FormRequest)
 		console.log(data)
@@ -461,7 +462,7 @@ export default class Bussines extends Vue {
 	}
 
 	reset () {
-        this.$refs.validateStepForm.reset()
+        this.$refs.vincularform.reset()
     };
     back() {
         setTimeout(() => {

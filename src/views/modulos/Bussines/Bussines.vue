@@ -39,7 +39,8 @@
 								dense
 								:rules="rules"
 								required
-								:readonly="(validateInput == 1) ? readonly = true : readonly = false"							
+								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
+								@change="getRifType($event)"
 							></v-select>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
@@ -749,7 +750,7 @@
                 Notificación
             </v-card-title>
             <v-card-text>
-                Este Correo ya existe 
+                {{ titlemodalalert }} 
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -897,6 +898,8 @@ export default class Bussines extends Vue {
 	btnText = 'Guardar'
 	validateInput = 0
 	dialogOpen = false
+	validatetyperif = ''
+	titlemodalalert = ''
 	$refs!: {
         validateStepForm: InstanceType<typeof ValidationObserver>;
         validateStepFormTwo: InstanceType<typeof ValidationObserver>;
@@ -925,17 +928,54 @@ export default class Bussines extends Vue {
 	async updateFecha(){
 		this.bussinesform.registration_date = this.date
 	}
-
-	async validateRif(value){
-		if(value.length == 12){
-			const data : any = await bussinesModule.existRif(value)
-			if(data.data.length > 0){
-				this.validateRifDB = true
-				this.bussinesform.rif = ''
-			}else{
-				this.validateRifDB = false
-			}
+	async getRifType(event){console.log('aqui:: ',this.bussinesform.rif)
+	if(this.bussinesform.rif != undefined){
+		this.bussinesform.rif = ''
+	}else{
+		switch(event){
+			case 4:
+				this.validatetyperif = 'V'
+			break;
+			case 5:
+				this.validatetyperif = 'J'
+			break;
+			case 6:
+				this.validatetyperif = 'G'
+			break;
+			case 7:
+				this.validatetyperif = 'J'
 		}
+	}
+
+	}
+	async validateRif(value){
+
+			if(value.length == 12){
+				this.validateKeyInit(value)
+				const data : any = await bussinesModule.existRif(value)
+				if(data.data.length > 0){
+					this.validateRifDB = true
+					this.bussinesform.rif = ''
+				}else{
+					this.validateRifDB = false
+				}
+			}
+		/* }else{
+			this.dialogOpen = true
+			this.titlemodalalert = 'Debe ingresar la letra que coincida con la opción seleccionada en el Tipo de Rif, debe ser en mayúscula'
+			this.bussinesform.rif = ''
+		} */
+
+	}
+	async validateKeyInit(value){
+		let val = value.charAt(0)
+		
+		if(val != this.validatetyperif){
+			this.dialogOpen = true
+			this.titlemodalalert = 'Debe ingresar la letra que coincida con la opción seleccionada en el Tipo de Rif, debe ser en mayúscula'
+			this.bussinesform.rif = ''
+		}
+
 	}
     beforeTabSwitch(){
         const valid :any =  this.$refs.validateStepForm.validate();
@@ -1000,6 +1040,7 @@ export default class Bussines extends Vue {
 		if (validate.data.length > 0) {
 			this.dialogOpen = true
 			this.bussinesform.email_rl = ''
+			this.titlemodalalert = 'Este Correo ya existe'
 		} else {
 
 		}
