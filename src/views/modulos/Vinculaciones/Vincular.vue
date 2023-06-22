@@ -364,7 +364,7 @@ export default class Bussines extends Vue {
        this.loadingWizard = value
    }
     handleValidation(isValid, tabIndex){
-        console.log('Tab: '+tabIndex+ ' valid: '+isValid)
+        
     }
 	async updateFecha(){
 		this.vincularform.trabaja_desde = this.date
@@ -372,13 +372,7 @@ export default class Bussines extends Vue {
     async updateFechaEgreso(){
         this.desvincularform.trabajo_hasta = this.dategreso
     }
-	validateRif(value){
-		if(value.length == 12){
-			alert('hacer peticion al api')
-			console.log(value)
 
-		}
-	}
     async searchCertificatePerson(val) {
 		this.isLoading = true
 		const data : any = await linkedModule.searchCertificatePerson(this.searchTerm);
@@ -393,7 +387,7 @@ export default class Bussines extends Vue {
         }
 
 	}
-    getPersonCertificate(event){console.log(event)
+    getPersonCertificate(event){
         this.fullname = event.nombres+' '+event.apellidos
         this.vincularform.personas_discapacidad_id = event.id
         this.vincularform.empresa_id = storageData.get('_bussines_id') 
@@ -401,7 +395,6 @@ export default class Bussines extends Vue {
     }
     async getPositionAll(){
 		const position : any = await linkedModule.getPositionAll()
-        console.log(position)
 		this.arrayPosition = position.data
 	}	
 	onSubmit() {
@@ -412,12 +405,13 @@ export default class Bussines extends Vue {
  	async save() { 
  		this.overlay = true
     	const data = await linkedModule.save(this.FormRequest)
-		console.log(data)
+	
 		if(data.code == 200 || data.code == 201){
 			this.textmsj = 'Persona Vinculada con Éxito.'
 			this.color = 'success'
 			this.snackbar = true
 			this.back();
+            this.reset(); 
 			this.overlay = false 
 		} else {
 			this.textmsj = 'Error al Registrar los datos de la Empresa.'
@@ -451,6 +445,7 @@ export default class Bussines extends Vue {
             this.dialog     = false
             this.getPersonLinked()
 			this.back();
+            this.desvincularform.motivo = ''
 			this.overlay    = false 		
 		} else {
 			this.textmsj    = 'Error al Actualizar los datos de la Empresa.'
@@ -461,7 +456,7 @@ export default class Bussines extends Vue {
 		}       
 	}
 
-	reset () {
+	reset() {
         this.$refs.vincularform.reset()
     };
     back() {

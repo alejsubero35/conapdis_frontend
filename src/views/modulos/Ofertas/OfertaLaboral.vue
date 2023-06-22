@@ -44,7 +44,7 @@
                                         v-bind="attrs"
                                         v-on="on"
                                     >
-                                        <v-icon>mdi-pencil-box-outline</v-icon>
+                                        <v-icon>mdi-eye-circle</v-icon>
                                     </v-btn>
                                 </template>
                                 <span>Ver Oferta</span>
@@ -108,7 +108,7 @@ export default class Usuario extends Vue {
             {text: 'Cantidad', value: 'cantidad_postula_oferta'},
             {text: 'Postulados', value: 'cantidad_postula_oferta'},
             {text: 'Profesión', value: 'desc_profesion_postula'},
-            {text: 'Status', value: 'status'},
+            {text: 'Status', value: 'status_postula_oferta'},
             {text: 'Acciones', value: 'action'}
             ];
     section : string = 'Usuarios'
@@ -179,7 +179,7 @@ export default class Usuario extends Vue {
             this.snackbar = false
         },2000);
     }
-    handleDataUser(event){console.log(event)
+    handleDataUser(event){
         this.desserts = event;
         this.loadTable = false;
     }
@@ -199,12 +199,11 @@ export default class Usuario extends Vue {
         this.overlay = true
             let paginateData : any = [];
             const data : any = await ofertModule.getAll()  
-            console.log(data) 
             this.desserts = data.data
         this.overlay = false 
     }
     async setQueryPage(page:number){
-        console.log(page)
+       
     }
     mounted(){
         this.dataIndex()

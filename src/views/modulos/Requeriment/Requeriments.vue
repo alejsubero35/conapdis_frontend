@@ -176,7 +176,7 @@ export default class RequerimentsDocuments extends Vue {
         this.overlay  = false
     }
 
-    async save(){console.log(this.FormRequestDocuments)
+    async save(){
         const valid = await this.$refs.documents.validate();
         delete this.FormRequestDocuments.name
         const events = []
@@ -193,7 +193,7 @@ export default class RequerimentsDocuments extends Vue {
     
     }
 
-    async saveDocuments(dataDoc) { console.log(dataDoc)
+    async saveDocuments(dataDoc) { 
     
         this.overlay  = true
         const data    = await documentModule.saveDocuments(dataDoc)  
@@ -222,7 +222,7 @@ export default class RequerimentsDocuments extends Vue {
       
  
     }
-    async updateDocument(doc){console.log(doc)
+    async updateDocument(doc){
         let index  = this.documents.findIndex(({ id })  => id == doc.id)
         const _this = this
         var event = event || window.event;
@@ -305,7 +305,6 @@ export default class RequerimentsDocuments extends Vue {
     }
     mounted() {
         this.getDocuments()
-        console.log(storageData.get('_bussines'))
     }
 }
 

@@ -198,7 +198,7 @@ export default class Bussines extends Vue {
     porcentaje = ''
     disabled = true
     dataValidate = {
-        empresa_id:155,
+        empresa_id:'',
         periodo_id:''
     }
     dialogOpen = false
@@ -218,6 +218,7 @@ export default class Bussines extends Vue {
     }
     async getPeriodo(event){
         this.dataValidate.periodo_id = event
+        this.dataValidate.empresa_id = storageData.get('_bussines_id')
         const validate : any = await  statementsModule.validateStatement(this.dataValidate)
         if(validate.length > 0){
             this.textmsj = 'El Periodo Seleccionado ya fue Declarado.'
@@ -249,7 +250,7 @@ export default class Bussines extends Vue {
 	}
     async getPeopleLinkedByBussinesId(id){
 		const peoplelinked : any = await statementsModule.getPeopleLinkedByBussinesId(id)
-        console.log(peoplelinked.data.length)
+
         if(peoplelinked.data.length > 0){
             this.declararform.trabajadores_discapacidad = peoplelinked.data.length
             this.declararform.personas_discapacidades   = peoplelinked.data.length
@@ -259,7 +260,7 @@ export default class Bussines extends Vue {
 
 	}
  	async declarar() { 
-		console.log(this.FormRequest)
+		
  		this.overlay = true
     	const data = await statementsModule.save(this.FormRequest)
 
@@ -300,9 +301,7 @@ export default class Bussines extends Vue {
 	}
     async getStatements(){
         const statementAll : any = await  statementsModule.getStatementByBussine(storageData.get('_bussines_id'))
-        console.log(statementAll)
         this.desserts = statementAll.data
-     
     }
     imprimir(item){
 
