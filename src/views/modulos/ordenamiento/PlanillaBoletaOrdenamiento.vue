@@ -236,26 +236,26 @@
                                 de 1,60 mts. sin obstáculos, ni ningún elemento (publicitario, poster o tensores, cabinas telefónicas, 
                                 ni cestas o recolectores de basuras, entre otros) que interrumpan el paso libre indicado. Según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="aceras_salientes_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_711_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="aceras_salientes_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_711_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="aceras_salientes_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_711_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">7.1.2.	Deberá adecuar la pendiente de la acera transversal y longitudinal máxima hasta 2%, y no debe existir descarga 
                                 de lluvias, ni drenaje directamente sobre las mismas, Según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_712_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_712_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_712_na">
                             </td>
                         </tr>
                         <tr>
@@ -263,13 +263,13 @@
                                 si el pavimento no fuera continuo las juntas no deben ser mayores a 1 cm, ni debe tener una profundidad mayor a 5 mm. Según Norma 
                                 COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_713_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_713_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_713_na">
                             </td>
                         </tr>
                         <tr>
@@ -278,13 +278,13 @@
                                 mediante un cambio de textura en el acabado de 1 metro de largo en los bordes de aceras y cruces en las esquinas, Según Norma 
                                 COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_714_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_714_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_714_na">
                             </td>
                         </tr>
                         <tr>
@@ -292,39 +292,39 @@
                                 de la superficie del pavimento y a su vez las tapas de tanquillas no podrá tener separaciones superiores a 1 centímetro, según Norma  
                                 COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_715_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_715_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="rampas_en_aceras_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_715_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">7.1.6.	Deberá colocarse rampas sobre las aceras en los accesos a las edificaciones que no estén a nivel de las mismas, 
                                 así como en los cruces de una acera a otra y en las esquinas, Según Norma COVENIN 3656.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_716_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_716_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_716_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">7.1.7.	Se deberá disponer de rampas y plataforma de descanso que facilite la circulación de personas en sillas de ruedas 
                                 en las aceras y en los corredores de uso públicos, cuando se presenten desniveles considerables, Según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_717_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_717_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_717_na">
                             </td>
                         </tr>
                     </table>
@@ -336,13 +336,13 @@
                             <td colspan="2">7.1.8.	Deberá en caso de modificaciones y/o remodelaciones se admitirá un ancho mínimo de 0,90 metros. Todo diseño de la 
                                 rampa debe ser conforme a lo establecido en la Norma COVENIN 3656.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_718_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_718_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_718_na">
                             </td>
                         </tr>
                                                 
@@ -356,13 +356,13 @@
                             <td colspan="2">7.2.1 Se deberá colocar señales a fin de orientar y facilitar la transitabilidad de las 
                                 personas en las edificaciones conforme a lo dispuesto en la Norma COVENIN 2733-2004. </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="edificaciones_senales_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_721_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="edificaciones_senales_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_721_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="edificaciones_senales_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_721_na">
                             </td>
                         </tr>
                         <tr>
@@ -370,13 +370,13 @@
                                 las edificaciones y en los distintos espacios, en los cuales se hallan dispuestos facilidades de accesibilidad 
                                 y de transitabilidad de las personas conforme a la presente Norma.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="simbolo_internacional_senalizacion_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_722_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="simbolo_internacional_senalizacion_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_722_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="simbolo_internacional_senalizacion_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_722_na">
                             </td>
                         </tr>
                         <tr>
@@ -390,13 +390,13 @@
                                 movilidad reducida cumpliendo con las debidas especificaciones tales como dimensiones, ubicación y señalización de puestos; 
                                 conforme a lo dispuesto en las normas y reglamentaciones técnicas FONDONORMA NTF 2733, y la Referencia Normativa - COVENIN 187.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="estacionamientos_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_731_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="estacionamientos_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_731_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="estacionamientos_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_731_na">
                             </td>
                         </tr>
                         <tr>
@@ -404,13 +404,13 @@
                                 de esta Ley, cuyas medidas no deben ser menores a 30 x 45 cm y ubicado a una altura no mayor de 1,80 metros ni menor a 1 metro, 
                                 esto entre el nivel del piso y la parte superior del cartel. Conforme a lo dispuesto a la Norma COVENIN 187.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_732_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_732_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_732_na">
                             </td>
                         </tr>
                         <tr>
@@ -424,51 +424,51 @@
                                 entre la acera y la edificación a nivel de planta baja, en los accesos a las edificaciones, 
                                 prescrito en la Norma COVENIN 3656.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="acceso_planta_baja_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_741_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="acceso_planta_baja_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_741_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="acceso_planta_baja_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_741_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">7.4.1.2.	Debe disponer de rampas conjuntamente con escaleras en los desniveles desde 
                                 la planta baja hasta los medios de circulación vertical, según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="acceso_pb_vertical_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_742_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="acceso_pb_vertical_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_742_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="acceso_pb_vertical_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_742_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">7.4.2	<strong>De los Pasillos:</strong> Deberá existir en los pasillos iluminación natural o artificial, según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="de_los_pasillos_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_742_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="de_los_pasillos_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_742_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="de_los_pasillos_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_742_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">7.4.3.	Los pasillos deberán tener un ancho mínimo de 1,50 metros y en los extremos de los pasillos debe preverse el giro de una persona en 
                                 silla de rueda, por lo cual en cada extremo del pasillo debe disponer de un diámetro libre mínimo de 1,50 metros. Según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_743_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_743_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_743_na">
                             </td>
                         </tr>
                     </table>
@@ -482,13 +482,13 @@
                                 y de pelo largo, de ser necesaria su colocación estas deben ser de pelo corto y adherida al piso, principalmente los bordes, véase también en la 
                                 Norma COVENIN 3655.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled"  v-model="access_744_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled"  v-model="access_744_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled"  v-model="access_744_na">
                             </td>
                         </tr>
                         <tr>
@@ -496,26 +496,26 @@
                                 su huella entre 28 y 32 centímetro y su contra huella entre 14 y 18 centímetro, sin salientes. La contra huella debe ser llena (no vacía) con
                                 tope para el pie del usuario. Según Norma COVENIN 2733-2004. </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="de_las_escaleras_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_745_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="de_las_escaleras_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_745_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="de_las_escaleras_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_745_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">7.4.7.	Toda escalera deberá disponer de pasamanos en toda su longitud y ambos sentidos de circulación, a una altura entre 80 y 90 centímetros, 
                                 medidos entre la superficie del piso y con una separación de la pared de 5 centímetros, Según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_747_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_747_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_747_na">
                             </td>
                         </tr>
                         <tr>
@@ -528,13 +528,13 @@
                             <td colspan="2">7.4.8.1.	Deberá presentar en las rampas y escaleras barras firmes, pasamanos con la altura de 80 y 90 cm., capacidad de carga ≥ 150 Kg 
                                 y distanciamiento entre barras ≤ 15 cm. al menos en un sentido, Según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="de_las_barandas_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_748_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="de_las_barandas_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_748_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="de_las_barandas_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_748_na">
                             </td>
                         </tr>
                         <tr>
@@ -553,13 +553,13 @@
                             <td colspan="2">Deberá estar libre de obstáculos para el paso de personas en sillas de ruedas, debe proveer un paso en aquellos sitios donde se establezcan o existan 
                                 puntos de control con un ancho mínimo de 90 centímetro, Según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="de_las_puertas_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_7410_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="de_las_puertas_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_7410_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="de_las_puertas_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_7410_na">
                             </td>
                         </tr>
                         <tr>
@@ -573,13 +573,13 @@
                                 botón de emergencia y de parada, botón de llamada en cada nivel, pasamanos en los cerramientos fijos y dispositivos y luminosos; conforme a lo dispuesto en las normas 
                                 y reglamentaciones técnicas FONDONORMA NTF 2733 y referencia Normativa de esta - NTF/3656?  </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="de_los_ascensores_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_7411_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="de_los_ascensores_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_7411_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="de_los_ascensores_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_7411_na">
                             </td>
                         </tr>
                     </table>
@@ -598,26 +598,26 @@
                                 cierre la puerta, ¿se dirija desde una posición frontal o lateral a las piezas sanitarias y pueda mantenerse en privado conforme a lo dispuesto en las Normas y 
                                 reglamentaciones técnicas FONDONORMA NTF 2733? </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="de_los_servicios_sanitarios_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_7412_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="de_los_servicios_sanitarios_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_7412_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="de_los_servicios_sanitarios_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_7412_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2"><strong>7.4.12.1 Señalización:</strong>Deberá colocarse en las entradas de los servicios sanitarios de uso público y privado el símbolo internacional 
                                 de accesibilidad, según Norma COVENIN 2733-2004  </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="senalizacion_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74121_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="senalizacion_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74121_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="senalizacion_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74121_na">
                             </td>
                         </tr>
                         <tr>
@@ -625,13 +625,13 @@
                                 La altura del borde inferior o de cualquier otro accesorio debe estar entre 70 y 75 centímetros, y al menos un grifo de los lavamanos debe ser de tipo palanca, 
                                 según Norma COVENIN 2733-2004</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="lavamanos_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74122_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="lavamanos_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74122_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="lavamanos_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74122_na">
                             </td>
                         </tr>
                         <tr>
@@ -639,26 +639,26 @@
                                 a una altura entre 80 y 90 centímetros sobre el nivel del piso. Su diámetro será entre 3 y 5 centímetros, y soportar sin doblarse ni desprenderse una fuerza de 150 Kg., 
                                 según Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="barra_de_sosten_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74123_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="barra_de_sosten_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74123_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="barra_de_sosten_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74123_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2"><strong>7.4.12.4	Accesorios Sanitarios: </strong>Deberá ubicarse a una altura máxima de 1 metro sobre la altura del piso, esto a lo correspondiente a los
                                 accesorios sanitarios tales como dispensador de jabón, secador de manos, dispensador de toallas u otros, según Norma COVENIN 2733-2004 </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="accesorios_sanitarios_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74124_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="accesorios_sanitarios_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74124_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="accesorios_sanitarios_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74124_na">
                             </td>
                         </tr>
                         <tr>
@@ -668,13 +668,13 @@
                                 deben ser de 1.20 m x 0.80 m. y  así como el espacio de giro de maniobra entre las puerta y las piezas de 1.5 m. de diámetro( solo en los casos de espacios a remodelar se debe 
                                 procurar sea posible el giro de al menos de 1.2 m de diámetros) conforme a lo dispuesto en las Normas y reglamentaciones técnicas FONDONORMA NTF 2733? </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="excusado_bano_publico_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74125_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="excusado_bano_publico_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74125_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="excusado_bano_publico_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74125_na">
                             </td>
                         </tr>
                     </table>
@@ -687,13 +687,13 @@
                                 la distancia entre el borde superior de los urinarios y el piso no debe exceder de 45 centímetros, en urinarios colgados a la pared se deben instalar barras de sostén a cada lado del 
                                 artefacto sanitario. Un extremo de cada barra se debe fijar al piso y el otro, a la pared, ¿en lo dispuesto en las Normas y reglamentaciones técnicas (NTF-2733) </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="urinarios_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74126_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="urinarios_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74126_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="urinarios_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74126_na">
                             </td>
                         </tr>
                         <tr>
@@ -702,13 +702,13 @@
                                 especificaciones dadas para la barra de sostén. En los sectores de duchas dispuestos para el uso de personas con discapacidad no deben existir brocales ni ningún otro obstáculo en el piso, 
                                 el acceso a las duchas debe ser sin desniveles con pendiente suave hacia el drenaje y piso anti resbalante. Según Norma COVENIN 2733-2004. </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="duchas_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74127_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="duchas_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74127_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="duchas_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74127_na">
                             </td>
                         </tr>
                         <tr>
@@ -721,13 +721,13 @@
                             <td colspan="2"><strong>7.4.13.1	La altura de las cerraduras de ventanas, controles y accesorios</strong>Debe existir ventanas con controles, cerraduras y accesorios a una altura comprendida 
                                 entre 0.50 y 1.20 metros para que puedan ser manipulados por los usuarios. </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="altura_cerradura_ventanas_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74131_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="altura_cerradura_ventanas_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74131_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="altura_cerradura_ventanas_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74131_na">
                             </td>
                         </tr>
                           
@@ -735,13 +735,13 @@
                             <td colspan="2">7.4.13.2	7.4.13.2.	Deberá existir en el borde inferior de la ventana una altura que no debe superar los 90 centímetros por encima del nivel del piso, esto en aquellos 
                                 ambientes de permanencia prolongada por las personas, según Norma COVENIN 2733-2004</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74132_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74132_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74132_na">
                             </td>
                         </tr>
                         <tr>
@@ -754,13 +754,13 @@
                             <td colspan="2">7.4.13.4.	Deberá situarse a una altura entre 75 y 90 centímetros por encima del nivel del piso toda la toma de electricidad y de comunicaciones, Deberá situarse entre 90 y 110 
                                 centímetros por encima del nivel del piso los interruptores de los circuitos de iluminación, según Norma COVENIN 2733-2004. </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="tomas_electricidad_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74134_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="tomas_electricidad_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74134_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="tomas_electricidad_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74134_na">
                             </td>
                         </tr>
                     </table>
@@ -781,13 +781,13 @@
                                 Deberá tener en los bancos brazos firmes en los extremos, con agarraderas de ancho o diámetro no menor de 3.5 centímetro, según la Norma COVENIN 2733-2004. 
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="lugar_de_esparcimiento_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74141_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="lugar_de_esparcimiento_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74141_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="lugar_de_esparcimiento_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74141_na">
                             </td>
                         </tr>
                         <tr>
@@ -800,26 +800,26 @@
                             <td colspan="2">7.4.15.2.	Deberán reservar y demarcar lugares para la ubicación de personas en sillas de ruedas en los lugares de esparcimientos y recreación cerrados, tales como teatros, cines, auditórium, 
                                 o en las graderías de instalaciones deportivas de acuerdo a lo especificado en la Norma COVENIN 2733-2004.</td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74142_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74142_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74142_na">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">7.4.15.3.	Deberá ubicar en zonas horizontales a las personas en sillas de ruedas, sin obstruir el tránsito en los pasillos y puertas, y cercas de las entradas o salidas principales, que permita una 
                                 buena visión hacia el área donde se presenta el evento tal como se muestra en la Norma COVENIN 2733-2004. </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="lugares_psr_si">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74143_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="lugares_psr_no">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74143_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled" v-model="lugares_psr_na">
+                                <input type="checkbox" :disabled="disabled" v-model="access_74143_na">
                             </td>
                         </tr>
                         <tr>
@@ -836,13 +836,13 @@
                                 •	Persona con discapacidad visual.
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled"  v-model="pictograma_si">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled"  v-model="pictograma_no">
                             </td>
                             <td  class=" bold text-center">
-                                <input type="checkbox" :disabled="disabled">
+                                <input type="checkbox" :disabled="disabled"  v-model="pictograma_na">
                             </td>
                         </tr>
                     </table>
@@ -859,10 +859,13 @@
                             <th colspan="1" class="text-center">C. I. N°:</th>
                         </tr>
                         <tr>
-                            <td colspan="2"></td>
-                            <td colspan="2"></td>
-                            <td colspan="1"></td>
+                            <td colspan="2">{{ firstnameadmin }}</td>
+                            <td colspan="2">{{ lastnameadmin }}</td>
+                            <td colspan="1">{{ cedulaadmin }}</td>
                         </tr>
+                        
+
+
                         <tr>
                             <th class="td-center" colspan="5">7.6	DE LOS DATOS DEL FUNCIONARIO INSPECTOR ACTUANTE:</th>
                         </tr>
@@ -885,8 +888,8 @@
                             <td  colspan="2"  class=" bold text-center">Sello Humedo</td>
                         </tr>
                         <tr>
-                            <td  colspan="3"  >Providencia Administrativa N°:</td>
-                            <td  colspan="2" >Fecha y Hora</td>  
+                            <td  colspan="3"  >Providencia Administrativa N°: {{ providenceAdmin }}</td>
+                            <td  colspan="2" >Fecha y Hora : {{ providenceDate }}</td>  
                         </tr>
                     </table>
                     <v-row>
@@ -987,84 +990,130 @@
             firstnameinspector:'',
             lastnameinspector:'',
             cedulainspector:'',
+            firstnameadmin:'',
+            lastnameadmin:'',
+            cedulaadmin:'',
+            providenceAdmin : '',
+            providenceDate : '',
             debida_informacion_si                   : false,
             debida_informacion_no                   : false,
-            aceras_salientes_si                     : false,
-            aceras_salientes_no                     : false,
-            aceras_salientes_na                     : false,
-            rampas_en_aceras_si                     : false,
-            rampas_en_aceras_no                     : false,
-            rampas_en_aceras_na                     : false,
-            edificaciones_senales_si                : false,
-            edificaciones_senales_no                : false,
-            edificaciones_senales_na                : false,
-            estacionamientos_si                     : false,
-            estacionamientos_no                     : false,
-            estacionamientos_na                     : false,
-            simbolo_internacional_senalizacion_si   : false,
-            simbolo_internacional_senalizacion_no   : false,
-            simbolo_internacional_senalizacion_na   : false,
-            acceso_planta_baja_si                   : false,
-            acceso_planta_baja_no                   : false,
-            acceso_planta_baja_na                   : false,
-            acceso_pb_vertical_si                   : false,
-            acceso_pb_vertical_no                   : false,
-            acceso_pb_vertical_na                   : false,
-            de_los_pasillos_si                      : false,
-            de_los_pasillos_no                      : false,
-            de_los_pasillos_na                      : false,
-            de_las_escaleras_si                     : false,
-            de_las_escaleras_no                     : false,
-            de_las_escaleras_na                     : false,
-            de_las_barandas_si                      : false,
-            de_las_barandas_no                      : false,
-            de_las_barandas_na                      : false,
-            de_las_puertas_si                       : false,
-            de_las_puertas_no                       : false,
-            de_las_puertas_na                       : false,
-            de_los_puntos_de_control_si             : false,
-            de_los_puntos_de_control_no             : false,
-            de_los_puntos_de_control_na             : false,
-            de_los_ascensores_si                    : false,
-            de_los_ascensores_no                    : false,
-            de_los_ascensores_na                    : false,
-            de_los_servicios_sanitarios_si          : false,
-            de_los_servicios_sanitarios_no          : false,
-            de_los_servicios_sanitarios_na          : false,
-            senalizacion_si                         : false,
-            senalizacion_no                         : false,
-            senalizacion_na                         : false,
-            lavamanos_si                            : false,
-            lavamanos_no                            : false,
-            lavamanos_na                            : false,
-            barra_de_sosten_si                      : false,
-            barra_de_sosten_no                      : false,
-            barra_de_sosten_na                      : false,
-            accesorios_sanitarios_si                : false,
-            accesorios_sanitarios_no                : false,
-            accesorios_sanitarios_na                : false,
-            excusado_bano_publico_si                : false,
-            excusado_bano_publico_no                : false,
-            excusado_bano_publico_na                : false,
-            urinarios_si                            : false,
-            urinarios_no                            : false,
-            urinarios_na                            : false,
-            duchas_si                               : false,
-            duchas_no                               : false,
-            duchas_na                               : false,
-            altura_cerradura_ventanas_si            : false,
-            altura_cerradura_ventanas_no            : false,
-            altura_cerradura_ventanas_na            : false,
-            tomas_electricidad_si                   : false,
-            tomas_electricidad_no                   : false,
-            tomas_electricidad_na                   : false,
-            lugar_de_esparcimiento_si               : false,
-            lugar_de_esparcimiento_no               : false,
-            lugar_de_esparcimiento_na               : false,
-            lugares_psr_si                          : false,
-            lugares_psr_no                          : false,
-            lugares_psr_na                          : false,
-
+            access_711_si                       : false,
+            access_711_no                       : false,
+            access_711_na                       : false,
+            access_712_si                       : false,
+            access_712_no                       : false,
+            access_712_na                       : false,
+            access_713_si                       : false,
+            access_713_no                       : false,
+            access_713_na                       : false,
+            access_714_si                       : false,
+            access_714_no                       : false,
+            access_714_na                       : false,
+            access_715_si                       : false,
+            access_715_no                       : false,
+            access_715_na                       : false,
+            access_716_si                       : false,
+            access_716_no                       : false,
+            access_716_na                       : false,
+            access_717_si                       : false,
+            access_717_no                       : false,
+            access_717_na                       : false,
+            access_718_si                       : false,
+            access_718_no                       : false,
+            access_718_na                       : false,
+            access_721_si                       : false,
+            access_721_no                       : false,
+            access_721_na                       : false,
+            access_722_si                       : false,
+            access_722_no                       : false,
+            access_722_na                       : false,
+            access_731_si                       : false,
+            access_731_no                       : false,
+            access_731_na                       : false,
+            access_732_si                       : false,
+            access_732_no                       : false,
+            access_732_na                       : false,
+            access_741_si                       : false,
+            access_741_no                       : false,
+            access_741_na                       : false,
+            access_742_si                       : false,
+            access_742_no                       : false,
+            access_742_na                       : false,
+            access_743_si                       : false,
+            access_743_no                       : false,
+            access_743_na                       : false,
+            access_744_si                       : false,
+            access_744_no                       : false,
+            access_744_na                       : false,
+            access_745_si                       : false,
+            access_745_no                       : false,
+            access_745_na                       : false,
+            access_746_si                       : false,
+            access_746_no                       : false,
+            access_746_na                       : false,
+            access_747_si                       : false,
+            access_747_no                       : false,
+            access_747_na                       : false,
+            access_748_si                       : false,
+            access_748_no                       : false,
+            access_748_na                       : false,
+            access_749_si                       : false,
+            access_749_no                       : false,
+            access_749_na                       : false,
+            access_7410_si                      : false,
+            access_7410_no                      : false,
+            access_7410_na                      : false,
+            access_7411_si                      : false,
+            access_7411_no                      : false,
+            access_7411_na                      : false,
+            access_7412_si                      : false,
+            access_7412_no                      : false,
+            access_7412_na                      : false,
+            access_74121_si                     : false,
+            access_74121_no                     : false,
+            access_74121_na                     : false,
+            access_74122_si                     : false,
+            access_74122_no                     : false,
+            access_74122_na                     : false,
+            access_74123_si                     : false,
+            access_74123_no                     : false,
+            access_74123_na                     : false,
+            access_74124_si                     : false,
+            access_74124_no                     : false,
+            access_74124_na                     : false,
+            access_74125_si                     : false,
+            access_74125_no                     : false,
+            access_74125_na                     : false,
+            access_74126_si                     : false,
+            access_74126_no                     : false,
+            access_74126_na                     : false,
+            access_74127_si                     : false,
+            access_74127_no                     : false,
+            access_74127_na                     : false,
+            access_74131_si                     : false,
+            access_74131_no                     : false,
+            access_74131_na                     : false,
+            access_74132_si                     : false,
+            access_74132_no                     : false,
+            access_74132_na                     : false,
+            access_74133_si                     : false,
+            access_74133_no                     : false,
+            access_74133_na                     : false,
+            access_74134_si                     : false,
+            access_74134_no                     : false,
+            access_74134_na                     : false,
+            access_74141_si                     : false,
+            access_74141_no                     : false,
+            access_74141_na                     : false,
+            access_74142_si                     : false,
+            access_74142_no                     : false,
+            access_74142_na                     : false,
+            access_74143_si                     : false,
+            access_74143_no                     : false,
+            access_74143_na                     : false,
+            pictograma_si                       : false,
+            pictograma_no                       : false,
+            pictograma_na                       : false,
             
          }
      },
@@ -1105,7 +1154,7 @@
             this.direccion                  = data.data.busine.location    
             this.firstname                  = data.data.busine.first_name_rl
             this.lastname                   = data.data.busine.last_name_rl
-            this.position                   = data.data.busine.position
+            this.position                   = data.data.busine.position.name
             this.identitycard               = data.data.busine.identity_card_rl 
             this.type_ocupation             = data.data.guide.occupation_type.name
             this.ejecutivos                 = data.data.guidelaborInsertion.ejecutivos
@@ -1126,15 +1175,20 @@
                 this.debida_informacion_si  = false 
                 this.debida_informacion_no  = true
             }
-            this.firstnameinspector         = data.data.user_id_inspector.first_name
-            this.lastnameinspector          = data.data.user_id_inspector.last_name
-            this.cedulainspector            = data.data.user_id_inspector.number_document_identity
+            this.firstnameadmin = data.data.guide.name_admin_designe
+            this.lastnameadmin = data.data.guide.last_name_admin_designe
+            this.cedulaadmin = data.data.guide.identity_card_admin
+            this.firstnameinspector         = data.data.guide.user_id_inspector.first_name
+            this.lastnameinspector          = data.data.guide.user_id_inspector.last_name
+            this.cedulainspector            = data.data.guide.user_id_inspector.cedula
+            this.providenceAdmin            = data.data.guide.user_id_inspector.providence_administrative
+            this.providenceDate             = data.data.guide.user_id_inspector.providence_date
             this.checkboxNomina(data.data.guidelaborInsertion)    
-            this.guideAccessibilityReq(data.data.guideAccessibilityReq)                     
+            this.guideAccessibilityReq(data.data.orderingAccessibilities)                     
             this.overlay = false 
         },
         checkboxNomina(data){
-            if(data.de_20_a_39 == 0){
+            if(data.de_20_a_39 == 'si'){
                 this.de_20_39_si = true 
                 this.de_20_39_no = false
             }else{
@@ -1142,7 +1196,7 @@
                 this.de_20_39_no = true
             }
 
-            if(data.de_40_a_59 == 0){
+            if(data.de_40_a_59 == 'si'){
                 this.de_40_59_si = true 
                 this.de_40_59_no = false
             }else{
@@ -1150,7 +1204,7 @@
                 this.de_40_59_no = true
             }
 
-            if(data.de_60_a_79 == 0){
+            if(data.de_60_a_79 == 'si'){
                 this.de_60_79_si = true 
                 this.de_60_79_no = false
             }else{
@@ -1158,7 +1212,7 @@
                 this.de_60_a_79_no = true
             }
 
-            if(data.de_80_a_99 == 0){
+            if(data.de_80_a_99 == 'si'){
                 this.de_80_99_si = true 
                 this.de_80_99_no = false
             }else{
@@ -1166,7 +1220,7 @@
                 this.de_80_99_no = true
             }
 
-            if(data.de_100_a_119 == 0){
+            if(data.de_100_a_119 == 'si'){
                 this.de_100_119_si = true 
                 this.de_100_119_no = false
             }else{
@@ -1177,354 +1231,553 @@
                     
            
         guideAccessibilityReq(data){
-                if(data.aceras_salientes == 'si'){
-                    this.aceras_salientes_si                                 =  true
-                    this.aceras_salientes_no                                 =  false
-                    this.aceras_salientes_na                                 =  false
-                }else if(data.aceras_salientes == 'no'){            
-                    this.aceras_salientes_si                                 =  false
-                    this.aceras_salientes_no                                 =  true
-                    this.aceras_salientes_na                                 =  false
+                if(data.access_711 == 'si'){
+                    this.access_711_si                                 =  true
+                    this.access_711_no                                 =  false
+                    this.access_711_na                                 =  false
+                }else if(data.access_711 == 'no'){            
+                    this.access_711_si                                 =  false
+                    this.access_711_no                                 =  true
+                    this.access_711_na                                 =  false
                 }else{          
-                    this.aceras_salientes_si                                 =  false
-                    this.aceras_salientes_no                                 =  false
-                    this.aceras_salientes_na                                 =  true
+                    this.access_711_si                                 =  false
+                    this.access_711_no                                 =  false
+                    this.access_711_na                                 =  true
                 }
 
-                if(data.rampas_en_aceras == 'si'){
-                    this.rampas_en_aceras_si                                 =  true
-                    this.rampas_en_aceras_no                                 =  false
-                    this.rampas_en_aceras_na                                 =  false
-                }else if(data.rampas_en_aceras == 'no'){            
-                    this.rampas_en_aceras_si                                 =  false
-                    this.rampas_en_aceras_no                                 =  true
-                    this.rampas_en_aceras_na                                 =  false
+                if(data.access_712 == 'si'){
+                    this.access_712_si                                 =  true
+                    this.access_712_no                                 =  false
+                    this.access_712_na                                 =  false
+                }else if(data.access_712 == 'no'){            
+                    this.access_712_si                                 =  false
+                    this.access_712_no                                 =  true
+                    this.access_712_na                                 =  false
                 }else{          
-                    this.rampas_en_aceras_si                                 =  false
-                    this.rampas_en_aceras_no                                 =  false
-                    this.rampas_en_aceras_na                                 =  true
+                    this.access_712_si                                 =  false
+                    this.access_712_no                                 =  false
+                    this.access_712_na                                 =  true
                 }
 
-                if(data.edificaciones_senales == 'si'){
-                    this.edificaciones_senales_si                            =  true
-                    this.edificaciones_senales_no                            =  false
-                    this.edificaciones_senales_na                            =  false
-                }else if(data.edificaciones_senales == 'no'){       
-                    this.edificaciones_senales_si                            =  false
-                    this.edificaciones_senales_no                            =  true
-                    this.edificaciones_senales_na                            =  false
-                }else{      
-                    this.edificaciones_senales_si                            =  false
-                    this.edificaciones_senales_no                            =  false
-                    this.edificaciones_senales_na                            =  true
-                }
-                if(data.estacionamientos == 'si'){
-                    this.estacionamientos_si                                 =  true
-                    this.estacionamientos_no                                 =  false
-                    this.estacionamientos_na                                 =  false
-                }else if(data.estacionamientos == 'no'){            
-                    this.estacionamientos_si                                 =  false
-                    this.estacionamientos_no                                 =  true
-                    this.estacionamientos_na                                 =  false
+                if(data.access_713 == 'si'){
+                    this.access_713_si                                 =  true
+                    this.access_713_no                                 =  false
+                    this.access_713_na                                 =  false
+                }else if(data.access_713 == 'no'){            
+                    this.access_713_si                                 =  false
+                    this.access_713_no                                 =  true
+                    this.access_713_na                                 =  false
                 }else{          
-                    this.estacionamientos_si                                 =  false
-                    this.estacionamientos_no                                 =  false
-                    this.estacionamientos_na                                 =  true
+                    this.access_713_si                                 =  false
+                    this.access_713_no                                 =  false
+                    this.access_713_na                                 =  true
                 }
 
-                if(data.simbolo_internacional_senalizacion == 'si'){
-                    this.simbolo_internacional_senalizacion_si                     =  true
-                    this.simbolo_internacional_senalizacion_no                     =  false
-                    this.simbolo_internacional_senalizacion_na                     =  false
-                }else if(data.simbolo_internacional_senalizacion == 'no'){
-                    this.simbolo_internacional_senalizacion_si                     =  false
-                    this.simbolo_internacional_senalizacion_no                     =  true
-                    this.simbolo_internacional_senalizacion_na                     =  false
-                }else{
-                    this.simbolo_internacional_senalizacion_si                     =  false
-                    this.simbolo_internacional_senalizacion_no                     =  false
-                    this.simbolo_internacional_senalizacion_na                     =  true
+                if(data.access_714 == 'si'){
+                    this.access_714_si                                 =  true
+                    this.access_714_no                                 =  false
+                    this.access_714_na                                 =  false
+                }else if(data.access_714 == 'no'){            
+                    this.access_714_si                                 =  false
+                    this.access_714_no                                 =  true
+                    this.access_714_na                                 =  false
+                }else{          
+                    this.access_714_si                                 =  false
+                    this.access_714_no                                 =  false
+                    this.access_714_na                                 =  true
                 }
 
-                if(data.acceso_planta_baja == 'si'){
-                    this.acceso_planta_baja_si                     =  true
-                    this.acceso_planta_baja_no                     =  false
-                    this.acceso_planta_baja_na                     =  false
-                }else if(data.acceso_planta_baja == 'no'){
-                    this.acceso_planta_baja_si                     =  false
-                    this.acceso_planta_baja_no                     =  true
-                    this.acceso_planta_baja_na                     =  false
-                }else{
-                    this.acceso_planta_baja_si                     =  false
-                    this.acceso_planta_baja_no                     =  false
-                    this.acceso_planta_baja_na                     =  true
+                if(data.access_715 == 'si'){
+                    this.access_715_si                                 =  true
+                    this.access_715_no                                 =  false
+                    this.access_715_na                                 =  false
+                }else if(data.access_715 == 'no'){            
+                    this.access_715_si                                 =  false
+                    this.access_715_no                                 =  true
+                    this.access_715_na                                 =  false
+                }else{          
+                    this.access_715_si                                 =  false
+                    this.access_715_no                                 =  false
+                    this.access_715_na                                 =  true
                 }
 
-                if(data.acceso_pb_vertical == 'si'){
-                    this.acceso_pb_vertical_si                     =  true
-                    this.acceso_pb_vertical_no                     =  false
-                    this.acceso_pb_vertical_na                     =  false
-                }else if(data.acceso_pb_vertical == 'no'){
-                    this.acceso_pb_vertical_si                     =  false
-                    this.acceso_pb_vertical_no                     =  true
-                    this.acceso_pb_vertical_na                     =  false
-                }else{
-                    this.acceso_pb_vertical_si                     =  false
-                    this.acceso_pb_vertical_no                     =  false
-                    this.acceso_pb_vertical_na                     =  true
+                if(data.access_716 == 'si'){
+                    this.access_716_si                                 =  true
+                    this.access_716_no                                 =  false
+                    this.access_716_na                                 =  false
+                }else if(data.access_716 == 'no'){            
+                    this.access_716_si                                 =  false
+                    this.access_716_no                                 =  true
+                    this.access_716_na                                 =  false
+                }else{          
+                    this.access_716_si                                 =  false
+                    this.access_716_no                                 =  false
+                    this.access_716_na                                 =  true
                 }
 
-                if(data.de_los_pasillos == 'si'){
-                    this.de_los_pasillos_si                     =  true
-                    this.de_los_pasillos_no                     =  false
-                    this.de_los_pasillos_na                     =  false
-                }else if(data.de_los_pasillos == 'no'){
-                    this.de_los_pasillos_si                     =  false
-                    this.de_los_pasillos_no                     =  true
-                    this.de_los_pasillos_na                     =  false
-                }else{
-                    this.de_los_pasillos_si                     =  false
-                    this.de_los_pasillos_no                     =  false
-                    this.de_los_pasillos_na                     =  true
+                if(data.access_717 == 'si'){
+                    this.access_717_si                                 =  true
+                    this.access_717_no                                 =  false
+                    this.access_717_na                                 =  false
+                }else if(data.access_717 == 'no'){            
+                    this.access_717_si                                 =  false
+                    this.access_717_no                                 =  true
+                    this.access_717_na                                 =  false
+                }else{          
+                    this.access_717_si                                 =  false
+                    this.access_717_no                                 =  false
+                    this.access_717_na                                 =  true
                 }
 
-                if(data.de_las_escaleras == 'si'){
-                    this.de_las_escaleras_si                     =  true
-                    this.de_las_escaleras_no                     =  false
-                    this.de_las_escaleras_na                     =  false
-                }else if(data.de_las_escaleras == 'no'){
-                    this.de_las_escaleras_si                     =  false
-                    this.de_las_escaleras_no                     =  true
-                    this.de_las_escaleras_na                     =  false
-                }else{
-                    this.de_las_escaleras_si                     =  false
-                    this.de_las_escaleras_no                     =  false
-                    this.de_las_escaleras_na                     =  true
+                if(data.access_718 == 'si'){
+                    this.access_718_si                                 =  true
+                    this.access_718_no                                 =  false
+                    this.access_718_na                                 =  false
+                }else if(data.access_718 == 'no'){            
+                    this.access_718_si                                 =  false
+                    this.access_718_no                                 =  true
+                    this.access_718_na                                 =  false
+                }else{          
+                    this.access_718_si                                 =  false
+                    this.access_718_no                                 =  false
+                    this.access_718_na                                 =  true
                 }
 
-                if(data.de_las_barandas == 'si'){
-                    this.de_las_barandas_si                     =  true
-                    this.de_las_barandas_no                     =  false
-                    this.de_las_barandas_na                     =  false
-                }else if(data.de_las_barandas == 'no'){
-                    this.de_las_barandas_si                     =  false
-                    this.de_las_barandas_no                     =  true
-                    this.de_las_barandas_na                     =  false
-                }else{
-                    this.de_las_barandas_si                     =  false
-                    this.de_las_barandas_no                     =  false
-                    this.de_las_barandas_na                     =  true
+                if(data.access_721 == 'si'){
+                    this.access_721_si                                 =  true
+                    this.access_721_no                                 =  false
+                    this.access_721_na                                 =  false
+                }else if(data.access_721 == 'no'){            
+                    this.access_721_si                                 =  false
+                    this.access_721_no                                 =  true
+                    this.access_721_na                                 =  false
+                }else{          
+                    this.access_721_si                                 =  false
+                    this.access_721_no                                 =  false
+                    this.access_721_na                                 =  true
                 }
 
-                if(data.de_las_puertas == 'si'){
-                    this.de_las_puertas_si                     =  true
-                    this.de_las_puertas_no                     =  false
-                    this.de_las_puertas_na                     =  false
-                }else if(data.de_las_puertas == 'no'){
-                    this.de_las_puertas_si                     =  false
-                    this.de_las_puertas_no                     =  true
-                    this.de_las_puertas_na                     =  false
-                }else{
-                    this.de_las_puertas_si                     =  false
-                    this.de_las_puertas_no                     =  false
-                    this.de_las_puertas_na                     =  true
+                if(data.access_722 == 'si'){
+                    this.access_722_si                                 =  true
+                    this.access_722_no                                 =  false
+                    this.access_722_na                                 =  false
+                }else if(data.access_722 == 'no'){            
+                    this.access_722_si                                 =  false
+                    this.access_722_no                                 =  true
+                    this.access_722_na                                 =  false
+                }else{          
+                    this.access_722_si                                 =  false
+                    this.access_722_no                                 =  false
+                    this.access_722_na                                 =  true
                 }
 
-                if(data.de_los_puntos_de_control == 'si'){
-                    this.de_los_puntos_de_control_si                     =  true
-                    this.de_los_puntos_de_control_no                     =  false
-                    this.de_los_puntos_de_control_na                     =  false
-                }else if(data.de_los_puntos_de_control == 'no'){
-                    this.de_los_puntos_de_control_si                     =  false
-                    this.de_los_puntos_de_control_no                     =  true
-                    this.de_los_puntos_de_control_na                     =  false
-                }else{
-                    this.de_los_puntos_de_control_si                     =  false
-                    this.de_los_puntos_de_control_no                     =  false
-                    this.de_los_puntos_de_control_na                     =  true
+                if(data.access_731 == 'si'){
+                    this.access_731_si                                 =  true
+                    this.access_731_no                                 =  false
+                    this.access_731_na                                 =  false
+                }else if(data.access_731 == 'no'){            
+                    this.access_731_si                                 =  false
+                    this.access_731_no                                 =  true
+                    this.access_731_na                                 =  false
+                }else{          
+                    this.access_731_si                                 =  false
+                    this.access_731_no                                 =  false
+                    this.access_731_na                                 =  true
                 }
 
-                if(data.de_los_ascensores == 'si'){
-                    this.de_los_ascensores_si                     =  true
-                    this.de_los_ascensores_no                     =  false
-                    this.de_los_ascensores_na                     =  false
-                }else if(data.de_los_ascensores == 'no'){
-                    this.de_los_ascensores_si                     =  false
-                    this.de_los_ascensores_no                     =  true
-                    this.de_los_ascensores_na                     =  false
-                }else{
-                    this.de_los_ascensores_si                     =  false
-                    this.de_los_ascensores_no                     =  false
-                    this.de_los_ascensores_na                     =  true
+                if(data.access_732 == 'si'){
+                    this.access_732_si                                 =  true
+                    this.access_732_no                                 =  false
+                    this.access_732_na                                 =  false
+                }else if(data.access_732 == 'no'){            
+                    this.access_732_si                                 =  false
+                    this.access_732_no                                 =  true
+                    this.access_732_na                                 =  false
+                }else{          
+                    this.access_732_si                                 =  false
+                    this.access_732_no                                 =  false
+                    this.access_732_na                                 =  true
                 }
 
-                if(data.de_los_servicios_sanitarios == 'si'){
-                    this.de_los_servicios_sanitarios_si                     =  true
-                    this.de_los_servicios_sanitarios_no                     =  false
-                    this.de_los_servicios_sanitarios_na                     =  false
-                }else if(data.de_los_servicios_sanitarios == 'no'){
-                    this.de_los_servicios_sanitarios_si                     =  false
-                    this.de_los_servicios_sanitarios_no                     =  true
-                    this.de_los_servicios_sanitarios_na                     =  false
-                }else{
-                    this.de_los_servicios_sanitarios_si                     =  false
-                    this.de_los_servicios_sanitarios_no                     =  false
-                    this.de_los_servicios_sanitarios_na                     =  true
+                if(data.access_741 == 'si'){
+                    this.access_741_si                                 =  true
+                    this.access_741_no                                 =  false
+                    this.access_741_na                                 =  false
+                }else if(data.access_741 == 'no'){            
+                    this.access_741_si                                 =  false
+                    this.access_741_no                                 =  true
+                    this.access_741_na                                 =  false
+                }else{          
+                    this.access_741_si                                 =  false
+                    this.access_741_no                                 =  false
+                    this.access_741_na                                 =  true
                 }
 
-                if(data.senalizacion == 'si'){
-                    this.senalizacion_si                     =  true
-                    this.senalizacion_no                     =  false
-                    this.senalizacion_na                     =  false
-                }else if(data.senalizacion == 'no'){
-                    this.senalizacion_si                     =  false
-                    this.senalizacion_no                     =  true
-                    this.senalizacion_na                     =  false
-                }else{
-                    this.senalizacion_si                     =  false
-                    this.senalizacion_no                     =  false
-                    this.senalizacion_na                     =  true
+                if(data.access_742 == 'si'){
+                    this.access_742_si                                 =  true
+                    this.access_742_no                                 =  false
+                    this.access_742_na                                 =  false
+                }else if(data.access_742 == 'no'){            
+                    this.access_742_si                                 =  false
+                    this.access_742_no                                 =  true
+                    this.access_742_na                                 =  false
+                }else{          
+                    this.access_742_si                                 =  false
+                    this.access_742_no                                 =  false
+                    this.access_742_na                                 =  true
                 }
 
-                if(data.lavamanos == 'si'){
-                    this.lavamanos_si                     =  true
-                    this.lavamanos_no                     =  false
-                    this.lavamanos_na                     =  false
-                }else if(data.lavamanos == 'no'){
-                    this.lavamanos_si                     =  false
-                    this.lavamanos_no                     =  true
-                    this.lavamanos_na                     =  false
-                }else{
-                    this.lavamanos_si                     =  false
-                    this.lavamanos_no                     =  false
-                    this.lavamanos_na                     =  true
+                if(data.access_743 == 'si'){
+                    this.access_743_si                                 =  true
+                    this.access_743_no                                 =  false
+                    this.access_743_na                                 =  false
+                }else if(data.access_743 == 'no'){            
+                    this.access_743_si                                 =  false
+                    this.access_743_no                                 =  true
+                    this.access_743_na                                 =  false
+                }else{          
+                    this.access_743_si                                 =  false
+                    this.access_743_no                                 =  false
+                    this.access_743_na                                 =  true
                 }
 
-                if(data.barra_de_sosten == 'si'){
-                    this.barra_de_sosten_si                     =  true
-                    this.barra_de_sosten_no                     =  false
-                    this.barra_de_sosten_na                     =  false
-                }else if(data.barra_de_sosten == 'no'){
-                    this.barra_de_sosten_si                     =  false
-                    this.barra_de_sosten_no                     =  true
-                    this.barra_de_sosten_na                     =  false
-                }else{
-                    this.barra_de_sosten_si                     =  false
-                    this.barra_de_sosten_no                     =  false
-                    this.barra_de_sosten_na                     =  true
+                if(data.access_744 == 'si'){
+                    this.access_744_si                                 =  true
+                    this.access_744_no                                 =  false
+                    this.access_744_na                                 =  false
+                }else if(data.access_744 == 'no'){            
+                    this.access_744_si                                 =  false
+                    this.access_744_no                                 =  true
+                    this.access_744_na                                 =  false
+                }else{          
+                    this.access_744_si                                 =  false
+                    this.access_744_no                                 =  false
+                    this.access_744_na                                 =  true
                 }
 
-                if(data.accesorios_sanitarios == 'si'){
-                    this.accesorios_sanitarios_si                     =  true
-                    this.accesorios_sanitarios_no                     =  false
-                    this.accesorios_sanitarios_na                     =  false
-                }else if(data.accesorios_sanitarios == 'no'){
-                    this.accesorios_sanitarios_si                     =  false
-                    this.accesorios_sanitarios_no                     =  true
-                    this.accesorios_sanitarios_na                     =  false
-                }else{
-                    this.accesorios_sanitarios_si                     =  false
-                    this.accesorios_sanitarios_no                     =  false
-                    this.accesorios_sanitarios_na                     =  true
+                if(data.access_745 == 'si'){
+                    this.access_745_si                                 =  true
+                    this.access_745_no                                 =  false
+                    this.access_745_na                                 =  false
+                }else if(data.access_745 == 'no'){            
+                    this.access_745_si                                 =  false
+                    this.access_745_no                                 =  true
+                    this.access_745_na                                 =  false
+                }else{          
+                    this.access_745_si                                 =  false
+                    this.access_745_no                                 =  false
+                    this.access_745_na                                 =  true
                 }
 
-                if(data.excusado_bano_publico == 'si'){
-                    this.excusado_bano_publico_si                     =  true
-                    this.excusado_bano_publico_no                     =  false
-                    this.excusado_bano_publico_na                     =  false
-                }else if(data.excusado_bano_publico == 'no'){
-                    this.excusado_bano_publico_si                     =  false
-                    this.excusado_bano_publico_no                     =  true
-                    this.excusado_bano_publico_na                     =  false
-                }else{
-                    this.excusado_bano_publico_si                     =  false
-                    this.excusado_bano_publico_no                     =  false
-                    this.excusado_bano_publico_na                     =  true
+                if(data.access_746 == 'si'){
+                    this.access_746_si                                 =  true
+                    this.access_746_no                                 =  false
+                    this.access_746_na                                 =  false
+                }else if(data.access_746 == 'no'){            
+                    this.access_746_si                                 =  false
+                    this.access_746_no                                 =  true
+                    this.access_746_na                                 =  false
+                }else{          
+                    this.access_746_si                                 =  false
+                    this.access_746_no                                 =  false
+                    this.access_746_na                                 =  true
                 }
 
-                if(data.urinarios == 'si'){
-                    this.urinarios_si                     =  true
-                    this.urinarios_no                     =  false
-                    this.urinarios_na                     =  false
-                }else if(data.urinarios == 'no'){
-                    this.urinarios_si                     =  false
-                    this.urinarios_no                     =  true
-                    this.urinarios_na                     =  false
-                }else{
-                    this.urinarios_si                     =  false
-                    this.urinarios_no                     =  false
-                    this.urinarios_na                     =  true
+                if(data.access_747 == 'si'){
+                    this.access_747_si                                 =  true
+                    this.access_747_no                                 =  false
+                    this.access_747_na                                 =  false
+                }else if(data.access_747 == 'no'){            
+                    this.access_747_si                                 =  false
+                    this.access_747_no                                 =  true
+                    this.access_747_na                                 =  false
+                }else{          
+                    this.access_747_si                                 =  false
+                    this.access_747_no                                 =  false
+                    this.access_747_na                                 =  true
                 }
 
-                if(data.duchas == 'si'){
-                    this.duchas_si                     =  true
-                    this.duchas_no                     =  false
-                    this.duchas_na                     =  false
-                }else if(data.duchas == 'no'){
-                    this.duchas_si                     =  false
-                    this.duchas_no                     =  true
-                    this.duchas_na                     =  false
-                }else{
-                    this.duchas_si                     =  false
-                    this.duchas_no                     =  false
-                    this.duchas_na                     =  true
+                if(data.access_748 == 'si'){
+                    this.access_748_si                                 =  true
+                    this.access_748_no                                 =  false
+                    this.access_748_na                                 =  false
+                }else if(data.access_748 == 'no'){            
+                    this.access_748_si                                 =  false
+                    this.access_748_no                                 =  true
+                    this.access_748_na                                 =  false
+                }else{          
+                    this.access_748_si                                 =  false
+                    this.access_748_no                                 =  false
+                    this.access_748_na                                 =  true
                 }
 
-                if(data.altura_cerradura_ventanas == 'si'){
-                    this.altura_cerradura_ventanas_si                     =  true
-                    this.altura_cerradura_ventanas_no                     =  false
-                    this.altura_cerradura_ventanas_na                     =  false
-                }else if(data.altura_cerradura_ventanas == 'no'){
-                    this.altura_cerradura_ventanas_si                     =  false
-                    this.altura_cerradura_ventanas_no                     =  true
-                    this.altura_cerradura_ventanas_na                     =  false
-                }else{
-                    this.altura_cerradura_ventanas_si                     =  false
-                    this.altura_cerradura_ventanas_no                     =  false
-                    this.altura_cerradura_ventanas_na                     =  true
+                if(data.access_749 == 'si'){
+                    this.access_749_si                                 =  true
+                    this.access_749_no                                 =  false
+                    this.access_749_na                                 =  false
+                }else if(data.access_749 == 'no'){            
+                    this.access_749_si                                 =  false
+                    this.access_749_no                                 =  true
+                    this.access_749_na                                 =  false
+                }else{          
+                    this.access_749_si                                 =  false
+                    this.access_749_no                                 =  false
+                    this.access_749_na                                 =  true
                 }
 
-                if(data.tomas_electricidad == 'si'){
-                    this.tomas_electricidad_si                     =  true
-                    this.tomas_electricidad_no                     =  false
-                    this.tomas_electricidad_na                     =  false
-                }else if(data.tomas_electricidad == 'no'){
-                    this.tomas_electricidad_si                     =  false
-                    this.tomas_electricidad_no                     =  true
-                    this.tomas_electricidad_na                     =  false
-                }else{
-                    this.tomas_electricidad_si                     =  false
-                    this.tomas_electricidad_no                     =  false
-                    this.tomas_electricidad_na                     =  true
+                if(data.access_7410 == 'si'){
+                    this.access_7410_si                                 =  true
+                    this.access_7410_no                                 =  false
+                    this.access_7410_na                                 =  false
+                }else if(data.access_7410 == 'no'){            
+                    this.access_7410_si                                 =  false
+                    this.access_7410_no                                 =  true
+                    this.access_7410_na                                 =  false
+                }else{          
+                    this.access_7410_si                                 =  false
+                    this.access_7410_no                                 =  false
+                    this.access_7410_na                                 =  true
                 }
 
-                if(data.lugar_de_esparcimiento == 'si'){
-                    this.lugar_de_esparcimiento_si                     =  true
-                    this.lugar_de_esparcimiento_no                     =  false
-                    this.lugar_de_esparcimiento_na                     =  false
-                }else if(data.lugar_de_esparcimiento == 'no'){
-                    this.lugar_de_esparcimiento_si                     =  false
-                    this.lugar_de_esparcimiento_no                     =  true
-                    this.lugar_de_esparcimiento_na                     =  false
-                }else{
-                    this.lugar_de_esparcimiento_si                     =  false
-                    this.lugar_de_esparcimiento_no                     =  false
-                    this.lugar_de_esparcimiento_na                     =  true
+                if(data.access_7411 == 'si'){
+                    this.access_7411_si                                 =  true
+                    this.access_7411_no                                 =  false
+                    this.access_7411_na                                 =  false
+                }else if(data.access_7411 == 'no'){            
+                    this.access_7411_si                                 =  false
+                    this.access_7411_no                                 =  true
+                    this.access_7411_na                                 =  false
+                }else{          
+                    this.access_7411_si                                 =  false
+                    this.access_7411_no                                 =  false
+                    this.access_7411_na                                 =  true
                 }
 
-                if(data.lugares_psr == 'si'){
-                    this.lugares_psr_si                     =  true
-                    this.lugares_psr_no                     =  false
-                    this.lugares_psr_na                     =  false
-                }else if(data.lugares_psr == 'no'){
-                    this.lugares_psr_si                     =  false
-                    this.lugares_psr_no                     =  true
-                    this.lugares_psr_na                     =  false
-                }else{
-                    this.lugares_psr_si                     =  false
-                    this.lugares_psr_no                     =  false
-                    this.lugares_psr_na                     =  true
+                if(data.access_7412 == 'si'){
+                    this.access_7412_si                                 =  true
+                    this.access_7412_no                                 =  false
+                    this.access_7412_na                                 =  false
+                }else if(data.access_7412 == 'no'){            
+                    this.access_7412_si                                 =  false
+                    this.access_7412_no                                 =  true
+                    this.access_7412_na                                 =  false
+                }else{          
+                    this.access_7412_si                                 =  false
+                    this.access_7412_no                                 =  false
+                    this.access_7412_na                                 =  true
                 }
+
+                if(data.access_74121 == 'si'){
+                    this.access_74121_si                                 =  true
+                    this.access_74121_no                                 =  false
+                    this.access_74121_na                                 =  false
+                }else if(data.access_74121 == 'no'){            
+                    this.access_74121_si                                 =  false
+                    this.access_74121_no                                 =  true
+                    this.access_74121_na                                 =  false
+                }else{          
+                    this.access_74121_si                                 =  false
+                    this.access_74121_no                                 =  false
+                    this.access_74121_na                                 =  true
+                }
+
+                if(data.access_74122 == 'si'){
+                    this.access_74122_si                                 =  true
+                    this.access_74122_no                                 =  false
+                    this.access_74122_na                                 =  false
+                }else if(data.access_74122 == 'no'){            
+                    this.access_74122_si                                 =  false
+                    this.access_74122_no                                 =  true
+                    this.access_74122_na                                 =  false
+                }else{          
+                    this.access_74122_si                                 =  false
+                    this.access_74122_no                                 =  false
+                    this.access_74122_na                                 =  true
+                }
+
+                if(data.access_74123 == 'si'){
+                    this.access_74123_si                                 =  true
+                    this.access_74123_no                                 =  false
+                    this.access_74123_na                                 =  false
+                }else if(data.access_74123 == 'no'){            
+                    this.access_74123_si                                 =  false
+                    this.access_74123_no                                 =  true
+                    this.access_74123_na                                 =  false
+                }else{          
+                    this.access_74123_si                                 =  false
+                    this.access_74123_no                                 =  false
+                    this.access_74123_na                                 =  true
+                }
+
+                if(data.access_74124 == 'si'){
+                    this.access_74124_si                                 =  true
+                    this.access_74124_no                                 =  false
+                    this.access_74124_na                                 =  false
+                }else if(data.access_74124 == 'no'){            
+                    this.access_74124_si                                 =  false
+                    this.access_74124_no                                 =  true
+                    this.access_74124_na                                 =  false
+                }else{          
+                    this.access_74124_si                                 =  false
+                    this.access_74124_no                                 =  false
+                    this.access_74124_na                                 =  true
+                }
+
+                if(data.access_74125 == 'si'){
+                    this.access_74125_si                                 =  true
+                    this.access_74125_no                                 =  false
+                    this.access_74125_na                                 =  false
+                }else if(data.access_74125 == 'no'){            
+                    this.access_74125_si                                 =  false
+                    this.access_74125_no                                 =  true
+                    this.access_74125_na                                 =  false
+                }else{          
+                    this.access_74125_si                                 =  false
+                    this.access_74125_no                                 =  false
+                    this.access_74125_na                                 =  true
+                }
+
+                if(data.access_74126 == 'si'){
+                    this.access_74126_si                                 =  true
+                    this.access_74126_no                                 =  false
+                    this.access_74126_na                                 =  false
+                }else if(data.access_74126 == 'no'){            
+                    this.access_74126_si                                 =  false
+                    this.access_74126_no                                 =  true
+                    this.access_74126_na                                 =  false
+                }else{          
+                    this.access_74126_si                                 =  false
+                    this.access_74126_no                                 =  false
+                    this.access_74126_na                                 =  true
+                }
+
+                if(data.access_74127 == 'si'){
+                    this.access_74127_si                                 =  true
+                    this.access_74127_no                                 =  false
+                    this.access_74127_na                                 =  false
+                }else if(data.access_74127 == 'no'){            
+                    this.access_74127_si                                 =  false
+                    this.access_74127_no                                 =  true
+                    this.access_74127_na                                 =  false
+                }else{          
+                    this.access_74127_si                                 =  false
+                    this.access_74127_no                                 =  false
+                    this.access_74127_na                                 =  true
+                }
+
+                if(data.access_74131 == 'si'){
+                    this.access_74131_si                                 =  true
+                    this.access_74131_no                                 =  false
+                    this.access_74131_na                                 =  false
+                }else if(data.access_74131 == 'no'){            
+                    this.access_74131_si                                 =  false
+                    this.access_74131_no                                 =  true
+                    this.access_74131_na                                 =  false
+                }else{          
+                    this.access_74131_si                                 =  false
+                    this.access_74131_no                                 =  false
+                    this.access_74131_na                                 =  true
+                }
+
+                if(data.access_74132 == 'si'){
+                    this.access_74132_si                                 =  true
+                    this.access_74132_no                                 =  false
+                    this.access_74132_na                                 =  false
+                }else if(data.access_74132 == 'no'){            
+                    this.access_74132_si                                 =  false
+                    this.access_74132_no                                 =  true
+                    this.access_74132_na                                 =  false
+                }else{          
+                    this.access_74132_si                                 =  false
+                    this.access_74132_no                                 =  false
+                    this.access_74132_na                                 =  true
+                }
+
+                if(data.access_74133 == 'si'){
+                    this.access_74133_si                                 =  true
+                    this.access_74133_no                                 =  false
+                    this.access_74133_na                                 =  false
+                }else if(data.access_74133 == 'no'){            
+                    this.access_74133_si                                 =  false
+                    this.access_74133_no                                 =  true
+                    this.access_74133_na                                 =  false
+                }else{          
+                    this.access_74133_si                                 =  false
+                    this.access_74133_no                                 =  false
+                    this.access_74133_na                                 =  true
+                }
+
+                if(data.access_74134 == 'si'){
+                    this.access_74134_si                                 =  true
+                    this.access_74134_no                                 =  false
+                    this.access_74134_na                                 =  false
+                }else if(data.access_74134 == 'no'){            
+                    this.access_74134_si                                 =  false
+                    this.access_74134_no                                 =  true
+                    this.access_74134_na                                 =  false
+                }else{          
+                    this.access_74134_si                                 =  false
+                    this.access_74134_no                                 =  false
+                    this.access_74134_na                                 =  true
+                }
+
+                if(data.access_74141 == 'si'){
+                    this.access_74141_si                                 =  true
+                    this.access_74141_no                                 =  false
+                    this.access_74141_na                                 =  false
+                }else if(data.access_74141 == 'no'){            
+                    this.access_74141_si                                 =  false
+                    this.access_74141_no                                 =  true
+                    this.access_74141_na                                 =  false
+                }else{          
+                    this.access_74141_si                                 =  false
+                    this.access_74141_no                                 =  false
+                    this.access_74141_na                                 =  true
+                }
+
+                if(data.access_74142 == 'si'){
+                    this.access_74142_si                                 =  true
+                    this.access_74142_no                                 =  false
+                    this.access_74142_na                                 =  false
+                }else if(data.access_74142 == 'no'){            
+                    this.access_74142_si                                 =  false
+                    this.access_74142_no                                 =  true
+                    this.access_74142_na                                 =  false
+                }else{          
+                    this.access_74142_si                                 =  false
+                    this.access_74142_no                                 =  false
+                    this.access_74142_na                                 =  true
+                }
+
+                if(data.access_74143 == 'si'){
+                    this.access_74143_si                                 =  true
+                    this.access_74143_no                                 =  false
+                    this.access_74143_na                                 =  false
+                }else if(data.access_74143 == 'no'){            
+                    this.access_74143_si                                 =  false
+                    this.access_74143_no                                 =  true
+                    this.access_74143_na                                 =  false
+                }else{          
+                    this.access_74143_si                                 =  false
+                    this.access_74143_no                                 =  false
+                    this.access_74143_na                                 =  true
+                }
+
+                if(data.pictograma == 'si'){
+                    this.pictograma_si                                 =  true
+                    this.pictograma_no                                 =  false
+                    this.pictograma_na                                 =  false
+                }else if(data.pictograma == 'no'){            
+                    this.pictograma_si                                 =  false
+                    this.pictograma_no                                 =  true
+                    this.pictograma_na                                 =  false
+                }else{          
+                    this.pictograma_si                                 =  false
+                    this.pictograma_no                                 =  false
+                    this.pictograma_na                                 =  true
+                }
+
+               
             }
            
      },
