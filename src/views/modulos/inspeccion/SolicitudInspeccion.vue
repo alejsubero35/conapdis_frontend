@@ -169,7 +169,7 @@ export default class Usuario extends Vue {
         this.overlay = false 
     }
     async setQueryPage(page:number){
-        console.log(page)
+ 
     }
     mounted(){
         this.dataIndex()

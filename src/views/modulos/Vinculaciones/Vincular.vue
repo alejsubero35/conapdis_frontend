@@ -201,7 +201,7 @@
 		  <v-card-title class="text-h5">
 			Desvincular Persona 
 		  </v-card-title>
-          <v-card-body>
+    
             <v-col cols="12" sm="12" md="12">
                 <v-menu
                     v-model="menu"
@@ -241,7 +241,7 @@
                 rows="2"
             ></v-textarea>
             </v-col>
-		  </v-card-body>
+	
   
 		  <v-card-actions>
 			<v-spacer></v-spacer>

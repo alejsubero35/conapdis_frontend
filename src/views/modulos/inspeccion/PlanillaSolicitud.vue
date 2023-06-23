@@ -188,7 +188,7 @@
              this.$refs.html2Pdf.generatePdf()
          },
          onProgress(event){
-             //console.log(event)
+          
          },
          formatofecha(fecha) {
              var date = new Date(fecha);

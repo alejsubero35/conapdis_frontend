@@ -1079,7 +1079,7 @@
              this.$refs.html2Pdf.generatePdf()
          },
          onProgress(event){
-             //console.log(event)
+            
          },
          formatofecha(fecha) {
              var date = new Date(fecha);
@@ -1089,7 +1089,7 @@
         async getOrderingBallotById(id){  
             this.overlay = true
             const {data} = await orderingModule.getOrderingBallotById(id)   
-            console.log(data)
+            
             this.numeroboleta               = data.data.num_boleta
             this.fechaguia                  = data.data.date
             this.hour                       = data.data.hour

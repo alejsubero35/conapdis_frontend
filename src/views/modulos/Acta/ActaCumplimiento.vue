@@ -146,7 +146,7 @@ export default class Usuario extends Vue {
             this.snackbar = false
         },2000);
     }
-    handleDataUser(event){console.log(event)
+    handleDataUser(event){
         this.desserts = event;
         this.loadTable = false;
     }
@@ -167,7 +167,7 @@ export default class Usuario extends Vue {
         this.overlay = false 
     }
     async setQueryPage(page:number){
-        console.log(page)
+     
     }
     mounted(){
         this.dataIndex()

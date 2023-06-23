@@ -76,11 +76,6 @@ import {
 		.then((payload: any) => {
 			if(payload){
 				dataStatement.code = payload.status
-				const busine: any     = payload.data.data
-				storageData.set('_bussines', busine);
-				this.context.commit('setBussines', busine);
-
-				//this.changeActive()
 			} else {
 				dataStatement.code = 500;
 				dataStatement.message = 'Error al procesar la Solicitud';

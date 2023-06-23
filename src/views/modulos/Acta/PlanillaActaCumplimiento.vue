@@ -313,7 +313,7 @@
         },
         async getCompliancesById(id){
             const {data} = await compliancesModule.getCompliancesById(id);
-            console.log(data)
+         
             this.numacta        = data.data.num_acta
             this.date           = data.data.date
             this.hour           = data.data.hour

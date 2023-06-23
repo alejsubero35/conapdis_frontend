@@ -31,6 +31,7 @@
                         :rules="rulesNum"
                         v-model="dataForm.cantidad_postula_oferta"
                         type="number"
+                        min="0"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6"	md="4">
@@ -41,6 +42,7 @@
                         dense
                         v-model="dataForm.experiencia_postula_oferta"
                         type="number"
+                        min="0"
                     ></v-text-field>
                 </v-col>
             </v-row>

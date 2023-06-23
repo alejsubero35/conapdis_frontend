@@ -142,7 +142,7 @@ export default class Usuario extends Vue {
         this.dialogDelete = event;
         //this.overlay = true
         const res : any = await inspeccionModule.delete(this.id_delete);
-        console.log(res.data.data)
+
         dataUpdate = res.data.data
         this.desserts = dataUpdate;
         this.textmsj = 'Usuario Eliminado con Éxito.'
@@ -155,7 +155,7 @@ export default class Usuario extends Vue {
             this.snackbar = false
         },2000);
     }
-    handleDataUser(event){console.log(event)
+    handleDataUser(event){
         this.desserts = event;
         this.loadTable = false;
     }
@@ -176,7 +176,7 @@ export default class Usuario extends Vue {
         this.overlay = false 
     }
     async setQueryPage(page:number){
-        console.log(page)
+     
     }
     mounted(){
         this.dataIndex()

@@ -272,7 +272,6 @@ export default class EditarCliente extends Vue {
         this.dataForm.fecha_propuesta_formacion_solicitud = this.date
     }
 	onSubmit() {
-        console.log(this.FormRequest)
         const valid :any =  this.$refs.dataForm.validate();
 
         if (valid) {
@@ -348,7 +347,6 @@ export default class EditarCliente extends Vue {
     }
     async getRequestTraining(id){
         const data : any = await formacionModule.getRequestById(id)
-        console.log(data)
         this.dataForm = data.data
     }
     mounted(){
