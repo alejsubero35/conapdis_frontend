@@ -27,7 +27,7 @@ import {
 
     @Action({rawError: true})
     async searchCertificatePerson(query) { 
-        const response =  await http.get(`/positions/search_person_certificate/${query}`)
+        const response =  await http.get(`/certifications/search_person_certificate/${query}`)
         return response;
     }
     @Action({rawError: true})

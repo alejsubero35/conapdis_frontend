@@ -42,7 +42,7 @@
                                     </v-overlay>
                                     <v-list-item>
                                         <v-list-item-content>
-                                            <v-text-field v-model="searchTerm" placeholder="Buscar Persona Certificada"   @keyup.enter="searchCertificatePerson" autofocus ></v-text-field>
+                                            <v-text-field type="number" min="1" v-model="searchTerm" placeholder="Buscar Persona Certificada"   @keyup.enter="searchCertificatePerson" autofocus ></v-text-field>
                                         </v-list-item-content>
                                     </v-list-item>
                                     <v-divider ></v-divider>
@@ -89,6 +89,23 @@
                                     </v-menu>
                                 </v-col>
                             </v-row>
+                             <!-- <div class="error"  v-if="!tieneCertificado">
+                                <p ng-message="nopossecertificado">No posee Certificado!</p>
+                            </div>
+                            <div class="error"  v-if="!personaExiste">
+                                <p ng-message="personaexiste">Persona no encontrada!</p>
+                            </div>
+                                                    
+                            <div class="error"  v-if="trabajaActualmente">
+                                <p ng-message="activoactualmente">La persona tiene un registro activo con otra empresa!</p>
+                            </div>
+
+                            <div class="error"  v-if="trabajaActualmenteEnsuEmpresa">
+                                <p ng-message="activoactualmenteenlaempresa">La persona tiene un registro activo con su empresa!</p>
+                            </div>
+                            <div class="error"  v-if="vencido">
+                                <p ng-message="vencido">La persona tiene el certificado vencido!</p>
+                            </div> -->
                             <v-row>
                                 <v-col cols="12" sm="6" md="4">
                                     <v-select
@@ -111,6 +128,7 @@
                                         :rules="rules"
                                         v-model="vincularform.sueldo"
                                         type="number"
+                                        min="0"
                                         value="0.00"
                                     ></v-text-field>
                                 </v-col>
@@ -315,6 +333,12 @@ export default class Bussines extends Vue {
 		message:'', 
 	}
     loadingWizard = false
+    clear = true
+    tieneCertificado = false
+    trabajaActualmente = false
+    personaExiste = false
+    NoIngFechaEgreso = false
+    tabSelectedIndex = 0
 
     agente_retencion = ''
     snackbar = false
@@ -380,6 +404,37 @@ export default class Bussines extends Vue {
         if(data.data.length > 0){
             this.arrayCustomers = data.data
 		    this.isLoading = false
+            this.personaExiste = true
+                                
+                if(data.data.certificado){
+                    this.tieneCertificado=true;
+                   // this.modelo.certificado=response.data[0].certificado;
+                    //this.modelo.idpersona=  response.data[0].id;        
+                }else{
+                    //this.modelo.certificado="";
+                    this.tieneCertificado=false;
+
+                }
+                if(data.data.trabajaactualmente=="Si"){
+                    this.trabajaActualmente=true; 
+
+                }else{
+                    this.trabajaActualmente=false;                        
+                }
+                if(data.data.trabajaactualmenteenlaempresa=="Si"){
+                    this.trabajaActualmenteEnsuEmpresa=true; 
+
+                }else{
+                    this.trabajaActualmenteEnsuEmpresa=false;                        
+                }
+                if(data.data.vencido=="Si"){
+                    this.vencido=true; 
+
+                }else{
+                    this.vencido=false;                        
+                }
+
+
         }else{
             this.dialogOpen = true
             this.isLoading = false
