@@ -312,9 +312,6 @@ import {
 	  
 				  if(payload){
 					  dataDocuments.code = payload.status
-					  const busine: any     = payload.data.data
-					  storageData.set('_bussines', busine);
-					  this.context.commit('setBussines', busine);
 				  } else {
 					  dataDocuments.code = 500;
 					  dataDocuments.message = 'Error al procesar la Solicitud';
