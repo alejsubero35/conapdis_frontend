@@ -31,6 +31,7 @@
                                     required
                                     @change="getPersonCertificate($event)"
                                     return-object
+                                   
                                     >        
                                     <template v-slot:prepend-item>
                                     <v-overlay :value="isLoading">
@@ -48,6 +49,11 @@
                                     <v-divider ></v-divider>
                                     </template>
                                     </v-select>
+                                    <!--  <span v-if="tieneCertificado" class="d-flex justify-end" style="margin-top:-12px;color: red">No Posee Certificado</span>
+                                     <span v-if="personaExiste" class="d-flex justify-end" style="margin-top:-12px;color: red">Persona no encontrada</span>
+                                     <span v-if="trabajaActualmente" class="d-flex justify-end" style="margin-top:-12px;color: red">La persona tiene registro activo con otra empresa</span>
+                                     <span v-if="trabajaActualmenteEnsuEmpresa" class="d-flex justify-end" style="margin-top:-12px;color: red">La persona tiene registro activo con su empresa</span>
+                                     <span v-if="vencido" class="d-flex justify-end" style="margin-top:-12px;color: red">La persona tiene el certificado Vencido</span> -->
                                 </v-col>
                                 <v-col cols="12" sm="6" md="4">
                                     <v-text-field
@@ -89,23 +95,7 @@
                                     </v-menu>
                                 </v-col>
                             </v-row>
-                             <!-- <div class="error"  v-if="!tieneCertificado">
-                                <p ng-message="nopossecertificado">No posee Certificado!</p>
-                            </div>
-                            <div class="error"  v-if="!personaExiste">
-                                <p ng-message="personaexiste">Persona no encontrada!</p>
-                            </div>
-                                                    
-                            <div class="error"  v-if="trabajaActualmente">
-                                <p ng-message="activoactualmente">La persona tiene un registro activo con otra empresa!</p>
-                            </div>
-
-                            <div class="error"  v-if="trabajaActualmenteEnsuEmpresa">
-                                <p ng-message="activoactualmenteenlaempresa">La persona tiene un registro activo con su empresa!</p>
-                            </div>
-                            <div class="error"  v-if="vencido">
-                                <p ng-message="vencido">La persona tiene el certificado vencido!</p>
-                            </div> -->
+                 
                             <v-row>
                                 <v-col cols="12" sm="6" md="4">
                                     <v-select
@@ -288,7 +278,7 @@
                 Notificación
             </v-card-title>
             <v-card-text>
-                Esta Cédula no esta Certificada 
+                {{ contentModal }} 
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -337,6 +327,8 @@ export default class Bussines extends Vue {
     tieneCertificado = false
     trabajaActualmente = false
     personaExiste = false
+    trabajaActualmenteEnsuEmpresa = false
+    vencido = false
     NoIngFechaEgreso = false
     tabSelectedIndex = 0
 
@@ -370,6 +362,7 @@ export default class Bussines extends Vue {
     isLoading       = false;
     arrayCustomers  = []
     fullname        = ''
+    contentModal    = ''
 	$refs!: {
         vincularform: InstanceType<typeof ValidationObserver>;
         desvincularform: InstanceType<typeof ValidationObserver>;			
@@ -400,53 +393,49 @@ export default class Bussines extends Vue {
     async searchCertificatePerson(val) {
 		this.isLoading = true
 		const data : any = await linkedModule.searchCertificatePerson(this.searchTerm);
-  
-        if(data.data.length > 0){
-            this.arrayCustomers = data.data
-		    this.isLoading = false
-            this.personaExiste = true
-                                
-                if(data.data.certificado){
-                    this.tieneCertificado=true;
-                   // this.modelo.certificado=response.data[0].certificado;
-                    //this.modelo.idpersona=  response.data[0].id;        
-                }else{
-                    //this.modelo.certificado="";
-                    this.tieneCertificado=false;
-
-                }
-                if(data.data.trabajaactualmente=="Si"){
-                    this.trabajaActualmente=true; 
-
-                }else{
-                    this.trabajaActualmente=false;                        
-                }
-                if(data.data.trabajaactualmenteenlaempresa=="Si"){
-                    this.trabajaActualmenteEnsuEmpresa=true; 
-
-                }else{
-                    this.trabajaActualmenteEnsuEmpresa=false;                        
-                }
-                if(data.data.vencido=="Si"){
-                    this.vencido=true; 
-
-                }else{
-                    this.vencido=false;                        
-                }
-
-
+        console.log(data)
+  console.log(data.data.trabajaactualmenteenlaempresa )
+        if(data.data.length > 0){                            
+            if(data.data[0].certificado == ''){
+                this.tieneCertificado=true;
+                this.dialogOpen = true
+                this.contentModal = 'No posee Certificado'
+                this.searchTerm = ''
+                this.isLoading = false          
+            }else if(data.data[0].trabajaactualmente == "Si"){
+                this.trabajaActualmente=true; 
+                this.dialogOpen = true
+                this.contentModal = 'La persona tiene un registro activo con otra empresa'
+                this.searchTerm = '' 
+                this.isLoading = false   
+            }else if(data.data[0].trabajaactualmenteenlaempresa == "Si"){
+                this.trabajaActualmenteEnsuEmpresa=true; 
+                this.dialogOpen = true
+                this.contentModal = 'La persona tiene un registro activo con su empresa'
+                this.searchTerm = '' 
+                this.isLoading = false  
+            }else if(data.data[0].vencido == "Si"){
+                this.vencido=true; 
+                this.dialogOpen = true
+                this.contentModal = 'La persona tiene el certificado vencido'
+                this.searchTerm = '' 
+                this.isLoading = false  
+            }else{
+                this.arrayCustomers = data.data
+                this.isLoading = false                   
+            }
         }else{
+            this.searchTerm = '' 
+            this.isLoading = false 
             this.dialogOpen = true
-            this.isLoading = false
-            this.searchTerm = ''
+            this.contentModal = 'Esta Cédula NO se encuentra registrada en la BD.' 
         }
 
 	}
     getPersonCertificate(event){
         this.fullname = event.nombres+' '+event.apellidos
         this.vincularform.personas_discapacidad_id = event.id
-        this.vincularform.empresa_id = storageData.get('_bussines_id') 
-    
+        this.vincularform.empresa_id = storageData.get('_bussines_id')     
     }
     async getPositionAll(){
 		const position : any = await linkedModule.getPositionAll()
@@ -467,6 +456,7 @@ export default class Bussines extends Vue {
 			this.snackbar = true
 			this.back();
             this.reset(); 
+            this.arrayCustomers = []
 			this.overlay = false 
 		} else {
 			this.textmsj = 'Error al Registrar los datos de la Empresa.'

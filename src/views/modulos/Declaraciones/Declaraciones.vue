@@ -303,8 +303,8 @@ export default class Bussines extends Vue {
         const statementAll : any = await  statementsModule.getStatementByBussine(storageData.get('_bussines_id'))
         this.desserts = statementAll.data
     }
-    imprimir(item){
-
+    imprimir(item){console.log(item)
+        this.$router.push({ name: "planilladeclaracion", params: { item: item } });
     }
 	reset () {
         this.$refs.validateStepForm.reset()
