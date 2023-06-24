@@ -152,7 +152,7 @@
                                         <v-data-table
                                             :headers="headers"
                                             :items="desserts" 
-                                            class="elevation-1"  
+                                            class="elevation-1 table-one"
                                             no-data-text="No hay datos disponibles"  
                                             :footer-props="{
                                                 'items-per-page-options': [5, 10 -1],
@@ -165,14 +165,14 @@
                                                 <v-tooltip v-if="item.trabajo_hasta == null" top>
                                                     <template v-slot:activator="{on, attrs}">
                                                         <v-btn
-                                                            color="success"
+                                                            color="error"
                                                             dark
                                                             v-bind="attrs"
                                                             v-on="on"
                                                             icon
                                                             @click="openDialog(item)"   
                                                         >
-                                                            <v-icon>mdi-close-box-outline</v-icon>
+                                                            <v-icon>mdi-account-multiple-minus-outline</v-icon>
                                                         </v-btn>
                                                     </template>
                                                     <span>Desvincular</span>
@@ -180,13 +180,13 @@
                                                 <v-tooltip v-else top>
                                                     <template v-slot:activator="{on, attrs}">
                                                         <v-btn
-                                                            color="error"
+                                                            color="success"
                                                             dark
                                                             v-bind="attrs"
                                                             v-on="on"
                                                             icon
                                                         >
-                                                            <v-icon>mdi-account-arrow-right</v-icon>
+                                                            <v-icon>mdi-account-network-off</v-icon>
                                                         </v-btn>
                                                     </template>
                                                     <span>Persona Desvinculada</span>
@@ -206,6 +206,13 @@
 		<v-dialog
 		v-model="dialog" max-width="400">
 		<v-card>
+            <v-overlay :value="overlayDialog">
+                <v-progress-circular
+                    indeterminate
+                    size="44"
+                    class="laoding"
+                ></v-progress-circular>
+            </v-overlay>
 		  <v-card-title class="text-h5">
 			Desvincular Persona 
 		  </v-card-title>
@@ -310,6 +317,7 @@ import storageData from '@/store/services/storageService'
 export default class Bussines extends Vue {
 [x: string]: unknown;
 	overlay = false;
+    overlayDialog = false
 	title : string = '';
 	subtitle : string = ''
 	validateStepForm : any = {inactivo: '1'};
@@ -393,8 +401,7 @@ export default class Bussines extends Vue {
     async searchCertificatePerson(val) {
 		this.isLoading = true
 		const data : any = await linkedModule.searchCertificatePerson(this.searchTerm);
-        console.log(data)
-  console.log(data.data.trabajaactualmenteenlaempresa )
+
         if(data.data.length > 0){                            
             if(data.data[0].certificado == ''){
                 this.tieneCertificado=true;
@@ -480,7 +487,7 @@ export default class Bussines extends Vue {
         this.update()
     }
 	async update(){
- 		this.overlay = true
+ 		this.overlayDialog = true
     	const data = await linkedModule.update(this.FormRequestDesvincular)
 	
 		if(data.code == 200){
@@ -491,13 +498,13 @@ export default class Bussines extends Vue {
             this.getPersonLinked()
 			this.back();
             this.desvincularform.motivo = ''
-			this.overlay    = false 		
+			this.overlayDialog    = false 		
 		} else {
 			this.textmsj    = 'Error al Actualizar los datos de la Empresa.'
 			this.color      = 'error'
 			this.snackbar   = true
 			this.backError();
-			this.overlay    = false 
+			this.overlayDialog    = false 
 		}       
 	}
 
