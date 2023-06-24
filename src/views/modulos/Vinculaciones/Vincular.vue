@@ -435,7 +435,7 @@ export default class Bussines extends Vue {
             this.searchTerm = '' 
             this.isLoading = false 
             this.dialogOpen = true
-            this.contentModal = 'Esta Cédula NO se encuentra registrada en la BD.' 
+            this.contentModal = 'Esta Cédula NO se encuentra registrada.' 
         }
 
 	}

@@ -230,6 +230,7 @@ export default class Bussines extends Vue {
             this.declararform.periodo = event
             this.declararform.empresa_id = storageData.get('_bussines_id') 
             this.calcularporcentaje()
+            this.disabled = false
         }
 
     }
