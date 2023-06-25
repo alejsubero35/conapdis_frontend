@@ -70,6 +70,21 @@ import {
             })
         }) 
     }
+     @Action
+    cerrarOferta(id) {
+        return new Promise((resolve, reject) => {  
+            http.post(`/positions/cerrar_ofert/${id}`)
+            .then(response =>  {
+                if (response.status === 200) {     
+                    resolve(response); 
+                }
+            })
+            .catch(error => {
+                reject(error)
+            })
+        }) 
+    }
+    
     @Action
     getCharges() {
         return new Promise((resolve, reject) => {  

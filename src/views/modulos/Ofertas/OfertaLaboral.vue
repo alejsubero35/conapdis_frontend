@@ -52,7 +52,7 @@
                             <v-tooltip top>
                                 <template v-slot:activator="{on, attrs}">
                                     <v-btn
-                                        color="warning"
+                                        color="primary"
                                         dark
                                         @click="postulantes(item)"   
                                         icon
@@ -63,6 +63,21 @@
                                     </v-btn>
                                 </template>
                                 <span>Ver Postulantes</span>
+                            </v-tooltip>
+                            <v-tooltip top>
+                                <template v-slot:activator="{on, attrs}">
+                                    <v-btn
+                                        color="warning"
+                                        dark
+                                        @click="cerrarOferta(item)"   
+                                        icon
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >
+                                        <v-icon>mdi-account-multiple-remove</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Cerrar Oferta</span>
                             </v-tooltip>
                             <v-tooltip top>
                                 <template v-slot:activator="{on, attrs}">
@@ -85,6 +100,7 @@
             </template>
         </v-col>
         <ModalDelete @deleteData="deleteData" :titlemodal="titlemodal" :textbody="textbody" :dialogDelete="dialogDelete" @cerrarModal="cerrarModal"/>
+        <ModalDelete @cerrarOfertaData="cerrarOfertaData" :titlemodal="titlemodal" :textbody="textbody" :dialogDelete="dialogDelete" @cerrarModal="cerrarModal"/>
         <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color"/>
     </v-row>
 </template>
@@ -124,6 +140,7 @@ export default class Usuario extends Vue {
     tituloModal : string = ''
     dataEditForm : object = {}
     id_delete = ''
+    id_cerar_oferta = ''
     snackbar = false
     textmsj = ''
     color = ''
@@ -153,6 +170,12 @@ export default class Usuario extends Vue {
         this.titlemodal = 'Eliminar Registro de Oferta'
         this.id_delete = item.id_postula_oferta
     }
+    cerrarOferta(item){
+        this.dialogDelete = true;
+        this.textbody = 'Confirme que desea Cerrar la Oferta'
+        this.titlemodal = 'Cerrar Oferta Laboral'
+        this.id_cerar_oferta = item.id_postula_oferta
+    }
     editar(item){
         this.$router.push({ name: "editarofertalaboral", params: { id: item.id_postula_oferta } });
     }
@@ -160,7 +183,22 @@ export default class Usuario extends Vue {
     cerrarModal(event){
         this.dialogDelete = event;
     }
-     async deleteData(event){
+     async cerrarOfertaData(event){
+      
+        this.overlay = true
+        console.log( this.id_cerar_oferta )
+        const res : any = await ofertModule.cerrarOferta(this.id_cerar_oferta);
+        if(res.status == 200){
+            this.dialogDelete = event;
+            this.dataIndex()
+            this.color = 'success'
+            this.textmsj = 'Oferta Cerrar con Éxito.'
+            this.snackbar = true
+            this.closeSnackbar()
+            this.overlay = false
+        }
+    } 
+    async deleteData(event){
       
         this.overlay = true
         const res : any = await ofertModule.delete(this.id_delete);
@@ -173,7 +211,7 @@ export default class Usuario extends Vue {
             this.closeSnackbar()
             this.overlay = false
         }
-    } 
+    }
     closeSnackbar(){
         setTimeout(() => {
             this.snackbar = false
