@@ -174,11 +174,19 @@ export default class Usuario extends Vue {
         this.id_delete = item.id_postula_oferta
     }
     cerrarOferta(item,value){
-        this.validateAction = value
-        this.dialogDelete = true;
-        this.textbody = 'Confirme que desea Cerrar la Oferta'
-        this.titlemodal = 'Cerrar Oferta Laboral'
-        this.id_cerrar_oferta = item.id_postula_oferta
+        if(item.cantidadPostulantes == 0){
+            this.validateAction = value
+            this.dialogDelete = true;
+            this.textbody = 'Confirme que desea Cerrar la Oferta'
+            this.titlemodal = 'Cerrar Oferta Laboral'
+            this.id_cerrar_oferta = item.id_postula_oferta
+        }else{
+            this.color = 'warning'
+            this.textmsj = 'Esta Oferta tiene postulantes asignados por tanto NO puede ser Cerrada.'
+            this.snackbar = true
+            this.closeSnackbar()
+        }
+
     }
     editar(item){
         this.$router.push({ name: "editarofertalaboral", params: { id: item.id_postula_oferta } });
