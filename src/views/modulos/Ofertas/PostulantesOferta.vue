@@ -56,6 +56,56 @@
                                   'items-per-page-text':'Filtro por Página'       
                               }"                     
                           >
+                          <template v-slot:item.action="{ item }">
+
+                        <div class="d-flex">
+                            <v-tooltip top>
+                                <template v-slot:activator="{on, attrs}">
+                                    <v-btn
+                                        color="success"
+                                        dark
+                                        @click="viewPDF(item.id)"   
+                                        icon
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >
+                                        <v-icon>mdi-eye</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Ver Acta de Cumplimiento</span>
+                            </v-tooltip>
+                            <v-tooltip top>
+                                <template v-slot:activator="{on, attrs}">
+                                    <v-btn
+                                        color="success"
+                                        dark
+                                        @click="editar(item)"   
+                                        icon
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >
+                                        <v-icon>mdi-eye-circle</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Ver Oferta</span>
+                            </v-tooltip>
+                            <v-tooltip top>
+                                <template v-slot:activator="{on, attrs}">
+                                    <v-btn
+                                        color="error"
+                                        dark
+                                        @click="eliminar(item)"   
+                                        icon
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >
+                                        <v-icon>mdi-trash-can-outline</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Eliminar</span>
+                            </v-tooltip>
+                        </div>
+                    </template>
                           </v-data-table>
                       </template>
                   </v-col>
@@ -142,6 +192,66 @@ export default class EditarCliente extends Vue {
     go() {
         this.$router.go(-1)
     }
+
+    openView(){
+        this.$router.push({ name: "crearofertalaboral"});
+    }
+
+    eliminar(item){
+        this.dialogDelete = true;
+        this.textbody = 'Confirme que desea eliminar la Oferta'
+        this.titlemodal = 'Eliminar Registro de Oferta'
+        this.id_delete = item.id_postula_oferta
+    }
+    
+    editar(item){
+        this.$router.push({ name: "editarofertalaboral", params: { id: item.id_postula_oferta } });
+    }
+
+    cerrarModal(event){
+        this.dialogDelete = event;
+    } 
+    async deleteData(event){
+      
+        this.overlay = true
+        const res : any = await ofertModule.delete(this.id_delete);
+        if(res.status == 200){
+            this.dialogDelete = event;
+            this.dataIndex()
+            this.color = 'success'
+            this.textmsj = 'Usuario Eliminado con Éxito.'
+            this.snackbar = true
+            this.closeSnackbar()
+            this.overlay = false
+        }
+    }
+    closeSnackbar(){
+        setTimeout(() => {
+            this.snackbar = false
+        },2000);
+    }
+    handleDataUser(event){
+        this.desserts = event;
+        this.loadTable = false;
+    }
+    currentDate() {
+        var date = new Date();
+        return  date.toISOString();
+    }
+
+    viewPDF(id) {
+        this.$router.push({ name: "planillaboletaordenamiento", params: { id: id } });
+    }
+   
+    async dataIndex(){  
+        this.overlay = true
+            let paginateData : any = [];
+            const data : any = await ofertModule.getAll()  
+            this.desserts = data.data
+        this.overlay = false 
+    }
+
+    
     mounted(){
         this.getPostulantesAll(this.$route.params.id); 
         this.getOferta(this.$route.params.id)
