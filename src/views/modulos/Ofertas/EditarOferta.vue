@@ -36,6 +36,7 @@
                         return-object
                         @change="getChargeObject($event)"
                         v-model="cargo_id"
+                        readonly
                     ></v-select>
                 </v-col>
                 <v-col cols="12" sm="6"	md="6">
@@ -53,6 +54,7 @@
                         return-object
                         @change="getProfesionObject($event)"
                         v-model="profesion_id"
+                        readonly
                     ></v-select>
                 </v-col>
  

@@ -46,7 +46,7 @@ import {
     @Action
 	async update(dataOfert: any) { 
 		await http.post(`positions/unlinked`, dataOfert)
-		.then((payload: any) => {console.log(payload)
+		.then((payload: any) => {
 			if(payload){
 				dataOfert.code = payload.status
 			} else {
@@ -155,7 +155,6 @@ import {
         return new Promise((resolve, reject) => {  
             http.get(`/positions/get_discapacidades`)
             .then(response =>  {
-                console.log(response)
                 if (response.status === 200) {     
                     resolve(response); 
                 }
