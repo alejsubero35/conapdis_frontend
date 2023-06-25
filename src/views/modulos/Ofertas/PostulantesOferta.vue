@@ -96,12 +96,12 @@ export default class EditarCliente extends Vue {
     cargo_id = ''
     profesion_id = ''
     headers = [
-        {text: 'Doc.Identificación', value: 'cedula'},
-        {text: 'PCD ', value: 'fullname'},
-        {text: 'Profesión', value: 'profesion'},
-        {text: 'Grado Instrucción', value: 'grado'},
+        {text: 'Doc.Identificación', value: 'cedula_postula_pcd'},
+        {text: 'PCD ', value: 'nombres_postula_pcd'},
+        {text: 'Profesión', value: 'desc_profesion_postula'},
+        {text: 'Grado Instrucción', value: 'desc_grado_instruccion_postula'},
         {text: 'Sexo', value: 'sexo'},
-        {text: 'Status', value: 'status'},
+        {text: 'Status', value: 'status_postula_oferta_pcd'},
     ];
     desserts = []
 	$refs!: {
