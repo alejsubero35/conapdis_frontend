@@ -179,9 +179,20 @@ import {
             })
         }) 
     }
-  
-
-   
+    @Action
+    getDataCV(id) {
+        return new Promise((resolve, reject) => {  
+            http.get(`/oferta/get_data_curriculo/${id}`)
+            .then(response =>  {
+                if (response.status === 200) {     
+                    resolve(response); 
+                }
+            })
+            .catch(error => {
+                reject(error)
+            })
+        }) 
+    }   
   }  
   
   export default getModule(ofertModule);

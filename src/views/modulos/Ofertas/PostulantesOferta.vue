@@ -146,15 +146,14 @@
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6"	md="6">
-                    <v-select
-                        :items="arrayCharges"
-                        item-text="desc_cargo_postula"
-                        item-value="id_cargo_postula"
+                    <v-text-field
                         label="Cargo"
                         placeholder="Cargo"
+                        v-model="cargo"
                         outlined
                         dense
-                    ></v-select>
+                        :disabled="disabled"
+                    ></v-text-field>
                 </v-col>
         
                 <v-col cols="12" sm="6" md="6">
@@ -308,6 +307,7 @@ export default class EditarCliente extends Vue {
     desserts = []
     dialogCita = false
     profesion = ''
+    cargo     = ''
     disabled = true
     cantidad_postula_oferta = ''
     experiencia_postula_oferta = ''
@@ -364,6 +364,7 @@ export default class EditarCliente extends Vue {
     getCita(item){console.log(item)
         this.dataFormCita.id_postula_pcd = item.id_pcd_postula_pcd
         this.profesion = item.desc_profesion_postula
+        this.cargo     = item.desc_cargo_postula
         this.dialogCita = true 
     }
 

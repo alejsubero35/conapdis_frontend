@@ -119,7 +119,7 @@
  </template>
  <script>
  import VueHtml2pdf from 'vue-html2pdf'
- import inspeccionModule   from '@/store/modules/inspeccionModule';
+import ofertModule from '@/store/modules/ofertModule';
  import storageData from '@/store/services/storageService'
   
  export default {
@@ -198,38 +198,16 @@
              let formatted_date = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
              return  formatted_date;
          },
-         async getPostulanteById(id){  
+         async getDataCV(id){  
     
-            this.overlay = true
-            const {data} = await inspeccionModule.getPostulanteById(id)   
-            let busine = (data.data.bussine) ? data.data.bussine : null
-
-            this.numeroplanilla         = data.data.id
-            this.fechaplanilla          = data.data.date
-            this.expediente             = (data.data.expedient) ? data.data.expedient.num_expedient : ''
-            this.solicitud              = data.data.id
-            this.unidadfiscalizacion    = (data.data.inspection_unit) ? data.data.inspection_unit.name : ''
-            this.razonsocial            = (busine) ? busine.company_name : ''
-            this.rif                    = (busine) ? busine.rif : ''
-            this.denominacioncomercial  = (busine) ? busine.comercial_designation : ''
-            this.region                 = (data.data.country) ? data.data.country.name : ''
-            this.estado                 = (data.data.state) ? data.data.state.name: ''
-            this.municipio              = (data.data.municipality) ? data.data.municipality.name : ''
-            this.parroquia              = (data.data.parishe) ? data.data.parishe.name : ''
-            this.direccion              = (busine) ? busine.company_name : ''.location    
-            this.firstname              = this.currentUser.first_name
-            this.lastname               = this.currentUser.last_name
-            this.position               = this.currentUser.position.name
-            this.identitycard           = this.currentUser.number_document_identity 
-            this.phone                  = this.currentUser.phone                  
-            this.email                  = this.currentUser.email                             
-            this.overlay = false 
+            const data = await ofertModule.getDataCV(id)   
+   
         }
      },
      mounted(){
         this.nota_entrega_id = this.$route.params.id
         this.notification = 'CV ' + this.nota_entrega_id
-        //this.getPostulanteById(this.$route.params.id)
+        this.getDataCV(this.$route.params.id)
         this.currentUser = storageData.get('_User');
         
 
