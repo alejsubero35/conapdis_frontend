@@ -422,7 +422,8 @@ export default class EditarCliente extends Vue {
     async saveCita(){
         const valid :any =  this.$refs.dataFormCita.validate();
         if(valid){
-            console.log(this.FormRequest)
+            const data : any = await ofertModule.saveCita(this.FormRequest)
+            console.log(data)
         }
     }
     mounted(){

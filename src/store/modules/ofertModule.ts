@@ -70,7 +70,7 @@ import {
             })
         }) 
     }
-     @Action
+    @Action
     cerrarOferta(id) {
         return new Promise((resolve, reject) => {  
             http.post(`/positions/cerrar_ofert/${id}`)
@@ -192,7 +192,22 @@ import {
                 reject(error)
             })
         }) 
-    }   
+    } 
+    @Action
+    saveCita(data) {
+        return new Promise((resolve, reject) => {  
+            http.post(`/oferta/oferta_cita_pcd`,data)
+            .then(response =>  {
+                if (response.status === 200) {     
+                    resolve(response); 
+                }
+            })
+            .catch(error => {
+                reject(error)
+            })
+        }) 
+    }  
+    
   }  
   
   export default getModule(ofertModule);
