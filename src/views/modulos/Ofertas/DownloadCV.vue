@@ -228,7 +228,7 @@ import ofertModule from '@/store/modules/ofertModule';
                 this.telefono_2     = data.data.postulaPcd.telefono2_postula_pcd
                 this.fecha_nac      = data.data.postulaPcd.fecha_nacimiento_postula_pcd
                 this.edad           = 20//data.data.postulaPcd.
-                this.certificado    = 123
+                this.certificado    = data.data.pdc.numero_certificado
                 this.direccion      = data.data.postulaPcd.direccion_postula_pcd
                 this.sexo           = data.data.postulaPcd.nombre
                 this.profesion      = data.data.postulaPcd.desc_profesion_postula
@@ -237,7 +237,7 @@ import ofertModule from '@/store/modules/ofertModule';
                 this.instituto      = data.data.formacion_academica.instituto_postula_pcd_laboral
                 this.culminacion    = data.data.formacion_academica.ano_culminacion_postula_pcd_laboral
                 this.condicion      = data.data.formacion_academica.desc_condicion_postula
-                this.empresatrabaja = data.data.empresa_postula_pcd_laboral
+                this.empresatrabaja = data.data.laborales.empresa_postula_pcd_laboral
                 this.cargo          = data.data.laborales.cargo_postula_pcd_laboral
                 this.inicio         = data.data.laborales.fecha_postula_desde
                 this.fin            = data.data.laborales.fecha_postula_hasta
