@@ -17,7 +17,7 @@
                         dense
                         :rules="rules"
                         v-model="empresaname"
-                        :disabled="disabled"
+                        :disabled="disabledHeader"
                         class="ml-2"
                     ></v-text-field>
                 </v-col>
@@ -29,7 +29,7 @@
                         dense
                         :rules="rulesNum"
                         v-model="cantidad_postula_oferta"
-                        :disabled="disabled"
+                        :disabled="disabledHeader"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6"	md="4">
@@ -39,7 +39,7 @@
                         outlined
                         dense
                         v-model="experiencia_postula_oferta"
-                        :disabled="disabled"
+                        :disabled="disabledHeader"
                     ></v-text-field>
                 </v-col>
             </v-row>
@@ -81,10 +81,13 @@
                                         v-bind="attrs"
                                         v-on="on"
                                     >
-                                        <v-icon>mdi-briefcase-plus</v-icon>
+                                        <v-icon v-if="item.citado == 1">mdi-briefcase-plus</v-icon>
+                                        <v-icon v-else>mdi-file-eye</v-icon>
+                                      
                                     </v-btn>
                                 </template>
-                                <span>Obtener Cita</span>
+                                <span v-if="item.citado == 1">Obtener Cita</span>
+                                <span v-else>Ver Cita</span>
                             </v-tooltip>
                             <v-tooltip top>
                                 <template v-slot:activator="{on, attrs}">
@@ -96,10 +99,10 @@
                                         v-bind="attrs"
                                         v-on="on"
                                     >
-                                        <v-icon>mdi-trash-can-outline</v-icon>
+                                        <v-icon>mdi-account-multiple-minus</v-icon>
                                     </v-btn>
                                 </template>
-                                <span>Eliminar</span>
+                                <span>Rechazar Postulante</span>
                             </v-tooltip>
                         </div>
                     </template>
@@ -119,7 +122,7 @@
                     ></v-progress-circular>
                 </v-overlay>
             <v-card-title class="text-h5">
-                Realizar Cita 
+                {{ titlecita }} 
             </v-card-title>
             <v-form class="form_data_section" ref="dataFormCita"  lazy-validation >	
                 <v-row>
@@ -131,7 +134,7 @@
                         dense
                         :rules="rules"
                         v-model="empresaname"
-                        :disabled="disabled"
+                        :disabled="disabledHeader"
                   
                     ></v-text-field>
                 </v-col>
@@ -142,7 +145,7 @@
                         v-model="profesion"
                         outlined
                         dense
-                        :disabled="disabled"
+                        :disabled="disabledHeader"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6"	md="6">
@@ -152,7 +155,7 @@
                         v-model="cargo"
                         outlined
                         dense
-                        :disabled="disabled"
+                        :disabled="disabledHeader"
                     ></v-text-field>
                 </v-col>
         
@@ -175,6 +178,7 @@
                             v-bind="attrs"
                             v-on="on"
                             dense 
+                            :disabled="(validateCita == 0) ? disabled = true : disabled = false"
                         ></v-text-field>
                         </template>
                         <v-date-picker
@@ -183,6 +187,7 @@
                         locale="es"
                         @input="menu = false"
                         @change="updateFecha()"
+                
                         ></v-date-picker>
                     </v-menu>
                 </v-col>
@@ -195,6 +200,7 @@
                         :rules="rules"
                         v-model="dataFormCita.hora_cita_oferta_pcd"
                         type="time"
+                        :disabled="(validateCita == 0) ? disabled = true : disabled = false"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
@@ -206,6 +212,7 @@
                         :rules="rules"
                         v-model="dataFormCita.contacto_cita_oferta_pcd"
                         type="text"
+                        :disabled="(validateCita == 0) ? disabled = true : disabled = false"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
@@ -219,6 +226,7 @@
                         type="number"
                         min="0"
                         max="11"
+                        :disabled="(validateCita == 0) ? disabled = true : disabled = false"
                     ></v-text-field>
                 </v-col>
                 </v-row>
@@ -246,7 +254,7 @@
                 </v-row>
             </v-form>
     
-            <v-card-actions>
+            <v-card-actions v-if="validateCita == 1">
                 <v-spacer></v-spacer>
                 <v-btn color="danger" small @click="dialogCita = false">
                     Cancelar
@@ -256,7 +264,8 @@
                 </v-btn>
             </v-card-actions>
             </v-card>
-	  </v-dialog>
+	    </v-dialog>
+        <ModalDelete @deleteData="deleteData" :titlemodal="titlemodal" :textbody="textbody" :dialogDelete="dialogDelete" @cerrarModal="cerrarModal"/>
     </div>
 </template>
 <script lang="ts">
@@ -280,10 +289,15 @@ export default class EditarCliente extends Vue {
     overlayDialog = false
 	title : string = '';
 	subtitle : string = ''
+    textbody = ''
+    titlemodal = ''
+    dialogDelete : boolean = false;
 	dataFormCita : any = {
 
     };
+    formRechazar : any = {
 
+    }
     sectiontitle = 'LISTADO DE POSTULANTES'
 	date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
     menu : boolean = false
@@ -309,14 +323,20 @@ export default class EditarCliente extends Vue {
     profesion = ''
     cargo     = ''
     disabled = true
+    disabledHeader = true
     cantidad_postula_oferta = ''
     experiencia_postula_oferta = ''
     existCita = false
+    validateCita = 1
+    titlecita = 'Realizar Cita'
 	$refs!: {
         dataFormCita: InstanceType<typeof ValidationObserver>;
     };
 	get FormRequest(): any {
         return this.dataFormCita
+    }
+    get FormRequestRechazar(): any {
+        return this.formRechazar
     }
     async getPostulantesAll(id){
         const postulantes : any = await  ofertModule.getPostulantesById(id);
@@ -356,16 +376,28 @@ export default class EditarCliente extends Vue {
 
     eliminar(item){
         this.dialogDelete = true;
-        this.textbody = 'Confirme que desea eliminar la Oferta'
-        this.titlemodal = 'Eliminar Registro de Oferta'
-        this.id_delete = item.id_postula_oferta
+        this.textbody = 'Confirme que desea Rechazar al Postulante'
+        this.titlemodal = 'Rechazar Postulante'
+        this.formRechazar.id_postula_oferta  =  this.$route.params.id
+        this.formRechazar.id_pcd_postula_pcd = item.id_pcd_postula_pcd
     }
     
-    getCita(item){console.log(item)
+    getCita(item){
         this.dataFormCita.id_postula_pcd = item.id_pcd_postula_pcd
         this.profesion = item.desc_profesion_postula
         this.cargo     = item.desc_cargo_postula
         this.dialogCita = true 
+        this.validateCita = item.citado
+        if(item.citado == 0){
+            this.titlecita = 'Ver Cita'
+            this.existCita = true
+            this.dataFormCita.hora_cita_oferta_pcd = item.hora_cita_oferta_pcd
+            this.dataFormCita.contacto_cita_oferta_pcd = item.contacto_cita_oferta_pcd
+            this.dataFormCita.telefono_cita_oferta_pcd = item.telefono_cita_oferta_pcd
+            this.date = item.fecha_cita_oferta_pcd
+        }else{
+            this.existCita = false
+        }
     }
 
     cerrarModal(event){
@@ -374,10 +406,10 @@ export default class EditarCliente extends Vue {
     async deleteData(event){
       
         this.overlay = true
-        const res : any = await ofertModule.delete(this.id_delete);
+        const res : any = await ofertModule.rechazarPostulante(this.FormRequestRechazar);
         if(res.status == 200){
             this.dialogDelete = event;
-            this.dataIndex()
+            this.getPostulantesAll(this.$route.params.id); 
             this.color = 'success'
             this.textmsj = 'Usuario Eliminado con Éxito.'
             this.snackbar = true
@@ -420,10 +452,20 @@ export default class EditarCliente extends Vue {
         this.dataFormCita.fecha_cita_oferta_pcd = this.date
     }
     async saveCita(){
+        this.overlayDialog = true
         const valid :any =  this.$refs.dataFormCita.validate();
         if(valid){
             const data : any = await ofertModule.saveCita(this.FormRequest)
-            console.log(data)
+            if(data.status == 200){
+                this.color = 'success'
+                this.textmsj = 'Cita Guardada con Éxito.'
+                this.snackbar = true
+                this.closeSnackbar()
+                this.reset()
+                this.getPostulantesAll(this.$route.params.id); 
+                this.overlayDialog = false
+                this.dialogCita    = false
+            }
         }
     }
     mounted(){

@@ -207,6 +207,21 @@ import {
             })
         }) 
     }  
+    @Action
+    rechazarPostulante(data) {
+        return new Promise((resolve, reject) => {  
+            http.post(`/oferta/rechazar_postulante`,data)
+            .then(response =>  {
+                if (response.status === 200) {     
+                    resolve(response); 
+                }
+            })
+            .catch(error => {
+                reject(error)
+            })
+        }) 
+    }
+    
     
   }  
   

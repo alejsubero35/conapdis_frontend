@@ -333,7 +333,7 @@ export default class EditarCliente extends Vue {
     .form_data_section{
         background: white;
         border-radius: 8px;
-        width: 100%;
+        width: 60%;
         padding: 20px;
     }
     .content-section{

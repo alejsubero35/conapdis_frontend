@@ -34,23 +34,22 @@
                         <img style="object-fit: cover;width:150px" src="img/logos_conapdis/avatar.png"  alt="" >
                     </div><br>
                     <div class="td-center">
-                        <h3>Eulemis Alfredo Hernandez Sanchez</h3>
-                        <h3>16.092.842</h3>
-                         <h3>Teléfonos : 04241523696 / 04120162547</h3>
+                        <h3>{{ fullname.toUpperCase() }}</h3>
+                        <h3>{{ cedula }}</h3>
+                         <h3>Teléfonos : {{ telefono_1 }} / {{ telefono_2 }}</h3>
                     </div><br>
-    
                     <v-row class="table">
                         <table>
                             <tr>
-                                <td colspan="2" >Fecha de Nacimiento : <strong>{{ region }}</strong> </td>
-                                <td>Edad : <strong>{{ estado }}</strong></td>
-                                <td>Sexo : <strong>{{ municipio }}</strong></td>
-                                <td >Profesión :<strong>{{ parroquia }}</strong> </td>
+                                <td colspan="2" >Fecha de Nacimiento : <strong>{{ fecha_nac }}</strong> </td>
+                                <td>Edad : <strong>{{ edad }}</strong></td>
+                                <td>Sexo : <strong>{{ sexo }}</strong></td>
+                                <td >Profesión :<strong>{{ profesion }}</strong> </td>
                             </tr>
                             <tr>
-                                <td colspan="2" >Grado de Instrucción: <strong>{{ region }}</strong> </td>
-                                <td>N° Certificado : <strong>{{ municipio }}</strong></td>
-                                <td colspan="4">Dirección : <strong>{{ estado }}</strong></td>
+                                <td colspan="2" >Grado de Instrucción: <strong>{{ nivel }}</strong> </td>
+                                <td>N° Certificado : <strong>{{ certificado }}</strong></td>
+                                <td colspan="4">Dirección : <strong>{{ direccion }}</strong></td>
                             </tr>
                             <tr>
                                 <th class="td-center" colspan="5"><h3>FORMACIÓN ACADÉMICA</h3></th>
@@ -63,50 +62,50 @@
                                 <td style="text-align:center"><strong>condición</strong>{{ rif }} </td>
                             </tr>
                                <tr>
-                                <td style="text-align:center">{{ razonsocial }} </td>
-                                <td style="text-align:center">{{ rif }} </td>
-                                <td style="text-align:center">{{ rif }} </td>
-                                <td style="text-align:center">{{ rif }} </td>
-                                <td style="text-align:center">{{ rif }} </td>
+                                <td style="text-align:center">{{ nivel }} </td>
+                                <td style="text-align:center">{{ carrera }} </td>
+                                <td style="text-align:center">{{ instituto }} </td>
+                                <td style="text-align:center">{{ culminacion }} </td>
+                                <td style="text-align:center">{{ condicion }} </td>
                             </tr>
                             <tr>
                                 <th class="td-center" colspan="5"><h3>DATOS LABORALES</h3></th>
                             </tr>
                             <tr>
-                                <td colspan="2" style="text-align:center"><strong>Empresa</strong>{{ razonsocial }} </td>
-                                <td style="text-align:center"><strong>Cargo</strong>{{ rif }} </td>
-                                <td style="text-align:center"><strong>Inicio</strong>{{ rif }} </td>
-                                <td style="text-align:center"><strong>Fin</strong>{{ rif }} </td>
+                                <td colspan="2" style="text-align:center"><strong>Empresa</strong> </td>
+                                <td style="text-align:center"><strong>Cargo</strong></td>
+                                <td style="text-align:center"><strong>Inicio</strong></td>
+                                <td style="text-align:center"><strong>Fin</strong></td>
                             </tr>
                                <tr>
-                                <td  colspan="2"  style="text-align:center">{{ razonsocial }} </td>
-                                <td style="text-align:center">{{ rif }} </td>
-                                <td style="text-align:center">{{ rif }} </td>
-                                <td style="text-align:center">{{ rif }} </td>
+                                <td  colspan="2"  style="text-align:center">{{ empresatrabaja }}</td>
+                                <td style="text-align:center">{{ cargo }}</td>
+                                <td style="text-align:center">{{ inicio }}</td>
+                                <td style="text-align:center">{{ fin }}</td>
                             </tr>
                             <tr>
                                 <th class="td-center" colspan="5"><h3>IDIOMAS</h3></th>
                             </tr>
                             <tr>
-                                <td colspan="3" style="text-align:center"><strong>Idioma</strong>{{ razonsocial }} </td>
-                                <td colspan="2" style="text-align:center"><strong>Nivel</strong>{{ rif }} </td>
+                                <td colspan="3" style="text-align:center"><strong>Idioma</strong></td>
+                                <td colspan="2" style="text-align:center"><strong>Nivel</strong></td>
                             </tr>
                                <tr>
-                                <td  colspan="3"  style="text-align:center">{{ razonsocial }} </td>
-                                <td  colspan="2" style="text-align:center">{{ rif }} </td>
+                                <td  colspan="3"  style="text-align:center">{{ idioma }}</td>
+                                <td  colspan="2" style="text-align:center">{{ nivelidioma }}</td>
                             </tr>
                             <tr>
                                 <th class="td-center" colspan="5"><h3>HABILIDADES Y DESTREZAS</h3></th>
                             </tr>
                             <tr>
-                                <td colspan="5" style="text-align:center">{{ razonsocial }} </td>
+                                <td colspan="5" style="text-align:center">{{ habilidades }}</td>
                             </tr>
-                            <tr>
+                        <!--     <tr>
                                 <th class="td-center" colspan="5"><h3>DISCAPACIDAD</h3></th>
                             </tr>
                             <tr>
                                 <td colspan="5" style="text-align:center">{{ razonsocial }} </td>
-                            </tr>
+                            </tr> -->
                         </table>
                     </v-row>         
                     <div class="mt-5 d-flex justify-end ">
@@ -151,32 +150,52 @@ import ofertModule from '@/store/modules/ofertModule';
              detalles : [
  
              ],
-             notification : '',
-             sectiontitle : '',
-             nota_entrega_id : '',
-             date : new Date(Date.now()),
-             customer : '',
-             numeroplanilla : '',
-             fechaplanilla: '',
-             expediente: '',
-             solicitud: '',
-             unidadfiscalizacion: '',
-             razonsocial: '',
-             rif: '',
-             denominacioncomercial: '',
-             region: '',
-             estado: '',
-             municipio: '',
-             parroquia: '',
-             direccion: '',
-             overlay : false,
-             currentUser : [],
-             firstname: '',
-             lastname: '',
-             position: '',
-             identitycard: '',
-             phone: '',
-             email: ''
+            notification : '',
+            sectiontitle : '',
+            nota_entrega_id : '',
+            date : new Date(Date.now()),
+            customer : '',
+            numeroplanilla : '',
+            fechaplanilla: '',
+            expediente: '',
+            solicitud: '',
+            unidadfiscalizacion: '',
+            razonsocial: '',
+            rif: '',
+            denominacioncomercial: '',
+            region: '',
+            estado: '',
+            municipio: '',
+            parroquia: '',
+            direccion: '',
+            overlay : false,
+            currentUser : [],
+            position: '',
+            identitycard: '',
+            phone: '',
+            email: '',
+            nivel:'',
+            carrera:'',
+            instituto:'',
+            culminacion:'',
+            condicion:'',
+            fullname:'',
+            cedula:'',
+            telefono_1:'',
+            telefono_2:'',
+            fecha_nac:'',
+            edad:'',
+            sexo:'',
+            profesion:'',
+            certificado:'',
+            direccion:'',
+            empresatrabaja:'',
+            cargo:'',
+            inicio:'',
+            fin:'',
+            idioma:'',
+            nivelidioma:'',
+            habilidades:'',
 
          }
      },
@@ -199,8 +218,34 @@ import ofertModule from '@/store/modules/ofertModule';
              return  formatted_date;
          },
          async getDataCV(id){  
-    
-            const data = await ofertModule.getDataCV(id)   
+            this.overlay = true
+            const data = await ofertModule.getDataCV(id)  
+            console.log(data)
+            if(data.status == 200){
+                this.fullname       = data.data.postulaPcd.nombres_postula_pcd+' '+data.data.postulaPcd.apellidos_postula_pcd
+                this.cedula         = data.data.postulaPcd.cedula_postula_pcd
+                this.telefono_1     = data.data.postulaPcd.telefono1_postula_pcd
+                this.telefono_2     = data.data.postulaPcd.telefono2_postula_pcd
+                this.fecha_nac      = data.data.postulaPcd.fecha_nacimiento_postula_pcd
+                this.edad           = 20//data.data.postulaPcd.
+                this.certificado    = 123
+                this.direccion      = data.data.postulaPcd.direccion_postula_pcd
+                this.sexo           = data.data.postulaPcd.nombre
+                this.profesion      = data.data.postulaPcd.desc_profesion_postula
+                this.nivel          = data.data.formacion_academica.desc_grado_instruccion_postula
+                this.carrera        = data.data.formacion_academica.desc_carrera_postula
+                this.instituto      = data.data.formacion_academica.instituto_postula_pcd_laboral
+                this.culminacion    = data.data.formacion_academica.ano_culminacion_postula_pcd_laboral
+                this.condicion      = data.data.formacion_academica.desc_condicion_postula
+                this.empresatrabaja = data.data.empresa_postula_pcd_laboral
+                this.cargo          = data.data.laborales.cargo_postula_pcd_laboral
+                this.inicio         = data.data.laborales.fecha_postula_desde
+                this.fin            = data.data.laborales.fecha_postula_hasta
+                this.idioma         = data.data.idiomas.desc_idioma_postula
+                this.nivelidioma    = data.data.idiomas.desc_nivel_postula
+                this.habilidades    = data.data.postulaPcd.habilidades_postula_pcd
+                this.overlay = false
+            } 
    
         }
      },
