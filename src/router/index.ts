@@ -46,8 +46,9 @@ const RequerimentsBussines            = () => import('@/views/modulos/Requerimen
 //vincular / desvincular
 const Vincular                        = () => import('@/views/modulos/Vinculaciones/Vincular.vue')
 
-//Declaraciones
+//Declaraciones 
 const Declaraciones                   = () => import('@/views/modulos/Declaraciones/Declaraciones.vue')
+const PlanillaDeclaracion             = () => import('@/views/modulos/Declaraciones/PlanillaDeclaracionPDF.vue')
 
 //OfertasLaborales
 const OfertasLaborales                = () => import('@/views/modulos/Ofertas/OfertaLaboral.vue')
@@ -244,6 +245,13 @@ const router = new Router({
           meta: { Auth: true, title: 'Declaraciones' },
      
         }, 
+        {
+          path: 'planilladeclaracion',
+          name: 'planilladeclaracion',
+          component: PlanillaDeclaracion,
+          meta: { Auth: true, title: 'PlanillaDeclaracion' },
+     
+        },
         {
           path: 'solicitudformacion',
           name: 'solicitudformacion',

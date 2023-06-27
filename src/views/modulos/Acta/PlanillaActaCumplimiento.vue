@@ -98,8 +98,8 @@
                           <tr>
                               <td colspan="2">{{numinspectiontechnical}}</td>
                               <td>{{fechaguia}}</td>
-                              <td>5252</td>
-                              <td>06/02/2023</td>
+                              <td>{{ (numBoleta) ?  numBoleta : '' }}</td>
+                              <td>{{ (fechaBallot) ? fechaBallot : ''}}</td>
                           </tr>
                           <tr >
                             <th class="td-center" colspan="5">4.DEL REPRESENTANTE LEGAL DE LA ENTIDAD DE TRABAJO O RAZÓN SOCIAL:</th>
@@ -114,7 +114,7 @@
                             <td colspan="2">{{firstname}}</td>
                             <td>{{lastname}}</td>
                             <td>{{identitycard}}</td>
-                            <td>{{position}}</td>
+                            <td>{{position.name}}</td>
                         </tr>
                         <tr>
                             <th class="td-center" colspan="5">5. DE LOS DATOS DEL ADMINISTRADO (A) DESIGNADO (A) PARA PRACTICAR LA INSPECCIÓN:</th>
@@ -125,19 +125,19 @@
                             <td colspan="2" class="bold">5.3 C.I.N°</td>
                         </tr>
                         <tr>
-                            <td colspan="2">Rafael Ramon</td>
-                            <td colspan="2">Urbaneja Galindo</td>
-                            <td colspan="2">14525363</td>
+                            <td colspan="2">{{ firstnameinspector }}</td>
+                            <td colspan="2">{{ lastnameinspector }}</td>
+                            <td colspan="2">{{ cedulainspector }}</td>
                         </tr>
                         <tr>
                             <td colspan="2" class="bold">5.4 Cargo :</td>
-                            <td colspan="2" class="bold">5.5 Telefono:</td>
+                            <!-- <td colspan="2" class="bold">5.5 Telefono:</td> -->
                             <td colspan="2" class="bold">5.6 Email:</td>
                         </tr>
                         <tr>
                             <td colspan="2">Coordinador</td>
-                            <td colspan="2">0424-152-36-98</td>
-                            <td colspan="2">coordinador@conapdis.com</td>
+                            <!-- <td colspan="2">0424-152-36-98</td> -->
+                            <td colspan="2">{{ emailInspector }}</td>
                         </tr>
     
                     </table>
@@ -268,6 +268,9 @@
             nota_entrega_id : '',
             date : new Date(Date.now()),
             customer : '',
+            emailInspector : '',
+            numBoleta : '',
+            fechaBoleta : '',
             htmlToPdfOptions: { 
                 margin: 0, 
                 filename: `hehehe.pdf`, 
@@ -313,7 +316,7 @@
         },
         async getCompliancesById(id){
             const {data} = await compliancesModule.getCompliancesById(id);
-            console.log(data)
+         
             this.numacta        = data.data.num_acta
             this.date           = data.data.date
             this.hour           = data.data.hour
@@ -340,6 +343,9 @@
             this.lastnameinspector          = data.data.user_id_inspector.last_name
             this.cedulainspector            = data.data.user_id_inspector.cedula
             this.providence                 = data.data.user_id_inspector.providence_administrative
+            this.emailInspector             = data.data.user_id_inspector.emailInspector
+            this.numBoleta                  = data.data.orderingBallot.num_boleta
+            this.fechaBallot                = data.data.orderingBallot.date
         },
         formatofecha(fecha) {
             var date = new Date(fecha);

@@ -185,7 +185,7 @@
             this.providence                 = data.data.user_id_inspector.providence_administrative
             this.expedient                  = data.data.guide.expedient.num_expedient
             this.unidad                     = data.data.guide.inspection_unit.name
-            console.log(data)
+       
 
         },
         formatofecha(fecha) {

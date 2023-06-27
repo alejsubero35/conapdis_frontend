@@ -58,7 +58,6 @@ export default {
   },
   mounted(){
   this.typeRol = storageData.get('_rolename')
-  this.bussine = storageData.get('_bussines')
   this.token   = storageData.get('_token')
 
   },
@@ -68,9 +67,6 @@ export default {
     },
     minimize () {
       return this.$store.state.sidebarMinimize 
-    },
-    isBussines(){
-      return sessionModule.getStatusBussines; 
     },
     currentRouteName() {
       return this.$route.name;

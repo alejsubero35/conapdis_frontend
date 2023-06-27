@@ -9,6 +9,7 @@
         <v-form class="form_data_section" ref="dataForm"  lazy-validation >	
             <TitleSection :sectiontitle="sectiontitle"/>	
             <input type="hidden" v-model="dataForm.id">
+            <input type="hidden" v-model="dataForm.status_postula_oferta">
             <v-row class="mt-5 p-3">
                 <v-col cols="12" sm="12" md="12">
                     <v-text-field
@@ -94,6 +95,7 @@
                         :rules="rules"
                         v-model="dataForm.cantidad_postula_oferta"
                         type="number"
+                        min="0"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6"	md="4">
@@ -105,6 +107,7 @@
                         :rules="rules"
                         v-model="dataForm.experiencia_postula_oferta"
                         type="number"
+                        min="0"
                     ></v-text-field>
                 </v-col>
             </v-row>
@@ -152,6 +155,7 @@ export default class EditarCliente extends Vue {
 	title : string = '';
 	subtitle : string = ''
 	dataForm : any = {
+        status_postula_oferta : 'ACTIVA',
         arraydisc : []
     };
     btName = 'Guardar'

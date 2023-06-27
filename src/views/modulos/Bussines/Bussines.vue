@@ -41,7 +41,6 @@
 								required
 								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								@change="getRifType($event)"
-							
 							></v-select>
 							</v-col>
 							<v-col cols="12" sm="6" md="3">
@@ -280,6 +279,7 @@
 								type="email"
 								dense
 								v-model="bussinesform.email_r"
+								@blur="validatEmail()"
 							></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="6">
@@ -500,7 +500,6 @@
 								type="email"
 								v-model="bussinesform.email_rl"
 								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-								@blur="validatEmail()"
 							></v-text-field>
 							</v-col>
 							<v-col cols="12" sm="6" md="4">
@@ -751,7 +750,7 @@
                 Notificación
             </v-card-title>
             <v-card-text>
-                Este Correo ya existe 
+                {{ titlemodalalert }} 
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -899,6 +898,8 @@ export default class Bussines extends Vue {
 	btnText = 'Guardar'
 	validateInput = 0
 	dialogOpen = false
+	validatetyperif = ''
+	titlemodalalert = ''
 	$refs!: {
         validateStepForm: InstanceType<typeof ValidationObserver>;
         validateStepFormTwo: InstanceType<typeof ValidationObserver>;
@@ -922,27 +923,63 @@ export default class Bussines extends Vue {
        this.loadingWizard = value
    }
     handleValidation(isValid, tabIndex){
-        console.log('Tab: '+tabIndex+ ' valid: '+isValid)
+       
     }
 	async updateFecha(){
 		this.bussinesform.registration_date = this.date
 	}
-
-	async validateRif(value){
-		if(value.length == 12){
-			const data : any = await bussinesModule.existRif(value)
-			if(data.data.length > 0){
-				this.validateRifDB = true
-				this.bussinesform.rif = ''
-			}else{
-				this.validateRifDB = false
-			}
+	async getRifType(event){
+	if(this.bussinesform.rif != undefined){
+		this.bussinesform.rif = ''
+	}else{
+		switch(event){
+			case 4:
+				this.validatetyperif = 'V'
+			break;
+			case 5:
+				this.validatetyperif = 'J'
+			break;
+			case 6:
+				this.validatetyperif = 'G'
+			break;
+			case 7:
+				this.validatetyperif = 'J'
 		}
+	}
+
+	}
+	async validateRif(value){
+
+			if(value.length == 12){
+				this.validateKeyInit(value)
+				const data : any = await bussinesModule.existRif(value)
+				if(data.data.length > 0){
+					this.validateRifDB = true
+					this.bussinesform.rif = ''
+				}else{
+					this.validateRifDB = false
+				}
+			}
+		/* }else{
+			this.dialogOpen = true
+			this.titlemodalalert = 'Debe ingresar la letra que coincida con la opción seleccionada en el Tipo de Rif, debe ser en mayúscula'
+			this.bussinesform.rif = ''
+		} */
+
+	}
+	async validateKeyInit(value){
+		let val = value.charAt(0)
+		
+		if(val != this.validatetyperif){
+			this.dialogOpen = true
+			this.titlemodalalert = 'Debe ingresar la letra que coincida con la opción seleccionada en el Tipo de Rif, debe ser en mayúscula'
+			this.bussinesform.rif = ''
+		}
+
 	}
     beforeTabSwitch(){
         const valid :any =  this.$refs.validateStepForm.validate();
 			this.bussinesform.username =  this.bussinesform.rif.replaceAll('-',"")
-			console.log(this.bussinesform.username)
 
 			Math.ceil(this.bussinesform.tomo)
 			Math.ceil(this.bussinesform.folio)
@@ -997,16 +1034,19 @@ export default class Bussines extends Vue {
 	
 
 	async validatEmail(){
-		const validate : any = await bussinesModule.validateEmailRL(this.bussinesform.email_rl)
-		console.log(validate.data.length)
-		if (validate.data.length > 0) {
-			this.dialogOpen = true
-			this.bussinesform.email_rl = ''
-		} else {
+		if(this.bussinesform.email_r != undefined){
+			const validate : any = await bussinesModule.validateEmailRL(this.bussinesform.email_r)
+			if (validate.data.length > 0) {
+				this.dialogOpen = true
+				this.bussinesform.email_r = ''
+				this.titlemodalalert = 'Este Correo ya existe'
+			} else {
 
+			}
 		}
+		
 	}
-	onComplete() {console.log(this.FormRequest)
+	onComplete() {
 		if (this.FormRequest.id > 0) {
 			this.updateBussines();
 		} else {
@@ -1015,10 +1055,9 @@ export default class Bussines extends Vue {
     }
  	async saveBussines() { 
 		this.updateSwitch()
-		console.log(this.FormRequest)
  		this.overlay = true
     	const data = await bussinesModule.save(this.FormRequest)
-		console.log(data)
+
 		if(data.code == 201){
 			this.textmsj = 'Empresa Creada con Éxito.'
 			this.color = 'success'
@@ -1230,7 +1269,6 @@ export default class Bussines extends Vue {
 	}
 	async getSectoresByParishes(event){
 		const sectors : any = await bussinesModule.getSectores(event)
-		console.log(sectors)
 		this.arraySectores = sectors.data
 	}
 	async ordenarArray(array){
@@ -1361,7 +1399,6 @@ export default class Bussines extends Vue {
 		this.getPositionAll()
 		//this.initData()
 		//this.getUserType()
-	console.log(storageData.get('_bussines'))
 		if (storageData.get('_bussines') !== null) {
 			this.overlay = true
 			this. sectiontitle = 'Actualizar Datos de Empresa'

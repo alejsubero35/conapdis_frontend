@@ -135,7 +135,6 @@ export default class Users extends Vue {
         if (valid) {
             this.overlay  = true
             const data    = await usersModule.save(this.FormRequestUser)  
-            console.log('en la vista:: ' + data )
             this.textmsj  = 'Usuario Creado con Éxito.'
             this.snackbar = true
             this.back();

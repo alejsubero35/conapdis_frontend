@@ -33,82 +33,58 @@
                     <div class="logo">
                         <img style="object-fit: cover;" src="img/logos_conapdis/CABECERA.png"  alt="">
                     </div>
-                    <div class="title_section">
-                        <h6 class="mt-4">{{ title_section }}</h6>
-                    </div><br>
-                    <div class="text-center"><h4>1.	PLANILLA DE SOLICITUD DE INSPECCIÓN</h4></div>
-                    <div class="inspeccion">
-                        <div>a) Planilla N° : <strong>{{ numeroplanilla }}</strong></div>
-                        <div>b) Fecha : <strong>{{ fechaplanilla }}</strong></div>
+                    <div class="text-center" style="font-size:12px;font-weight:bold"><p>PLANILLA DECLARACIÓN DE PERSONAS CON DISCAPACIDAD INSERTADAS LABORALMENTE</p></div>
+                    <div class="text-center" style="font-size:12px;font-weight:bold"><p>REGISTRO DEL SECTOR EMPLEADOR Y DECLARACIÓN DE EMPLEADOS CON DISCAPACIDAD</p></div>
+                    <div style="float:left;margin-left:10%">
+                        <div > N° Declaración : </div>
                     </div><br><br>
     
                     <v-row class="table">
                         <table>
                             <tr>
-                              <th class="td-center" colspan="5">2.	DEL REGISTRO DE LA SOLICITUD:</th>
+                                <th class="td-center" colspan="6">DATOS DE LA DECLARACIÓN</th>
                             </tr>
                             <tr>
-                              <td  colspan="2">a. Expediente N°: <strong>{{ expediente }}</strong> </td>
-                              <td  colspan="2"  >b. Solicitud N°: <strong>{{ solicitud }}</strong></td>
-                              <td  colspan="2"  >c. Unidad de Fiscalización: <strong>{{ unidadfiscalizacion }}</strong></td>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">Rif : {{ rif }} </td>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">Razón Social: {{ razonsocial }}</td>
                             </tr>
                             <tr>
-                                <th class="td-center" colspan="5">3.	DE LOS DATOS DE LA ENTIDAD DE TRABAJO O RAZÓN SOCIAL:</th>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">Sector : {{ rif }} </td>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">Tipo: {{ rif }}</td>
                             </tr>
                             <tr>
-                                <td  colspan="2"  style="border-right:none">a. Razón Social : <strong>{{ razonsocial }}</strong> </td>
-                                <td style="border:none"></td>
-                                <td style="border:none"></td>
-                                <td  colspan="2">b. R.I.F: <strong>{{ rif }}</strong> </td>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">N° Patrol IVSS : {{ ivss }} </td>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">Objeto: {{ object }}</td>
                             </tr>
                             <tr>
-                                <td colspan="5">c.	Denominación Comercial: <strong>{{ denominacioncomercial }}</strong> </td>
-                        
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">Actividad Económica : {{ rif }} </td>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">Teléfono: {{ phone }}</td>
                             </tr>
                             <tr>
-                                <td colspan="2" >d.	Región: <strong>{{ region }}</strong> </td>
-                                <td>e.	Estado: <strong>{{ estado }}</strong></td>
-                                <td>f.	Municipio: <strong>{{ municipio }}</strong></td>
-                                <td >g.	Parroquia: <strong>{{ parroquia }}</strong> </td>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">Dirección : {{ location }} </td>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">Correo Electrónico: {{ email }}</td>
                             </tr>
                             <tr>
-                                <td colspan="5">h.	Dirección: <strong>{{ direccion }}</strong> </td>
-                        
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">Estado : {{ rif }} </td>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">Municipio: {{ rif }}</td>
                             </tr>
                             <tr>
-                                <th class="td-center" colspan="5">4.	DE LOS DATOS DEL ADMINISTRADO O SOLICITANTE:</th>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">Semestre a Declarar : {{ semestre }} </td>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">Cant. Trabajadores sin discapacidad: {{ cant_trabajadores }}</td>
                             </tr>
                             <tr>
-                                <td colspan="2">a.	Nombre (s): <strong>{{ firstname }}</strong></td>
-                                <td colspan="2">b.	Apellido (s): <strong>{{ lastname }}</strong></td>
-                                <td colspan="2">c.	C. I. N°: <strong>{{ identitycard }}</strong></td>
-                              </tr>
-                            <tr>
-                                <td colspan="2">d.	Cargo: <strong>{{ position }}</strong></td>
-                                <td colspan="2" rowspan="3"></td>
-                                <td  rowspan="3"></td>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">% de trabajadores con discapacidad que deberia tener : 5 % </td>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">N° total de trabajadores con discapacidad: {{ cant_trabajadores_discapacidad }}</td>
                             </tr>
                             <tr>
-                                <td colspan="2">e.	Telefono N°: <strong>{{ phone }}</strong></td>
-                              
-                            </tr>
-                            <tr>
-                                <td colspan="2">f.	E-mail: <strong>{{ email }}</strong></td>
-                            
+                                <th class="td-center" colspan="6">Lista de Trabajadores con Discapacidad para este Semestre</th>
                             </tr>
                         </table>
-                    </v-row>
-                    <v-row class="mt-5 parrafo">
-                        <p class="text-center inter">Av. Casanova con Calle Villa Flor. Edificio Centro Profesional del Este. Piso Mezzanina 1. Oficina Edificio Anexo. Sector El Recreo
-                            Caracas Distrito Capital. Zona Postal 1050. Números telefónicos: (0212) 762.00.39 / 762.96.45
-                            www.conapdis.gob.ve  /  fiscalizacion@conapdis.gob.ve  /  @conapdis
-                            
-                        </p>
-                    </v-row>
-         
+                    </v-row>         
                     <div class="mt-5 d-flex justify-end ">
                         <v-btn  small @click="generateReport" color="success" v-show="btn_atras"  >{{ btnSave }}</v-btn> 
                     </div>
+                    <!-- <div>   <img alt="Código QR" id="codigo"  width="80"></div> -->
                 </div>
             </section>
         </vue-html2pdf>
@@ -124,56 +100,31 @@
          VueHtml2pdf
      },
      data(){
-         return{
-             btnSave:'Generar PDF',
-             btn_atras : true,
-             title_section : 'CONSEJO NACIONAL PARA LAS PERSONAS CON DISCAPACIDAD',
-             campo1 : '001',
-             campo2 : '1425',
-             campo3 : 'Central',
-             campo4 : 'Miranda',
-             campo5 : 'Simón Bolívar',
-             campo6 : 'Arrau Tecnology HDD, C.A',
-             headers : [
-                {text: 'Serial Equipo', value: 'serial' },
-                {text: 'Módelo', value: 'serial'},
-                {text: 'Plan', value: 'nombrePlan'},
-                {text: 'Nombre Comercio', value: 'legalName'},
-                {text: 'Falla Reportada', value: 'nameError'},
-                {text: 'Factura', value: 'invoice'},
-             ],
-             desserts : [
- 
-             ],
-             detalles : [
- 
-             ],
-             notification : '',
-             sectiontitle : '',
-             nota_entrega_id : '',
-             date : new Date(Date.now()),
-             customer : '',
-             numeroplanilla : '',
-             fechaplanilla: '',
-             expediente: '',
-             solicitud: '',
-             unidadfiscalizacion: '',
-             razonsocial: '',
-             rif: '',
-             denominacioncomercial: '',
-             region: '',
-             estado: '',
-             municipio: '',
-             parroquia: '',
-             direccion: '',
-             overlay : false,
-             currentUser : [],
-             firstname: '',
-             lastname: '',
-             position: '',
-             identitycard: '',
-             phone: '',
-             email: ''
+        return{
+            btnSave:'Generar PDF',
+            btn_atras : true,
+            rif: '',
+            razonsocial: '',
+            estado: '',
+            municipio: '',
+            parroquia: '',
+            direccion: '',
+            overlay : false,
+            currentBussine : [],
+            firstname: '',
+            lastname: '',
+            position: '',
+            identitycard: '',
+            phone: '',
+            email: '',
+            ivss:'',
+            object:'',
+            notification: '',
+            semestre: '',
+            dataDeclaracion: {},
+            cant_trabajadores:'',
+            cant_trabajadores_discapacidad : '',
+            location: ''
 
          }
      },
@@ -207,27 +158,54 @@
             this.solicitud              = data.data.id
             this.unidadfiscalizacion    = (data.data.inspection_unit) ? data.data.inspection_unit.name : ''
             this.razonsocial            = (busine) ? busine.company_name : ''
-            this.rif                    = (busine) ? busine.rif : ''
+            this.rif                    = this.currentBussine.rif 
             this.denominacioncomercial  = (busine) ? busine.comercial_designation : ''
             this.region                 = (data.data.country) ? data.data.country.name : ''
             this.estado                 = (data.data.state) ? data.data.state.name: ''
             this.municipio              = (data.data.municipality) ? data.data.municipality.name : ''
             this.parroquia              = (data.data.parishe) ? data.data.parishe.name : ''
             this.direccion              = (busine) ? busine.company_name : ''.location    
-            this.firstname              = this.currentUser.first_name
-            this.lastname               = this.currentUser.last_name
-            this.position               = this.currentUser.position.name
-            this.identitycard           = this.currentUser.number_document_identity 
-            this.phone                  = this.currentUser.phone                  
-            this.email                  = this.currentUser.email                             
+            this.firstname              = this.currentBussine.first_name
+            this.lastname               = this.currentBussine.last_name
+            this.position               = this.currentBussine.position.name
+            this.identitycard           = this.currentBussine.number_document_identity 
+            this.phone                  = this.currentBussine.phone                  
+            this.email                  = this.currentBussine.email                             
             this.overlay = false 
+        },
+        Qr(){
+            new QRious({
+            element: document.querySelector("#codigo"),
+            value: "https://parzibyte.me/blog", // La URL o el texto
+            size: 200,
+            backgroundAlpha: 0, // 0 para fondo transparente
+            foreground: "#8bc34a", // Color del QR
+            level: "H", // Puede ser L,M,Q y H (L es el de menor nivel, H el mayor)
+            });
         }
      },
      mounted(){
-        this.nota_entrega_id = this.$route.params.id
-        this.notification = 'Notification ' + this.nota_entrega_id
-        this.getSolicitudById(this.$route.params.id)
-        this.currentUser = storageData.get('_User');
+        this.Qr()
+        if(this.$route.params.item){
+            this.dataDeclaracion = this.$route.params.item
+        }
+     
+        console.log(this.$route.params.item)
+        this.notification = 'Declaración ' + this.$route.params.item.id
+    
+        if (storageData.get('_bussines') !== null) {
+            this.currentBussine                 = storageData.get('_bussines');
+            this.rif                            = this.currentBussine.rif 
+            this.razonsocial                    = this.currentBussine.company_name
+            this.ivss                           = this.currentBussine.employer_number_ivss
+            this.object                         = this.currentBussine.comercial_designation
+            this.location                       = this.currentBussine.location
+            this.phone                          = this.currentBussine.phone 
+            this.email                          = this.currentBussine.email_r
+            this.semestre                       = this.dataDeclaracion.nombre
+            this.cant_trabajadores              = parseInt(this.dataDeclaracion.numero_total_trabajadores) - parseInt(this.dataDeclaracion.personas_discapacidades)
+            this.cant_trabajadores_discapacidad = this.dataDeclaracion.personas_discapacidades
+        }
         
 
      }

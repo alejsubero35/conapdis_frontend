@@ -467,7 +467,7 @@ export default class Bussines extends Vue {
        this.loadingWizard = value
    }
     handleValidation(isValid, tabIndex){
-        console.log('Tab: '+tabIndex+ ' valid: '+isValid)
+       
     }
 	async updateFecha(){
 		this.dataFilter.fecha_desde = this.dateD
@@ -475,16 +475,16 @@ export default class Bussines extends Vue {
     async updateFechaHasta(){
         this.dataFilter.fecha_hasta = this.dateH
     }
-	onSubmit() {console.log(this.FormRequest)
+	onSubmit() {
         this.filter()
     }
-    onSubmitBussines() {console.log(this.FormRequest)
+    onSubmitBussines() {
         this.filterBussines()
     }
  	async filter() { 
         this.overlay = true
     	const data = await globalModule.searchFilter(this.FormRequest)
-		console.log(data)
+	
 		if(data.data.length > 0){
             this.exportData = await data.data
             this.desserts =  await data.data
@@ -500,7 +500,7 @@ export default class Bussines extends Vue {
     async filterBussines() { 
         this.overlay = true
     	const data = await globalModule.searchFilterBussines(this.FormRequest)
-		console.log(data)
+	
 		if(data.data.length > 0){
             this.exportDataBussine = await data.data
             this.dessertsBussine = await data.data

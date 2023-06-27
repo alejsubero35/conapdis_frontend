@@ -15,7 +15,7 @@
      
                 <v-tab-item>
                     <v-container fluid>
-                        <v-form class="formCliente" ref="validateStepForm"  lazy-validation >	
+                        <v-form class="formCliente" ref="vincularform"  lazy-validation >	
                             <input type="hidden" v-model="vincularform.id" value:any="0" >					
                             <v-row>
                                 
@@ -31,6 +31,7 @@
                                     required
                                     @change="getPersonCertificate($event)"
                                     return-object
+                                   
                                     >        
                                     <template v-slot:prepend-item>
                                     <v-overlay :value="isLoading">
@@ -42,12 +43,17 @@
                                     </v-overlay>
                                     <v-list-item>
                                         <v-list-item-content>
-                                            <v-text-field v-model="searchTerm" placeholder="Buscar Persona Certificada"   @keyup.enter="searchCertificatePerson" autofocus ></v-text-field>
+                                            <v-text-field type="number" min="1" v-model="searchTerm" placeholder="Buscar Persona Certificada"   @keyup.enter="searchCertificatePerson" autofocus ></v-text-field>
                                         </v-list-item-content>
                                     </v-list-item>
                                     <v-divider ></v-divider>
                                     </template>
                                     </v-select>
+                                    <!--  <span v-if="tieneCertificado" class="d-flex justify-end" style="margin-top:-12px;color: red">No Posee Certificado</span>
+                                     <span v-if="personaExiste" class="d-flex justify-end" style="margin-top:-12px;color: red">Persona no encontrada</span>
+                                     <span v-if="trabajaActualmente" class="d-flex justify-end" style="margin-top:-12px;color: red">La persona tiene registro activo con otra empresa</span>
+                                     <span v-if="trabajaActualmenteEnsuEmpresa" class="d-flex justify-end" style="margin-top:-12px;color: red">La persona tiene registro activo con su empresa</span>
+                                     <span v-if="vencido" class="d-flex justify-end" style="margin-top:-12px;color: red">La persona tiene el certificado Vencido</span> -->
                                 </v-col>
                                 <v-col cols="12" sm="6" md="4">
                                     <v-text-field
@@ -89,6 +95,7 @@
                                     </v-menu>
                                 </v-col>
                             </v-row>
+                 
                             <v-row>
                                 <v-col cols="12" sm="6" md="4">
                                     <v-select
@@ -111,6 +118,7 @@
                                         :rules="rules"
                                         v-model="vincularform.sueldo"
                                         type="number"
+                                        min="0"
                                         value="0.00"
                                     ></v-text-field>
                                 </v-col>
@@ -144,7 +152,7 @@
                                         <v-data-table
                                             :headers="headers"
                                             :items="desserts" 
-                                            class="elevation-1"  
+                                            class="elevation-1 table-one"
                                             no-data-text="No hay datos disponibles"  
                                             :footer-props="{
                                                 'items-per-page-options': [5, 10 -1],
@@ -157,14 +165,14 @@
                                                 <v-tooltip v-if="item.trabajo_hasta == null" top>
                                                     <template v-slot:activator="{on, attrs}">
                                                         <v-btn
-                                                            color="success"
+                                                            color="error"
                                                             dark
                                                             v-bind="attrs"
                                                             v-on="on"
                                                             icon
                                                             @click="openDialog(item)"   
                                                         >
-                                                            <v-icon>mdi-close-box-outline</v-icon>
+                                                            <v-icon>mdi-account-multiple-minus-outline</v-icon>
                                                         </v-btn>
                                                     </template>
                                                     <span>Desvincular</span>
@@ -172,13 +180,13 @@
                                                 <v-tooltip v-else top>
                                                     <template v-slot:activator="{on, attrs}">
                                                         <v-btn
-                                                            color="error"
+                                                            color="success"
                                                             dark
                                                             v-bind="attrs"
                                                             v-on="on"
                                                             icon
                                                         >
-                                                            <v-icon>mdi-account-arrow-right</v-icon>
+                                                            <v-icon>mdi-account-network-off</v-icon>
                                                         </v-btn>
                                                     </template>
                                                     <span>Persona Desvinculada</span>
@@ -198,10 +206,17 @@
 		<v-dialog
 		v-model="dialog" max-width="400">
 		<v-card>
+            <v-overlay :value="overlayDialog">
+                <v-progress-circular
+                    indeterminate
+                    size="44"
+                    class="laoding"
+                ></v-progress-circular>
+            </v-overlay>
 		  <v-card-title class="text-h5">
 			Desvincular Persona 
 		  </v-card-title>
-          <v-card-body>
+    
             <v-col cols="12" sm="12" md="12">
                 <v-menu
                     v-model="menu"
@@ -241,7 +256,7 @@
                 rows="2"
             ></v-textarea>
             </v-col>
-		  </v-card-body>
+	
   
 		  <v-card-actions>
 			<v-spacer></v-spacer>
@@ -270,7 +285,7 @@
                 Notificación
             </v-card-title>
             <v-card-text>
-                Esta Cédula no esta Certificada 
+                {{ contentModal }} 
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -302,6 +317,7 @@ import storageData from '@/store/services/storageService'
 export default class Bussines extends Vue {
 [x: string]: unknown;
 	overlay = false;
+    overlayDialog = false
 	title : string = '';
 	subtitle : string = ''
 	validateStepForm : any = {inactivo: '1'};
@@ -315,6 +331,14 @@ export default class Bussines extends Vue {
 		message:'', 
 	}
     loadingWizard = false
+    clear = true
+    tieneCertificado = false
+    trabajaActualmente = false
+    personaExiste = false
+    trabajaActualmenteEnsuEmpresa = false
+    vencido = false
+    NoIngFechaEgreso = false
+    tabSelectedIndex = 0
 
     agente_retencion = ''
     snackbar = false
@@ -346,9 +370,10 @@ export default class Bussines extends Vue {
     isLoading       = false;
     arrayCustomers  = []
     fullname        = ''
+    contentModal    = ''
 	$refs!: {
-        validateStepForm: InstanceType<typeof ValidationObserver>;
-        validateStepFormTwo: InstanceType<typeof ValidationObserver>;			
+        vincularform: InstanceType<typeof ValidationObserver>;
+        desvincularform: InstanceType<typeof ValidationObserver>;			
 	}
 
 	get FormRequest(): any {
@@ -364,7 +389,7 @@ export default class Bussines extends Vue {
        this.loadingWizard = value
    }
     handleValidation(isValid, tabIndex){
-        console.log('Tab: '+tabIndex+ ' valid: '+isValid)
+        
     }
 	async updateFecha(){
 		this.vincularform.trabaja_desde = this.date
@@ -372,51 +397,73 @@ export default class Bussines extends Vue {
     async updateFechaEgreso(){
         this.desvincularform.trabajo_hasta = this.dategreso
     }
-	validateRif(value){
-		if(value.length == 12){
-			alert('hacer peticion al api')
-			console.log(value)
 
-		}
-	}
     async searchCertificatePerson(val) {
 		this.isLoading = true
 		const data : any = await linkedModule.searchCertificatePerson(this.searchTerm);
-  
-        if(data.data.length > 0){
-            this.arrayCustomers = data.data
-		    this.isLoading = false
+
+        if(data.data.length > 0){                            
+            if(data.data[0].certificado == ''){
+                this.tieneCertificado=true;
+                this.dialogOpen = true
+                this.contentModal = 'No posee Certificado'
+                this.searchTerm = ''
+                this.isLoading = false          
+            }else if(data.data[0].trabajaactualmente == "Si"){
+                this.trabajaActualmente=true; 
+                this.dialogOpen = true
+                this.contentModal = 'La persona tiene un registro activo con otra empresa'
+                this.searchTerm = '' 
+                this.isLoading = false   
+            }else if(data.data[0].trabajaactualmenteenlaempresa == "Si"){
+                this.trabajaActualmenteEnsuEmpresa=true; 
+                this.dialogOpen = true
+                this.contentModal = 'La persona tiene un registro activo con su empresa'
+                this.searchTerm = '' 
+                this.isLoading = false  
+            }else if(data.data[0].vencido == "Si"){
+                this.vencido=true; 
+                this.dialogOpen = true
+                this.contentModal = 'La persona tiene el certificado vencido'
+                this.searchTerm = '' 
+                this.isLoading = false  
+            }else{
+                this.arrayCustomers = data.data
+                this.isLoading = false                   
+            }
         }else{
+            this.searchTerm = '' 
+            this.isLoading = false 
             this.dialogOpen = true
-            this.isLoading = false
-            this.searchTerm = ''
+            this.contentModal = 'Esta Cédula NO se encuentra registrada.' 
         }
 
 	}
-    getPersonCertificate(event){console.log(event)
+    getPersonCertificate(event){
         this.fullname = event.nombres+' '+event.apellidos
         this.vincularform.personas_discapacidad_id = event.id
-        this.vincularform.empresa_id = storageData.get('_bussines_id') 
-    
+        this.vincularform.empresa_id = storageData.get('_bussines_id')     
     }
     async getPositionAll(){
 		const position : any = await linkedModule.getPositionAll()
-        console.log(position)
 		this.arrayPosition = position.data
 	}	
-	onSubmit() {console.log(this.FormRequest)
-        this.save()
+	onSubmit() {
+        const valid :any =  this.$refs.vincularform.validate();
+        if(valid)  this.save()
+  
     }
  	async save() { 
-		console.log(this.FormRequest)
  		this.overlay = true
     	const data = await linkedModule.save(this.FormRequest)
-		console.log(data)
+	
 		if(data.code == 200 || data.code == 201){
 			this.textmsj = 'Persona Vinculada con Éxito.'
 			this.color = 'success'
 			this.snackbar = true
 			this.back();
+            this.reset(); 
+            this.arrayCustomers = []
 			this.overlay = false 
 		} else {
 			this.textmsj = 'Error al Registrar los datos de la Empresa.'
@@ -440,7 +487,7 @@ export default class Bussines extends Vue {
         this.update()
     }
 	async update(){
- 		this.overlay = true
+ 		this.overlayDialog = true
     	const data = await linkedModule.update(this.FormRequestDesvincular)
 	
 		if(data.code == 200){
@@ -450,18 +497,19 @@ export default class Bussines extends Vue {
             this.dialog     = false
             this.getPersonLinked()
 			this.back();
-			this.overlay    = false 		
+            this.desvincularform.motivo = ''
+			this.overlayDialog    = false 		
 		} else {
 			this.textmsj    = 'Error al Actualizar los datos de la Empresa.'
 			this.color      = 'error'
 			this.snackbar   = true
 			this.backError();
-			this.overlay    = false 
+			this.overlayDialog    = false 
 		}       
 	}
 
-	reset () {
-        this.$refs.validateStepForm.reset()
+	reset() {
+        this.$refs.vincularform.reset()
     };
     back() {
         setTimeout(() => {

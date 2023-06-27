@@ -55,6 +55,7 @@
                         :rules="rules"
                         v-model="dataForm.telefono_formacion_solicitud"
                         type="number"
+                        min="0"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4"	md="4">
@@ -66,6 +67,7 @@
                         :rules="rulesNum"
                         v-model="dataForm.cantidad_formacion_solicitud"
                         type="number"
+                        min="0"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4">
@@ -270,7 +272,6 @@ export default class EditarCliente extends Vue {
         this.dataForm.fecha_propuesta_formacion_solicitud = this.date
     }
 	onSubmit() {
-        console.log(this.FormRequest)
         const valid :any =  this.$refs.dataForm.validate();
 
         if (valid) {
@@ -348,8 +349,8 @@ export default class EditarCliente extends Vue {
         this.comboboxAll(); 
         this.getStates()
         this.dataForm.id_postula_empresa = storageData.get('_bussines').id  
-        this.empresaname = storageData.get('_bussines').rif + '-' +storageData.get('_bussines').nombre
-        this.dataForm.fecha_formacion_solicitud = this.date
+        this.empresaname = storageData.get('_bussines').rif + '-' +storageData.get('_bussines').company_name
+        this.dataForm.fecha_propuesta_formacion_solicitud = this.date
     }
 	data(){
     return{

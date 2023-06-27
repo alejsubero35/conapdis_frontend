@@ -1075,7 +1075,7 @@
         async getInspectionRequestById(id){  
             this.overlay = true
             const {data} = await guiaModule.getInspectionRequestById(id)   
-            console.log(data)
+          
             this.numeroguia                 = data.data.num_guia
             this.fechaguia                  = data.data.date_inspection
             this.solicitudnumero            = data.data.inspection_request.id
