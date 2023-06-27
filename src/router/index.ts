@@ -55,6 +55,7 @@ const OfertasLaborales                = () => import('@/views/modulos/Ofertas/Of
 const CrearOfertaLaboral              = () => import('@/views/modulos/Ofertas/CrearOfertaLaboral.vue')
 const EditarOfertaLaboral             = () => import('@/views/modulos/Ofertas/EditarOferta.vue')
 const VerPostulantesOferta            = () => import('@/views/modulos/Ofertas/PostulantesOferta.vue')
+const DownloadCV                      = () => import('@/views/modulos/Ofertas/DownloadCV.vue')
 
 //SolicitudFormacion
 const SolicitudFormacion              = () => import('@/views/modulos/SolicitudFormacion/SolicitudFormacion.vue')
@@ -321,7 +322,15 @@ const router = new Router({
           component: Citas,
           meta: { Auth: true, title: 'Citas' },
      
-        },     
+        },
+        {
+          path: 'downloadcv/:id',
+          name: 'downloadcv',
+          component: DownloadCV,
+          meta: { Auth: true, title: 'DownloadCV' },
+     
+        },   
+           
       ]
       //
     },

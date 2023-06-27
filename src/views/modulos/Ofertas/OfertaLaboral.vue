@@ -64,12 +64,13 @@
                                 </template>
                                 <span>Ver Postulantes</span>
                             </v-tooltip>
-                            <v-tooltip top>
+                            <v-tooltip v-if="item.status_postula_oferta != 'CERRADA'" top>
                                 <template v-slot:activator="{on, attrs}">
                                     <v-btn
+                                    
                                         color="warning"
                                         dark
-                                        @click="cerrarOferta(item)"   
+                                        @click="cerrarOferta(item,0)"   
                                         icon
                                         v-bind="attrs"
                                         v-on="on"
@@ -84,7 +85,7 @@
                                     <v-btn
                                         color="error"
                                         dark
-                                        @click="eliminar(item)"   
+                                        @click="eliminar(item,1)"   
                                         icon
                                         v-bind="attrs"
                                         v-on="on"
@@ -100,7 +101,6 @@
             </template>
         </v-col>
         <ModalDelete @deleteData="deleteData" :titlemodal="titlemodal" :textbody="textbody" :dialogDelete="dialogDelete" @cerrarModal="cerrarModal"/>
-        <ModalDelete @cerrarOfertaData="cerrarOfertaData" :titlemodal="titlemodal" :textbody="textbody" :dialogDelete="dialogDelete" @cerrarModal="cerrarModal"/>
         <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color"/>
     </v-row>
 </template>
@@ -140,7 +140,7 @@ export default class Usuario extends Vue {
     tituloModal : string = ''
     dataEditForm : object = {}
     id_delete = ''
-    id_cerar_oferta = ''
+    id_cerrar_oferta = ''
     snackbar = false
     textmsj = ''
     color = ''
@@ -152,6 +152,8 @@ export default class Usuario extends Vue {
     options = {}
     textbody = ''
     titlemodal = ''
+    validateAction : any = ''
+    disabled        = false
     @Watch('options', { immediate: false })
         handler (val) {
         if (val.page != 1) {
@@ -164,17 +166,27 @@ export default class Usuario extends Vue {
         this.$router.push({ name: "crearofertalaboral"});
     }
 
-    eliminar(item){
+    eliminar(item,value){
+        this.validateAction = value
         this.dialogDelete = true;
         this.textbody = 'Confirme que desea eliminar la Oferta'
         this.titlemodal = 'Eliminar Registro de Oferta'
         this.id_delete = item.id_postula_oferta
     }
-    cerrarOferta(item){
-        this.dialogDelete = true;
-        this.textbody = 'Confirme que desea Cerrar la Oferta'
-        this.titlemodal = 'Cerrar Oferta Laboral'
-        this.id_cerar_oferta = item.id_postula_oferta
+    cerrarOferta(item,value){
+        if(item.cantidadPostulantes == 0){
+            this.validateAction = value
+            this.dialogDelete = true;
+            this.textbody = 'Confirme que desea Cerrar la Oferta'
+            this.titlemodal = 'Cerrar Oferta Laboral'
+            this.id_cerrar_oferta = item.id_postula_oferta
+        }else{
+            this.color = 'warning'
+            this.textmsj = 'Esta Oferta tiene postulantes asignados por tanto NO puede ser Cerrada.'
+            this.snackbar = true
+            this.closeSnackbar()
+        }
+
     }
     editar(item){
         this.$router.push({ name: "editarofertalaboral", params: { id: item.id_postula_oferta } });
@@ -183,22 +195,14 @@ export default class Usuario extends Vue {
     cerrarModal(event){
         this.dialogDelete = event;
     }
-     async cerrarOfertaData(event){
-      
-        this.overlay = true
-        console.log( this.id_cerar_oferta )
-        const res : any = await ofertModule.cerrarOferta(this.id_cerar_oferta);
-        if(res.status == 200){
-            this.dialogDelete = event;
-            this.dataIndex()
-            this.color = 'success'
-            this.textmsj = 'Oferta Cerrar con Éxito.'
-            this.snackbar = true
-            this.closeSnackbar()
-            this.overlay = false
-        }
-    } 
     async deleteData(event){
+        if(this.validateAction == 0){
+            this.cerrarOfert(false)
+        }else{
+            this.deleteOfert(false)
+        }
+    }
+    async deleteOfert(event){
       
         this.overlay = true
         const res : any = await ofertModule.delete(this.id_delete);
@@ -212,6 +216,22 @@ export default class Usuario extends Vue {
             this.overlay = false
         }
     }
+     async cerrarOfert(event){
+      
+        this.overlay = true
+        console.log( this.id_cerrar_oferta )
+        const res : any = await ofertModule.cerrarOferta(this.id_cerrar_oferta);
+        if(res.status == 200){
+            this.dialogDelete = event;
+            this.dataIndex()
+            this.color = 'success'
+            this.textmsj = 'Oferta Cerrar con Éxito.'
+            this.snackbar = true
+            this.closeSnackbar()
+            this.overlay = false
+        }
+    } 
+
     closeSnackbar(){
         setTimeout(() => {
             this.snackbar = false

@@ -44,6 +44,7 @@
                         v-model="dataForm.cedula_formacion_solicitud_asistencia"
                         type="number"
                         :rules="rules"
+                        min="0"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6"	md="4">
@@ -293,6 +294,7 @@ export default class EditarCliente extends Vue {
             this.getsolicitud(this.$route.params.id)
             this.getAttrendances()
             this.dataForm.id_formacion_solicitud = this.$route.params.id
+            this.dataForm.fecha_nacimiento_formacion_solicitud_asistencia = this.date
         }
   
         this.empresaname = storageData.get('_bussines').rif + '-' +storageData.get('_bussines').company_name  

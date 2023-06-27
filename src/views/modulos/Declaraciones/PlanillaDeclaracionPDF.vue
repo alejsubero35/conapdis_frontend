@@ -36,7 +36,7 @@
                     <div class="text-center" style="font-size:12px;font-weight:bold"><p>PLANILLA DECLARACIÓN DE PERSONAS CON DISCAPACIDAD INSERTADAS LABORALMENTE</p></div>
                     <div class="text-center" style="font-size:12px;font-weight:bold"><p>REGISTRO DEL SECTOR EMPLEADOR Y DECLARACIÓN DE EMPLEADOS CON DISCAPACIDAD</p></div>
                     <div style="float:left;margin-left:10%">
-                        <div > N° Declaración : </div>
+                        <div > N° Declaración : {{ nro_declaracion }} </div>
                     </div><br><br>
     
                     <v-row class="table">
@@ -49,8 +49,8 @@
                                 <td  colspan="3" style="font-size:12px;font-weight:bold">Razón Social: {{ razonsocial }}</td>
                             </tr>
                             <tr>
-                                <td  colspan="3" style="font-size:12px;font-weight:bold">Sector : {{ rif }} </td>
-                                <td  colspan="3" style="font-size:12px;font-weight:bold">Tipo: {{ rif }}</td>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">Sector : {{ sector }} </td>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">Tipo: {{ tipocompany }}</td>
                             </tr>
                             <tr>
                                 <td  colspan="3" style="font-size:12px;font-weight:bold">N° Patrol IVSS : {{ ivss }} </td>
@@ -65,8 +65,8 @@
                                 <td  colspan="3" style="font-size:12px;font-weight:bold">Correo Electrónico: {{ email }}</td>
                             </tr>
                             <tr>
-                                <td  colspan="3" style="font-size:12px;font-weight:bold">Estado : {{ rif }} </td>
-                                <td  colspan="3" style="font-size:12px;font-weight:bold">Municipio: {{ rif }}</td>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">Estado : {{ estado }} </td>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">Municipio: {{ municipio }}</td>
                             </tr>
                             <tr>
                                 <td  colspan="3" style="font-size:12px;font-weight:bold">Semestre a Declarar : {{ semestre }} </td>
@@ -124,7 +124,10 @@
             dataDeclaracion: {},
             cant_trabajadores:'',
             cant_trabajadores_discapacidad : '',
-            location: ''
+            location: '',
+            sector : '',
+            tipocompany : '',
+            nro_declaracion : ''
 
          }
      },
@@ -205,6 +208,11 @@
             this.semestre                       = this.dataDeclaracion.nombre
             this.cant_trabajadores              = parseInt(this.dataDeclaracion.numero_total_trabajadores) - parseInt(this.dataDeclaracion.personas_discapacidades)
             this.cant_trabajadores_discapacidad = this.dataDeclaracion.personas_discapacidades
+            this.nro_declaracion                = this.dataDeclaracion.id
+            this.sector                         = this.currentBussine.economic_sectors.name
+            this.tipocompany                    = this.currentBussine.company_types.name
+            this.estado                         = this.currentBussine.state.name
+            this.municipio                      = this.currentBussine.municipality.name 
         }
         
 

@@ -46,7 +46,7 @@ import {
     @Action
 	async update(dataOfert: any) { 
 		await http.post(`positions/unlinked`, dataOfert)
-		.then((payload: any) => {console.log(payload)
+		.then((payload: any) => {
 			if(payload){
 				dataOfert.code = payload.status
 			} else {
@@ -70,7 +70,7 @@ import {
             })
         }) 
     }
-     @Action
+    @Action
     cerrarOferta(id) {
         return new Promise((resolve, reject) => {  
             http.post(`/positions/cerrar_ofert/${id}`)
@@ -170,7 +170,6 @@ import {
         return new Promise((resolve, reject) => {  
             http.get(`/positions/get_discapacidades`)
             .then(response =>  {
-                console.log(response)
                 if (response.status === 200) {     
                     resolve(response); 
                 }
@@ -180,9 +179,50 @@ import {
             })
         }) 
     }
-  
-
-   
+    @Action
+    getDataCV(id) {
+        return new Promise((resolve, reject) => {  
+            http.get(`/oferta/get_data_curriculo/${id}`)
+            .then(response =>  {
+                if (response.status === 200) {     
+                    resolve(response); 
+                }
+            })
+            .catch(error => {
+                reject(error)
+            })
+        }) 
+    } 
+    @Action
+    saveCita(data) {
+        return new Promise((resolve, reject) => {  
+            http.post(`/oferta/oferta_cita_pcd`,data)
+            .then(response =>  {
+                if (response.status === 200) {     
+                    resolve(response); 
+                }
+            })
+            .catch(error => {
+                reject(error)
+            })
+        }) 
+    }  
+    @Action
+    rechazarPostulante(data) {
+        return new Promise((resolve, reject) => {  
+            http.post(`/oferta/rechazar_postulante`,data)
+            .then(response =>  {
+                if (response.status === 200) {     
+                    resolve(response); 
+                }
+            })
+            .catch(error => {
+                reject(error)
+            })
+        }) 
+    }
+    
+    
   }  
   
   export default getModule(ofertModule);

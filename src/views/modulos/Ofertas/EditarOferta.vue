@@ -36,6 +36,7 @@
                         return-object
                         @change="getChargeObject($event)"
                         v-model="cargo_id"
+                        readonly
                     ></v-select>
                 </v-col>
                 <v-col cols="12" sm="6"	md="6">
@@ -53,6 +54,7 @@
                         return-object
                         @change="getProfesionObject($event)"
                         v-model="profesion_id"
+                        readonly
                     ></v-select>
                 </v-col>
  
@@ -331,7 +333,7 @@ export default class EditarCliente extends Vue {
     .form_data_section{
         background: white;
         border-radius: 8px;
-        width: 100%;
+        width: 60%;
         padding: 20px;
     }
     .content-section{
