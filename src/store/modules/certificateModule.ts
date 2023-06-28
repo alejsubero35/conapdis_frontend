@@ -42,7 +42,7 @@ import {
 	   
 		  }) 
 	   }
-     @Action
+/*      @Action
      getCertificateById(id) {
         return new Promise((resolve, reject) => {  
            http.get(`/certificate-abis/${id}`)
@@ -56,6 +56,23 @@ import {
             })
           }) 
         }
+ */
+    @Action({rawError: true})
+		async getCertificateById(id:any) { 
+		const response =  await http.get(`certificate-abis/${id}`,{
+			responseType: 'arraybuffer'
+		})
+			if (response.status === 200 || response.status === 201){
+				//return await this.getListaPreciosAll();
+				let blob = new Blob([response.data], {
+					type: 'application/pdf'
+				})
+				let link = document.createElement('a')
+				link.href = window.URL.createObjectURL(blob)
+				link.download = 'Cotizacion-'+id+'.pdf'
+				link.click()
+			}
+		}
      
   }  
   

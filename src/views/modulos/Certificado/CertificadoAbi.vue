@@ -143,8 +143,9 @@ export default class Usuario extends Vue {
         return  date.toISOString();
     }
 
-    viewPDF(id) {
-        this.$router.push({ name: "planillacertificadoabi", params: { id: id } });
+    async viewPDF(id) {
+        //this.$router.push({ name: "planillacertificadoabi", params: { id: id } });
+         const data : any = await certificateModule.getCertificateById(id)  
     }
     async dataIndex(){  
     

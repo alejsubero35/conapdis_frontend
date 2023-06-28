@@ -216,10 +216,10 @@
             this.direccion              = (busine) ? busine.company_name : ''.location    
             this.firstname              = this.currentUser.first_name
             this.lastname               = this.currentUser.last_name
-            this.position               = this.currentUser.position.name
-            this.identitycard           = this.currentUser.number_document_identity 
-            this.phone                  = this.currentUser.phone                  
-            this.email                  = this.currentUser.email                             
+            this.position               = this.currentUser.bussine.position.name
+            this.identitycard           = this.currentUser.number 
+            this.phone                  = this.currentUser.bussine.phone                  
+            this.email                  = this.currentUser.bussine.email_r                             
             this.overlay = false 
         }
      },
