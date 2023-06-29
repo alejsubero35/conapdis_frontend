@@ -69,7 +69,7 @@ import {
 				})
 				let link = document.createElement('a')
 				link.href = window.URL.createObjectURL(blob)
-				link.download = 'Cotizacion-'+id+'.pdf'
+				link.download = 'CertificadoABI-'+id+'.pdf'
 				link.click()
 			}
 		}

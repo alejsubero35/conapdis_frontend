@@ -38,7 +38,7 @@
                                         v-bind="attrs"
                                         v-on="on"
                                     >
-                                        <v-icon>mdi-eye</v-icon>
+                                        <v-icon>mdi-file-download-outline</v-icon>
                                     </v-btn>
                                 </template>
                                 <span>Ver Acta de Cumplimiento</span>
@@ -155,8 +155,9 @@ export default class Usuario extends Vue {
         return  date.toISOString();
     }
 
-    viewPDF(id) {
-        this.$router.push({ name: "planillactacumplimiento", params: { id: id } });
+    async viewPDF(id) {
+        //this.$router.push({ name: "planillactacumplimiento", params: { id: id } });
+        const data : any = await compliancesModule.getCompliancesById(id);
     }
     async dataIndex(){  
     

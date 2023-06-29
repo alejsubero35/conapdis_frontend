@@ -198,29 +198,37 @@
          async getSolicitudById(id){  
     
             this.overlay = true
-            const {data} = await inspeccionModule.getSolicitudById(id)   
+            const {data} = await inspeccionModule.getSolicitudById(id)  
+            console.log() 
             let busine = (data.data.bussine) ? data.data.bussine : null
+           
+            if(busine){
 
-            this.numeroplanilla         = data.data.id
-            this.fechaplanilla          = data.data.date
-            this.expediente             = (data.data.expedient) ? data.data.expedient.num_expedient : ''
-            this.solicitud              = data.data.id
-            this.unidadfiscalizacion    = (data.data.inspection_unit) ? data.data.inspection_unit.name : ''
-            this.razonsocial            = (busine) ? busine.company_name : ''
-            this.rif                    = (busine) ? busine.rif : ''
-            this.denominacioncomercial  = (busine) ? busine.comercial_designation : ''
-            this.region                 = (data.data.country) ? data.data.country.name : ''
-            this.estado                 = (data.data.state) ? data.data.state.name: ''
-            this.municipio              = (data.data.municipality) ? data.data.municipality.name : ''
-            this.parroquia              = (data.data.parishe) ? data.data.parishe.name : ''
-            this.direccion              = (busine) ? busine.company_name : ''.location    
-            this.firstname              = this.currentUser.first_name
-            this.lastname               = this.currentUser.last_name
-            this.position               = this.currentUser.bussine.position.name
-            this.identitycard           = this.currentUser.number 
-            this.phone                  = this.currentUser.bussine.phone                  
-            this.email                  = this.currentUser.bussine.email_r                             
-            this.overlay = false 
+                this.numeroplanilla         = data.data.id
+                this.fechaplanilla          = data.data.date
+                this.expediente             = (data.data.expedient) ? data.data.expedient.num_expedient : ''
+                this.solicitud              = data.data.id
+                this.unidadfiscalizacion    = (data.data.inspection_unit) ? data.data.inspection_unit.name : ''
+                this.razonsocial            = (busine) ? busine.company_name : ''
+                this.rif                    = (busine) ? busine.rif : ''
+                this.denominacioncomercial  = (busine) ? busine.comercial_designation : ''
+                this.region                 = (data.data.country) ? data.data.country.name : ''
+                this.estado                 = (data.data.state) ? data.data.state.name: ''
+                this.municipio              = (data.data.municipality) ? data.data.municipality.name : ''
+                this.parroquia              = (data.data.parishe) ? data.data.parishe.name : ''
+                this.direccion              = (busine) ? busine.company_name : ''.location    
+                this.firstname              = this.currentUser.first_name
+                this.lastname               = this.currentUser.last_name
+                this.position               = this.currentUser.position.name
+                this.identitycard           = this.currentUser.number 
+                //this.phone                  = this.currentUser.bussine.phone                  
+                //this.email                  = this.currentUser.bussine.email_r  
+                //this.identitycard           = this.currentUser.number_document_identity 
+                this.phone                  = this.currentUser.phone                  
+                this.email                  = this.currentUser.email                                
+                this.overlay = false 
+            }
+
         }
      },
      mounted(){

@@ -43,7 +43,7 @@ import {
 		  }) 
 	   }
 
-     @Action
+     /* @Action
      getCompliancesById(id) {
         return new Promise((resolve, reject) => {  
            http.get(`/act-of-compliances/${id}`)
@@ -56,7 +56,22 @@ import {
              reject(error)
             })
           }) 
-        }
+        } */
+        @Action({rawError: true})
+        async getCompliancesById(id:any) { 
+        const response =  await http.get(`/act-of-compliances/${id}`,{
+          responseType: 'arraybuffer'
+        })
+          if (response.status === 200 || response.status === 201){
+            let blob = new Blob([response.data], {
+              type: 'application/pdf'
+            })
+            let link = document.createElement('a')
+            link.href = window.URL.createObjectURL(blob)
+            link.download = 'ActaCumplimiento -'+id+'.pdf'
+            link.click()
+          }
+		    }
 
   }  
   

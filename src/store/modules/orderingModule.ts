@@ -43,7 +43,7 @@ import {
 		  }) 
 	   }
 
-     @Action
+     /* @Action
      getOrderingBallotById(id) {
         return new Promise((resolve, reject) => {  
            http.get(`/ordering-ballots/${id}`)
@@ -56,7 +56,23 @@ import {
              reject(error)
             })
           }) 
-        }
+        } */
+
+        @Action({rawError: true})
+        async getOrderingBallotById(id:any) { 
+        const response =  await http.get(`/ordering-ballots/${id}`,{
+          responseType: 'arraybuffer'
+        })
+          if (response.status === 200 || response.status === 201){
+            let blob = new Blob([response.data], {
+              type: 'application/pdf'
+            })
+            let link = document.createElement('a')
+            link.href = window.URL.createObjectURL(blob)
+            link.download = 'BoletaOrdenamiento -'+id+'.pdf'
+            link.click()
+          }
+		    }
   }  
   
   export default getModule(orderingModule);

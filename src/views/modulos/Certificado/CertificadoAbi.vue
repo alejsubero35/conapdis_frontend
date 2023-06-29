@@ -39,7 +39,7 @@
                                         v-bind="attrs"
                                         v-on="on"
                                     >
-                                        <v-icon>mdi-eye</v-icon>
+                                        <v-icon>mdi-file-download-outline</v-icon>
                                     </v-btn>
                                 </template>
                                 <span>Ver Certificado ABI</span>
