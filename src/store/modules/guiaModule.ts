@@ -27,35 +27,50 @@ import {
 
 	@Action
 	getAll() {
-	   return new Promise((resolve, reject) => {  
-			  http.get(`/guide-inspections`)
-			  .then(response =>  {
+		return new Promise((resolve, reject) => {  
+				http.get(`/guide-inspections`)
+				.then(response =>  {
 
-				  if (response.status === 200) {     
-					  resolve(response); 
-				  }
-			  })
-			  .catch(error => {
-				  reject(error)
-			  })
+					if (response.status === 200) {     
+						resolve(response); 
+					}
+				})
+				.catch(error => {
+					reject(error)
+				})
+			
 		
-	   
-		  }) 
-	   }
-     @Action
-     getInspectionRequestById(id) {
-        return new Promise((resolve, reject) => {  
-           http.get(`/guide-inspections/${id}`)
-           .then(response =>  {
-             if (response.status === 200) {     
-               resolve(response); 
-             }
-           })
-           .catch(error => {
-             reject(error)
+			}) 
+		}
+	@Action
+    getInspectionRequestById(id) {
+		return new Promise((resolve, reject) => {  
+			http.get(`/guide-inspections/${id}`)
+			.then(response =>  {
+				if (response.status === 200) {     
+				resolve(response); 
+				}
+			})
+			.catch(error => {
+				reject(error)
+				})
+			}) 
+		}
+    @Action({rawError: true})
+        async downloadGuide(id:any) { 
+        const response =  await http.get(`/guide-inspections/${id}`,{
+          	responseType: 'arraybuffer'
+        })
+        if (response.status === 200 || response.status === 201){
+            let blob = new Blob([response.data], {
+              type: 'application/pdf'
             })
-          }) 
+            let link = document.createElement('a')
+            link.href = window.URL.createObjectURL(blob)
+            link.download = 'ActaCumplimiento -'+id+'.pdf'
+            link.click()
         }
+	}
 
   }  
   

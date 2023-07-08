@@ -38,7 +38,7 @@
                                         v-bind="attrs"
                                         v-on="on"
                                     >
-                                        <v-icon>mdi-eye</v-icon>
+                                        <v-icon>mdi-file-download-outline</v-icon>
                                     </v-btn>
                                 </template>
                                 <span>Ver Guía de Inspección</span>
@@ -155,8 +155,9 @@ export default class Usuario extends Vue {
         return  date.toISOString();
     }
 
-    viewPDF(id) {
-        this.$router.push({ name: "planillaguiainspeccion", params: { id: id } });
+    async viewPDF(id) {
+        //this.$router.push({ name: "planillaguiainspeccion", params: { id: id } });
+           const data : any = await guiaModule.downloadGuide(id);
     }
     async dataIndex(){  
     
