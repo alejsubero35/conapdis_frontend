@@ -67,7 +67,7 @@ import {
             })
             let link = document.createElement('a')
             link.href = window.URL.createObjectURL(blob)
-            link.download = 'ActaCumplimiento -'+id+'.pdf'
+            link.download = 'GuíaInspeccion-'+id+'.pdf'
             link.click()
         }
 	}
