@@ -41,9 +41,7 @@
                                 label="Trabajadores con Discapacidad "
                                 placeholder="Trabajadores con Discapacidad "
                                 dense
-                                :rules="rules"
                                 v-model="declararform.trabajadores_discapacidad"
-                                type="number"
                                 readonly
                             ></v-text-field>
                         </v-col>
@@ -239,6 +237,7 @@ export default class Bussines extends Vue {
 
         if(porcentajeley >  parseFloat(this.declararform.trabajadores_discapacidad)  ){
             this.porcentaje = 'Total = '+porcentajeley+' '+' - No cumple con el 5% estipulado por la  Ley'
+            this.porcentaje = '0'
             this.disabled = true
         }else{
             this.porcentaje = 'Total = '+porcentajeley+' '+'- Cumple con el 5% estipulado por la  Ley'
@@ -256,7 +255,8 @@ export default class Bussines extends Vue {
             this.declararform.trabajadores_discapacidad = peoplelinked.data.length
             this.declararform.personas_discapacidades   = peoplelinked.data.length
         }else{
-            this.dialogOpen = true
+             this.declararform.trabajadores_discapacidad = 0
+            //this.dialogOpen = true
         }
 
 	}
