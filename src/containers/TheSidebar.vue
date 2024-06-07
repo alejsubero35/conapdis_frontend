@@ -39,7 +39,7 @@ import certificateapproved from './optionmenu/_certificate_approved'
 import estandar  from './optionmenu/_estandar'
 import approved    from './optionmenu/_approved'
 import storageData from '@/store/services/storageService'
-import sessionModule from '@/store/modules/sessionModule';
+
 
 
 export default {

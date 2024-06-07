@@ -4,10 +4,10 @@ import store from '@/store';
 import Swal from 'sweetalert2'
 axios.defaults.withCredentials = true;
 
-const URL     =  'https://fiscalizacion.duckdns.org/api/v1' // url del ambiente local
-const URLBASE =  'https://fiscalizacion.duckdns.org/' // url del ambiente local
-//const URL     =  'http://conapdis.local/api/v1' // url del ambiente local
-//const URLBASE =  'https://conapdis.local' // url del ambiente local
+//const URL     =  'https://fiscalizacion.duckdns.org/api/v1' // url del ambiente local
+//const URLBASE =  'https://fiscalizacion.duckdns.org/' // url del ambiente local
+const URL       =  'http://conapdis.test/api/v1' // url del ambiente local
+const URLBASE   =  'http://conapdis.test' // url del ambiente local
 //const URL     =  'https://conapdis.filicabh.com.ve/api/v1'
 //const URLBASE =  'https://conapdis.filicabh.com.ve'
 
