@@ -41,7 +41,7 @@
                         placeholder="Cédula"
                         outlined
                         dense
-                        v-model="dataForm.cedula_formacion_solicitud_asistencia"
+                        v-model="dataForm.identity_card"
                         type="number"
                         :rules="rules"
                         min="0"
@@ -53,7 +53,7 @@
                         placeholder="Nombres"
                         outlined
                         dense
-                        v-model="dataForm.nombre_formacion_solicitud_asistencia"
+                        v-model="dataForm.first_name"
                         :rules="rules"
                     ></v-text-field>
                 </v-col>
@@ -63,7 +63,7 @@
                         placeholder="Apellidos"
                         outlined
                         dense
-                        v-model="dataForm.apellido_formacion_solicitud_asistencia"
+                        v-model="dataForm.last_name"
                         :rules="rules"
                     ></v-text-field>
                 </v-col>
@@ -78,8 +78,7 @@
                         dense
                         :rules="rules"
                         required
-                     
-                        v-model="dataForm.sexo_formacion_solicitud_asistencia"
+                        v-model="dataForm.sex_id"
                     ></v-select>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
@@ -115,6 +114,20 @@
                 </v-col>
                 <v-col cols="12" sm="6"	md="4">
                     <v-select
+                        :items="arraySomeDiscapacity"
+                        item-text="text"
+                        item-value="id"
+                        label="¿Tiene alguna Discapacidad?"
+                        placeholder="¿Tiene alguna Discapacidad?"
+                        outlined
+                        dense
+                        required
+                        v-model="haveDiscapacity"
+                        @change="haveExistDiscapacity($event)"
+                    ></v-select>
+                </v-col>
+                <v-col v-show="showSection" cols="12" sm="6"	md="4">
+                    <v-select
                         :items="arrayDiscapacidades"
                         item-text="nombre"
                         item-value="id"
@@ -122,11 +135,55 @@
                         placeholder="Discapacidades"
                         outlined
                         dense
+                        v-model="dataForm.tipo_discapacidad_id"
+                    ></v-select>
+                </v-col>
+                <v-col v-show="showSection" cols="12" sm="6"	md="4">
+                    <v-select
+                        :items="arrayGradoDiscapacidad"
+                        item-text="nombre"
+                        item-value="id"
+                        label="Grado Discapacidad"
+                        placeholder="Grado Discapacidad"
+                        outlined
+                        dense
+                        v-model="dataForm.grado_discapacidad_id"
+                    ></v-select>
+                </v-col>
+                <v-col v-show="showSection" cols="12" sm="6"	md="4">
+                    <v-text-field
+                        label="N° Certificado"
+                        placeholder="N° Certificado"
+                        outlined
+                        dense
+                        v-model="dataForm.certificate_number"
+                        type="number"
+                        min="0"
+                    ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                    <v-select
+                        :items="arrayStates"
+                        item-text="name"
+                        item-value="id"
+                        label="Estado"
+                        placeholder="Estado"
+                        v-model="dataForm.estado_id"
+                        outlined
+                        dense
                         :rules="rules"
                         required
-                     
-                        v-model="dataForm.id_discapacidad_formacion_solicitud_asistencia"
                     ></v-select>
+                </v-col>
+                <v-col cols="12" sm="6"	md="4">
+                    <v-text-field
+                        label="Ubicación Geográfica"
+                        placeholder="Ubicación Geográfica"
+                        outlined
+                        dense
+                        v-model="dataForm.geographic_location"
+                        :rules="rules"
+                    ></v-text-field>
                 </v-col>
             </v-row>
             </v-form>	
@@ -171,7 +228,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import ofertModule from '@/store/modules/ofertModule';
+import bussinesModule from '@/store/modules/bussinesModule';
 import formacionModule from '@/store/modules/formacionModule';
 import { ValidationObserver } from 'vee-validate'
 import {serialize} from 'jsonapi-fractal'
@@ -196,18 +253,20 @@ export default class EditarCliente extends Vue {
     sectiontitle = 'AGREGAR Y LISTAR ASISTENCIAS'
     empresaname = ''
     arrayDiscapacidades = []
+    arrayGradoDiscapacidad = []
+    arrayStates = []
     arrayChk = []   
     cargo_id = ''
     profesion_id = ''
     headers = [
         
-        {text: 'Id', value: 'id_formacion_solicitud_asistencia'},
-        {text: 'Cédula', value: 'cedula_formacion_solicitud_asistencia'},
-        {text: 'Nombres ', value: 'nombre_formacion_solicitud_asistencia'},
-        {text: 'Apellidos ', value: 'apellido_formacion_solicitud_asistencia'},
-        {text: 'Sexo', value: 'sexo'},
-        {text: 'Discapacidad', value: 'disc'},
-        {text: 'Fecha Nac.', value: 'fecha_nacimiento_formacion_solicitud_asistencia'},
+        {text: 'Id', value: 'id'},
+        {text: 'Cédula', value: 'identity_card'},
+        {text: 'Nombres ', value: 'first_name'},
+        {text: 'Apellidos ', value: 'last_name'},
+        {text: 'Sexo', value: 'sex.nombre'},
+        {text: 'Discapacidad', value: 'tipodiscapacidad.nombre'},
+        {text: 'Fecha Nac.', value: 'birthdate'},
         {text: 'Acción', value: 'actions'},
     ];
     date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
@@ -216,6 +275,12 @@ export default class EditarCliente extends Vue {
     desserts = []
     arraySexo = []
     tallername = ''
+    arraySomeDiscapacity = [
+        {id: 1, text: 'Si'},
+        {id: 2, text: 'No'},
+    ]
+    showSection = false
+    haveDiscapacity = ''
 	$refs!: {
         dataForm: InstanceType<typeof ValidationObserver>;
     };
@@ -225,23 +290,39 @@ export default class EditarCliente extends Vue {
     updateFecha(){
         this.dataForm.fecha_nacimiento_formacion_solicitud_asistencia = this.date
     }
+    async haveExistDiscapacity(event){
+        if(event == 1){
+            this.showSection = true
+        }else{
+            this.showSection = false
+        }
+    }
     async getComboboxAll(){
-        const sexos : any = await  ofertModule.getSexosAll();
-        this.arraySexo = sexos.data;
-        const discapacidades : any = await  ofertModule.getDiscapacidadesAll();
+        const sexos : any = await  formacionModule.getSexosAll();
+        this.arraySexo = sexos;
+
+        const discapacidades : any = await  formacionModule.getDiscapacidadesAll();
         this.arrayDiscapacidades = discapacidades.data;
 
+        const gradodiscapacidad : any =  await formacionModule.getGradoDiscapacidadesAll();
+        this.arrayGradoDiscapacidad = gradodiscapacidad.data;
+
+        const states : any = await bussinesModule.getStatesAll()
+		this.arrayStates = states.data.data
+
     }
+
     async getsolicitud(id){
-        const data : any = await formacionModule.getRequestById(id)
-        this.tallername = data.data.taller
+        const {data} : any = await formacionModule.getRequestById(id)
+        this.tallername = data.workshop.description
+        this.dataForm.workshop_id = data.workshop.id
     }
     async onSubmit(){
         const valid :any =  this.$refs.dataForm.validate();
         if(valid){
             const data : any = await formacionModule.saveAttendance(this.FormRequest)
             if(data.code == 200 || data.code == 201){
-                this.getAttrendances()
+                this.getAttendances()
                 this.textmsj = 'Asistencia Creada con Éxito.'
                 this.color = 'success'
                 this.snackbar = true
@@ -258,16 +339,16 @@ export default class EditarCliente extends Vue {
         }
 
     }
-    async getAttrendances(){
+    async getAttendances(){
         const attendances : any = await formacionModule.getAttendancesByIdRequest(this.$route.params.id)
         this.desserts = attendances.data
         this.overlay = false
     }
     async deleteAttendance(item){
         this.overlay = true
-        const attendances : any = await formacionModule.deleteAttendances(item.id_formacion_solicitud_asistencia)
+        const attendances : any = await formacionModule.deleteAttendances(item.id)
         if(attendances.status == 200 || attendances.status == 201){
-            this.getAttrendances()
+            this.getAttendances()
         }
         
     }
@@ -292,9 +373,9 @@ export default class EditarCliente extends Vue {
         this.getComboboxAll(); 
         if(this.$route.params.id){
             this.getsolicitud(this.$route.params.id)
-            this.getAttrendances()
-            this.dataForm.id_formacion_solicitud = this.$route.params.id
-            this.dataForm.fecha_nacimiento_formacion_solicitud_asistencia = this.date
+            this.getAttendances()
+            this.dataForm.gform_training_request_id = this.$route.params.id
+            this.dataForm.birthdate = this.date
         }
   
         this.empresaname = storageData.get('_bussines').rif + '-' +storageData.get('_bussines').company_name  

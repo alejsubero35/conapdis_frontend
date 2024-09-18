@@ -32,6 +32,13 @@
                         'items-per-page-text':'Filtro por Página'       
                     }"                     
                 >
+                <template v-slot:item.status="{item}">
+                    <template class="task">
+                        <v-btn :color="getColor(item.status)" dark rounded x-small>
+                            {{ item.status }}
+                        </v-btn>
+                    </template>
+                </template>
                 <template v-slot:item.action="{ item }">
                     <div class="d-flex">
                         <v-tooltip top>
@@ -64,27 +71,42 @@
                             </template>
                             <span>Ver Asistencias</span>
                         </v-tooltip>
-                        <!-- <v-tooltip top>
+                        <v-tooltip top>
                             <template v-slot:activator="{on, attrs}">
                                 <v-btn
-                                    color="error"
+                                    color="warning"
                                     dark
-                                    @click="eliminar(item)"   
+                                    @click="evaluarformacion(item)"   
                                     icon
                                     v-bind="attrs"
                                     v-on="on"
                                 >
-                                    <v-icon>mdi-trash-can-outline</v-icon>
+                                    <v-icon>mdi-check-decagram-outline</v-icon>
                                 </v-btn>
                             </template>
-                            <span>Eliminar</span>
-                        </v-tooltip> -->
+                            <span>Evaluar Formación</span>
+                        </v-tooltip>
+                        <v-tooltip v-if="item.available_download != 0" top>
+                            <template v-slot:activator="{on, attrs}">
+                                <v-btn
+                                    color="error"
+                                    dark
+                                    @click="downloadCertificates(item)"   
+                                    icon
+                                    v-bind="attrs"
+                                    v-on="on"
+                                >
+                                    <v-icon>mdi-printer</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>Descargar Certificados</span>
+                        </v-tooltip>
+                        
                     </div>
                 </template>
                 </v-data-table>
             </template>
         </v-col>
-        <ModalDelete @deleteData="deleteInspeccion" :titlemodal="titlemodal" :textbody="textbody" :dialogDelete="dialogDelete" @cerrarModal="cerrarModal"/>
         <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color"/>
     </v-row>
 </template>
@@ -102,12 +124,12 @@ import formacionModule            from '@/store/modules/formacionModule';
 export default class Usuario extends Vue {
 	@Prop() item?: Object;
     headers = [
-        {text: 'Id', value: 'id_formacion_solicitud'},
-        {text: 'Fecha ', value: 'fecha_propuesta_formacion_solicitud'},
-        {text: 'Taller', value: 'desc_formacion_taller'},
-        {text: 'Responsable', value: 'responsable_formacion_solicitud'},
-        {text: 'Cantidad', value: 'cantidad_formacion_solicitud'},
-        {text: 'Status', value: 'status_formacion_taller'},
+        {text: 'Id', value: 'id'},
+        {text: 'Fecha ', value: 'proposed_date'},
+        {text: 'Taller', value: 'workshop.description'},
+        {text: 'Responsable', value: 'responsible'},
+        {text: 'Cantidad', value: 'number_of_participants'},
+        {text: 'Status', value: 'status'},
         {text: 'Acciones', value: 'action'}
     ];
     section : string = 'Usuarios'
@@ -136,15 +158,21 @@ export default class Usuario extends Vue {
     titlemodal = ''
 
     
-
+    getColor(item){
+        if(item == 'Pendiente'){
+            return 'warning'
+        }else{
+            return 'success'
+        }
+    }
     openView(){
         this.$router.push({ name: "crearsolicitudformacion"});
     }
     ver(item){
-        this.$router.push({ name: "versolicitudformacion", params: { id: item.id_formacion_solicitud } });
+        this.$router.push({ name: "versolicitudformacion", params: { id: item.id } });
     }
     asistencias(item){
-        this.$router.push({ name: "crearasistencia", params: { id: item.id_formacion_solicitud } });    
+        this.$router.push({ name: "crearasistencia", params: { id: item.id } });    
     }
     Delete(id){
         this.dialogDelete = true;
@@ -155,19 +183,12 @@ export default class Usuario extends Vue {
     cerrarModal(event){
         this.dialogDelete = event;
     }
-     async deleteInspeccion(event){
-/*         let dataUpdate : any = []
-        this.dialogDelete = event;
-        //this.overlay = true
-        const res : any = await formacionModule.delete(this.id_delete);
-        console.log(res.data.data)
-        dataUpdate = res.data.data
-        this.desserts = dataUpdate;
-        this.textmsj = 'Usuario Eliminado con Éxito.'
-        this.snackbar = true
-        this.closeSnackbar()
-        this.overlay = false */
+    async evaluarformacion(item){
+        this.$router.push({ name: "trainingevaluation", params: { id: item.id } });
     } 
+    async downloadCertificates(item) {
+        const data : any = await formacionModule.downloadCertificate(item.id);
+    }
     closeSnackbar(){
         setTimeout(() => {
             this.snackbar = false
@@ -188,6 +209,7 @@ export default class Usuario extends Vue {
     async dataIndexRequest(){  
         this.overlay = true
         const data : any = await formacionModule.getRequestAll()  
+        console.log(data.data)
         this.desserts = data.data
         this.overlay = false 
     }

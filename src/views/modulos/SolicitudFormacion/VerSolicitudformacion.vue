@@ -10,7 +10,7 @@
             <TitleSection :sectiontitle="sectiontitle"/>	
             <input type="hidden" v-model="dataForm.id">
             <v-row class="mt-5 p-3">
-                <v-col cols="12" sm="6"	md="6">
+                <v-col cols="12" sm="6"	md="3">
                     <v-text-field
                         label="Empresa"
                         placeholder="Empresa"
@@ -18,97 +18,133 @@
                         dense
                         v-model="empresaname"
                         readonly
-                        class="ml-2"
                     ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6"	md="6">
+                <v-col cols="12" sm="6"	md="3">
                     <v-select
                         :items="workshops"
-                        item-text="desc_formacion_taller"
-                        item-value="id_formacion_taller"
+                        item-text="description"
+                        item-value="id"
                         label="Taller"
                         placeholder="Taller"
-                        v-model="dataForm.id_formacion_taller"
                         outlined
                         dense
-                        :rules="rulesNum"
+                        :rules="rules"
                         required
-                        class="mr-2"
+                        v-model="workshop_id"
                         readonly
                     ></v-select>
                 </v-col>
-                <v-col cols="12" sm="4"	md="4">
+                <v-col cols="12" sm="4"	md="3">
                     <v-text-field
                         label="Responsable Solicitud"
                         placeholder="Responsable Solicitud"
                         outlined
                         dense
                         :rules="rules"
-                        v-model="dataForm.responsable_formacion_solicitud"
+                        v-model="dataForm.responsible"
                         readonly
                     ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="4" md="4">
+                <v-col cols="12" sm="4" md="3">
                     <v-text-field
                         label="Teléfono Responsable Solicitud"
                         placeholder="Teléfono Responsable Solicitud"
                         outlined
                         dense
                         :rules="rules"
-                        v-model="dataForm.telefono_formacion_solicitud"
+                        v-model="dataForm.phone_number"
                         type="number"
+                        min="0"
                         readonly
                     ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="4"	md="4">
+                <v-col cols="12" sm="4"	md="3">
                     <v-text-field
                         label="Cantidad Participantes"
                         placeholder="Cantidad Participantes"
                         outlined
                         dense
                         :rules="rulesNum"
-                        v-model="dataForm.cantidad_formacion_solicitud"
+                        v-model="dataForm.number_of_participants"
                         type="number"
+                        min="0"
                         readonly
                     ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="4" md="4">
+                <v-col cols="12" sm="6"	md="3">
+                    <v-select
+                        :items="invitedInstitutions"
+                        item-text="text"
+                        item-value="value"
+                        label="Instituciones Invitadas"
+                        placeholder="Instituciones Invitadas"
+                        v-model="dataForm.invited_institutions"
+                        outlined
+                        dense
+                        readonly
+                    ></v-select>
+                </v-col>
+                <v-col v-show="cantInvited" cols="12" sm="4"	md="3">
                     <v-text-field
+                        label="Cantidad Personas Invitadas"
+                        placeholder="Cantidad Personas Invitadas"
+                        outlined
+                        dense
+                        v-model="dataForm.invited_people_number"
+                        type="number"
+                        min="0"
+                        readonly
+                    ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="4" md="3">
+                    <v-select
+                        :items="arrayStates"
+                        item-text="name"
+                        item-value="id"
                         label="Estado"
                         placeholder="Estado"
-                        v-model="dataForm.estado"
+                        v-model="dataForm.estado_id"
                         outlined
                         dense
                         :rules="rules"
                         required
+                        @change="getMunicipalityByState($event)"
                         readonly
-                    ></v-text-field>
+                    ></v-select>
                 </v-col>
-                <v-col cols="12" sm="4" md="4">
-                    <v-text-field
+                <v-col cols="12" sm="4" md="3">
+                    <v-select
+                        :items="arrayMunicipality"
+                        item-text="name"
+                        item-value="id"
                         label="Municipio"
                         placeholder="Municipio"
-                        v-model="dataForm.municipio"
+                        v-model="dataForm.municipio_id"
                         outlined
                         dense
                         :rules="rules"
                         required
+                        @change="getParishesByMunicipality($event)"
                         readonly
-                    ></v-text-field>
+                    ></v-select>
                 </v-col>
-                <v-col cols="12" sm="4" md="4">
-                    <v-text-field
+                <v-col cols="12" sm="4" md="3">
+                    <v-select
+                        :items="arrayParishes"
+                        item-text="name"
+                        item-value="id"
                         label="Parroquia"
                         placeholder="Parroquia"
-                        v-model="dataForm.parroquia"
+                        v-model="dataForm.parroquia_id"
                         outlined
                         dense
                         :rules="rules"
                         required
                         readonly
-                    ></v-text-field>
+                    ></v-select>
                 </v-col>
-                <v-col cols="12" sm="6" md="4">
+                <v-col cols="12" sm="6" md="3">
                     <v-menu
                         v-model="menu2"
                         :close-on-content-click="false"
@@ -122,7 +158,7 @@
                             v-model="date"
                             label="Fecha Prop. Formación"
                             append-icon="mdi-calendar"
-                            readonly
+                            disabled
                             v-bind="attrs"
                             v-on="on"
                             dense 
@@ -135,66 +171,52 @@
                         locale="es"
                         @input="menu2 = false"
                         @change="updateFecha()"
-                        readonly
                         ></v-date-picker>
                     </v-menu>
                 </v-col>
-                <v-col cols="12" sm="4" md="4">
+                <v-col cols="12" sm="4" md="3">
                     <v-text-field
                         label="Hora Inicio"
                         placeholder="Hora Inicio"
                         outlined
                         dense
                         :rules="rules"
-                        v-model="dataForm.hora_inicio_formacion_solicitud"
+                        v-model="dataForm.start_time"
                         type="time"
                         readonly
                     ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="4" md="4">
+                <v-col cols="12" sm="4" md="3">
                     <v-text-field
                         label="Hora fin"
                         placeholder="Hora fin"
                         outlined
                         dense
                         :rules="rules"
-                        v-model="dataForm.hora_final_formacion_solicitud"
+                        v-model="dataForm.end_time"
                         type="time"
                         readonly
                     ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="12" md="12">
-                    <v-textarea
-                        label="Dirección"
-                        placeholder="Dirección"
-                        outlined
-                        dense
-                        :rules="rules"
-                        v-model="dataForm.direccion_formacion_solicitud"
-                        rows="3"
-                        readonly
-                    ></v-textarea>
-                </v-col>				
- 
-                <v-col cols="12" sm="6"	md="4">
+                </v-col>		
+                 <v-col cols="12" sm="6"	md="3">
                     <v-text-field
                         label="Punto de Referencia"
                         placeholder="Punto de Referencia"
                         outlined
                         dense
                         :rules="rules"
-                        v-model="dataForm.pto_referencia_formacion_solicitud"
+                        v-model="dataForm.benchmark"
                         readonly
                     ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6"	md="4">
+                <v-col cols="12" sm="6"	md="3">
                     <v-select
                         :items="tipozona"
                         item-text="text"
                         item-value="value"
                         label="Tipo de Zona"
                         placeholder="Tipo de Zona"
-                        v-model="dataForm.zona_formacion_solicitud"
+                        v-model="dataForm.zona"
                         outlined
                         dense
                         :rules="rules"
@@ -202,6 +224,18 @@
                         @change="setItem()"
                         readonly
                     ></v-select>
+                </v-col>
+                <v-col cols="12" sm="8" md="6">
+                    <v-textarea
+                        label="Dirección"
+                        placeholder="Dirección"
+                        outlined
+                        dense
+                        :rules="rules"
+                        v-model="dataForm.address"
+                        rows="2"
+                        readonly
+                    ></v-textarea>
                 </v-col>
             </v-row>
 <!--             <v-row class="d-flex justify-center p-5">
@@ -242,6 +276,10 @@ export default class EditarCliente extends Vue {
         {value: 'Turistica', text: 'Turistica'},
         {value: 'Urbana', text: 'Urbana'}
     ];
+    invitedInstitutions = [
+        {value: 1, text: 'Si'},
+        {value: 0, text: 'No'},
+    ]
 
     btName = 'Guardar'
     snackbar = false
@@ -261,6 +299,8 @@ export default class EditarCliente extends Vue {
 	arrayMunicipality = []
 	arrayParishes = []
     empresaname = ''
+    workshop_id = ''
+    cantInvited = false
 	$refs!: {
         dataForm: InstanceType<typeof ValidationObserver>;
     };
@@ -271,44 +311,7 @@ export default class EditarCliente extends Vue {
     updateFecha(){
         this.dataForm.fecha_propuesta_formacion_solicitud = this.date
     }
-	onSubmit() {
-        const valid :any =  this.$refs.dataForm.validate();
 
-        if (valid) {
-            this.save();
-        }else {
-            this.dialog = true
-        } 
-		
-    }
- 	async save() {
- 		this.overlay = true
-    	const data = await formacionModule.save(this.FormRequest)
-       
-        if(data.code == 200 || data.code == 201){
-            this.textmsj = 'solicitud de Formación Creada con Éxito.'
-			this.color = 'success'
-			this.snackbar = true
-			this.back();
-			this.overlay = false 
-        } else {
-            this.textmsj = 'Error al crear la Solicitud.'
-            this.color = 'error'
-            this.snackbar = true
-            this.backError();
-            this.overlay = false 
-        }
-	
-    }; 
-    cerrarModal(event){
-        this.openDialog = event;
-        this.reset();
-        this.textmsj = 'Cliente Creado con Éxito.'
-        this.color = 'success'
-        this.snackbar = true
-        this.back();
-        this.overlay = false 
-    }
     async comboboxAll(){
         const typeWorkshops : any = await  formacionModule.getWorkshopsAll();
         this.workshops = typeWorkshops.data
@@ -318,13 +321,15 @@ export default class EditarCliente extends Vue {
 		this.arrayStates = states.data.data
 	}
 	async getMunicipalityByState(event){
-		const municipality : any = await bussinesModule.getMunicipality(event)
+		const municipality : any = await bussinesModule.getMunicipality(event.estado_id)
 		this.arrayMunicipality = municipality.data.data
+        this.dataForm.municipio_id = event.municipio_id
 	}
 	async getParishesByMunicipality(event){
-		const parishes : any = await bussinesModule.getParishes(event)
+		const parishes : any = await bussinesModule.getParishes(event.municipio_id)
 		this.arrayParishes = parishes.data.data
-		this.overlay = false
+        this.dataForm.parroquia_id = event.parroquia_id
+	    this.overlay = false
 	}
 
 	reset () {
@@ -346,8 +351,17 @@ export default class EditarCliente extends Vue {
         this.$router.go(-1)
     }
     async getRequestTraining(id){
+        this.overlay = true
         const data : any = await formacionModule.getRequestById(id)
         this.dataForm = data.data
+        this.workshop_id = data.data.workshop.id
+        if(data.data.invited_institutions == 1){
+            this.cantInvited = true
+        }else{
+            this.cantInvited = false
+        }
+        await this.getMunicipalityByState(data.data)
+        await this.getParishesByMunicipality(data.data)
     }
     mounted(){
 

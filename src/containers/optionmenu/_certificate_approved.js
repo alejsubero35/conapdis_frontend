@@ -21,7 +21,7 @@ export default [
             to: '/bussines',
             icon: 'cibDraugiemLv'
           },
-         {
+          {
             _name: 'CSidebarNavItem',
             name: 'Vincular-Desvincular (PDC)',
             to: '/vincular',
@@ -47,7 +47,7 @@ export default [
         route: '/base',
         icon: 'cibElasticStack',
         items: [
-                
+
           {
             _name: 'CSidebarNavItem',
             name: 'Carga de Documentos',
@@ -98,6 +98,12 @@ export default [
             to: '/solicitudformacion',
             icon: 'cibOctave'
           },
+          /* {
+            _name: 'CSidebarNavItem',
+            name: 'Evaluación de Formación',
+            to: '/trainingevaluation',
+            icon: 'cibOpenstreetmap'
+          }, */
           {
             _name: 'CSidebarNavItem',
             name: 'Citas',
