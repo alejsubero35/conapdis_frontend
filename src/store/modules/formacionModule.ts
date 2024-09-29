@@ -26,8 +26,8 @@ class formacionModule extends VuexModule {
     token: string | null = localStorage.getItem('_token');
 
     @Action({ rawError: true })
-    async getRequestAll() {
-        const response = await http.get(`/training/get_request_all`)
+    async getRequestAll(id) {
+        const response = await http.get(`/training/get_request_all/${id}`)
         return response;
     }
     @Action
