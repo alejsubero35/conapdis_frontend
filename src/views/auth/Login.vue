@@ -464,8 +464,7 @@ async validate(){
         this.dialogOpen = false
     }
     mounted(){
-        //this.getPositionAll()
-        //this.getStates()
+
     }
 }
 </script>
