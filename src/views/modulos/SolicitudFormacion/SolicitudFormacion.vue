@@ -114,6 +114,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch }     from 'vue-property-decorator';
 import formacionModule            from '@/store/modules/formacionModule';
+import storageData from '@/store/services/storageService'
 
 
 @Component({
@@ -156,6 +157,7 @@ export default class Usuario extends Vue {
     options = {}
     textbody = ''
     titlemodal = ''
+  $router: any;
 
     
     getColor(item){
@@ -208,8 +210,7 @@ export default class Usuario extends Vue {
     }
     async dataIndexRequest(){  
         this.overlay = true
-        const data : any = await formacionModule.getRequestAll()  
-        console.log(data.data)
+        const data : any = await formacionModule.getRequestAll(storageData.get('_bussines_id'))  
         this.desserts = data.data
         this.overlay = false 
     }
