@@ -56,7 +56,7 @@
                             </template>
                             <span>Ver Solicitud de Formación</span>
                         </v-tooltip>
-                        <v-tooltip top>
+                        <v-tooltip v-if="item.status != 'Negada'"  top>
                             <template v-slot:activator="{on, attrs}">
                                 <v-btn
                                     color="info"
@@ -71,7 +71,7 @@
                             </template>
                             <span>Ver Asistencias</span>
                         </v-tooltip>
-                        <v-tooltip top>
+                        <v-tooltip v-if="item.status != 'Negada'"  top>
                             <template v-slot:activator="{on, attrs}">
                                 <v-btn
                                     color="warning"
@@ -163,7 +163,9 @@ export default class Usuario extends Vue {
     getColor(item){
         if(item == 'Pendiente'){
             return 'warning'
-        }else{
+        }else if(item == 'Negada'){
+            return 'error'
+        } else {
             return 'success'
         }
     }
