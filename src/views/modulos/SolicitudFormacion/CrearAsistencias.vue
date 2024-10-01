@@ -314,8 +314,9 @@ export default class EditarCliente extends Vue {
 
     async getsolicitud(id){
         const {data} : any = await formacionModule.getRequestById(id)
-        this.tallername = data.workshop.description
-        this.dataForm.workshop_id = data.workshop.id
+        console.log(data)
+        this.tallername = data.data.workshop.description
+        this.dataForm.workshop_id = data.data.workshop.id
     }
     async onSubmit(){
         const valid :any =  this.$refs.dataForm.validate();

@@ -56,7 +56,7 @@
                             </template>
                             <span>Ver Solicitud de Formación</span>
                         </v-tooltip>
-                        <v-tooltip v-if="item.status != 'Negada'"  top>
+                        <v-tooltip v-if="item.status != 'Negada' || item.status != 'Pendiente'"  top>
                             <template v-slot:activator="{on, attrs}">
                                 <v-btn
                                     color="info"
@@ -71,7 +71,7 @@
                             </template>
                             <span>Ver Asistencias</span>
                         </v-tooltip>
-                        <v-tooltip v-if="item.status != 'Negada'"  top>
+                        <v-tooltip v-if="item.status != 'Negada' || item.status != 'Pendiente'"  top>
                             <template v-slot:activator="{on, attrs}">
                                 <v-btn
                                     color="warning"
@@ -159,7 +159,7 @@ export default class Usuario extends Vue {
     titlemodal = ''
   $router: any;
 
-    
+
     getColor(item){
         if(item == 'Pendiente'){
             return 'warning'
