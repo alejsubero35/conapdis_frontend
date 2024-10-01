@@ -238,6 +238,22 @@
                     ></v-textarea>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col cols="12" sm="12" md="12">
+                    <h4>Requerimientos Disponibles</h4>
+                <hr>
+                <v-container class="d-flex justify-content-around flex-wrap">
+                    <v-checkbox
+                    v-for="req in arrayRequirements"
+                    :key="req.id"
+                    v-model="checkboxModel"
+                    :value="req.id"
+                    :label="req.name"
+                    class="req"
+                    />
+                </v-container>
+                </v-col>
+            </v-row>
 <!--             <v-row class="d-flex justify-center p-5">
                 <v-btn @click="onSubmit"  color="primary" small>Guardar</v-btn>
             </v-row> -->
@@ -301,6 +317,8 @@ export default class EditarCliente extends Vue {
     empresaname = ''
     workshop_id = ''
     cantInvited = false
+    arrayRequirements : any = []
+    checkboxModel = []
 	$refs!: {
         dataForm: InstanceType<typeof ValidationObserver>;
     };
@@ -353,18 +371,33 @@ export default class EditarCliente extends Vue {
     async getRequestTraining(id){
         this.overlay = true
         const data : any = await formacionModule.getRequestById(id)
-        this.dataForm = data.data
-        this.workshop_id = data.data.workshop.id
+ 
+        this.dataForm = data.data.data
+
+        if(data.data.requirements){
+            for(var j=0; j<data.data.requirements.length;j++){ 
+                this.checkboxModel.push(data.data.requirements[j].gform_requirement_id)
+            }  
+        }
+   
+        if(data.data.data.workshop){
+            this.workshop_id = data.data.data.workshop.id
+        }
+        
         if(data.data.invited_institutions == 1){
             this.cantInvited = true
         }else{
             this.cantInvited = false
         }
-        await this.getMunicipalityByState(data.data)
-        await this.getParishesByMunicipality(data.data)
+        await this.getMunicipalityByState(data.data.data)
+        await this.getParishesByMunicipality(data.data.data)
     }
+     async getRequirementTrainig(){
+		const requirement : any = await formacionModule.getRequirementTrainigAll()
+        this.arrayRequirements = requirement
+	}
     mounted(){
-
+        this.getRequirementTrainig()
         this.comboboxAll(); 
         this.getStates()
         this.getRequestTraining(this.$route.params.id)
