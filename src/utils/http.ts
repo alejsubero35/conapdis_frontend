@@ -6,8 +6,8 @@ axios.defaults.withCredentials = true;
 
 //const URL     =  'https://fiscalizacion.duckdns.org/api/v1' // url del ambiente local
 //const URLBASE =  'https://fiscalizacion.duckdns.org/' // url del ambiente local
-const URL       =  'http://web.conapdis.gob.ve/api/v1' // url del ambiente local
-const URLBASE   =  'http://web.conapdis.gob.veconapdis.test' // url del ambiente local
+const URL       =  'https://web.conapdis.gob.ve/api/v1' // url del ambiente local
+const URLBASE   =  'https://web.conapdis.gob.veconapdis.test' // url del ambiente local
 //const URL     =  'https://conapdis.filicabh.com.ve/api/v1'
 //const URLBASE =  'https://conapdis.filicabh.com.ve'
 
