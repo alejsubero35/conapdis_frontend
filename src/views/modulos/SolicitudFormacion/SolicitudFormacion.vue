@@ -56,7 +56,7 @@
                             </template>
                             <span>Ver Solicitud de Formación</span>
                         </v-tooltip>
-                        <v-tooltip v-if="item.status != 'Negada' || item.status != 'Pendiente'"  top>
+                        <v-tooltip v-if="!(item.status === 'Negada' || item.status === 'Pendiente')" top>
                             <template v-slot:activator="{on, attrs}">
                                 <v-btn
                                     color="info"
@@ -71,7 +71,7 @@
                             </template>
                             <span>Ver Asistencias</span>
                         </v-tooltip>
-                        <v-tooltip v-if="item.status != 'Negada' || item.status != 'Pendiente'"  top>
+                       <v-tooltip v-if="!(item.status === 'Negada' || item.status === 'Pendiente')" top>
                             <template v-slot:activator="{on, attrs}">
                                 <v-btn
                                     color="warning"
@@ -210,11 +210,15 @@ export default class Usuario extends Vue {
     viewPDF(id) {
         this.$router.push({ name: "planillaboletaordenamiento", params: { id: id } });
     }
-    async dataIndexRequest(){  
-        this.overlay = true
-        const data : any = await formacionModule.getRequestAll(storageData.get('_bussines_id'))  
-        this.desserts = data.data
-        this.overlay = false 
+    async dataIndexRequest() {
+        this.overlay = true;
+        const data: any = await formacionModule.getRequestAll(storageData.get('_bussines_id'));
+
+        // Ordenar los datos de forma descendente por el ID
+        data.data.sort((a, b) => b.id - a.id);
+
+        this.desserts = data.data;
+        this.overlay = false;
     }
 
     mounted(){

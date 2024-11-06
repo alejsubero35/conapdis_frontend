@@ -175,7 +175,7 @@
                         required
                     ></v-select>
                 </v-col>
-                <v-col cols="12" sm="6"	md="4">
+                <!-- <v-col cols="12" sm="6"	md="4">
                     <v-text-field
                         label="Ubicación Geográfica"
                         placeholder="Ubicación Geográfica"
@@ -184,6 +184,19 @@
                         v-model="dataForm.geographic_location"
                         :rules="rules"
                     ></v-text-field>
+                </v-col> -->
+                <v-col cols="12" sm="6"	md="4">
+                    <v-select
+                        :items="tipozona"
+                        item-text="text"
+                        item-value="value"
+                        label="Ubicación Geográfica"
+                        placeholder="Ubicación Geográfica"
+                        v-model="dataForm.geographic_location"
+                        outlined
+                        dense
+                        :rules="rules"
+                    ></v-select>
                 </v-col>
             </v-row>
             </v-form>	
@@ -223,6 +236,40 @@
                       </template>
                   </v-col>
             </v-row>
+            <v-row>
+            <v-dialog v-model="dialogDelete" max-width="380">
+                <v-card>
+                    <v-card-title class="text-h6 center">
+                        {{ titleModalDelete }}
+                    </v-card-title>
+    
+                    <v-card-text>
+                       {{ textbody }}
+                    </v-card-text>
+    
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+    
+                        <v-btn
+                            color="red darken-1"
+                            text
+                            @click="dialogDelete = false"
+                        >
+                            Cancelar
+                        </v-btn>
+
+
+                        <v-btn
+                            color="green darken-1"
+                            text
+                            @click="deleteData()"
+                        >
+                            Aceptar
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-row>
         </v-form>
     </div>
 </template>
@@ -281,6 +328,15 @@ export default class EditarCliente extends Vue {
     ]
     showSection = false
     haveDiscapacity = ''
+    tipozona = [
+        {value: 'Rural', text: 'Rural'},
+        {value: 'Turistica', text: 'Turistica'},
+        {value: 'Urbana', text: 'Urbana'}
+    ];
+    dialogDelete = false
+    titleModalDelete = ''
+    textbody = ''
+    idDelete = ''
 	$refs!: {
         dataForm: InstanceType<typeof ValidationObserver>;
     };
@@ -344,14 +400,21 @@ export default class EditarCliente extends Vue {
         const attendances : any = await formacionModule.getAttendancesByIdRequest(this.$route.params.id)
         this.desserts = attendances.data
         this.overlay = false
+        this.dialogDelete = false
     }
     async deleteAttendance(item){
+        this.dialogDelete = true
+        this.titleModalDelete = 'Eliminar Asistencia'
+        this.textbody = '¿Estas seguro de esta acción?'
+        this.idDelete = item.id
+    }
+    async deleteData(){
         this.overlay = true
-        const attendances : any = await formacionModule.deleteAttendances(item.id)
+        const attendances : any = await formacionModule.deleteAttendances(this.idDelete)
         if(attendances.status == 200 || attendances.status == 201){
             this.getAttendances()
         }
-        
+
     }
 	reset () {
         this.$refs.dataForm.reset()
