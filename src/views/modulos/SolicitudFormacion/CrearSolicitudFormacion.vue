@@ -293,7 +293,7 @@ export default class EditarCliente extends Vue {
     openDialog = false
     textbody = ''
     titleModalDelete = ''
-    date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
+    date = ''
     menu2 : boolean = false
     max25chars = v => v.length <= 25 || 'Input too long!'
     dataForm : any = {
