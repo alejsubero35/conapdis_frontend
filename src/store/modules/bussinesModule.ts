@@ -354,6 +354,19 @@ class bussinesModule extends VuexModule {
 
 		})
 	}
+	@Action
+	async getPositionAll() {
+		return new Promise((resolve, reject) => {
+			http.get(`/positions/position_representative_legal`).then(response => {
+				if (response.status === 200) {
+					resolve(response);
+				}
+			})
+				.catch(error => {
+					reject(error)
+				})
+		})
+	}
 
 
 

@@ -48,12 +48,12 @@ export default [
         icon: 'cibElasticStack',
         items: [
 
-          {
-            _name: 'CSidebarNavItem',
-            name: 'Carga de Documentos',
-            to: '/requeriments',
-            icon: 'cilCloudUpload'
-          },
+          /*         {
+                    _name: 'CSidebarNavItem',
+                    name: 'Carga de Documentos',
+                    to: '/requeriments',
+                    icon: 'cilCloudUpload'
+                  }, */
           {
             _name: 'CSidebarNavItem',
             name: 'Solicitudes de Inspección',

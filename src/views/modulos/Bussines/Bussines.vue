@@ -69,12 +69,12 @@
 						</v-row>
 						<v-row>
 							<v-col  cols="12" sm="12" md="12">
-								<h5 style="font-size: 14px; color: rgb(255,64,129); font-weight:bold">Registro Mercantil</h5>
+								<h5 style="font-size: 14px; color: rgb(255,64,129); font-weight:bold">Registro Mercantil / Gaceta Oficial</h5>
 								<v-divider></v-divider>
 							</v-col>
 						</v-row>
 						<v-row>	
-							<v-col cols="12" sm="6" md="3">
+							<v-col v-show="showoficial" cols="12" sm="6" md="3">
 								<v-text-field
 									label="Tomo"
 									placeholder="Tomo"
@@ -83,12 +83,21 @@
 									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
-							<v-col cols="12" sm="6" md="3">
+							<v-col v-show="showoficial" cols="12" sm="6" md="3">
 								<v-text-field
 									label="Folio"
 									placeholder="Folio"
 									dense
 									v-model="bussinesform.folio"
+									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
+								></v-text-field>
+							</v-col>
+							<v-col v-show="showogaceta" cols="12" sm="6" md="6">
+								<v-text-field
+									label="Gaceta Oficial"
+									placeholder="Gaceta Oficial"
+									dense
+									v-model="bussinesform.official_gazette"
 									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
 								></v-text-field>
 							</v-col>
@@ -134,10 +143,10 @@
 				
 						</v-row>
 						<v-row>
-							<v-col cols="12" sm="6" md="3">
+							<v-col cols="12" sm="6" md="3" v-show="showente">
 								<v-text-field
-									label="Organismo Inscrito a:"
-									placeholder="Organismo Inscrito a:"
+									label="Ente de Adscripción:"
+									placeholder="Ente de Adscripción:"
 									dense
 									v-model="bussinesform.attached_body"
 									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
@@ -147,7 +156,6 @@
 								<v-text-field
 									label="Página Web"
 									placeholder="Página Web"
-
 									dense
 									v-model="bussinesform.web"
 									:readonly="(validateInput == 1) ? readonly = true : readonly = false"
@@ -248,7 +256,7 @@
 						</v-row>
                 	</v-form>
 				</tab-content>
-				<tab-content title="RESPOSANBLE DE LA APLICACIÓN"  icon="mdi mdi-account" :before-change="beforeTabSwitchTwo">
+				<tab-content title="RESPOSANBLE DEL REGISTRO"  icon="mdi mdi-account" :before-change="beforeTabSwitchTwo">
                     <v-form class="formCliente" ref="validateStepFormTwo"  lazy-validation >	
 						<input type="hidden" v-model="bussinesform.id" value:any="0" >
 						<v-row>
@@ -519,7 +527,45 @@
 						</v-row>
 					</v-form>	
 				</tab-content>
-				<tab-content title="ACCESIBILIDAD EN EL ENTORNO FISICO" icon="mdi mdi-stairs-up" :before-change="beforeTabSwitchFive">
+				<tab-content title="DOCUMENTOS REQUERIDOS" icon="mdi mdi-stairs-up" :before-change="beforeTabSwitchFive">
+					<v-form class="formCliente" ref="validateStepFormFive"  lazy-validation >	
+						<v-row>
+							<v-col  cols="12" sm="12" md="12">
+								<v-row>    
+							<v-container class="mt-5" >
+								<v-layout  v-for="(doc,index) in documents" :key="index" row wrap >
+								<v-row>
+									<input type="hidden" v-model="doc.id">
+									<input type="hidden" v-model="doc.bussines_id">
+									<v-col cols="12" sm="6" md="4">
+										<v-text-field :disabled="disabled = true" label="Nombre Documento" placeholder="Nombre Documento" outlined dense :rules="rules" v-model="doc.title">
+										</v-text-field>
+									</v-col>
+						
+									<v-col  cols="12" sm="6" md="4">
+										<v-file-input
+											:rules="(doc.is_required == 1) ? rules : Notrules"
+											:disabled="(doc.approved == 1) ? disabledFile : !disabledFile"
+											accept=".pdf,.jpg,.png,.jpeg"
+											outlined 
+											dense
+											:label="(doc.approved == 1) ? 'Documento Adjuntado en Revisión' : placeholder"
+											@change="updateDocument(doc)"
+											v-model="doc.name"                            
+										>
+									</v-file-input>
+									<span class="d-flex justify-end" style="margin-top:-25px;color:#4B4B4B">{{validation}} |  {{ doc.max_size.substring(0, doc.max_size.length - 6) }} MB</span>
+									</v-col>
+								</v-row>
+								</v-layout>
+							</v-container>
+           
+								</v-row>
+							</v-col>
+						</v-row>
+					</v-form>	
+				</tab-content>
+				<!-- <tab-content title="ACCESIBILIDAD EN EL ENTORNO FISICO" icon="mdi mdi-stairs-up" :before-change="beforeTabSwitchFive">
 					<v-form class="formCliente" ref="validateStepFormFive"  lazy-validation >	
 						<v-row>
 							<v-col style="margin-top: -4%;"  cols="12" sm="12" md="12">
@@ -702,17 +748,121 @@
 							</v-col>
 						</v-row>
 					</v-form>	
-				</tab-content>
+				</tab-content> -->
 				<tab-content title="OTROS" icon="mdi mdi-all-inclusive" :before-change="beforeTabSwitchSix">
 					<v-form class="formCliente" ref="validateStepFormsix"  lazy-validation >	
 						<v-row>
-							<v-col cols="12" sm="12" md="12">
-								<v-textarea
+							<v-col cols="12" sm="6" md="6">
+								<span><strong><h5>Nacimientos de niñas y niños con discapacidad.</h5></strong></span>
+								<v-switch
+								v-model="bussinesform.hospital_center"
+								:label="'¿Es usted un Centro Hospitalario?  ' + hospital_centerShow"
+								color="success"
+								hide-details
+								class="pl-3 pr-3 mb-5"
+								:value="hospital_center"
+								@change="setItem('hospital_center')"
+								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
+								></v-switch>
+								<span><strong><h5>Herramientas y dispositivos Técnicos.</h5></strong></span>
+								<v-switch
+								v-model="bussinesform.human_help"
+								:label="'¿Entrega Ayudas Humanas?   ' + human_helpShow"
+								color="success"
+								hide-details
+								class="pl-3 pr-3 mb-5"
+								:value="human_help"
+								@change="setItem('human_help')"
+								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
+								></v-switch>
+								<span><strong><h5>Talleres de reparación de herramientas y Dispositivos Técnicos.</h5></strong></span>
+								<v-switch
+								v-model="bussinesform.maintenance_and_repair"
+								:label="'¿Se dedica al mantenimiento y reparación de Ayudas Humanas?)    ' + maintenance_and_repairShow"
+								color="success"
+								hide-details
+								class="pl-3 pr-3 mb-5"
+								:value="maintenance_and_repair"
+								@change="setItem('maintenance_and_repair')"
+								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
+								></v-switch>							
+								<span><strong><h5>Fabricantes, distribuidores y proveedores de órtesis y prótesis o productos similares.</h5></strong></span>
+								<v-switch
+								v-model="bussinesform.ortesis_protesis"
+								:label="'¿Laboratorios de órtesis y prótesis?  ' + ortesis_protesisShow"
+								color="success"
+								hide-details
+								class="pl-3 pr-3 mb-5"
+								:value="ortesis_protesis"
+								@change="setItem('ortesis_protesis')"
+ 								></v-switch>
+								</v-col>
+								<v-col cols="12" sm="6" md="6">
+								<span><strong><h5>Usuarias y usuarios e intérpretes de la Lengua de Señas Venezolana.</h5></strong></span>
+								<v-switch
+								v-model="bussinesform.has_workers_interpretes"
+								:label="'¿Posee usted trabajadores Interpretes, Facilitadores y/o Ambas?  ' + has_workers_interpretesShow"
+								color="success"
+								hide-details
+								class="pl-3 pr-3 mb-5"
+								:value="has_workers_interpretes"
+								@change="setItem('has_workers_interpretes')"
+ 								></v-switch>
+								<v-switch
+								v-show="hidecertificate"
+								v-model="bussinesform.have_certificate"
+								:label="'¿Tiene certificado de intérprete/facilitador? Nota:este campo depende de la respuesta anterior  ' + have_certificateShow"
+								color="success"
+								hide-details
+								class="pl-3 pr-3 mb-5"
+								:value="have_certificate"
+								@change="setItem('have_certificate')"
+ 								></v-switch>
+							 	<!--<v-text-field
+								label="N° Certificado"
+								placeholder="N° Certificado"
+								dense
+								:rules="emailRules"
+								type="email"
+								v-model="bussinesform.email_rl"
+								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
+								></v-text-field>
+							
+								<v-text-field
+								label="Email"
+								placeholder="Email"
+								dense
+								:rules="emailRules"
+								type="email"
+								v-model="bussinesform.email_rl"
+								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
+								></v-text-field> -->
+								<span><strong><h5>Educación discapacidad.</h5></strong></span>
+								<v-switch
+								v-model="bussinesform.is_educational_center"
+								:label="'¿Es usted un Centro Educativo?   ' + is_educational_centerShow"
+								color="success"
+								hide-details
+								class="pl-3 pr-3 mb-5"
+								:value="is_educational_center"
+								@change="setItem('is_educational_center')"
+ 								></v-switch>
+								<span><strong><h5>Vivienda Discapacidad.</h5></strong></span>
+								<v-switch
+								v-model="bussinesform.has_delivered_homes"
+								:label="'¿Usted ha entregado viviendas a personas con discapacidad?  ' + has_delivered_homesShow"
+								color="success"
+								hide-details
+								class="pl-3 pr-3 mb-5"
+								:value="has_delivered_homes"
+								@change="setItem('has_delivered_homes')"
+ 								></v-switch>
+								<!-- <v-textarea
 									label="Observaciones"
 									dense
 									v-model="bussinesform.observations"
 									rows="2"
-								></v-textarea>
+								></v-textarea> -->
 							</v-col>
 						</v-row>
 					</v-form>	
@@ -772,6 +922,7 @@ import bussinesModule from '@/store/modules/bussinesModule';
 import sessionModule from '@/store/modules/sessionModule';
 import { ValidationObserver } from 'vee-validate'
 import storageData from '@/store/services/storageService'
+import documentModule from '@/store/modules/documentRequiredModule';
 
 
 @Component({
@@ -794,25 +945,18 @@ export default class Bussines extends Vue {
 		code: 0, 
 		message:'', 
 		country_id : 237,
-		rampas: 0,
-		accesibilidad: 0,
-		acceso_directo: 0,
-		transporte_publico:0,
-		transporte_empresa:0,
-		viabilidad:0,
-		banos_acondicionados:0,
-		escaleras:0,
-		pasamanos:0,
-		pasillos:0,
-		ascensores: 0,
-		puertas_adaptadas:0,
-		buena_iluminacion:0,
-		senalizaciones_luminosas:0,
-		puestos_de_estacionamiento:0,
-		senalizacion:0,
-		herramientas_tecnologicas:0,
+		hospital_center: 0,
+		human_help: 0,
+		maintenance_and_repair: 0,
+		ortesis_protesis:0,
+		has_workers_interpretes:0,
+		have_certificate:0,
+		is_educational_center:0,
+		has_delivered_homes:0,
 		username:'',
+		documents:[]
 	}
+	hidecertificate = false // esta variable oculta un campo mientras la condicion sea no.
     loadingWizard = false
 	typerif = [
 		{value: '1', text: 'Personal'},
@@ -833,40 +977,22 @@ export default class Bussines extends Vue {
     sectiontitle = 'Registrar Datos de Empresa'
     dialog = false
     tabIndex = 0
-	herramientas_tecnologicas : boolean = false
-	senalizacion : boolean = false
-	puestos_de_estacionamiento : boolean = false
-	senalizaciones_luminosas : boolean = false
-	buena_iluminacion : boolean = false
-	puertas_adaptadas : boolean = false
-	ascensores : boolean = false
-	pasillos : boolean = false
-	pasamanos : boolean = false
-	escaleras : boolean = false
-	banos_acondicionados : boolean = false
-	viabilidad : boolean = false
-	transporte_empresa : boolean = false
-	transporte_publico : boolean = false
-	acceso_directo : boolean = false
-	accesibilidad: boolean = false
-	rampas : boolean = false
-	rampasShow = 'No'
-	accesibilidadShow = 'No'
-	acceso_directoShow = 'No'
-	transporte_publicoShow = 'No'
-	transporte_empresaShow = 'No'
-	viabilidadShow = 'No'
-	banos_acondicionadosShow = 'No'
-	escalerasShow = 'No'
-	pasamanosShow = 'No'
-	pasillosShow = 'No'
-	ascensoresShow = 'No'
-	puertas_adaptadasShow = 'No'
-	senalizaciones_luminosasShow = 'No'
-	buena_iluminacionShow  = 'No'
-	puestos_de_estacionamientoShow = 'No'
-	senalizacionShow = 'No'
-	herramientas_tecnologicasShow = 'No'
+	has_delivered_homes : boolean = false
+	is_educational_center : boolean = false
+	have_certificate : boolean = false
+	has_workers_interpretes : boolean = false
+	ortesis_protesis : boolean = false
+	maintenance_and_repair : boolean = false
+	human_help: boolean = false
+	hospital_center : boolean = false
+	hospital_centerShow = 'No'
+	human_helpShow = 'No'
+	maintenance_and_repairShow = 'No'
+	ortesis_protesisShow = 'No'
+	has_workers_interpretesShow = 'No'
+	have_certificateShow = 'No'
+	is_educational_centerShow = 'No'
+	has_delivered_homesShow = 'No'
 	arrayStates = []
 	arrayMunicipality = []
 	arrayParishes = []
@@ -900,6 +1026,38 @@ export default class Bussines extends Vue {
 	dialogOpen = false
 	validatetyperif = ''
 	titlemodalalert = ''
+	showente = false
+	showoficial = true
+	showogaceta = false
+
+/* DOCUMENTOS REQUERIDOS */
+  validation = '(Solo png,jpg,jpeg,pdf)'
+
+    show : Boolean =  false;
+    bussines_id  = ''
+    documentsForm = {
+
+    }
+    documents = []
+
+    visiblecustomers = false
+    imageUrl : any = ''
+    imageName : any = ''
+    fileUpload = ''
+    disabled = true
+    disabledFile = true
+    disabledBtn = false
+    placeholder = 'Cargar Documento'
+    dataModalAlert = ''
+    tempDoc = {}
+    arrayExtension = [ 'pdf','jpg','png','jpeg','PNG']
+    dateP = new Date().toISOString().substr(0,10)
+    max = new Date(Date.now() - 315569260000).toISOString().substr(0,10)
+    arrayDates = []
+    disablePastDates(val) {
+       return val >= new Date().toISOString().substr(0, 10)
+    }
+/* FIN DATA  */
 	$refs!: {
         validateStepForm: InstanceType<typeof ValidationObserver>;
         validateStepFormTwo: InstanceType<typeof ValidationObserver>;
@@ -915,7 +1073,9 @@ export default class Bussines extends Vue {
 	get FormRequest(): any {
         return this.bussinesform;
     }
-
+	get FormRequestDocuments(): any {
+        return this.documents;
+    }
     get activo() {
         return this.validateStepForm.inactivo = '1'
     }
@@ -928,44 +1088,158 @@ export default class Bussines extends Vue {
 	async updateFecha(){
 		this.bussinesform.registration_date = this.date
 	}
+/* METODOS DOCUMENTS */
+   	async getDocuments(){
+        this.overlay  = true
+        const documents : any = await  documentModule.getDocumentsAll();
+        this.documents = documents.data.data;
+        this.validateBtn()
+        this.overlay  = false
+    }
+	async validateBtn(){
+        const events = []
+        for(var i=0; i<this.FormRequestDocuments.length;i++){ 
+            if(this.FormRequestDocuments[i].url == ''){
+                events.push(this.FormRequestDocuments[i])
+            }  
+        }
+        if (events.length > 0){
+            this.disabledBtn = false
+        } else {
+            this.disabledBtn = true
+        }
+    }
+ 	async updateDocument(doc){
+        let index  = this.documents.findIndex(({ id })  => id == doc.id)
+        const _this = this
+        var event = event || window.event;
+      
+        if(event.target.files != undefined){
+            if(event.target.files.length > 0){
+                if(event.target.files[0].type === 'image/png' || event.target.files[0].type === 'image/jpg' || event.target.files[0].type === 'image/jpeg' || event.target.files[0].type === 'application/pdf' ){
+                    if(event.target.files[0].size < this.documents[index].max_size){
+                        if(event.target.files[0] != undefined && event.target.files.length == 1){
+                            let base64 = await this.getBase64(event.target.files[0],doc)  
+                        }
+                    }else{
+                        this.dialogOpen = true
+                        this.dataModalAlert = 'El Documento excede el tamaño permitido'
+                        this.backClear(doc)
+                    }
+                }else{
+                    this.dialogOpen = true
+                    this.dataModalAlert = 'Extensión NO permitida'
+                    this.backClear(doc)
+                    return false
+                }
+            }
+ 
+        }
+
+        }
+		async updateFechadocuments(id_){
+
+			let index  = this.documents.findIndex(({ id })  => id == id_)
+			this.documents[index].registration_date = this.date
+			if(storageData.get('_bussines')){
+				this.documents[index].bussines_id = (storageData.get('_bussines')) ? storageData.get('_bussines').id : this.getBussines.id
+			}else{
+				await sessionModule.redirectLogin();
+			}
+		}
+
+		async getImgBase(imgbase64,doc,fileName){  
+			let index  = this.documents.findIndex(({ id })  => id == doc.id)
+			this.documents[index].file =  imgbase64; 
+			this.documents[index].name =  fileName;     
+		}
+		getBase64(file,doc) {
+
+			const _this = this
+			var reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = function () {
+			_this.getImgBase(reader.result,doc,file) 
+			};
+			reader.onerror = function (error) {
+				console.log('Error: ', error);
+			};
+			return true
+		}
+		backClear(doc) {
+			setTimeout(() => {
+				doc.name = null
+			},1500);
+		}
+	/* FIN METODOS */
 	async getRifType(event){
-	if(this.bussinesform.rif != undefined){
+	if(this.bussinesform.rif != undefined){console.log(1)
 		this.bussinesform.rif = ''
-	}else{
 		switch(event){
 			case 4:
 				this.validatetyperif = 'V'
+				this.showente = false
+                this.showoficial = true
+				this.showogaceta = false
 			break;
 			case 5:
 				this.validatetyperif = 'J'
+				this.showente = true
+                this.showoficial = true
+				this.showogaceta = false
 			break;
 			case 6:
 				this.validatetyperif = 'G'
+				this.showente = true
+                this.showoficial = false
+				this.showogaceta = true
 			break;
 			case 7:
 				this.validatetyperif = 'J'
+				this.showente = true
+                this.showoficial = true
+				this.showogaceta = false
+		}
+	}else{console.log(2)
+		switch(event){
+			case 4:
+				this.validatetyperif = 'V'
+				this.showente = false
+                this.showoficial = true
+				this.showogaceta = false
+			break;
+			case 5:
+				this.validatetyperif = 'J'
+				this.showente = true
+                this.showoficial = true
+				this.showogaceta = false
+			break;
+			case 6:
+				this.validatetyperif = 'G'
+				this.showente = true
+                this.showoficial = false
+				this.showogaceta = true
+			break;
+			case 7:
+				this.validatetyperif = 'J'
+				this.showente = true
+                this.showoficial = true
+				this.showogaceta = false
 		}
 	}
 
 	}
 	async validateRif(value){
-
-			if(value.length == 12){
-				this.validateKeyInit(value)
-				const data : any = await bussinesModule.existRif(value)
-				if(data.data.length > 0){
-					this.validateRifDB = true
-					this.bussinesform.rif = ''
-				}else{
-					this.validateRifDB = false
-				}
+		if(value.length == 12){
+			this.validateKeyInit(value)
+			const data : any = await bussinesModule.existRif(value)
+			if(data.data.length > 0){
+				this.validateRifDB = true
+				this.bussinesform.rif = ''
+			}else{
+				this.validateRifDB = false
 			}
-		/* }else{
-			this.dialogOpen = true
-			this.titlemodalalert = 'Debe ingresar la letra que coincida con la opción seleccionada en el Tipo de Rif, debe ser en mayúscula'
-			this.bussinesform.rif = ''
-		} */
-
+		}
 	}
 	async validateKeyInit(value){
 		let val = value.charAt(0)
@@ -1046,14 +1320,35 @@ export default class Bussines extends Vue {
 		}
 		
 	}
-	onComplete() {
+	async onComplete() {
+		await this.addDocuemnts()
 		if (this.FormRequest.id > 0) {
 			this.updateBussines();
 		} else {
-			this.saveBussines();
+		
+		await this.saveBussines();
+		
 		}	
     }
+    async addDocuemnts(){
+        delete this.FormRequestDocuments.name
+        const events = []
+        for(var i=0; i<this.FormRequestDocuments.length;i++){ 
+            if(this.FormRequestDocuments[i].url == '' ){
+                events.push(this.FormRequestDocuments[i])
+            }  
+        }
+		this.bussinesform.documents = events
+
+/*         if(events.length > 0){
+            if (valid) {
+                this.saveDocuments(events)
+            }
+        } */
+    
+    }
  	async saveBussines() { 
+console.log(this.FormRequest)
 		this.updateSwitch()
  		this.overlay = true
     	const data = await bussinesModule.save(this.FormRequest)
@@ -1097,129 +1392,71 @@ export default class Bussines extends Vue {
 	}
 	async setItem(event){
 		switch(event){
-			case 'rampas':
-				if(this.bussinesform.rampas) this.rampasShow = 'Si' 
-				else this.rampasShow = 'No' 
+			case 'hospital_center':
+				if(this.bussinesform.hospital_center) this.hospital_centerShow = 'Si' 
+				else this.hospital_centerShow = 'No' 
 			break;
-			case 'accesibilidad':
-				if(this.bussinesform.accesibilidad) this.accesibilidadShow = 'Si' 
-				else this.accesibilidadShow = 'No' 
+			case 'human_help':
+				if(this.bussinesform.human_help) this.human_helpShow = 'Si' 
+				else this.human_helpShow = 'No' 
 			break;
-			case 'acceso_directo':
-				if(this.bussinesform.acceso_directo) this.acceso_directoShow = 'Si' 
-				else this.acceso_directoShow = 'No' 
+			case 'maintenance_and_repair':
+				if(this.bussinesform.maintenance_and_repair) this.maintenance_and_repairShow = 'Si' 
+				else this.maintenance_and_repairShow = 'No' 
 			break;
-			case 'transporte_publico':
-				if(this.bussinesform.transporte_publico) this.transporte_publicoShow = 'Si' 
-				else this.transporte_publicoShow = 'No' 
+			case 'ortesis_protesis':
+				if(this.bussinesform.ortesis_protesis) this.ortesis_protesisShow = 'Si' 
+				else this.ortesis_protesisShow = 'No' 
 			break;
-			case 'transporte_empresa':
-				if(this.bussinesform.transporte_empresa) this.transporte_empresaShow = 'Si' 
-				else this.transporte_empresaShow = 'No' 
+			case 'has_workers_interpretes':
+				if (this.bussinesform.has_workers_interpretes) {
+					this.has_workers_interpretesShow = 'Si' 
+					this.hidecertificate = true
+				} else {
+					this.has_workers_interpretesShow = 'No' 
+					this.hidecertificate = false
+				} 
 			break;
-			case 'viabilidad':
-				if(this.bussinesform.viabilidad) this.viabilidadShow = 'Si' 
-				else this.viabilidadShow = 'No' 
+			case 'have_certificate':
+				if(this.bussinesform.have_certificate) this.have_certificateShow = 'Si' 
+				else this.have_certificateShow = 'No' 
 			break;
-			case 'banos_acondicionados':
-				if(this.bussinesform.banos_acondicionados) this.banos_acondicionadosShow = 'Si' 
-				else this.banos_acondicionadosShow = 'No' 
+			case 'is_educational_center':
+				if(this.bussinesform.is_educational_center) this.is_educational_centerShow = 'Si' 
+				else this.is_educational_centerShow = 'No' 
 			break;
-			case 'escaleras':
-				if(this.bussinesform.escaleras) this.escalerasShow = 'Si' 
-				else this.escalerasShow = 'No' 
-			break;
-			case 'pasamanos':
-				if(this.bussinesform.pasamanos) this.pasamanosShow = 'Si' 
-				else this.pasamanosShow = 'No' 
-			break;
-			case 'pasillos':
-				if(this.bussinesform.pasillos) this.pasillosShow = 'Si' 
-				else this.pasillosShow = 'No' 
-			break;
-			case 'ascensores':
-				if(this.bussinesform.ascensores) this.ascensoresShow = 'Si' 
-				else this.ascensoresShow = 'No' 
-			break;
-			case 'puertas_adaptadas':
-				if(this.bussinesform.puertas_adaptadas) this.puertas_adaptadasShow = 'Si' 
-				else this.puertas_adaptadasShow = 'No' 
-			break;
-			case 'buena_iluminacion':
-				if(this.bussinesform.buena_iluminacion) this.buena_iluminacionShow = 'Si' 
-				else this.buena_iluminacionShow = 'No' 
-			break;
-			case 'senalizaciones_luminosas':
-				if(this.bussinesform.senalizaciones_luminosas) this.senalizaciones_luminosasShow = 'Si' 
-				else this.senalizaciones_luminosasShow = 'No' 
-			break;
-			case 'puestos_de_estacionamiento':
-				if(this.bussinesform.puestos_de_estacionamiento) this.puestos_de_estacionamientoShow = 'Si' 
-				else this.puestos_de_estacionamientoShow = 'No' 
-			break;
-			case 'senalizacion':
-				if(this.bussinesform.senalizacion) this.senalizacionShow = 'Si' 
-				else this.senalizacionShow = 'No' 
-			break;
-			case 'herramientas_tecnologicas':
-				if(this.bussinesform.herramientas_tecnologicas) this.herramientas_tecnologicasShow = 'Si' 
-				else this.herramientas_tecnologicasShow = 'No' 
+			case 'has_delivered_homes':
+				if(this.bussinesform.has_delivered_homes) this.has_delivered_homesShow = 'Si' 
+				else this.has_delivered_homesShow = 'No' 
 			break;
 
 		}
 	}
 	async updateSwitch(){
 
-		if(this.bussinesform.rampas) this.bussinesform.rampas = 'Si' 
-		else this.bussinesform.rampas = 'No' 
+		if(this.bussinesform.hospital_center) this.bussinesform.hospital_center = 'Si' 
+		else this.bussinesform.hospital_center = 'No' 
 
-		if(this.bussinesform.accesibilidad) this.bussinesform.accesibilidad = 'Si' 
-		else this.bussinesform.accesibilidad = 'No' 
+		if(this.bussinesform.human_help) this.bussinesform.human_help = 'Si' 
+		else this.bussinesform.human_help = 'No' 
 
-		if(this.bussinesform.acceso_directo) this.bussinesform.acceso_directo = 'Si' 
-		else this.bussinesform.acceso_directo = 'No' 
+		if(this.bussinesform.maintenance_and_repair) this.bussinesform.maintenance_and_repair = 'Si' 
+		else this.bussinesform.maintenance_and_repair = 'No' 
 
-		if(this.bussinesform.transporte_publico) this.bussinesform.transporte_publico = 'Si' 
-		else this.bussinesform.transporte_publico = 'No' 
+		if(this.bussinesform.ortesis_protesis) this.bussinesform.ortesis_protesis = 'Si' 
+		else this.bussinesform.ortesis_protesis = 'No' 
 
-		if(this.bussinesform.transporte_empresa) this.bussinesform.transporte_empresa = 'Si' 
-		else this.bussinesform.transporte_empresa = 'No' 
+		if(this.bussinesform.has_workers_interpretes) this.bussinesform.has_workers_interpretes = 'Si' 
+		else this.bussinesform.has_workers_interpretes = 'No' 
 
-		if(this.bussinesform.viabilidad) this.bussinesform.viabilidad = 'Si' 
-		else this.bussinesform.viabilidad = 'No' 
+		if(this.bussinesform.have_certificate) this.bussinesform.have_certificate = 'Si' 
+		else this.bussinesform.have_certificate = 'No' 
 
-		if(this.bussinesform.banos_acondicionados) this.bussinesform.banos_acondicionados = 'Si' 
-		else this.bussinesform.banos_acondicionados = 'No' 
+		if(this.bussinesform.is_educational_center) this.bussinesform.is_educational_center = 'Si' 
+		else this.bussinesform.is_educational_center = 'No' 
 
-		if(this.bussinesform.escaleras) this.bussinesform.escaleras = 'Si' 
-		else this.bussinesform.escaleras = 'No' 
-
-		if(this.bussinesform.pasamanos) this.bussinesform.pasamanos = 'Si' 
-		else this.bussinesform.pasamanos = 'No' 
-
-		if(this.bussinesform.pasillos) this.bussinesform.pasillos = 'Si' 
-		else this.bussinesform.pasillos = 'No' 
-
-		if(this.bussinesform.ascensores) this.bussinesform.ascensores = 'Si' 
-		else this.bussinesform.ascensores = 'No' 
-
-		if(this.bussinesform.puertas_adaptadas) this.bussinesform.puertas_adaptadas = 'Si' 
-		else this.bussinesform.puertas_adaptadas = 'No' 
-
-		if(this.bussinesform.buena_iluminacion) this.bussinesform.buena_iluminacion = 'Si' 
-		else this.bussinesform.buena_iluminacion = 'No' 
-
-		if(this.bussinesform.senalizaciones_luminosas) this.bussinesform.senalizaciones_luminosas = 'Si' 
-		else this.bussinesform.senalizaciones_luminosas = 'No' 
-
-		if(this.bussinesform.puestos_de_estacionamiento) this.bussinesform.puestos_de_estacionamiento = 'Si' 
-		else this.bussinesform.puestos_de_estacionamiento = 'No' 
-
-		if(this.bussinesform.senalizacion) this.bussinesform.senalizacion = 'Si' 
-		else this.bussinesform.senalizacion = 'No' 
-
-		if(this.bussinesform.herramientas_tecnologicas) this.bussinesform.herramientas_tecnologicas = 'Si' 
-		else this.bussinesform.herramientas_tecnologicas = 'No' 		
+		if(this.bussinesform.has_delivered_homes) this.bussinesform.has_delivered_homes = 'Si' 
+		else this.bussinesform.has_delivered_homes = 'No' 	
 	}
 
 	async goDocuments(){
@@ -1276,12 +1513,15 @@ export default class Bussines extends Vue {
         this.arrayEconomicActivies = newArray
     }
 	async getPositionAll(){
-		const position : any = await sessionModule.getPositionAll()
-		this.ordenarArray2(position.data.data)
+		const position : any = await bussinesModule.getPositionAll()
+		this.arrayPosition = position.data
+	console.log(this.arrayPosition)
+		//this.ordenarArray2(position.data.data)
 	}
 	async ordenarArray2(array){
         const newArray = array.sort((a,b) => a.name.localeCompare(b.name))
 		this.arrayPosition = newArray
+	
     }
 	reset () {
         this.$refs.validateStepForm.reset()
@@ -1397,8 +1637,8 @@ export default class Bussines extends Vue {
 		this.getTyperif()
 		this.getTypeDocument()
 		this.getPositionAll()
-		//this.initData()
-		//this.getUserType()
+		this.initData()
+		this.getDocuments()
 		if (storageData.get('_bussines') !== null) {
 			this.overlay = true
 			this. sectiontitle = 'Actualizar Datos de Empresa'
