@@ -4,11 +4,11 @@ import store from '@/store';
 import Swal from 'sweetalert2'
 axios.defaults.withCredentials = true;
 
-//const URL = 'http://conapdis.test/api/v1' // url del ambiente local
-//const URLBASE = 'http://conapdis.test'
+const URL = 'http://conapdis.test/api/v1' // url del ambiente local
+const URLBASE = 'http://conapdis.test'
 
-const URL       =  'https://web.conapdis.gob.ve/api/v1'
-const URLBASE   =  'https://web.conapdis.gob.ve' 
+//const URL       =  'https://web.conapdis.gob.ve/api/v1'
+//const URLBASE   =  'https://web.conapdis.gob.ve' 
 
 
 const http = axios.create({
