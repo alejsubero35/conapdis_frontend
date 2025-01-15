@@ -23,7 +23,7 @@ export default [
           },
           {
             _name: 'CSidebarNavItem',
-            name: 'Vincular-Desvincular (PDC)',
+            name: 'PCD',
             to: '/vincular',
             icon: 'cilUserFollow'
           },
@@ -32,12 +32,6 @@ export default [
             name: 'Declaraciones',
             to: '/declaraciones',
             icon: 'cilFingerprint'
-          },
-          {
-            _name: 'CSidebarNavItem',
-            name: 'Ofertas Laborales',
-            to: '/ofertaslaborales',
-            icon: 'cibAnaconda'
           }
         ]
       },
@@ -110,6 +104,12 @@ export default [
             to: '/citas',
             icon: 'cibMyspace'
           },
+          {
+            _name: 'CSidebarNavItem',
+            name: 'Ofertas Laborales',
+            to: '/ofertaslaborales',
+            icon: 'cibAnaconda'
+          }
         ]
       },
     ]

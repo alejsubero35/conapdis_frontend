@@ -95,6 +95,16 @@
         </v-col>
         <v-col v-show="cantInvited" cols="12" sm="4" md="3">
           <v-text-field
+            label="Nombre de la Institución"
+            placeholder="Nombre de la Institución"
+            outlined
+            dense
+            v-model="dataForm.name_institution"
+            type="text"
+          ></v-text-field>
+        </v-col>
+        <v-col v-show="cantInvited" cols="12" sm="4" md="3">
+          <v-text-field
             label="Cantidad Personas Invitadas"
             placeholder="Cantidad Personas Invitadas"
             outlined
@@ -263,6 +273,17 @@
               class="req"
             />
           </v-container>
+        </v-col>
+        <v-col cols="12" sm="12" md="12">
+          <v-textarea
+            label="Obseervaciones"
+            placeholder="Obseervaciones"
+            outlined
+            dense
+            :rules="rules"
+            v-model="dataForm.observation"
+            rows="3"
+          ></v-textarea>
         </v-col>
       </v-row>
       <v-row class="d-flex justify-center p-5">

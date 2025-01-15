@@ -1078,14 +1078,14 @@
         </v-card-title>
 
         <v-card-text>
-          Será redirigido al Login, debe esperar que CONAPDIS active la
-          empresa...
+          Será redirigido al Login, su Credencial fue enviada al Correo
+          suministrado.
         </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn color="primary" text @click="goHome()"> Ok </v-btn>
+          <v-btn color="primary" text @click="goHome()"> Aceptar </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
