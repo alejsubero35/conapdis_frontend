@@ -113,6 +113,17 @@
                     </v-menu>
                 </v-col>
                 <v-col cols="12" sm="6"	md="4">
+                    <v-text-field
+                        label="Edad"
+                        placeholder="Edad"
+                        outlined
+                        dense
+                        v-model="dataForm.age"
+                        :rules="rules"
+                        readonly
+                    ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6"	md="4">
                     <v-select
                         :items="arraySomeDiscapacity"
                         item-text="text"
@@ -314,9 +325,10 @@ export default class EditarCliente extends Vue {
         {text: 'Sexo', value: 'sex.nombre'},
         {text: 'Discapacidad', value: 'tipodiscapacidad.nombre'},
         {text: 'Fecha Nac.', value: 'birthdate'},
+        {text: 'Edad', value: 'age'},
         {text: 'Acción', value: 'actions'},
     ];
-    date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
+    date = ''
     menu2 : boolean = false
     max25chars = v => v.length <= 25 || 'Input too long!'
     desserts = []
@@ -345,6 +357,7 @@ export default class EditarCliente extends Vue {
     }
     updateFecha(){
         this.dataForm.fecha_nacimiento_formacion_solicitud_asistencia = this.date
+        this.calcularEdad(this.date)
     }
     async haveExistDiscapacity(event){
         if(event == 1){
@@ -352,6 +365,17 @@ export default class EditarCliente extends Vue {
         }else{
             this.showSection = false
         }
+    }
+    calcularEdad(fechaNacimiento) {
+        const hoy : any = new Date();
+
+        const fechaNac : any = new Date(fechaNacimiento);
+
+        let diferencia = hoy - fechaNac;
+
+        const edad = Math.floor(diferencia / (1000 * 60 * 60 * 24 * 365.25));
+
+        this.dataForm.age = edad
     }
     async getComboboxAll(){
         const sexos : any = await  formacionModule.getSexosAll();
