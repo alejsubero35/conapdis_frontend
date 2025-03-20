@@ -112,6 +112,8 @@
             v-model="dataForm.invited_people_number"
             type="number"
             min="0"
+            @input="calculateAmountInvited()"
+            :rules="(cantInvited) ? rules : Notrules"
           ></v-text-field>
         </v-col>
         <v-col cols="12" sm="4" md="3">
@@ -276,8 +278,8 @@
         </v-col>
         <v-col cols="12" sm="12" md="12">
           <v-textarea
-            label="Obseervaciones"
-            placeholder="Obseervaciones"
+            label="Observaciones"
+            placeholder="Observaciones"
             outlined
             dense
             :rules="rules"
@@ -357,12 +359,21 @@ export default class EditarCliente extends Vue {
     return this.dataForm;
   }
   async getInvited(event) {
+  if(this.dataForm.number_of_participants != undefined){
     if (event == "si") {
-      this.cantInvited = true;
-    } else {
-      this.cantInvited = false;
-    }
+          this.cantInvited = true;
+        } else {
+          this.cantInvited = false;
+        }
+      }else{
+        this.textmsj = "El Campo cantidad de participantes NO puede estar vacio.";
+        this.color = "warning";
+        this.snackbar = true;
+        this.backError();
+        this.dataForm.invited_institutions = ''
+      }
   }
+   
   updateFecha() {
     this.dataForm.proposed_date = this.date;
     this.dataForm.date_request = this.date;
@@ -386,7 +397,15 @@ export default class EditarCliente extends Vue {
         parseFloat(this.dataForm.number_of_participants) *
         this.amount_participant;
     }
-    console.log(this.dataForm.workshop_amount);
+
+  }
+
+  async calculateAmountInvited(){
+    if(this.dataForm.invited_people_number > 0){
+      this.dataForm.workshop_amount = (parseFloat(this.dataForm.invited_people_number) + parseFloat(this.dataForm.number_of_participants)) * this.amount_participant;
+    }else{
+      this.dataForm.workshop_amount = parseFloat(this.dataForm.number_of_participants) * this.amount_participant;
+    }
   }
   onSubmit() {
     this.dataForm.arrayRequirement = this.checkboxModel;
@@ -496,6 +515,9 @@ export default class EditarCliente extends Vue {
           /^[A-Za-z-0-9]+$/.test(v) || "Campo No acepta caracteres especiales",
         (v: any) =>
           (v && v.length <= 10) || "Debe ingresar máximo 10 caracteres",
+      ],
+      Notrules: [
+           
       ],
     };
   }
