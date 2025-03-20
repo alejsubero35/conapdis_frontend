@@ -15,13 +15,7 @@
         <h3 class="title_section">LISTADO DE SOLICITUD FORMACIÓN</h3>
         <br />
       </v-col>
-      <!--     <v-col cols="12" sm="12" md="12">
-                    <h3 class="title_section">SOLICITUD DE FORMACIÓN</h3><br>
-                </v-col> -->
     </div>
-    <!--    <v-col cols="12">
-                <Filtro  :endpoint="endpoint" :headers="headers"  :label="label" :moduleStore="moduleStore" v-on:updateData="handleDataUser"/>
-            </v-col> -->
     <v-col cols="12">
       <template>
         <v-data-table

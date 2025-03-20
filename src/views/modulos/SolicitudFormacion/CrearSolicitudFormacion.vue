@@ -279,7 +279,7 @@
         <v-col cols="12" sm="12" md="12">
           <v-textarea
             label="Observaciones"
-            placeholder="Observaciones"
+            placeholder="Obse|rvaciones"
             outlined
             dense
             :rules="rules"
