@@ -71,12 +71,7 @@
                 </template>
                 <span>Ver Asistencias</span>
               </v-tooltip>
-              <v-tooltip
-                v-if="
-                  !(item.status === 'Negada' || item.status === 'Pendiente')
-                "
-                top
-              >
+              <v-tooltip v-if="item.attendances.length > 0" top>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     color="warning"
@@ -116,7 +111,7 @@
                     @click="paymentInLine(item)"
                     x-small
                     rounded
-                    >PAGAR EN LÍNEA
+                    >PROCESAR PAGO
                     <v-icon>mdi-credit-card-outline</v-icon>
                   </v-btn>
                 </template>
@@ -131,7 +126,7 @@
     <v-dialog v-model="dialogPayment" width="700">
       <v-card>
         <v-card-title class="text-h5 grey lighten-2">
-          Pagos en Línea
+          Procesar Pago
         </v-card-title>
 
         <v-card-text class="pa-5">
@@ -212,7 +207,7 @@
             Cerrar
           </v-btn>
 
-          <v-btn color="primary" text @click="dialogPayment = false">
+          <v-btn color="primary" text @click="procesedPayment()">
             Pagar
           </v-btn>
         </v-card-actions>
@@ -445,10 +440,24 @@ export default class Usuario extends Vue {
     this.dialogPayment = true;
     this.formPayment.amount_payment = item.workshop_amount;
   }
+  async procesedPayment() {
+    this.overlay = true;
+    this.dialogPayment = false;
+    this.snackbar = true;
+    this.textmsj = "Su pago será revisado y le notificaremos";
+    this.color = "warning";
+    this.closeSnackbarpayment();
+  }
   closeSnackbar() {
     setTimeout(() => {
       this.snackbar = false;
     }, 2000);
+  }
+  closeSnackbarpayment() {
+    setTimeout(() => {
+      this.snackbar = false;
+      this.overlay  = false;
+    }, 3000);
   }
   handleDataUser(event) {
     this.desserts = event;
