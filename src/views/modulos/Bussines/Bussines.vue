@@ -1842,7 +1842,7 @@ export default class Bussines extends Vue {
     await this.getTypeDocument();
     await this.getPositionAll();
     await this.getDocuments();
-    await this.initData();
+    //await this.initData();
   }
 
   mounted() {
