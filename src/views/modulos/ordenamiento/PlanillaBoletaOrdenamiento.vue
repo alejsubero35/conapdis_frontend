@@ -867,7 +867,7 @@
 
 
                         <tr>
-                            <th class="td-center" colspan="5">7.6	DE LOS DATOS DEL FUNCIONARIO INSPECTOR ACTUANTE:</th>
+                            <th class="td-center" colspan="5">7.6	DE LOS DATOS DEL FUNCIONARIO FISCAL ACTUANTE:</th>
                         </tr>
                         <tr>
                             <th colspan="2">Nombre (s):</th>
