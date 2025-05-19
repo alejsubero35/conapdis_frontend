@@ -89,7 +89,7 @@
                         </v-row><br>
                         <div class="footer">
                             <div>
-                                <h6>INSPECTOR ACTUANTE : <strong>{{firstnameinspector}}</strong></h6>
+                                <h6>FISCAL ACTUANTE : <strong>{{firstnameinspector}}</strong></h6>
                                 <h6>EXPEDIENTE Nº: <strong>{{expedient}}</strong></h6>
                                 <h6>FECHA DE EXPEDICIÓN: <strong>{{date_certificate}}</strong></h6>
                             </div>

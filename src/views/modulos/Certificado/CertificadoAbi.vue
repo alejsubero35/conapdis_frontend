@@ -81,7 +81,7 @@ export default class Usuario extends Vue {
             {text: 'Fecha Vencimiento', value: 'due_date'},
             {text: 'N° Certificado', value: 'number_certificate'},
             {text: 'Empresa', value: 'busine.company_name'},
-            {text: 'Inspector', value: 'user_id_inspector.username'},
+            {text: 'Fiscal', value: 'user_id_inspector.username'},
             {text: 'Acciones', value: 'action'}
             ];
     section : string = 'Usuarios'

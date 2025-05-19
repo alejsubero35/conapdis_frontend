@@ -160,7 +160,7 @@
                                 concatenado con los artículos 3 literales “b” y “f” artículo 4 literal “e” artículo 5 numeral 2 y el artículo 9 numeral 
                                 1 literal “a” y numeral 2 literales “a”, “b” y “d” de la Convención Sobre los Derechos de las Personas con Discapacidad 
                                 del 13/12/2006; y, con los artículos: 4, 31, 32 y 35 de la Ley para las Personas con Discapacidad del 05/01/2007; Se deja 
-                                constancia que inspectores adscritos a la Gerencia de Fiscalización del Consejo Nacional para las Personas con Discapacidad 
+                                constancia que fiscales adscritos a la Gerencia de Fiscalización del Consejo Nacional para las Personas con Discapacidad 
                                 (CONAPDIS), practicaron una inspección técnica especializada en la edificación privada de uso público, entidad de trabajo 
                                 o razón social más arriba identificada en renglón correspondiente N° 2; A los fines de verificar el cumplimiento de las 
                                 normas y reglamentaciones técnicas en materia de accesibilidad establecidas en la Norma Técnica FONDONORMA (NTF) 2733 
@@ -183,7 +183,7 @@
                      
                         </tr>
                         <tr>
-                            <th class="td-center" colspan="5">8. DE LAS FIRMAS DEL INSPECTOR ACTUANTE Y DE LA  ENTIDAD DE TRABAJO O RAZÓN SOCIAL</th>
+                            <th class="td-center" colspan="5">8. DE LAS FIRMAS DEL FISCAL ACTUANTE Y DE LA  ENTIDAD DE TRABAJO O RAZÓN SOCIAL</th>
                         </tr>
                         <tr>
                             <td colspan="2"  class=" bold">8.1 Nombre(s)</td>
@@ -199,7 +199,7 @@
                         </tr>
                         <tr>
                             <td colspan="2" class="bold">8.5	Firma del Representate Legal:</td>
-                            <td colspan="2" class="bold">8.6 Firma del Inspector</td>
+                            <td colspan="2" class="bold">8.6 Firma del Fiscal</td>
                             <td colspan="2" class="bold">8.7 Sello Troquelado</td>
                         </tr>
                         <tr>

@@ -815,7 +815,7 @@
                             <td  colspan="2"  class=" bold text-center">Impresión Dactilar:</td>
                         </tr>
                         <tr>
-                            <th class="td-center" colspan="5">11.7.	DE LOS DATOS DEL FUNCIONARIO INSPECTOR ACTUANTE:</th>
+                            <th class="td-center" colspan="5">11.7.	DE LOS DATOS DEL FUNCIONARIO FISCAL ACTUANTE:</th>
                         </tr>
                         <tr>
                             <th colspan="2" class="text-center">Nombre (s):</th>
