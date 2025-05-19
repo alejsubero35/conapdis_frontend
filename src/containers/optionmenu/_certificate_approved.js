@@ -78,6 +78,12 @@ export default [
             to: '/certificadoabi',
             icon: 'cibLibreoffice'
           },
+          {
+            _name: 'CSidebarNavItem',
+            name: 'Boletas Sancionatorias',
+            to: '/sanctioning_tickets',
+            icon: 'cibLibreoffice'
+          },
         ]
       },
       {

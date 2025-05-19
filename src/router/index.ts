@@ -72,6 +72,9 @@ const Reportes = () => import('@/views/modulos/reportes/Reportes.vue')
 //Citas
 const Citas = () => import('@/views/modulos/citas/Citas.vue')
 
+//Boletas Sancionatorias
+const Boletas = () => import('@/views/modulos/Boletas/Boletas.vue')
+
 
 // Errors
 const Page404 = () => import('@/views/errors/Page404.vue')
@@ -339,6 +342,12 @@ const router = new Router({
           name: 'downloadcv',
           component: DownloadCV,
           meta: { Auth: true, title: 'DownloadCV' },
+        },
+        {
+          path: 'sanctioning_tickets',
+          name: 'sanctioning_tickets',
+          component: Boletas,
+          meta: { Auth: true, title: 'Boletas' },
 
         },
 
