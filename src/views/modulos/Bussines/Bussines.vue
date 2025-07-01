@@ -1275,7 +1275,10 @@ export default class Bussines extends Vue {
   async getDocuments() {
     this.overlay = true;
     const documents: any = await documentModule.getDocumentsAll();
-    this.documents = documents.data.data;
+    //this.documents = documents.data.data;
+    this.documents = documents.data.data.filter(
+      (doc: any) => doc.visibility_in === 1
+    );
     this.validateBtn();
     this.overlay = false;
   }
