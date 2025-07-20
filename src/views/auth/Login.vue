@@ -1,4 +1,4 @@
-<template>
+ <template>
     <div class="page-wrap">
         <div  :class="[(loginShow) ? 'session-form-hold' : 'session-form-register']" >
   	    <v-overlay :value="overlay">

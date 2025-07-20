@@ -32,6 +32,12 @@ export default [
             name: 'Declaraciones',
             to: '/declaraciones',
             icon: 'cilFingerprint'
+          },
+          {
+            _name: 'CSidebarNavItem',
+            name: 'Ofertas Laborales',
+            to: '/ofertaslaborales',
+            icon: 'cibAnaconda'
           }
         ]
       },
@@ -109,12 +115,6 @@ export default [
             name: 'Citas',
             to: '/citas',
             icon: 'cibMyspace'
-          },
-          {
-            _name: 'CSidebarNavItem',
-            name: 'Ofertas Laborales',
-            to: '/ofertaslaborales',
-            icon: 'cibAnaconda'
           }
         ]
       },

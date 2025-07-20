@@ -65,7 +65,7 @@
                 </template>
                 <span>Ver Postulantes</span>
               </v-tooltip>
-              <v-tooltip v-if="item.status_postula_oferta != 'CERRADA'" top>
+              <v-tooltip v-if="item.status != 'inactiva'" top>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     color="warning"
@@ -80,7 +80,7 @@
                 </template>
                 <span>Cerrar Oferta</span>
               </v-tooltip>
-              <v-tooltip top>
+              <v-tooltip  v-if="item.status != 'inactiva'" top>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     color="error"
@@ -96,6 +96,11 @@
                 <span>Eliminar</span>
               </v-tooltip>
             </div>
+          </template>
+          <template v-slot:item.fecha="{ item }">
+            <template>
+              {{ formatofecha(item.fecha) }}
+            </template>
           </template>
         </v-data-table>
       </template>
@@ -159,12 +164,12 @@ export default class Usuario extends Vue {
   titlemodal = "";
   validateAction: any = "";
   disabled = false;
-  @Watch("options", { immediate: false })
+/*   @Watch("options", { immediate: false })
   handler(val) {
     if (val.page != 1) {
       this.dataIndex();
     }
-  }
+  } */
 
   openView() {
     this.$router.push({ name: "crearofertalaboral" });
@@ -177,19 +182,21 @@ export default class Usuario extends Vue {
     this.titlemodal = "Eliminar Registro de Oferta";
     this.id_delete = item.id_postula_oferta;
   }
-  cerrarOferta(item, value) {
-    if (item.cantidadPostulantes == 0) {
-      this.validateAction = value;
+  cerrarOferta(item, value) {console.log(item)
+    if (item.postulantes.length > 0) {
+
+        this.color = "warning";
+        this.textmsj ="Esta Oferta tiene postulantes asignados por tanto NO puede ser Cerrada.";
+        this.snackbar = true;
+        this.closeSnackbar();
+
+ 
+    } else {
+       this.validateAction = value;
       this.dialogDelete = true;
       this.textbody = "Confirme que desea Cerrar la Oferta";
       this.titlemodal = "Cerrar Oferta Laboral";
-      this.id_cerrar_oferta = item.id_postula_oferta;
-    } else {
-      this.color = "warning";
-      this.textmsj =
-        "Esta Oferta tiene postulantes asignados por tanto NO puede ser Cerrada.";
-      this.snackbar = true;
-      this.closeSnackbar();
+      this.id_cerrar_oferta = item.id;
     }
   }
   editar(item) {
@@ -258,6 +265,13 @@ export default class Usuario extends Vue {
     });
   }
   postulantes(item) {
+    if (item.postulantes.length == 0) {
+      this.color = "warning";
+      this.textmsj = "Esta Oferta no tiene postulantes asignados.";
+      this.snackbar = true;
+      this.closeSnackbar();
+      return;
+    }
     this.$router.push({
       name: "verpostulantesoferta",
       params: { id: item.id },
@@ -273,6 +287,15 @@ export default class Usuario extends Vue {
   async setQueryPage(page: number) {}
   mounted() {
     this.dataIndex();
+  }
+
+  formatofecha(fechaIso: string) {
+    if (!fechaIso) return '';
+    const date = new Date(fechaIso);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
   }
 }
 </script>

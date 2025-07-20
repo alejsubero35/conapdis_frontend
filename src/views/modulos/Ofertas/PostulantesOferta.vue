@@ -86,7 +86,7 @@
                                       
                                     </v-btn>
                                 </template>
-                                <span v-if="item.citado == 1">Obtener Cita</span>
+                                <span v-if="item.citado == 1">Crear Cita</span>
                                 <span v-else>Ver Cita</span>
                             </v-tooltip>
                             <v-tooltip top>
@@ -138,7 +138,7 @@
                   
                     ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6" md="6">
+                <!-- <v-col cols="12" sm="6" md="6">
                      <v-text-field
                         label="Profesión"
                         placeholder="Profesión"
@@ -157,7 +157,7 @@
                         dense
                         :disabled="disabledHeader"
                     ></v-text-field>
-                </v-col>
+                </v-col> -->
         
                 <v-col cols="12" sm="6" md="6">
                     <v-menu
@@ -198,7 +198,7 @@
                         outlined
                         dense
                         :rules="rules"
-                        v-model="dataFormCita.hora_cita_oferta_pcd"
+                        v-model="dataFormCita.hora"
                         type="time"
                         :disabled="(validateCita == 0) ? disabled = true : disabled = false"
                     ></v-text-field>
@@ -210,7 +210,7 @@
                         outlined
                         dense
                         :rules="rules"
-                        v-model="dataFormCita.contacto_cita_oferta_pcd"
+                        v-model="dataFormCita.contacto"
                         type="text"
                         :disabled="(validateCita == 0) ? disabled = true : disabled = false"
                     ></v-text-field>
@@ -222,7 +222,7 @@
                         outlined
                         dense
                         :rules="rules"
-                        v-model="dataFormCita.telefono_cita_oferta_pcd"
+                        v-model="dataFormCita.telefono"
                         type="number"
                         min="0"
                         max="11"
@@ -266,6 +266,7 @@
             </v-card>
 	    </v-dialog>
         <ModalDelete @deleteData="deleteData" :titlemodal="titlemodal" :textbody="textbody" :dialogDelete="dialogDelete" @cerrarModal="cerrarModal"/>
+        <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color" />
     </div>
 </template>
 <script lang="ts">
@@ -310,14 +311,17 @@ export default class EditarCliente extends Vue {
     cargo_id = ''
     profesion_id = ''
     headers = [
-        {text: 'Doc.Identificación', value: 'cedula_postula_pcd'},
-        {text: 'PCD ', value: 'nombres_postula_pcd'},
-        {text: 'Profesión', value: 'desc_profesion_postula'},
-        {text: 'Grado Instrucción', value: 'desc_grado_instruccion_postula'},
+        {text: 'Doc.Identificación', value: 'cedula'},
+        {text: 'PCD ', value: 'username'},
+/*         {text: 'Grado Instrucción', value: 'desc_grado_instruccion_postula'}, */
         {text: 'Sexo', value: 'sexo'},
-        {text: 'Status', value: 'status_postula_oferta_pcd'},
-         {text: 'Acciones', value: 'actions'}
+        {text: 'Status', value: 'status'},
+        {text: 'Acciones', value: 'actions'}
     ];
+    snackbar = false;
+    textmsj = "";
+    color = "";
+    timeout = 2000;
     desserts = []
     dialogCita = false
     profesion = ''
@@ -340,15 +344,15 @@ export default class EditarCliente extends Vue {
     }
     async getPostulantesAll(id){
         const postulantes : any = await  ofertModule.getPostulantesById(id);
-        this.desserts = postulantes.data;
+        this.desserts = postulantes.data.data;
         //this.desserts = postulantes
 
     }
     async getOferta(id){
-        this.dataFormCita.id_postula_oferta = id
+        this.dataFormCita.id = id
         const data : any = await ofertModule.getOfertById(id)
-        this.cantidad_postula_oferta = data.data.oferts.cantidad_postula_oferta
-        this.experiencia_postula_oferta = data.data.oferts.experiencia_postula_oferta
+        this.cantidad_postula_oferta = data.data.oferts.quantity
+        this.experiencia_postula_oferta = data.data.oferts.experience
     }
 
 	reset () {
@@ -382,10 +386,8 @@ export default class EditarCliente extends Vue {
         this.formRechazar.id_pcd_postula_pcd = item.id_pcd_postula_pcd
     }
     
-    getCita(item){
-        this.dataFormCita.id_postula_pcd = item.id_pcd_postula_pcd
-        this.profesion = item.desc_profesion_postula
-        this.cargo     = item.desc_cargo_postula
+    getCita(item){console.log(item)
+        this.dataFormCita.personas_discapacidad_id = item.personas_discapacidad_id
         this.dialogCita = true 
         this.validateCita = item.citado
         if(item.citado == 0){
@@ -449,13 +451,15 @@ export default class EditarCliente extends Vue {
         this.arrayProfession = profession.data
     }
     async updateFecha(){
-        this.dataFormCita.fecha_cita_oferta_pcd = this.date
+        this.dataFormCita.fecha = this.date
     }
     async saveCita(){
-        this.overlayDialog = true
+       
         const valid :any =  this.$refs.dataFormCita.validate();
         if(valid){
+            this.overlayDialog = true
             const data : any = await ofertModule.saveCita(this.FormRequest)
+            console.log(data.status)
             if(data.status == 200){
                 this.color = 'success'
                 this.textmsj = 'Cita Guardada con Éxito.'
@@ -473,7 +477,8 @@ export default class EditarCliente extends Vue {
         this.getOferta(this.$route.params.id)
         this.comboboxAll(); 
         this.empresaname = storageData.get('_bussines').rif + '-' +storageData.get('_bussines').company_name  
-        this.dataFormCita.fecha_cita_oferta_pcd = this.date
+        this.dataFormCita.fecha = this.date
+        this.dataFormCita.busine_id = storageData.get('_bussines').id
     }
 	data(){
     return{
