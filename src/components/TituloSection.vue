@@ -54,6 +54,7 @@ export default {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
+    border-radius: 10px;
 }
 @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
     .btn_atras{

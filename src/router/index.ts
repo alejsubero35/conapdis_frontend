@@ -75,6 +75,26 @@ const Citas = () => import('@/views/modulos/citas/Citas.vue')
 //Boletas Sancionatorias
 const Boletas = () => import('@/views/modulos/Boletas/Boletas.vue')
 
+//centros educativos
+const EducationalCenter = () => import('@/views/modulos/EducationalCenter/EducationalCenter.vue')
+const CreateEducationalCenter = () => import('@/views/modulos/EducationalCenter/Create.vue')
+//Hospital Center
+const HospitalCenter = () => import('@/views/modulos/HospitalCenter/HospitalCenter.vue')
+const CreateHospitalCenter = () => import('@/views/modulos/HospitalCenter/Create.vue')
+//Ortesis y Protesis
+const OrtesisProtesis = () => import('@/views/modulos/OrtesisProtesis/OrtesisProtesis.vue')
+const CreateOrtesisProtesis = () => import('@/views/modulos/OrtesisProtesis/Create.vue')
+//Mantenimiento y Reparación
+const MantenimientoReparacion = () => import('@/views/modulos/MantenimientoReparacion/MantenimientoReparacion.vue')
+const CreateMantenimientoReparacion = () => import('@/views/modulos/MantenimientoReparacion/Create.vue')
+//Interpretes
+const Interpretes = () => import('@/views/modulos/Interpretes/Interpretes.vue')
+const CreateInterpretes = () => import('@/views/modulos/Interpretes/Create.vue')
+/* //Home Delivery
+const HomeDelivery = () => import('@/views/modulos/HomeDelivery/HomeDelivery.vue')
+//Planilla Home Delivery
+const PlanillaHomeDelivery = () => import('@/views/modulos/HomeDelivery/PlanillaHomeDelivery.vue') */
+
 
 // Errors
 const Page404 = () => import('@/views/errors/Page404.vue')
@@ -349,6 +369,60 @@ const router = new Router({
           component: Boletas,
           meta: { Auth: true, title: 'Boletas' },
 
+        },
+        {
+          path: 'hospitalcenter',
+          name: 'hospitalcenter',
+          component: HospitalCenter,
+          meta: { Auth: true, title: 'HospitalCenter' },
+        },
+        {
+          path: 'createchildren',
+          name: 'createchildren',
+          component: CreateHospitalCenter,
+          meta: { Auth: true, title: 'CrearHospitalCenter' },
+        },
+        {
+          path: 'educationalcenter',
+          name: 'educationalcenter',
+          component: EducationalCenter,
+          meta: { Auth: true, title: 'EducationalCenter' },
+        },
+        {
+          path: 'createstudents',
+          name: 'createstudents',
+          component: CreateEducationalCenter,
+          meta: { Auth: true, title: 'CrearEducationalCenter' },
+        },
+        {
+          path: 'ortesisprotesis',
+          name: 'ortesisprotesis',
+          component: OrtesisProtesis,
+          meta: { Auth: true, title: 'OrtesisProtesis' },
+        },
+        {
+          path: 'create',
+          name: 'create',
+          component: CreateOrtesisProtesis,
+          meta: { Auth: true, title: 'CrearOrtesisProtesis' },
+        },
+        {
+          path: 'mantenimientoandreparacion',
+          name: 'mantenimientoandreparacion',
+          component: MantenimientoReparacion,
+          meta: { Auth: true, title: 'MantenimientoReparacion' },
+        },
+        {
+          path: 'interpretes',
+          name: 'interpretes',
+          component: Interpretes,
+          meta: { Auth: true, title: 'Interpretes' },
+        },
+        {
+          path: 'create',
+          name: 'create',
+          component: CreateInterpretes,
+          meta: { Auth: true, title: 'CrearInterpretes' },
         },
 
       ]

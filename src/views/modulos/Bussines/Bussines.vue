@@ -919,17 +919,18 @@
                     ><h5>Herramientas y dispositivos Técnicos.</h5></strong
                   ></span
                 >
+           
                 <v-switch
-                  v-model="bussinesform.human_help"
-                  :label="'¿Entrega Ayudas Humanas?   ' + human_helpShow"
+                  v-model="bussinesform.maintenance_and_repair"
+                  :label="
+                    '¿Se dedica al mantenimiento y reparación de Ayudas Técnicas?  ' +
+                    maintenance_and_repairShow
+                  "
                   color="success"
                   hide-details
                   class="pl-3 pr-3 mb-5"
-                  :value="human_help"
-                  @change="setItem('human_help')"
-                  :readonly="
-                    validateInput == 1 ? (readonly = true) : (readonly = false)
-                  "
+                  :value="maintenance_and_repair"
+                  @change="setItem('maintenance_and_repair')"
                 ></v-switch>
                 <span
                   ><strong
@@ -942,7 +943,7 @@
                 <v-switch
                   v-model="bussinesform.maintenance_and_repair"
                   :label="
-                    '¿Se dedica al mantenimiento y reparación de Ayudas Humanas?)    ' +
+                    '¿Se dedica al mantenimiento y reparación de dispositivos Técnicos?)    ' +
                     maintenance_and_repairShow
                   "
                   color="success"

@@ -2,7 +2,7 @@
     <div>
         <div class="col-sm-9 col-md-3 col-12 btn_open">
             <v-btn
-                small
+                
                 color="success"
                 dark
                 class="mb-2 ml-3" 
