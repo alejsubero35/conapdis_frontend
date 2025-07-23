@@ -92,8 +92,8 @@ export default class Usuario extends Vue {
     { text: "ID", value: "id" },
     { text: "Nombre de la Empresa", value: "company_name" },
     { text: "Tipo", value: "tipo" },
-    { text: "Tipos de Prótesis", value: "tipo_protesis" },
-    { text: "Tipos de Ortesis", value: "tipo_ortesis" },
+    { text: "Tipos de Prótesis", value: "protesis.name" },
+    { text: "Tipos de Ortesis", value: "ortesis.name" },
     { text: "Otros", value: "otros" },
     { text: "Acciones", value: "actions" },
   ];

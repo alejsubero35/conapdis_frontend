@@ -36,7 +36,7 @@
             label="Tipos de Prótesis"
             outlined
             dense
-            v-model="dataForm.tipo_protesis"
+            v-model="dataForm.tipo_protesis_id"
             :rules="rules"
             required
           ></v-select>
@@ -47,7 +47,7 @@
             label="Tipos de Ortesis"
             outlined
             dense
-            v-model="dataForm.tipo_ortesis"
+            v-model="dataForm.tipo_ortesis_id"
             :rules="rules"
             required
           ></v-select>
@@ -98,21 +98,8 @@ export default class Students extends Vue {
   date = "";
   menu2: boolean = false;
   btnName = "Guardar";
-  arrayTiposProtesis: Array<{ text: string; value: string }> = [
-    { text: 'Prótesis de miembro superior', value: 'miembro_superior' },
-    { text: 'Prótesis de miembro inferior', value: 'miembro_inferior' },
-    { text: 'Prótesis ocular', value: 'ocular' },
-    { text: 'Prótesis auditiva', value: 'auditiva' },
-    { text: 'Prótesis dental', value: 'dental' },
-    { text: 'Otra', value: 'otra' }
-  ];
-  arrayTiposOrtesis: Array<{ text: string; value: string }> = [
-    { text: 'Ortesis de miembro superior', value: 'miembro_superior' },
-    { text: 'Ortesis de miembro inferior', value: 'miembro_inferior' },
-    { text: 'Ortesis de columna', value: 'columna' },
-    { text: 'Ortesis craneal', value: 'craneal' },
-    { text: 'Otra', value: 'otra' }
-  ];
+  arrayTiposProtesis: Array<{ text: string; value: string }> = [];
+  arrayTiposOrtesis: Array<{ text: string; value: string }> = [];
   arrayOtros: Array<{ text: string; value: string }> = [
     { text: 'Silla de ruedas', value: 'silla_ruedas' },
     { text: 'Andadera', value: 'andadera' },
@@ -257,11 +244,27 @@ export default class Students extends Vue {
     }
     this.overlay = false;
   }
+  async getProtesisAll() {
+    const protesis: any = await extrasModule.getAll('protesis');
+    this.arrayTiposProtesis = protesis.data.map((item: any) => ({
+      text: item.name,
+      value: item.id
+    }));
+  }
+  async getOrtesisAll() {
+    const ortesis: any = await extrasModule.getAll('ortesis');
+    this.arrayTiposOrtesis = ortesis.data.map((item: any) => ({
+      text: item.name,
+      value: item.id
+    }));
+  }
   mounted() {
     this.getDiscapacidades();
     this.getStates();
     this.getTypeDocumentAll()
     this.fillFormOnInit();
+    this.getProtesisAll();
+    this.getOrtesisAll();
     const bussines = storageData.get("_bussines");
     this.dataForm.busine_id = bussines && bussines.id ? Number(bussines.id) : null;
     if ((this.$route as any).params && (this.$route as any).params.id) {

@@ -90,7 +90,7 @@
         <v-col cols="12" sm="6" md="4">
           <v-select
             :items="arrayTechnicalHelps"
-            item-text="valor"
+            item-text="name"
             item-value="id"
             label="Herramienta/Dispositivo Técnico a Reparar"
             outlined
@@ -141,14 +141,7 @@ export default class Students extends Vue {
   arrayParishes = [];
   arrayTechnicalHelps = [];
   temp_id : any = null;
-  arrayTiposProtesis: Array<{ text: string; value: string }> = [
-    { text: 'Prótesis de miembro superior', value: 'miembro_superior' },
-    { text: 'Prótesis de miembro inferior', value: 'miembro_inferior' },
-    { text: 'Prótesis ocular', value: 'ocular' },
-    { text: 'Prótesis auditiva', value: 'auditiva' },
-    { text: 'Prótesis dental', value: 'dental' },
-    { text: 'Otra', value: 'otra' }
-  ];
+
 
 
   dataForm: any = {
@@ -253,28 +246,13 @@ export default class Students extends Vue {
     this.arrayParishes = parishes.data.data;
     this.overlay = false;
   }
+
   async getTechnicalHelps() {
-    const technicalHelps : any = await  bussinesModule.getTechnicalHelpsAll();
-    this.arrayTechnicalHelps = technicalHelps.data;
-  }
-
-  reset() {
-    this.$refs.dataForm.reset();
-  }
-
-  back() {
-    setTimeout(() => {
-      this.snackbar = false;
-      this.$router.go(-1);
-    }, 2000);
-  }
-  backError() {
-    setTimeout(() => {
-      this.snackbar = false;
-    }, 2000);
-  }
-  go() {
-    this.$router.go(-1);
+    const technicalHelps: any = await bussinesModule.getTechnicalHelpsAll();
+    this.arrayTechnicalHelps = technicalHelps.data.map((item: any) => ({
+      name: item.valor,
+      id: item.id
+    }));
   }
 
   async getFindById(id: number) {
@@ -301,6 +279,25 @@ export default class Students extends Vue {
       }
     }
     this.overlay = false;
+  }
+
+    reset() {
+    this.$refs.dataForm.reset();
+  }
+
+  back() {
+    setTimeout(() => {
+      this.snackbar = false;
+      this.$router.go(-1);
+    }, 2000);
+  }
+  backError() {
+    setTimeout(() => {
+      this.snackbar = false;
+    }, 2000);
+  }
+  go() {
+    this.$router.go(-1);
   }
   mounted() {
    

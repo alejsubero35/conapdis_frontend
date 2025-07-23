@@ -113,6 +113,34 @@ class extrasModule extends VuexModule {
                 return { data: null };
             });
     }
+    @Action
+    async getProtesisAll() {
+        return await https.get('protesis')
+            .then((payload: any) => {
+                if (payload) {
+                    return payload;
+                } else {
+                    return [];
+                }
+            })
+            .catch(() => {
+                return [];
+            });
+    }
+    @Action
+    async getOrtesisAll() {
+        return await https.get('ortesis')
+            .then((payload: any) => {
+                if (payload) {
+                    return payload;
+                } else {
+                    return [];
+                }
+            })
+            .catch(() => {
+                return [];
+            });
+    }
 
 }
 
