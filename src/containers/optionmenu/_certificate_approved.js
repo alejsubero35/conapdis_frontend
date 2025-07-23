@@ -42,15 +42,15 @@ export default [
             }
           ];
           // Validar acceso por localStorage
-          const hospital_center = storageData.get("_bussines").hospital_center === "1";
-          const human_help = storageData.get("_bussines").human_help === "1";
-          const maintenance_and_repair = storageData.get("_bussines").maintenance_and_repair === "1";
-          const ortesis_protesis = storageData.get("_bussines").ortesis_protesis === "1";
-          const ortesis_laboratories = storageData.get("_bussines").ortesis_laboratories === "1";
-          const has_workers_interpretes = storageData.get("_bussines").has_workers_interpretes === "1";
-          const have_certificate = storageData.get("_bussines").have_certificate === "1";
-          const is_educational_center = storageData.get("_bussines").is_educational_center === "1";
-          const has_delivered_homes = storageData.get("_bussines").has_delivered_homes === "1";
+          const hospital_center = storageData.get("_bussines").hospital_center === "Si";
+          const human_help = storageData.get("_bussines").human_help === "Si";
+          const maintenance_and_repair = storageData.get("_bussines").maintenance_and_repair === "Si";
+          const ortesis_protesis = storageData.get("_bussines").ortesis_protesis === "Si";
+          const ortesis_laboratories = storageData.get("_bussines").ortesis_laboratories === "Si";
+          const has_workers_interpretes = storageData.get("_bussines").has_workers_interpretes === "Si";
+          const have_certificate = storageData.get("_bussines").have_certificate === "Si";
+          const is_educational_center = storageData.get("_bussines").is_educational_center === "Si";
+          const has_delivered_homes = storageData.get("_bussines").has_delivered_homes === "Si";
           if (hospital_center) {
             items.push({
               _name: 'CSidebarNavItem',
@@ -115,14 +115,14 @@ export default [
               icon: 'cibAnaconda'
             });
           }
-          if (has_delivered_homes) {
+          /* if (has_delivered_homes) {
             items.push({
               _name: 'CSidebarNavItem',
               name: 'Hogares Entregados',
               to: '/deliveredhomes',
               icon: 'cibAnaconda'
             });
-          }
+          } */
           return items;
         })()
       },

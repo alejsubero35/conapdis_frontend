@@ -100,13 +100,13 @@ export default class Usuario extends Vue {
     /* { text: "Tipo Cédula Centro", value: "tipo_cedula_id" }, */
     { text: "Cédula Centro", value: "health_center_identity_number" },
     { text: "Nombre Madre", value: "mother_name" },
-    { text: "Tipo Cédula Madre", value: "mother_tipo_cedula_id" },
+    /* { text: "Tipo Cédula Madre", value: "mother_tipo_cedula_id" }, */
     { text: "Cédula Madre", value: "mother_identity_type" },
-    { text: "Madre con Discapacidad", value: "mother_has_disability" },
-    { text: "Tipo Discapacidad Madre", value: "tipo_discapacidad_general_id" },
+    /* { text: "Madre con Discapacidad", value: "mother_has_disability" }, */
+   /*  { text: "Tipo Discapacidad Madre", value: "tipo_discapacidad_general_id" }, */
     { text: "Nombre Niño", value: "child_name" },
     { text: "Fecha Nacimiento Niño", value: "child_birth_date" },
-    { text: "Sexo Niño", value: "sexo_id" },
+    /* { text: "Sexo Niño", value: "sexo_id" }, */
     /* { text: "Tipo Discapacidad Niño", value: "child_tipo_discapacidad_general_id" }, */
     { text: "Acciones", value: "actions" },
   ];

@@ -98,7 +98,7 @@ export default class Usuario extends Vue {
     { text: "Teléfonos", value: "laboratory_phone" },
     { text: "Tipo de Prótesis", value: "protesis.name" },
     { text: "Cédula Beneficiario", value: "beneficiary_identity_number" },
-    { text: "Empresa", value: "busine_id" },
+    /* { text: "Empresa", value: "busine_id" }, */
     { text: "Acciones", value: "actions" },
   ];
 
