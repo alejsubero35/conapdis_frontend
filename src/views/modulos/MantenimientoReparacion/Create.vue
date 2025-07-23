@@ -95,7 +95,7 @@
             label="Herramienta/Dispositivo Técnico a Reparar"
             outlined
             dense
-            v-model="dataForm.technical_device"
+            v-model="dataForm.technical_device_id"
             :rules="rules"
             required
           ></v-select>
@@ -267,15 +267,15 @@ export default class Students extends Vue {
         await this.getParishesByMunicipality(data.data.data.municipio_id);
         this.dataForm.parroquia_id = data.data.data.parroquia_id;
       }
-      // Selecciona el valor correcto en el selector de technical_device
-      if (data.data.data.technical_device && this.arrayTechnicalHelps.length) {
+      // Selecciona el valor correcto en el selector de technical_device_id
+      if (data.data.data.technical_device_id && this.arrayTechnicalHelps.length) {
         // Busca por id o por valor
         const found = this.arrayTechnicalHelps.find(
-          (item: any) => item.id == data.data.data.technical_device || item.valor == data.data.data.technical_device
+          (item: any) => item.id == data.data.data.technical_device_id || item.valor == data.data.data.technical_device_id
         );
-        this.dataForm.technical_device = found ? found.id : data.data.data.technical_device;
+        this.dataForm.technical_device_id = found ? found.id : data.data.data.technical_device_id;
       } else {
-        this.dataForm.technical_device = data.data.data.technical_device || '';
+        this.dataForm.technical_device_id = data.data.data.technical_device_id || '';
       }
     }
     this.overlay = false;

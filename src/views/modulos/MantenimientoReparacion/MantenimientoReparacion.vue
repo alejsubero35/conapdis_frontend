@@ -96,7 +96,7 @@ export default class Usuario extends Vue {
     { text: "Municipio", value: "municipio_id" },
     { text: "Parroquia", value: "parroquia_id" }, */
     { text: "Teléfonos", value: "workshop_phone" },
-    { text: "Herramienta/Dispositivo Técnico", value: "technical_device" },
+    { text: "Herramienta/Dispositivo Técnico", value: "technical_device.nombre" },
     { text: "Acciones", value: "actions" },
   ];
 
