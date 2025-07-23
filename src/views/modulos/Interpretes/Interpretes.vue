@@ -93,8 +93,8 @@ export default class Usuario extends Vue {
     { text: "Nombre y Apellido", value: "full_name" },
     { text: "Cédula de Identidad", value: "identity_card" },
     { text: "Tipo de Intérprete", value: "interpreter_type" },
-    { text: "Posee Discapacidad", value: "has_disability" },
-    { text: "Tipo de Discapacidad", value: "disability_type" },
+    /* { text: "Posee Discapacidad", value: "has_disability" },
+    { text: "Tipo de Discapacidad", value: "tipo_discapacidad_general_id" }, */
     { text: "Instituto Acreditador", value: "accrediting_institute" },
     { text: "Acciones", value: "actions" },
   ];
