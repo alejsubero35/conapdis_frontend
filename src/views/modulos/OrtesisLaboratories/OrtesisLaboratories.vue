@@ -12,7 +12,7 @@
 
     <div class="title">
       <v-col cols="12" md="12" sm="12" xs="12">
-        <h3 class="title_section">ORTESIS PROTESIS</h3>
+        <h3 class="title_section">LABORATORIO DE ORTESIS</h3>
         <br />
       </v-col>
     </div>
@@ -90,13 +90,19 @@ export default class Usuario extends Vue {
   @Prop() item?: Object;
   headers = [
     { text: "ID", value: "id" },
-    { text: "Nombre de la Empresa", value: "company_name" },
-    { text: "Tipo", value: "tipo" },
-    { text: "Tipos de Prótesis", value: "tipo_protesis" },
-    { text: "Tipos de Ortesis", value: "tipo_ortesis" },
-    { text: "Otros", value: "otros" },
+    { text: "Nombre del Laboratorio", value: "laboratory_name" },
+    { text: "Dirección", value: "laboratory_address" },
+/*     { text: "Estado", value: "estado_id" },
+    { text: "Municipio", value: "municipio_id" },
+    { text: "Parroquia", value: "parroquia_id" }, */
+    { text: "Teléfonos", value: "laboratory_phone" },
+    { text: "Tipo de Prótesis", value: "tipo_protesis" },
+    { text: "Cédula Beneficiario", value: "beneficiary_identity_number" },
+    { text: "Empresa", value: "busine_id" },
     { text: "Acciones", value: "actions" },
   ];
+
+
   [x: string]: unknown;
   section: string = "Usuarios";
   overlay = false;
@@ -110,7 +116,7 @@ export default class Usuario extends Vue {
   title: string = "NUEVO";
   tituloModal: string = "";
   dataFormDelete: object = {
-    endpoint: 'ortesis-protesis',
+    endpoint: 'ortesis-laboratories',
   };
   id_delete = "";
   snackbar = false;
@@ -119,7 +125,7 @@ export default class Usuario extends Vue {
   timeout = 2000;
   label = "Buscar";
   per_page = 10;
-  endpoint: string = 'ortesis-protesis';
+  endpoint: string = 'ortesis-laboratories';
   options = {};
   textbody = "";
   titlemodal = "";
@@ -131,7 +137,7 @@ export default class Usuario extends Vue {
     return this.dataFormDelete;
   }
   openView() {
-    this.$router.push({ name: "createortesis" });
+    this.$router.push({ name: "createortesislaboratories" });
   }
 
   eliminar(item) {
@@ -182,7 +188,7 @@ export default class Usuario extends Vue {
 
   editar(item) {
     this.$router.push({
-      name: "createortesis",
+      name: "createortesislaboratories",
       params: { id: item.id },
     });
   }

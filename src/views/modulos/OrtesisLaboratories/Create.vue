@@ -7,26 +7,26 @@
       <TitleSection :sectiontitle="sectiontitle" />
       <input type="hidden" v-model="dataForm.id" />
       <v-row class="mt-5 p-3">
-        <!-- Nombre del Taller -->
+        <!-- Nombre del Laboratorio -->
         <v-col cols="12" sm="6" md="4">
           <v-text-field
-            label="Nombre del Taller"
-            placeholder="Nombre del Taller"
+            label="Nombre del Laboratorio"
+            placeholder="Nombre del Laboratorio"
             outlined
             dense
-            v-model="dataForm.workshop_name"
+            v-model="dataForm.laboratory_name"
             :rules="rules"
             required
           ></v-text-field>
         </v-col>
-        <!-- Dirección del Taller -->
+        <!-- Dirección del Laboratorio -->
         <v-col cols="12" sm="6" md="4">
           <v-text-field
             label="Dirección"
-            placeholder="Dirección del Taller"
+            placeholder="Dirección del Laboratorio"
             outlined
             dense
-            v-model="dataForm.workshop_address"
+            v-model="dataForm.laboratory_address"
             :rules="rules"
             required
           ></v-text-field>
@@ -79,27 +79,37 @@
         <v-col cols="12" sm="6" md="4">
           <v-text-field
             label="Teléfonos"
-            placeholder="Teléfonos del Taller"
+            placeholder="Teléfonos del Laboratorio"
             outlined
             dense
-            v-model="dataForm.workshop_phone"
+            v-model="dataForm.laboratory_phone"
             :rules="rules"
           ></v-text-field>
         </v-col>
-        <!-- Herramienta/Dispositivo Técnico a Reparar -->
+        <!-- Tipo de Prótesis -->
         <v-col cols="12" sm="6" md="4">
           <v-select
-            :items="arrayTechnicalHelps"
-            item-text="valor"
-            item-value="id"
-            label="Herramienta/Dispositivo Técnico a Reparar"
+            :items="arrayTiposProtesis"
+            label="Tipo de Prótesis"
             outlined
             dense
-            v-model="dataForm.technical_device"
+            v-model="dataForm.tipo_protesis"
             :rules="rules"
             required
           ></v-select>
         </v-col>
+        <!-- Cédula Beneficiario -->
+        <v-col cols="12" sm="6" md="4">
+          <v-text-field
+            label="Cédula del Beneficiario"
+            placeholder="Cédula del Beneficiario"
+            outlined
+            dense
+            v-model="dataForm.beneficiary_identity_number"
+            :rules="rules"
+          ></v-text-field>
+        </v-col>
+        
       </v-row>
       <v-row class="d-flex justify-center p-5">
         <v-btn @click="onSubmit" color="primary" small>{{ btnName }}</v-btn>
@@ -139,8 +149,6 @@ export default class Students extends Vue {
   arrayStates = [];
   arrayMunicipality = [];
   arrayParishes = [];
-  arrayTechnicalHelps = [];
-  temp_id : any = null;
   arrayTiposProtesis: Array<{ text: string; value: string }> = [
     { text: 'Prótesis de miembro superior', value: 'miembro_superior' },
     { text: 'Prótesis de miembro inferior', value: 'miembro_inferior' },
@@ -152,10 +160,10 @@ export default class Students extends Vue {
 
 
   dataForm: any = {
-    endpoint: 'workshops-technical-help',
+    endpoint: 'ortesis-laboratories',
   };
   dataFormEdit: any = {
-    endpoint: 'workshops-technical-help',
+    endpoint: 'ortesis-laboratories',
   };
 
 
@@ -176,7 +184,7 @@ export default class Students extends Vue {
   }
  
   onSubmit() {
-    this.dataForm.endpoint = 'workshops-technical-help';
+    this.dataForm.endpoint = 'ortesis-laboratories';
 
     const valid: any = this.$refs.dataForm.validate();
 
@@ -253,9 +261,9 @@ export default class Students extends Vue {
     this.arrayParishes = parishes.data.data;
     this.overlay = false;
   }
-  async getTechnicalHelps() {
-    const technicalHelps : any = await  bussinesModule.getTechnicalHelpsAll();
-    this.arrayTechnicalHelps = technicalHelps.data;
+  async getDiscapacidades() {
+    const discapacidades : any = await  formacionModule.getDiscapacidadesAll();
+    this.arrayDiscapacidades = discapacidades.data;
   }
 
   reset() {
@@ -281,42 +289,32 @@ export default class Students extends Vue {
     this.dataFormEdit.id = id;
     this.overlay = true;
     const data: any = await extrasModule.getById(this.FormRequestEdit);
+    console.log(data.data)
     if (data && data.data) {
       Object.assign(this.dataForm, data.data.data);
       if(data.data.data.estado_id) {
         await this.getMunicipalityByState(data.data.data.estado_id);
-        this.dataForm.municipio_id = data.data.data.municipio_id;
+        await (this.dataForm.municipio_id = data.data.data.municipio_id);
         await this.getParishesByMunicipality(data.data.data.municipio_id);
-        this.dataForm.parroquia_id = data.data.data.parroquia_id;
+        await (this.dataForm.parroquia_id = data.data.data.parroquia_id);
       }
-      // Selecciona el valor correcto en el selector de technical_device
-      if (data.data.data.technical_device && this.arrayTechnicalHelps.length) {
-        // Busca por id o por valor
-        const found = this.arrayTechnicalHelps.find(
-          (item: any) => item.id == data.data.data.technical_device || item.valor == data.data.data.technical_device
-        );
-        this.dataForm.technical_device = found ? found.id : data.data.data.technical_device;
-      } else {
-        this.dataForm.technical_device = data.data.data.technical_device || '';
-      }
+  
     }
     this.overlay = false;
   }
   mounted() {
-   
+    this.getDiscapacidades();
     this.getStates();
     this.getTypeDocumentAll()
   
     const bussines = storageData.get("_bussines");
     this.dataForm.busine_id = bussines && bussines.id ? Number(bussines.id) : null;
     if ((this.$route as any).params && (this.$route as any).params.id) {
-      this.getTechnicalHelps();
       this.getFindById((this.$route as any).params.id);
       this.sectiontitle = "ACTUALIZAR REGISTRO";
       this.btnName = "Actualizar";
     }else {
       this.sectiontitle = "NUEVO REGISTRO";
-      this.getTechnicalHelps();
     }
   }
 

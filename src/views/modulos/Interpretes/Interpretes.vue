@@ -12,7 +12,7 @@
 
     <div class="title">
       <v-col cols="12" md="12" sm="12" xs="12">
-        <h3 class="title_section">INTERPRETES</h3>
+        <h3 class="title_section">INTERPRETE LSV</h3>
         <br />
       </v-col>
     </div>
@@ -33,14 +33,14 @@
                     <v-tooltip top>
                         <template v-slot:activator="{on, attrs}">
                             <v-btn
-                                color="error"
+                                color="success"
                                 dark
                                 @click="editar(item)"   
                                 icon
                                 v-bind="attrs"
                                 v-on="on"
                             >
-                                <v-icon>mdi-edit-circle-outline</v-icon>
+                                <v-icon>mdi-pencil-circle-outline</v-icon>
                             </v-btn>
                         </template>
                         <span>Editar</span>
@@ -66,13 +66,21 @@
       </template>
     </v-col>
     <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color" />
+     <ModalDelete
+      @deleteData="deleteData"
+      :titlemodal="titlemodal"
+      :textbody="textbody"
+      :dialogDelete="dialogDelete"
+      @cerrarModal="cerrarModal"
+    />
 
   </v-row>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import formacionModule from "@/store/modules/formacionModule";
+import bussinesModule from "@/store/modules/bussinesModule";
+import extrasModule from "@/store/modules/extrasModule";
 import storageData from "@/store/services/storageService";
 
 @Component({
@@ -81,14 +89,18 @@ import storageData from "@/store/services/storageService";
 export default class Usuario extends Vue {
   @Prop() item?: Object;
   headers = [
-    { text: "Id", value: "id" },
-    { text: "Fecha ", value: "proposed_date" },
-    { text: "Taller", value: "workshop.description" },
-    { text: "Responsable", value: "responsible" },
-    { text: "Cantidad", value: "number_of_participants" },
-    { text: "Status", value: "status" },
-    { text: "Acciones", value: "action" },
+    { text: "ID", value: "id" },
+    { text: "Nombre y Apellido", value: "full_name" },
+    { text: "Cédula de Identidad", value: "identity_card" },
+    { text: "Tipo de Intérprete", value: "interpreter_type" },
+    { text: "Posee Discapacidad", value: "has_disability" },
+    { text: "Tipo de Discapacidad", value: "disability_type" },
+    { text: "Instituto Acreditador", value: "accrediting_institute" },
+    { text: "Acciones", value: "actions" },
   ];
+
+
+  [x: string]: unknown;
   section: string = "Usuarios";
   overlay = false;
   desserts: any = [];
@@ -100,16 +112,17 @@ export default class Usuario extends Vue {
   dialogDelete: boolean = false;
   title: string = "NUEVO";
   tituloModal: string = "";
-  dataEditForm: object = {};
+  dataFormDelete: object = {
+    endpoint: 'lsv-interpreter',
+  };
   id_delete = "";
   snackbar = false;
   textmsj = "";
   color = "";
   timeout = 2000;
   label = "Buscar";
-  moduleStore = formacionModule;
   per_page = 10;
-  endpoint: string = "users";
+  endpoint: string = 'lsv-interpreter';
   options = {};
   textbody = "";
   titlemodal = "";
@@ -117,24 +130,34 @@ export default class Usuario extends Vue {
   formPayment: any = {};
   dialogPayment = false;
     date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10);
-  getColor(item) {
-    if (item == "Pendiente") {
-      return "warning";
-    } else if (item == "Negada") {
-      return "error";
-    } else {
-      return "success";
-    }
+  get FormRequestDelete(): any {
+    return this.dataFormDelete;
   }
   openView() {
-    this.$router.push({ name: "create" });
+    this.$router.push({ name: "createtelsvinterpreter" });
   }
 
-  Delete(id) {
+  eliminar(item) {
+    this.dataFormDelete = {
+      endpoint: this.endpoint,
+      id: item.id,
+    };
     this.dialogDelete = true;
-    this.textbody = "Confirme que desea eliminar";
+    this.textbody = "Confirme que desea eliminar el registro";
     this.titlemodal = "Eliminar Registro";
-    this.id_delete = id;
+  }
+  async deleteData(event) {
+    this.overlay = true;
+    const res: any = await extrasModule.delete(this.FormRequestDelete);
+    if (res.status == 200) {
+      this.dialogDelete = event;
+      this.dataIndexRequest();
+      this.color = "success";
+      this.textmsj = "Registro Eliminado con Éxito.";
+      this.snackbar = true;
+      this.closeSnackbar();
+      this.overlay = false;
+    }
   }
   cerrarModal(event) {
     this.dialogDelete = event;
@@ -160,27 +183,22 @@ export default class Usuario extends Vue {
     return date.toISOString();
   }
 
-  viewPDF(id) {
+  editar(item) {
     this.$router.push({
-      name: "planillaboletaordenamiento",
-      params: { id: id },
+      name: "createtelsvinterpreter",
+      params: { id: item.id },
     });
   }
   async dataIndexRequest() {
     this.overlay = true;
-    const data: any = await formacionModule.getRequestAll(
-      storageData.get("_bussines_id")
-    );
+    const data: any = await extrasModule.getAll(this.endpoint);
 
-    // Ordenar los datos de forma descendente por el ID
-    data.data.sort((a, b) => b.id - a.id);
-
-    this.desserts = data.data;
+    this.desserts = data.data.data;
     this.overlay = false;
   }
 
   mounted() {
-    //this.dataIndexRequest();
+    this.dataIndexRequest();
   }
 }
 </script>

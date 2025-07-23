@@ -1,3 +1,4 @@
+
 <template>
   <div class="content-section">
     <v-overlay :value="overlay">
@@ -7,251 +8,309 @@
       <TitleSection :sectiontitle="sectiontitle" />
       <input type="hidden" v-model="dataForm.id" />
       <v-row class="mt-5 p-3">
-        <v-col cols="12" sm="6" md="3">
+              <!-- Cédula de Identidad -->
+               <v-col cols="12" sm="6" md="4">
+                  <v-select
+                    :items="arrayCustomers"
+                    item-text="cedula"
+                    item-value="id"
+                    label="Cédula"
+                    placeholder="Cédula"
+                    dense
+                    :rules="rules"
+                    required
+                    v-model="cedulaselect"
+                    @change="getPersonCertificate($event)"
+                    return-object
+                  
+                  >
+                    <template v-slot:prepend-item>
+                      <v-overlay :value="isLoading">
+                        <v-progress-circular
+                          indeterminate
+                          size="24"
+                          color="#ff7005"
+                        ></v-progress-circular>
+                      </v-overlay>
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-text-field
+                            type="number"
+                            min="1"
+                            v-model="searchTerm"
+                            placeholder="Buscar Persona Certificada"
+                            @keyup.enter="searchCertificatePerson"
+                            autofocus
+                          ></v-text-field>
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-divider></v-divider>
+                    </template>
+                  </v-select>
+                </v-col>
+        <!-- <v-col cols="12" sm="6" md="4">
           <v-text-field
-            label="Empresa"
-            placeholder="Empresa"
+            label="Cédula de Identidad"
+            placeholder="Cédula de Identidad"
             outlined
             dense
-            v-model="empresaname"
-            readonly
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" sm="6" md="3">
-          <v-select
-            :items="workshops"
-            item-text="description"
-            item-value="id"
-            label="Taller"
-            placeholder="Taller"
-            @change="getWorkshop($event)"
-            outlined
-            dense
+            v-model="dataForm.identity_card"
             :rules="rules"
             required
-            return-object
+          ></v-text-field>
+        </v-col> -->
+        <!-- Nombre y Apellido del Intérprete -->
+        <v-col cols="12" sm="6" md="4">
+          <v-text-field
+            label="Nombre y Apellido"
+            placeholder="Nombre y Apellido del Intérprete"
+            outlined
+            dense
+            v-model="dataForm.full_name"
+            :rules="rules"
+            required
+          ></v-text-field>
+        </v-col>
+  
+        <!-- Tipo de Intérprete -->
+        <v-col cols="12" sm="6" md="4">
+          <v-select
+            :items="arrayInterpreterTypes"
+            item-text="text"
+            item-value="value"
+            label="Tipo de Intérprete"
+            outlined
+            dense
+            v-model="dataForm.interpreter_type"
+            :rules="rules"
+            required
           ></v-select>
         </v-col>
-        <v-col cols="12" sm="6" md="3">
-          <v-menu
-            v-model="menu2"
-            :close-on-content-click="false"
-            :nudge-right="40"
-            transition="scale-transition"
-            offset-y
-            min-width="auto"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="date"
-                label="Fecha Prop. Formación"
-                append-icon="mdi-calendar"
-                readonly
-                v-bind="attrs"
-                v-on="on"
-                dense
-                outlined
-              ></v-text-field>
-            </template>
-            <v-date-picker
-              v-model="date"
-              no-title
-              locale="es"
-              @input="menu2 = false"
-              @change="updateFecha()"
-            ></v-date-picker>
-          </v-menu>
-        </v-col>
-        <v-col cols="12" sm="4" md="3">
-          <v-text-field
-            label="Hora Inicio"
-            placeholder="Hora Inicio"
+        <!-- Posee Discapacidad -->
+        <v-col cols="12" sm="6" md="4">
+          <v-select
+            :items="[{ text: 'Sí', value: true }, { text: 'No', value: false }]"
+            item-text="text"
+            item-value="value"
+            label="¿Posee Discapacidad?"
             outlined
             dense
+            v-model="dataForm.has_disability"
             :rules="rules"
-            v-model="dataForm.start_time"
-            type="time"
-          ></v-text-field>
+            required
+          ></v-select>
         </v-col>
-        <v-col cols="12" sm="8" md="3">
-          <v-textarea
-            label="Dirección"
-            placeholder="Dirección"
+        <!-- Tipo de Discapacidad General -->
+        <v-col cols="12" sm="6" md="4" v-if="dataForm.has_disability">
+          <v-select
+            :items="arrayDiscapacidades"
+            item-text="nombre"
+            item-value="id"
+            label="Tipo de Discapacidad General"
             outlined
             dense
+            v-model="dataForm.tipo_discapacidad_general_id"
             :rules="rules"
-            v-model="dataForm.address"
-            rows="3"
-          ></v-textarea>
+            required
+          ></v-select>
         </v-col>
-        <v-col cols="12" sm="4" md="3">
-          <v-text-field
-            label="Monto Total del Taller"
-            placeholder="Monto Total del Taller"
-            dense
-            v-model="dataForm.workshop_amount"
-            type="number"
-            readonly
-            prepend-inner-icon="mdi-currency-usd"
-            solo
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" sm="12" md="12">
-          <v-textarea
-            label="Observaciones"
-            placeholder="Obse|rvaciones"
+        <!-- Instituto que acredita -->
+        <v-col cols="12" sm="6" md="4">
+          <v-select
+            :items="arrayInstitutosAcreditadores"
+            item-text="text"
+            item-value="value"
+            label="Instituto que acredita"
             outlined
             dense
+            v-model="dataForm.accrediting_institute"
             :rules="rules"
-            v-model="dataForm.observation"
-            rows="3"
-          ></v-textarea>
+            required
+          ></v-select>
         </v-col>
       </v-row>
       <v-row class="d-flex justify-center p-5">
-        <v-btn @click="onSubmit" color="primary" small>Guardar</v-btn>
+        <v-btn @click="onSubmit" color="primary" small>{{ btnName }}</v-btn>
       </v-row>
     </v-form>
     <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color" />
-    <!-- <ModalApproved @confirm="confirm" :titleModalDelete="titleModalDelete" :textbody="textbody" :dialogDelete="openDialog" @cerrarModal="cerrarModal"/> -->
+    <v-dialog v-model="dialog" max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Notificación</span>
+        </v-card-title>
+        <v-card-text>
+          <p>Esta cédula no esta certificada , será redirigido a la sección donde se registran los Intérpretes de <strong>Lengua de Señas Venezolana</strong>.</p>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="green darken-1" text @click="confirmDialog">Aceptar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import formacionModule from "@/store/modules/formacionModule";
 import bussinesModule from "@/store/modules/bussinesModule";
+import extrasModule from "@/store/modules/extrasModule";
+import linkedModule from "@/store/modules/linkedModule";
 import { ValidationObserver } from "vee-validate";
 import storageData from "@/store/services/storageService";
 
 @Component({
   components: {},
 })
-export default class EditarCliente extends Vue {
-  [x: string]: unknown;
-  listPrice?: any = [];
-  pricelist_id = "";
-  condicionespago?: any = [];
-  overlay = false;
-  title: string = "";
-  subtitle: string = "";
-  tipozona = [
-    { value: "Rural", text: "Rural" },
-    { value: "Turistica", text: "Turistica" },
-    { value: "Urbana", text: "Urbana" },
-  ];
-  invitedInstitutions = [
-    { value: "si", text: "Si" },
-    { value: "no", text: "No" },
-  ];
+export default class Students extends Vue {
 
-  btName = "Guardar";
+  [x: string]: unknown;
+  overlay = false;
   snackbar = false;
   textmsj = "";
   color = "";
   timeout = 2000;
-  sectiontitle = "NUEVO REGISTRO";
+  sectiontitle = "";
   dialog = false;
   openDialog = false;
   textbody = "";
   titleModalDelete = "";
   date = "";
   menu2: boolean = false;
-  max25chars = (v) => v.length <= 25 || "Input too long!";
-  dataForm: any = {
-    status: "Pendiente",
-    date_request: this.date,
-  };
-  workshops = [];
+  btnName = "Guardar";
   arrayStates = [];
   arrayMunicipality = [];
   arrayParishes = [];
-  empresaname = "";
-  cantInvited = false;
-  arrayRequirements: any = [];
-  checkboxModel = [];
-  amount = false;
-  amount_participant = 0;
-  totalamount = 0;
+  arrayDiscapacidades = [];
+  temp_id : any = null;
+  arrayInstitutosAcreditadores: Array<{ text: string; value: string }> = [
+    { text: 'FEDERACIÓN VENEZOLANA DE SORDOS FEVENSOR', value: 'FEVENSOR' },
+    { text: 'ASOCIACIÓN DE SORDOS DE CARACAS ASC', value: 'ASC' },
+    { text: 'UNIVERSIDAD PEDAGÓGICA EXPERIMENTAL LIBERTADOR', value: 'UPEL' },
+    { text: 'INSTITUTO PEDAGÓGICO DE CARACAS', value: 'IPC' }
+  ];
+  arrayInterpreterTypes: Array<{ text: string; value: string }> = [
+    { text: 'Usuario de LSV', value: 'usuario' },
+    { text: 'Intérprete LSV', value: 'Interprete' },
+    { text: 'Traductor de LSV', value: 'traductor' },
+    { text: 'Guía Intérprete', value: 'guia_interprete' },
+    { text: 'Guía Vidente', value: 'guia_vidente' },
+    { text: 'Facilitador de Braille', value: 'facilitador_braile' },
+    { text: 'Facilitador de O y M (Orientación y Movilidad)', value: 'facilitador_O_M' }
+  ];
+  searchTerm = "";
+  isLoading = false;
+  arrayCustomers = [];
+  cedulaselect = ''
+  dataForm: any = {
+    endpoint: 'lsv-interpreter',
+  };
+  dataFormEdit: any = {
+    endpoint: 'lsv-interpreter',
+  };
+
+
+
   $refs!: {
     dataForm: InstanceType<typeof ValidationObserver>;
   };
   get FormRequest(): any {
     return this.dataForm;
   }
-  async getInvited(event) {
-  if(this.dataForm.number_of_participants != undefined){
-    if (event == "si") {
-          this.cantInvited = true;
-        } else {
-          this.cantInvited = false;
-        }
-      }else{
-        this.textmsj = "El Campo cantidad de participantes NO puede estar vacio.";
-        this.color = "warning";
-        this.snackbar = true;
-        this.backError();
-        this.dataForm.invited_institutions = ''
-      }
+  get FormRequestEdit(): any {
+    return this.dataFormEdit;
   }
-   
+
+    async searchCertificatePerson(val) {
+    this.isLoading = true;
+    const data: any = await linkedModule.searchCertificatePerson(
+      this.searchTerm
+    );
+
+    if (data.data.length > 0) {
+        this.arrayCustomers = data.data;
+        this.isLoading = false;
+    } else {
+      this.searchTerm = "";
+      this.isLoading = false;
+      this.dataForm.full_name = "";
+      this.dataForm.identity_card = "";
+      this.arrayCustomers = [];
+      this.$refs.dataForm.reset();
+      
+      this.dialog = true;
+    }
+  }
+
+  getPersonCertificate(event) {
+    if (event && event.nombres && event.apellidos) {
+      // Forzar actualización reactiva
+      this.$set(this.dataForm, 'full_name', `${event.nombres} ${event.apellidos}`);
+    } else {
+      this.$set(this.dataForm, 'full_name', '');
+    }
+    if (event && event.cedula) {
+      this.$set(this.dataForm, 'identity_card', event.cedula);
+    } else {
+      this.$set(this.dataForm, 'identity_card', '');
+    }
+  }
+  confirmDialog() {
+    this.dialog = false;
+    // Cambia la URL por la pública de destino
+    const url = 'https://web.conapdis.gob.ve/interpreters';
+    window.open(url, '_blank');
+  }
   updateFecha() {
     this.dataForm.proposed_date = this.date;
     this.dataForm.date_request = this.date;
   }
-  async getWorkshop(event) {
-    this.dataForm.workshop_id = event.id;
-    this.amount = true;
-    this.amount_participant = event.amount_by_participant;
-    this.calculateAmount();
-  }
-  async calculateAmount() {
-    if (this.amount_participant == 0) {
-      this.textmsj = "Debe Seleccionar un Taller.";
-      this.color = "warning";
-      this.snackbar = true;
-      this.backError();
-      this.dataForm.number_of_participants = "";
-      this.dataForm.workshop_amount = "";
-    } else {
-      this.dataForm.workshop_amount =
-        parseFloat(this.dataForm.number_of_participants) *
-        this.amount_participant;
-    }
-
-  }
-
-  async calculateAmountInvited(){
-    if(this.dataForm.invited_people_number > 0){
-      this.dataForm.workshop_amount = (parseFloat(this.dataForm.invited_people_number) + parseFloat(this.dataForm.number_of_participants)) * this.amount_participant;
-    }else{
-      this.dataForm.workshop_amount = parseFloat(this.dataForm.number_of_participants) * this.amount_participant;
-    }
-  }
+ 
   onSubmit() {
-    this.dataForm.arrayRequirement = this.checkboxModel;
-    console.log(this.dataForm);
+    this.dataForm.endpoint = 'lsv-interpreter';
+
     const valid: any = this.$refs.dataForm.validate();
 
     if (valid) {
-      this.save();
+      if(this.$route.params.id) {
+        this.update();
+      } else {
+        this.save();
+      }
     } else {
       this.dialog = true;
     }
   }
   async save() {
     this.overlay = true;
-    const data = await formacionModule.save(this.FormRequest);
+    const data = await extrasModule.save(this.FormRequest);
 
     if (data.code == 200 || data.code == 201) {
-      this.textmsj = "solicitud de Formación Creada con Éxito.";
+      this.textmsj = "Registro Creado con Éxito.";
       this.color = "success";
       this.snackbar = true;
       this.back();
       this.overlay = false;
     } else {
-      this.textmsj = "Error al crear la Solicitud.";
+      this.textmsj = "Error al crear el registro.";
+      this.color = "error";
+      this.snackbar = true;
+      this.backError();
+      this.overlay = false;
+    }
+  }
+   async update() {
+    this.overlay = true;
+    const data = await extrasModule.update(this.FormRequest);
+
+    if (data.code == 200 || data.code == 201) {
+      this.textmsj = "Registro Actualizado con Éxito.";
+      this.color = "success";
+      this.snackbar = true;
+      this.back();
+      this.overlay = false;
+    } else {
+      this.textmsj = "Error al actualizar el registro.";
       this.color = "error";
       this.snackbar = true;
       this.backError();
@@ -267,26 +326,11 @@ export default class EditarCliente extends Vue {
     this.back();
     this.overlay = false;
   }
-  async comboboxAll() {
-    const typeWorkshops: any = await formacionModule.getWorkshopsAll();
-    this.workshops = typeWorkshops.data;
-  }
-  async getStates() {
-    const states: any = await bussinesModule.getStatesAll();
-    this.arrayStates = states.data.data;
-  }
-  async getMunicipalityByState(event) {
-    const municipality: any = await bussinesModule.getMunicipality(event);
-    this.arrayMunicipality = municipality.data.data;
-  }
-  async getParishesByMunicipality(event) {
-    const parishes: any = await bussinesModule.getParishes(event);
-    this.arrayParishes = parishes.data.data;
-    this.overlay = false;
-  }
-  async getRequirementTrainig() {
-    const requirement: any = await formacionModule.getRequirementTrainigAll();
-    this.arrayRequirements = requirement;
+
+
+  async getDiscapacidades() {
+    const discapacidades : any = await  formacionModule.getDiscapacidadesAll();
+    this.arrayDiscapacidades = discapacidades.data;
   }
 
   reset() {
@@ -307,18 +351,54 @@ export default class EditarCliente extends Vue {
   go() {
     this.$router.go(-1);
   }
-  mounted() {
-    //this.comboboxAll();
-    //this.getStates();
-    //this.getRequirementTrainig();
-    this.dataForm.empresa_id = storageData.get("_bussines").id;
-    this.empresaname =
-      storageData.get("_bussines").rif +
-      "-" +
-      storageData.get("_bussines").company_name;
-    this.dataForm.proposed_date = this.date;
-    this.dataForm.date_request = this.date;
+
+  async getFindById(id: number) {
+    this.dataFormEdit.id = id;
+    this.overlay = true;
+    const data: any = await extrasModule.getById(this.FormRequestEdit);
+    if (data && data.data) {
+      Object.assign(this.dataForm, data.data.data);
+      // Normaliza el booleano
+      if (data.data.data.has_disability === 1) {
+        this.dataForm.has_disability = true;
+      } else {
+        this.dataForm.has_disability = false;
+      }
+      if(data.data.data.identity_card){
+        this.getInterpreteByCedula(data.data.data.identity_card);
+      }
+    }
+    this.overlay = false;
   }
+  async getInterpreteByCedula(cedula) {
+    const DataTransfer: any = await linkedModule.searchCertificatePerson(cedula);
+    const dataArray = [DataTransfer];
+    this.arrayCustomers = dataArray[0].data;
+    // Busca el objeto correspondiente a la cédula
+    const selected = this.arrayCustomers.find((item: any) => item.cedula == cedula);
+    if (selected) {
+      this.cedulaselect = selected;
+      // Dispara el cambio manualmente para que se actualicen los campos dependientes
+      this.getPersonCertificate(selected);
+    } else {
+      this.cedulaselect = '';
+    }
+  }
+  mounted() {  
+    const bussines = storageData.get("_bussines");
+    this.dataForm.busine_id = bussines && bussines.id ? Number(bussines.id) : null;
+    if ((this.$route as any).params && (this.$route as any).params.id) {
+      this.getDiscapacidades();
+      this.getFindById((this.$route as any).params.id);
+      this.sectiontitle = "ACTUALIZAR REGISTRO";
+      this.btnName = "Actualizar";
+    }else {
+      this.sectiontitle = "NUEVO REGISTRO";
+      this.getDiscapacidades();
+    }
+  }
+
+
   data() {
     return {
       rules: [(v: any) => !!v || "Campo requerido"],

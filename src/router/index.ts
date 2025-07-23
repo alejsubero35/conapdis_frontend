@@ -84,16 +84,17 @@ const CreateHospitalCenter = () => import('@/views/modulos/HospitalCenter/Create
 //Ortesis y Protesis
 const OrtesisProtesis = () => import('@/views/modulos/OrtesisProtesis/OrtesisProtesis.vue')
 const CreateOrtesisProtesis = () => import('@/views/modulos/OrtesisProtesis/Create.vue')
+//Laboratorios de Órtesis
+const OrtesisLaboratories = () => import('@/views/modulos/OrtesisLaboratories/OrtesisLaboratories.vue')
+const CreateOrtesisLaboratories = () => import('@/views/modulos/OrtesisLaboratories/Create.vue')
 //Mantenimiento y Reparación
 const MantenimientoReparacion = () => import('@/views/modulos/MantenimientoReparacion/MantenimientoReparacion.vue')
 const CreateMantenimientoReparacion = () => import('@/views/modulos/MantenimientoReparacion/Create.vue')
 //Interpretes
 const Interpretes = () => import('@/views/modulos/Interpretes/Interpretes.vue')
 const CreateInterpretes = () => import('@/views/modulos/Interpretes/Create.vue')
-/* //Home Delivery
-const HomeDelivery = () => import('@/views/modulos/HomeDelivery/HomeDelivery.vue')
-//Planilla Home Delivery
-const PlanillaHomeDelivery = () => import('@/views/modulos/HomeDelivery/PlanillaHomeDelivery.vue') */
+
+
 
 
 // Errors
@@ -401,10 +402,22 @@ const router = new Router({
           meta: { Auth: true, title: 'OrtesisProtesis' },
         },
         {
-          path: 'create',
-          name: 'create',
+          path: 'createortesis',
+          name: 'createortesis',
           component: CreateOrtesisProtesis,
           meta: { Auth: true, title: 'CrearOrtesisProtesis' },
+        },
+        {
+          path: 'ortesislaboratories',
+          name: 'ortesislaboratories',
+          component: OrtesisLaboratories,
+          meta: { Auth: true, title: 'OrtesisLaboratories' },
+        },
+        {
+          path: 'createortesislaboratories',
+          name: 'createortesislaboratories',
+          component: CreateOrtesisLaboratories,
+          meta: { Auth: true, title: 'CrearOrtesisLaboratories' },
         },
         {
           path: 'mantenimientoandreparacion',
@@ -413,14 +426,20 @@ const router = new Router({
           meta: { Auth: true, title: 'MantenimientoReparacion' },
         },
         {
+          path: 'createtechnicalhelp',
+          name: 'createtechnicalhelp',
+          component: CreateMantenimientoReparacion,
+          meta: { Auth: true, title: 'CreateMantenimientoReparacion' },
+        },
+        {
           path: 'interpretes',
           name: 'interpretes',
           component: Interpretes,
           meta: { Auth: true, title: 'Interpretes' },
         },
         {
-          path: 'create',
-          name: 'create',
+          path: 'createtelsvinterpreter',
+          name: 'createtelsvinterpreter',
           component: CreateInterpretes,
           meta: { Auth: true, title: 'CrearInterpretes' },
         },

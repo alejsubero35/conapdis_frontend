@@ -966,7 +966,19 @@
                 <v-switch
                   v-model="bussinesform.ortesis_protesis"
                   :label="
-                    '¿Laboratorios de órtesis y prótesis?  ' +
+                    '¿Es Fabricante de órtesis y prótesis?  ' +
+                    ortesis_protesisShow
+                  "
+                  color="success"
+                  hide-details
+                  class="pl-3 pr-3 mb-5"
+                  :value="ortesis_protesis"
+                  @change="setItem('ortesis_protesis')"
+                ></v-switch>
+                <v-switch
+                  v-model="bussinesform.ortesis_laboratories"
+                  :label="
+                    '¿Laboratorios de órtesis?  ' +
                     ortesis_protesisShow
                   "
                   color="success"

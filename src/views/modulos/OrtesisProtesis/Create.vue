@@ -7,111 +7,64 @@
       <TitleSection :sectiontitle="sectiontitle" />
       <input type="hidden" v-model="dataForm.id" />
       <v-row class="mt-5 p-3">
-        <v-col cols="12" sm="6" md="3">
+        <!-- Empresa -->
+        <v-col cols="12" sm="6" md="4">
           <v-text-field
-            label="Empresa"
-            placeholder="Empresa"
+            label="Nombre de la Empresa"
+            placeholder="Nombre de la Empresa"
             outlined
             dense
-            v-model="empresaname"
-            readonly
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" sm="6" md="3">
-          <v-select
-            :items="workshops"
-            item-text="description"
-            item-value="id"
-            label="Taller"
-            placeholder="Taller"
-            @change="getWorkshop($event)"
-            outlined
-            dense
+            v-model="dataForm.company_name"
             :rules="rules"
             required
-            return-object
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" sm="6" md="4">
+          <v-select
+            :items="[{ text: 'Fabricante', value: 'fabricante' }, { text: 'Distribuidor', value: 'distribuidor' }, { text: 'Proveedor', value: 'proveedor' }]"
+            label="Tipo"
+            outlined
+            dense
+            v-model="dataForm.tipo"
+            :rules="rules"
+            required
           ></v-select>
         </v-col>
-        <v-col cols="12" sm="6" md="3">
-          <v-menu
-            v-model="menu2"
-            :close-on-content-click="false"
-            :nudge-right="40"
-            transition="scale-transition"
-            offset-y
-            min-width="auto"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="date"
-                label="Fecha Prop. Formación"
-                append-icon="mdi-calendar"
-                readonly
-                v-bind="attrs"
-                v-on="on"
-                dense
-                outlined
-              ></v-text-field>
-            </template>
-            <v-date-picker
-              v-model="date"
-              no-title
-              locale="es"
-              @input="menu2 = false"
-              @change="updateFecha()"
-            ></v-date-picker>
-          </v-menu>
-        </v-col>
-        <v-col cols="12" sm="4" md="3">
-          <v-text-field
-            label="Hora Inicio"
-            placeholder="Hora Inicio"
+        <v-col cols="12" sm="6" md="4">
+          <v-select
+            :items="arrayTiposProtesis"
+            label="Tipos de Prótesis"
             outlined
             dense
+            v-model="dataForm.tipo_protesis"
             :rules="rules"
-            v-model="dataForm.start_time"
-            type="time"
-          ></v-text-field>
+            required
+          ></v-select>
         </v-col>
-        <v-col cols="12" sm="8" md="3">
-          <v-textarea
-            label="Dirección"
-            placeholder="Dirección"
+        <v-col cols="12" sm="6" md="4">
+          <v-select
+            :items="arrayTiposOrtesis"
+            label="Tipos de Ortesis"
             outlined
             dense
+            v-model="dataForm.tipo_ortesis"
             :rules="rules"
-            v-model="dataForm.address"
-            rows="3"
-          ></v-textarea>
+            required
+          ></v-select>
         </v-col>
-        <v-col cols="12" sm="4" md="3">
-          <v-text-field
-            label="Monto Total del Taller"
-            placeholder="Monto Total del Taller"
-            dense
-            v-model="dataForm.workshop_amount"
-            type="number"
-            readonly
-            prepend-inner-icon="mdi-currency-usd"
-            solo
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" sm="12" md="12">
-          <v-textarea
-            label="Observaciones"
-            placeholder="Obse|rvaciones"
+        <v-col cols="12" sm="6" md="4">
+          <v-select
+            :items="arrayOtros"
+            label="Otros"
             outlined
             dense
+            v-model="dataForm.otros"
             :rules="rules"
-            v-model="dataForm.observation"
-            rows="3"
-          ></v-textarea>
+          ></v-select>
         </v-col>
       </v-row>
       <v-row class="d-flex justify-center p-5">
-        <v-btn @click="onSubmit" color="primary" small>Guardar</v-btn>
+        <v-btn @click="onSubmit" color="primary" small>{{ btnName }}</v-btn>
       </v-row>
     </v-form>
     <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color" />
@@ -122,136 +75,120 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import formacionModule from "@/store/modules/formacionModule";
 import bussinesModule from "@/store/modules/bussinesModule";
+import extrasModule from "@/store/modules/extrasModule";
 import { ValidationObserver } from "vee-validate";
 import storageData from "@/store/services/storageService";
 
 @Component({
   components: {},
 })
-export default class EditarCliente extends Vue {
-  [x: string]: unknown;
-  listPrice?: any = [];
-  pricelist_id = "";
-  condicionespago?: any = [];
-  overlay = false;
-  title: string = "";
-  subtitle: string = "";
-  tipozona = [
-    { value: "Rural", text: "Rural" },
-    { value: "Turistica", text: "Turistica" },
-    { value: "Urbana", text: "Urbana" },
-  ];
-  invitedInstitutions = [
-    { value: "si", text: "Si" },
-    { value: "no", text: "No" },
-  ];
+export default class Students extends Vue {
 
-  btName = "Guardar";
+  [x: string]: unknown;
+  overlay = false;
   snackbar = false;
   textmsj = "";
   color = "";
   timeout = 2000;
-  sectiontitle = "NUEVO REGISTRO";
+  sectiontitle = "";
   dialog = false;
   openDialog = false;
   textbody = "";
   titleModalDelete = "";
   date = "";
   menu2: boolean = false;
-  max25chars = (v) => v.length <= 25 || "Input too long!";
+  btnName = "Guardar";
+  arrayTiposProtesis: Array<{ text: string; value: string }> = [
+    { text: 'Prótesis de miembro superior', value: 'miembro_superior' },
+    { text: 'Prótesis de miembro inferior', value: 'miembro_inferior' },
+    { text: 'Prótesis ocular', value: 'ocular' },
+    { text: 'Prótesis auditiva', value: 'auditiva' },
+    { text: 'Prótesis dental', value: 'dental' },
+    { text: 'Otra', value: 'otra' }
+  ];
+  arrayTiposOrtesis: Array<{ text: string; value: string }> = [
+    { text: 'Ortesis de miembro superior', value: 'miembro_superior' },
+    { text: 'Ortesis de miembro inferior', value: 'miembro_inferior' },
+    { text: 'Ortesis de columna', value: 'columna' },
+    { text: 'Ortesis craneal', value: 'craneal' },
+    { text: 'Otra', value: 'otra' }
+  ];
+  arrayOtros: Array<{ text: string; value: string }> = [
+    { text: 'Silla de ruedas', value: 'silla_ruedas' },
+    { text: 'Andadera', value: 'andadera' },
+    { text: 'Bastón', value: 'baston' },
+    { text: 'Muletas', value: 'muletas' },
+    { text: 'Otra', value: 'otra' }
+  ];
   dataForm: any = {
-    status: "Pendiente",
-    date_request: this.date,
+    endpoint: 'ortesis-protesis',
   };
-  workshops = [];
-  arrayStates = [];
-  arrayMunicipality = [];
-  arrayParishes = [];
-  empresaname = "";
-  cantInvited = false;
-  arrayRequirements: any = [];
-  checkboxModel = [];
-  amount = false;
-  amount_participant = 0;
-  totalamount = 0;
+  dataFormEdit: any = {
+    endpoint: 'ortesis-protesis',
+  };
+
+
+
   $refs!: {
     dataForm: InstanceType<typeof ValidationObserver>;
   };
   get FormRequest(): any {
     return this.dataForm;
   }
-  async getInvited(event) {
-  if(this.dataForm.number_of_participants != undefined){
-    if (event == "si") {
-          this.cantInvited = true;
-        } else {
-          this.cantInvited = false;
-        }
-      }else{
-        this.textmsj = "El Campo cantidad de participantes NO puede estar vacio.";
-        this.color = "warning";
-        this.snackbar = true;
-        this.backError();
-        this.dataForm.invited_institutions = ''
-      }
+  get FormRequestEdit(): any {
+    return this.dataFormEdit;
   }
    
   updateFecha() {
     this.dataForm.proposed_date = this.date;
     this.dataForm.date_request = this.date;
   }
-  async getWorkshop(event) {
-    this.dataForm.workshop_id = event.id;
-    this.amount = true;
-    this.amount_participant = event.amount_by_participant;
-    this.calculateAmount();
-  }
-  async calculateAmount() {
-    if (this.amount_participant == 0) {
-      this.textmsj = "Debe Seleccionar un Taller.";
-      this.color = "warning";
-      this.snackbar = true;
-      this.backError();
-      this.dataForm.number_of_participants = "";
-      this.dataForm.workshop_amount = "";
-    } else {
-      this.dataForm.workshop_amount =
-        parseFloat(this.dataForm.number_of_participants) *
-        this.amount_participant;
-    }
-
-  }
-
-  async calculateAmountInvited(){
-    if(this.dataForm.invited_people_number > 0){
-      this.dataForm.workshop_amount = (parseFloat(this.dataForm.invited_people_number) + parseFloat(this.dataForm.number_of_participants)) * this.amount_participant;
-    }else{
-      this.dataForm.workshop_amount = parseFloat(this.dataForm.number_of_participants) * this.amount_participant;
-    }
-  }
+ 
   onSubmit() {
-    this.dataForm.arrayRequirement = this.checkboxModel;
-    console.log(this.dataForm);
+    this.dataForm.endpoint = 'ortesis-protesis';
+
     const valid: any = this.$refs.dataForm.validate();
 
     if (valid) {
-      this.save();
+      if(this.$route.params.id) {
+        this.update();
+      } else {
+        this.save();
+      }
     } else {
       this.dialog = true;
     }
   }
   async save() {
     this.overlay = true;
-    const data = await formacionModule.save(this.FormRequest);
+    const data = await extrasModule.save(this.FormRequest);
 
     if (data.code == 200 || data.code == 201) {
-      this.textmsj = "solicitud de Formación Creada con Éxito.";
+      this.textmsj = "Registro Creado con Éxito.";
       this.color = "success";
       this.snackbar = true;
       this.back();
       this.overlay = false;
     } else {
-      this.textmsj = "Error al crear la Solicitud.";
+      this.textmsj = "Error al crear el registro.";
+      this.color = "error";
+      this.snackbar = true;
+      this.backError();
+      this.overlay = false;
+    }
+  }
+   async update() {
+    this.overlay = true;
+    const data = await extrasModule.update(this.FormRequest);
+
+    if (data.code == 200 || data.code == 201) {
+      this.textmsj = "Registro Actualizado con Éxito.";
+      this.color = "success";
+      this.snackbar = true;
+      this.back();
+      this.overlay = false;
+    } else {
+      this.textmsj = "Error al actualizar el registro.";
       this.color = "error";
       this.snackbar = true;
       this.backError();
@@ -267,13 +204,14 @@ export default class EditarCliente extends Vue {
     this.back();
     this.overlay = false;
   }
-  async comboboxAll() {
-    const typeWorkshops: any = await formacionModule.getWorkshopsAll();
-    this.workshops = typeWorkshops.data;
-  }
+
   async getStates() {
     const states: any = await bussinesModule.getStatesAll();
     this.arrayStates = states.data.data;
+  }
+  async getTypeDocumentAll() {
+    const types: any = await bussinesModule.getTypeDocumentAll();
+    this.arrayTiposCedulas = types.data;
   }
   async getMunicipalityByState(event) {
     const municipality: any = await bussinesModule.getMunicipality(event);
@@ -284,9 +222,9 @@ export default class EditarCliente extends Vue {
     this.arrayParishes = parishes.data.data;
     this.overlay = false;
   }
-  async getRequirementTrainig() {
-    const requirement: any = await formacionModule.getRequirementTrainigAll();
-    this.arrayRequirements = requirement;
+  async getDiscapacidades() {
+    const discapacidades : any = await  formacionModule.getDiscapacidadesAll();
+    this.arrayDiscapacidades = discapacidades.data;
   }
 
   reset() {
@@ -307,17 +245,46 @@ export default class EditarCliente extends Vue {
   go() {
     this.$router.go(-1);
   }
+
+  async getFindById(id: number) {
+    this.dataFormEdit.id = id;
+    this.overlay = true;
+    const data: any = await extrasModule.getById(this.FormRequestEdit);
+    console.log(data.data)
+    if (data && data.data) {
+      Object.assign(this.dataForm, data.data.data);
+  
+    }
+    this.overlay = false;
+  }
   mounted() {
-    //this.comboboxAll();
-    //this.getStates();
-    //this.getRequirementTrainig();
-    this.dataForm.empresa_id = storageData.get("_bussines").id;
-    this.empresaname =
-      storageData.get("_bussines").rif +
-      "-" +
-      storageData.get("_bussines").company_name;
-    this.dataForm.proposed_date = this.date;
-    this.dataForm.date_request = this.date;
+    this.getDiscapacidades();
+    this.getStates();
+    this.getTypeDocumentAll()
+    this.fillFormOnInit();
+    const bussines = storageData.get("_bussines");
+    this.dataForm.busine_id = bussines && bussines.id ? Number(bussines.id) : null;
+    if ((this.$route as any).params && (this.$route as any).params.id) {
+      this.getFindById((this.$route as any).params.id);
+      this.sectiontitle = "ACTUALIZAR REGISTRO";
+      this.btnName = "Actualizar";
+    }else {
+      this.sectiontitle = "NUEVO REGISTRO";
+    }
+  }
+
+  fillFormOnInit() {
+    // Valores por defecto para OrtesisProtesis
+    this.dataForm = {
+      endpoint: 'ortesis-protesis',
+      company_name: '',
+      tipo: '',
+      tipo_protesis: this.arrayTiposProtesis && this.arrayTiposProtesis.length ? this.arrayTiposProtesis[0].value : '',
+      tipo_ortesis: this.arrayTiposOrtesis && this.arrayTiposOrtesis.length ? this.arrayTiposOrtesis[0].value : '',
+      otros: this.arrayOtros && this.arrayOtros.length ? this.arrayOtros[0].value : '',
+      empresa_id: '',
+      busine_id: this.dataForm.busine_id || null,
+    };
   }
   data() {
     return {

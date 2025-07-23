@@ -46,6 +46,7 @@ export default [
           const human_help = storageData.get("_bussines").human_help === "1";
           const maintenance_and_repair = storageData.get("_bussines").maintenance_and_repair === "1";
           const ortesis_protesis = storageData.get("_bussines").ortesis_protesis === "1";
+          const ortesis_laboratories = storageData.get("_bussines").ortesis_laboratories === "1";
           const has_workers_interpretes = storageData.get("_bussines").has_workers_interpretes === "1";
           const have_certificate = storageData.get("_bussines").have_certificate === "1";
           const is_educational_center = storageData.get("_bussines").is_educational_center === "1";
@@ -58,14 +59,14 @@ export default [
               icon: 'cibAnaconda'
             });
           }
-          if (human_help) {
+          /* if (human_help) {
             items.push({
               _name: 'CSidebarNavItem',
               name: 'Ayuda Humanitaria',
               to: '/humanhelp',
               icon: 'cibAnaconda'
             });
-          }
+          } */
           if (maintenance_and_repair) {
             items.push({
               _name: 'CSidebarNavItem',
@@ -82,6 +83,14 @@ export default [
               icon: 'cibAnaconda'
             });
           }
+          if (ortesis_laboratories) {
+            items.push({
+              _name: 'CSidebarNavItem',
+              name: 'Laboratorios de Órtesis',
+              to: '/ortesislaboratories',
+              icon: 'cibAnaconda'
+            });
+          }
           if (has_workers_interpretes) {
             items.push({
               _name: 'CSidebarNavItem',
@@ -90,14 +99,14 @@ export default [
               icon: 'cibAnaconda'
             });
           }
-          if (have_certificate) {
+          /* if (have_certificate) {
             items.push({
               _name: 'CSidebarNavItem',
               name: 'Certificados',
               to: '/certificados',
               icon: 'cibAnaconda'
             });
-          }
+          } */
           if (is_educational_center) {
             items.push({
               _name: 'CSidebarNavItem',

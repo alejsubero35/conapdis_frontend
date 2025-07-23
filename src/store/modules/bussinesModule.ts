@@ -308,6 +308,23 @@ class bussinesModule extends VuexModule {
 		})
 	}
 	@Action
+	getTechnicalHelpsAll() {
+		return new Promise((resolve, reject) => {
+			http.get(`/ayudatecnica`)
+				.then(response => {
+
+					if (response.status === 200) {
+						resolve(response);
+					}
+				})
+				.catch(error => {
+					reject(error)
+				})
+
+
+		})
+	}
+	@Action
 	async saveDocuments(dataDocuments: any) {
 
 		await http.post(`document-bussines/store_documents`, dataDocuments).then((payload: any) => {
