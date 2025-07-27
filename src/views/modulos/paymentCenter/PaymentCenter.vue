@@ -14,7 +14,12 @@
     <v-row>
       <v-col cols="12">
         <v-card>
-          <v-card-title class="text-h5">Pagos Pendientes de la Empresa</v-card-title>
+          <v-card-title class="d-flex align-center justify-space-between" style="background: linear-gradient(90deg, #1976d2 0%, #42a5f5 100%); color: #fff; border-radius: 8px 8px 0 0; min-height: 64px;">
+            <v-icon color="white" size="32" class="mr-3">mdi-credit-card-outline</v-icon>
+            <span class="font-weight-bold" style="font-size: 1.6rem; letter-spacing: 1px;">Pagos Pendientes de la Empresa</span>
+            <v-spacer></v-spacer>
+            <v-chip color="white" text-color="#1976d2" class="font-weight-bold" style="font-size: 1rem;">Centro de Pagos</v-chip>
+          </v-card-title>
           <v-card-text>
             <v-data-table
               :headers="headers"
@@ -25,6 +30,10 @@
               no-data-text="No hay pagos pendientes"
               :footer-props="{ 'items-per-page-options': [5, 10, 20], 'items-per-page-text': 'Pagos por página' }"
             >
+              <!-- Monto column custom rendering -->
+              <template v-slot:item.amount="{ item }">
+                {{ Math.floor(item.amount) }} <span class="grey--text text--darken-2" style="font-size: 0.9em;">(MMV-BCV)</span>
+              </template>
               <!-- Estado column custom rendering -->
               <template v-slot:item.status="{ item }">
                 <span v-if="item.status === 'pending'">
