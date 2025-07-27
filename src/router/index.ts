@@ -45,6 +45,8 @@ const RequerimentsBussines = () => import('@/views/modulos/RequerimentBussines/R
 
 //vincular / desvincular
 const Vincular = () => import('@/views/modulos/Vinculaciones/Vincular.vue')
+// centro de pagos
+const PaymentCenter = () => import('@/views/modulos/paymentCenter/PaymentCenter.vue')
 
 //Declaraciones 
 const Declaraciones = () => import('@/views/modulos/Declaraciones/Declaraciones.vue')
@@ -265,6 +267,12 @@ const router = new Router({
           component: Vincular,
           meta: { Auth: true, title: 'VincularDesvincular' },
 
+        },
+        {
+          path: 'paymentcenter',
+          name: 'paymentcenter',
+          component: PaymentCenter,
+          meta: { Auth: true, title: 'Centro de Pagos' },
         },
         {
           path: 'declaraciones',

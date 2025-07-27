@@ -203,6 +203,20 @@ export default [
           },
         ]
       },
+      {
+        _name: 'CSidebarNavDropdown',
+        name: 'Centro de Pagos',
+        route: '/base',
+        icon: 'cibElasticStack',
+        items: [
+          {
+            _name: 'CSidebarNavItem',
+            name: 'Centro de Pagos',
+            to: '/paymentcenter',
+            icon: 'cibOctave'
+          },
+        ]
+      },
     ]
   }
 ]

@@ -102,7 +102,7 @@
                 <span>Descargar Certificados</span>
               </v-tooltip>
             </div>
-            <div v-else class="d-flex">
+        <!--     <div v-else class="d-flex">
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -117,7 +117,7 @@
                 </template>
                 <span>Pago en Línea</span>
               </v-tooltip>
-            </div>
+            </div> -->
           </template>
         </v-data-table>
       </template>
