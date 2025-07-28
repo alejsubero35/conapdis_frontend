@@ -31,9 +31,9 @@
       @click.native="$store.commit('set', ['sidebarMinimize', !minimize])"
     />
     <div class="p-3">
-      <CButton color="primary" block @click="dialog = true">
+      <!-- <CButton color="primary" block @click="dialog = true">
         Datos Bancarios
-      </CButton>
+      </CButton> -->
       <v-dialog v-model="dialog" max-width="500">
         <v-card>
           <v-card-title

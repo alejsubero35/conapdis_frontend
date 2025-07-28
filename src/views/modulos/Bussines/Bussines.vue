@@ -217,25 +217,25 @@
               </v-col>
 
               <!-- <v-col cols="12" sm="6" md="3">
-									<v-tooltip top>
-										<template v-slot:activator="{ on, attrs }">
-											<v-select
-												:items="arrayEconomicSector"
-												item-text="name"
-												item-value="id"
-												label="Sector Económico"
-												placeholder="Sector Económico"
-												v-model="bussinesform.economic_sectors_id"
-												v-bind="attrs"
-												v-on="on"
-												dense
-												:rules="rules"
-												required
-											></v-select>
-										</template>
-										<span>Tooltip</span>
-									</v-tooltip>
-								</v-col> -->
+                  <v-tooltip top>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-select
+                        :items="arrayEconomicSector"
+                        item-text="name"
+                        item-value="id"
+                        label="Sector Económico"
+                        placeholder="Sector Económico"
+                        v-model="bussinesform.economic_sectors_id"
+                        v-bind="attrs"
+                        v-on="on"
+                        dense
+                        :rules="rules"
+                        required
+                      ></v-select>
+                    </template>
+                    <span>Tooltip</span>
+                  </v-tooltip>
+                </v-col> -->
 
               <v-col cols="12" sm="6" md="3">
                 <v-select
@@ -352,16 +352,16 @@
                 ></v-text-field>
               </v-col>
               <!-- <v-col cols="12" sm="6" md="6">
-								<v-text-field   
-								:append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"   
-								:type="show ? 'text' : 'password'"  
-								label="Password" 
-								placeholder="Password"  
-								dense 
-								:rules="rules" 
-								v-model="bussinesform.password"  @click:append="show = !show">
-							   </v-text-field>
-						   </v-col> -->
+                <v-text-field   
+                :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"   
+                :type="show ? 'text' : 'password'"  
+                label="Password" 
+                placeholder="Password"  
+                dense 
+                :rules="rules" 
+                v-model="bussinesform.password"  @click:append="show = !show">
+                 </v-text-field>
+               </v-col> -->
             </v-row>
           </v-form>
         </tab-content>
@@ -641,250 +641,61 @@
           >
             <v-row>
               <v-col cols="12" sm="12" md="12">
-                <v-row>
-                  <v-container class="mt-5">
-                    <v-layout
-                      v-for="(doc, index) in documents"
-                      :key="index"
-                      row
-                      wrap
-                    >
-                      <v-row>
-                        <input type="hidden" v-model="doc.id" />
-                        <input type="hidden" v-model="doc.bussines_id" />
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            :disabled="(disabled = true)"
-                            label="Nombre Documento"
-                            placeholder="Nombre Documento"
-                            outlined
-                            dense
-                            :rules="rules"
-                            v-model="doc.title"
-                          >
-                          </v-text-field>
-                        </v-col>
-
-                        <v-col cols="12" sm="6" md="4">
-                          <v-file-input
-                            :rules="doc.is_required == 1 ? rules : Notrules"
-                            :disabled="
-                              doc.approved == 1 ? disabledFile : !disabledFile
-                            "
-                            accept=".pdf,.jpg,.png,.jpeg"
-                            outlined
-                            dense
-                            :label="
-                              doc.approved == 1
-                                ? 'Documento Adjuntado en Revisión'
-                                : placeholder
-                            "
-                            @change="updateDocument(doc)"
-                            v-model="doc.name"
-                          >
-                          </v-file-input>
-                          <span
-                            class="d-flex justify-end"
-                            style="margin-top: -25px; color: #4b4b4b"
-                            >{{ validation }} |
-                            {{
-                              doc.max_size.substring(0, doc.max_size.length - 6)
-                            }}
-                            MB</span
-                          >
-                        </v-col>
-                      </v-row>
-                    </v-layout>
-                  </v-container>
-                </v-row>
+                <!-- Tabla de documentos cargados -->
+                <v-card class="mb-5" outlined>
+                  <v-card-title class="headline">Documentos Cargados</v-card-title>
+                  <v-data-table
+                    :headers="[
+                      { text: 'Nombre', value: 'title' },
+                      { text: 'Tipo', value: 'type' },
+                      { text: 'Fecha de carga', value: 'registration_date' },
+                      { text: 'Documento', value: 'file_url', sortable: false }
+                    ]"
+                    :items="documentsload"
+                    class="elevation-1"
+                    :loading="overlay"
+                    loading-text="Cargando documentos..."
+                    dense
+                  >
+                    <template v-slot:item.file_url="{ item }">
+                      <v-btn v-if="item.file_url" :href="item.file_url" target="_blank" icon color="primary">
+                        <v-icon>mdi-file-eye</v-icon>
+                      </v-btn>
+                      <span v-else class="grey--text">No disponible</span>
+                    </template>
+                  </v-data-table>
+                </v-card>
+                <!-- Inputs para cargar documentos requeridos -->
+                <v-card outlined>
+                  <v-card-title class="subtitle-1">Subir Documentos Requeridos</v-card-title>
+                  <v-row>
+                    <v-col v-for="(doc, idx) in documents" :key="doc.id" cols="12" sm="6" md="4">
+                      <v-text-field
+                        :label="doc.name"
+                        :value="doc.url ? 'Documento cargado' : ''"
+                        readonly
+                        prepend-inner-icon="mdi-file-document"
+                        class="mb-2"
+                      ></v-text-field>
+                      <v-file-input
+                        v-if="!doc.url"
+                        :label="'Subir ' + doc.name + ' ' + validation"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        :rules="documentsload.length > 0 ? [] : [(v) => !!v || 'Campo requerido']"
+                        @change="(e) => updateDocument(doc, e)"
+                        outlined
+                        dense
+                        show-size
+                        :disabled="overlay"
+                      ></v-file-input>
+                      <v-chip v-else color="success" small>Ya cargado</v-chip>
+                    </v-col>
+                  </v-row>
+                </v-card>
               </v-col>
             </v-row>
           </v-form>
         </tab-content>
-        <!-- <tab-content title="ACCESIBILIDAD EN EL ENTORNO FISICO" icon="mdi mdi-stairs-up" :before-change="beforeTabSwitchFive">
-					<v-form class="formCliente" ref="validateStepFormFive"  lazy-validation >	
-						<v-row>
-							<v-col style="margin-top: -4%;"  cols="12" sm="12" md="12">
-								<v-row>    
-									<v-col cols="12" sm="6" md="6">
-										<v-switch
-										v-model="bussinesform.rampas"
-										:label="'Rampas: ' + rampasShow"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="rampas"
-										@change="setItem('rampas')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.accesibilidad"
-										:label="'Accesibilidad: ' + accesibilidadShow"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="accesibilidad"
-										@change="setItem('accesibilidad')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.acceso_directo"
-										:label="`Acceso Directo: ${acceso_directoShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="acceso_directo"
-										@change="setItem('acceso_directo')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.transporte_publico"
-										:label="`Transporte Público: ${transporte_publicoShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="transporte_publico"
-										@change="setItem('transporte_publico')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.transporte_empresa"
-										:label="`Transporte Empresa: ${transporte_empresaShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="transporte_empresa"
-										@change="setItem('transporte_empresa')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.viabilidad"
-										:label="`Viabilidad: ${viabilidadShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="viabilidad"
-										@change="setItem('viabilidad')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.banos_acondicionados"
-										:label="`Baños acondicionados para discapacidad motora: ${banos_acondicionadosShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="banos_acondicionados"
-										@change="setItem('banos_acondicionados')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.escaleras"
-										:label="`Escaleras: ${escalerasShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="escaleras"
-										@change="setItem('escaleras')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.pasamanos"
-										:label="`Pasamanos: ${pasamanosShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="pasamanos"
-										@change="setItem('pasamanos')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-									</v-col>
-									<v-col cols="12" sm="6" md="6">
-										<v-switch
-										v-model="bussinesform.pasillos"
-										:label="`Pasillos: ${pasillosShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="pasillos"
-										@change="setItem('pasillos')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.ascensores"
-										:label="`Ascensores: ${ascensoresShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="ascensores"
-										@change="setItem('ascensores')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.puertas_adaptadas"
-										:label="`Puertas Adaptadas: ${puertas_adaptadasShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="puertas_adaptadas"
-										@change="setItem('puertas_adaptadas')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.buena_iluminacion"
-										:label="`Buena Iluminación: ${buena_iluminacionShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="buena_iluminacion"
-										@change="setItem('buena_iluminacion')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.senalizaciones_luminosas"
-										:label="`Señalizaciones Luminosas: ${senalizaciones_luminosasShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="senalizaciones_luminosas"
-										@change="setItem('senalizaciones_luminosas')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.puestos_de_estacionamiento"
-										:label="`Puestos de Estacionamientos: ${puestos_de_estacionamientoShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="puestos_de_estacionamiento"
-										@change="setItem('puestos_de_estacionamiento')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.senalizacion"
-										:label="`Señalización: ${senalizacionShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="senalizacion"
-										@change="setItem('senalizacion')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.herramientas_tecnologicas"
-										:label="`Herramienta Tecnológica: ${herramientas_tecnologicasShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="herramientas_tecnologicas"
-										@change="setItem('herramientas_tecnologicas')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-									</v-col>
-								</v-row>
-							</v-col>
-						</v-row>
-					</v-form>	
-				</tab-content> -->
         <tab-content
           title="OTROS"
           icon="mdi mdi-all-inclusive"
@@ -1023,24 +834,24 @@
                   @change="setItem('have_certificate')"
                 ></v-switch>
                 <!--<v-text-field
-								label="N° Certificado"
-								placeholder="N° Certificado"
-								dense
-								:rules="emailRules"
-								type="email"
-								v-model="bussinesform.email_rl"
-								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-								></v-text-field>
-							
-								<v-text-field
-								label="Email"
-								placeholder="Email"
-								dense
-								:rules="emailRules"
-								type="email"
-								v-model="bussinesform.email_rl"
-								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-								></v-text-field> -->
+                label="N° Certificado"
+                placeholder="N° Certificado"
+                dense
+                :rules="emailRules"
+                type="email"
+                v-model="bussinesform.email_rl"
+                :readonly="(validateInput == 1) ? readonly = true : readonly = false"
+                ></v-text-field>
+              
+                <v-text-field
+                label="Email"
+                placeholder="Email"
+                dense
+                :rules="emailRules"
+                type="email"
+                v-model="bussinesform.email_rl"
+                :readonly="(validateInput == 1) ? readonly = true : readonly = false"
+                ></v-text-field> -->
                 <span
                   ><strong><h5>Educación discapacidad.</h5></strong></span
                 >
@@ -1072,11 +883,11 @@
                   @change="setItem('has_delivered_homes')"
                 ></v-switch>
                 <!-- <v-textarea
-									label="Observaciones"
-									dense
-									v-model="bussinesform.observations"
-									rows="2"
-								></v-textarea> -->
+                  label="Observaciones"
+                  dense
+                  v-model="bussinesform.observations"
+                  rows="2"
+                ></v-textarea> -->
               </v-col>
             </v-row>
           </v-form>
@@ -1238,6 +1049,7 @@ export default class Bussines extends Vue {
   bussines_id = "";
   documentsForm = {};
   documents = [];
+  documentsload = [];
 
   visiblecustomers = false;
   imageUrl: any = "";
@@ -1288,6 +1100,11 @@ export default class Bussines extends Vue {
   async getDocuments() {
     this.overlay = true;
     const documents: any = await documentModule.getDocumentsAll();
+    const loaddocuments: any = await documentModule.getDocumentsByBussines(
+     storageData.get("_bussines").id
+    );
+    this.documentsload = loaddocuments.data.documents;
+  
     //this.documents = documents.data.data;
     this.documents = documents.data.data.filter(
       (doc: any) => doc.visibility_in === 1
@@ -1308,37 +1125,29 @@ export default class Bussines extends Vue {
       this.disabledBtn = true;
     }
   }
-  async updateDocument(doc) {
+  async updateDocument(doc, fileEvent) {
     let index = this.documents.findIndex(({ id }) => id == doc.id);
-    const _this = this;
-    var event = event || window.event;
-
-    if (event.target.files != undefined) {
-      if (event.target.files.length > 0) {
-        if (
-          event.target.files[0].type === "image/png" ||
-          event.target.files[0].type === "image/jpg" ||
-          event.target.files[0].type === "image/jpeg" ||
-          event.target.files[0].type === "application/pdf"
-        ) {
-          if (event.target.files[0].size < this.documents[index].max_size) {
-            if (
-              event.target.files[0] != undefined &&
-              event.target.files.length == 1
-            ) {
-              let base64 = await this.getBase64(event.target.files[0], doc);
-            }
-          } else {
-            this.dialogOpen = true;
-            this.dataModalAlert = "El Documento excede el tamaño permitido";
-            this.backClear(doc);
-          }
+    const files = fileEvent && fileEvent.target ? fileEvent.target.files : fileEvent;
+    if (files && files.length > 0) {
+      const file = files[0];
+      if (
+        file.type === "image/png" ||
+        file.type === "image/jpg" ||
+        file.type === "image/jpeg" ||
+        file.type === "application/pdf"
+      ) {
+        if (file.size < this.documents[index].max_size) {
+          let base64 = await this.getBase64(file, doc);
         } else {
           this.dialogOpen = true;
-          this.dataModalAlert = "Extensión NO permitida";
+          this.dataModalAlert = "El Documento excede el tamaño permitido";
           this.backClear(doc);
-          return false;
         }
+      } else {
+        this.dialogOpen = true;
+        this.dataModalAlert = "Extensión NO permitida";
+        this.backClear(doc);
+        return false;
       }
     }
   }
@@ -1681,10 +1490,10 @@ export default class Bussines extends Vue {
     this.arrayStates = states.data.data;
   }
   /* async getUserType(){
-		const typeuser : any = await bussinesModule.getUserTypeAll()
-		this.arrayUserType = typeuser.data.data
-		this.initData()
-	} */
+    const typeuser : any = await bussinesModule.getUserTypeAll()
+    this.arrayUserType = typeuser.data.data
+    this.initData()
+  } */
   async getEconomicSector() {
     const economicsector: any = await bussinesModule.getEconomicSectorAll();
     this.arrayEconomicSector = economicsector.data.data;
