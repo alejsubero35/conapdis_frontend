@@ -41,16 +41,17 @@ export default [
               icon: 'cibAnaconda'
             }
           ];
-          // Validar acceso por localStorage
-          const hospital_center = storageData.get("_bussines").hospital_center === "Si";
-          const human_help = storageData.get("_bussines").human_help === "Si";
-          const maintenance_and_repair = storageData.get("_bussines").maintenance_and_repair === "Si";
-          const ortesis_protesis = storageData.get("_bussines").ortesis_protesis === "Si";
-          const ortesis_laboratories = storageData.get("_bussines").ortesis_laboratories === "Si";
-          const has_workers_interpretes = storageData.get("_bussines").has_workers_interpretes === "Si";
-          const have_certificate = storageData.get("_bussines").have_certificate === "Si";
-          const is_educational_center = storageData.get("_bussines").is_educational_center === "Si";
-          const has_delivered_homes = storageData.get("_bussines").has_delivered_homes === "Si";
+          // Validar acceso por localStorage de forma segura
+          const bussines = storageData.get("_bussines") || {};
+          const hospital_center = bussines.hospital_center === "Si";
+          const human_help = bussines.human_help === "Si";
+          const maintenance_and_repair = bussines.maintenance_and_repair === "Si";
+          const ortesis_protesis = bussines.ortesis_protesis === "Si";
+          const ortesis_laboratories = bussines.ortesis_laboratories === "Si";
+          const has_workers_interpretes = bussines.has_workers_interpretes === "Si";
+          const have_certificate = bussines.have_certificate === "Si";
+          const is_educational_center = bussines.is_educational_center === "Si";
+          const has_delivered_homes = bussines.has_delivered_homes === "Si";
           if (hospital_center) {
             items.push({
               _name: 'CSidebarNavItem',
