@@ -259,10 +259,10 @@ export default class Students extends Vue {
     }));
   }
   mounted() {
+    console.log((this.$route as any).params.id)
     this.getDiscapacidades();
     this.getStates();
     this.getTypeDocumentAll()
-    this.fillFormOnInit();
     this.getProtesisAll();
     this.getOrtesisAll();
     const bussines = storageData.get("_bussines");
@@ -276,19 +276,7 @@ export default class Students extends Vue {
     }
   }
 
-  fillFormOnInit() {
-    // Valores por defecto para OrtesisProtesis
-    this.dataForm = {
-      endpoint: 'ortesis-protesis',
-      company_name: '',
-      tipo: '',
-      tipo_protesis: this.arrayTiposProtesis && this.arrayTiposProtesis.length ? this.arrayTiposProtesis[0].value : '',
-      tipo_ortesis: this.arrayTiposOrtesis && this.arrayTiposOrtesis.length ? this.arrayTiposOrtesis[0].value : '',
-      otros: this.arrayOtros && this.arrayOtros.length ? this.arrayOtros[0].value : '',
-      empresa_id: '',
-      busine_id: this.dataForm.busine_id || null,
-    };
-  }
+
   data() {
     return {
       rules: [(v: any) => !!v || "Campo requerido"],

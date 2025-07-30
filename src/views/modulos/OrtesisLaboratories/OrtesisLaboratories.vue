@@ -89,15 +89,15 @@ import storageData from "@/store/services/storageService";
 export default class Usuario extends Vue {
   @Prop() item?: Object;
   headers = [
-    { text: "ID", value: "id" },
-    { text: "Nombre del Laboratorio", value: "laboratory_name" },
-    { text: "Dirección", value: "laboratory_address" },
-/*     { text: "Estado", value: "estado_id" },
-    { text: "Municipio", value: "municipio_id" },
-    { text: "Parroquia", value: "parroquia_id" }, */
-    { text: "Teléfonos", value: "laboratory_phone" },
-    { text: "Tipo de Prótesis", value: "protesis.name" },
-    { text: "Cédula Beneficiario", value: "beneficiary_identity_number" },
+    { text: "ID", value: "Id" },
+    { text: "Nombre del Laboratorio", value: "Nombre del Laboratorio" },
+    { text: "Dirección", value: "Dirección" },
+    { text: "Estado", value: "Estado" },
+    { text: "Municipio", value: "Municipio" },
+    { text: "Parroquia", value: "Parroquia" },
+    { text: "Teléfonos", value: "Teléfono" },
+    { text: "Tipo de Prótesis", value: "Tipo de Prótesis" },
+    { text: "Cédula Beneficiario", value: "Cédula Beneficiario" },
     /* { text: "Empresa", value: "busine_id" }, */
     { text: "Acciones", value: "actions" },
   ];
@@ -125,7 +125,8 @@ export default class Usuario extends Vue {
   timeout = 2000;
   label = "Buscar";
   per_page = 10;
-  endpoint: string = 'ortesis-laboratories';
+  endpoint: string = 'get-ortesis-laboratories/' + storageData.get("_bussines").id;
+  endpointDelete: string = 'ortesis-laboratories';
   options = {};
   textbody = "";
   titlemodal = "";
@@ -142,8 +143,8 @@ export default class Usuario extends Vue {
 
   eliminar(item) {
     this.dataFormDelete = {
-      endpoint: this.endpoint,
-      id: item.id,
+      endpoint: this.endpointDelete,
+      id: item.Id,
     };
     this.dialogDelete = true;
     this.textbody = "Confirme que desea eliminar el registro";
@@ -189,13 +190,12 @@ export default class Usuario extends Vue {
   editar(item) {
     this.$router.push({
       name: "createortesislaboratories",
-      params: { id: item.id },
+      params: { id: item.Id },
     });
   }
   async dataIndexRequest() {
     this.overlay = true;
     const data: any = await extrasModule.getAll(this.endpoint);
-
     this.desserts = data.data.data;
     this.overlay = false;
   }

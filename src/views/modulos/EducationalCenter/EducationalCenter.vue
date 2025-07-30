@@ -127,7 +127,7 @@ export default class Usuario extends Vue {
   timeout = 2000;
   label = "Buscar";
   per_page = 10;
-  endpoint: string = 'students-with-disabilities';
+  endpoint: string = 'get-children-with-disabilities/' + storageData.get("_bussines").id;
   options = {};
   textbody = "";
   titlemodal = "";

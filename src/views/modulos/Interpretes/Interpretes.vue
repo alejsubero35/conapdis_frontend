@@ -89,13 +89,13 @@ import storageData from "@/store/services/storageService";
 export default class Usuario extends Vue {
   @Prop() item?: Object;
   headers = [
-    { text: "ID", value: "id" },
-    { text: "Nombre y Apellido", value: "full_name" },
-    { text: "Cédula de Identidad", value: "identity_card" },
-    { text: "Tipo de Intérprete", value: "interpreter_type" },
+    { text: "ID", value: "Id" },
+    { text: "Nombre y Apellido", value: "Nombre Completo" },
+    { text: "Cédula de Identidad", value: "Cédula" },
+    { text: "Tipo de Intérprete", value: "Tipo de Intérprete" },
     /* { text: "Posee Discapacidad", value: "has_disability" },
     { text: "Tipo de Discapacidad", value: "tipo_discapacidad_general_id" }, */
-    { text: "Instituto Acreditador", value: "accrediting_institute" },
+    { text: "Instituto Acreditador", value: "Instituto Acreditador" },
     { text: "Acciones", value: "actions" },
   ];
 
@@ -122,7 +122,8 @@ export default class Usuario extends Vue {
   timeout = 2000;
   label = "Buscar";
   per_page = 10;
-  endpoint: string = 'lsv-interpreter';
+  endpoint: string = 'get-lsv-interpreter/' + storageData.get("_bussines").id;
+  endpointDelete: string = 'lsv-interpreter';
   options = {};
   textbody = "";
   titlemodal = "";
@@ -139,8 +140,8 @@ export default class Usuario extends Vue {
 
   eliminar(item) {
     this.dataFormDelete = {
-      endpoint: this.endpoint,
-      id: item.id,
+      endpoint: this.endpointDelete,
+      id: item.Id,
     };
     this.dialogDelete = true;
     this.textbody = "Confirme que desea eliminar el registro";
@@ -186,7 +187,7 @@ export default class Usuario extends Vue {
   editar(item) {
     this.$router.push({
       name: "createtelsvinterpreter",
-      params: { id: item.id },
+      params: { id: item.Id },
     });
   }
   async dataIndexRequest() {
