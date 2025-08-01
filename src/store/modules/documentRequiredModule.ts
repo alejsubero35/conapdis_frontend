@@ -39,9 +39,9 @@ class DocumentRequired extends VuexModule {
 
 
     @Action
-    getDocumentsAll() {
+    getDocumentsAll(bussinesId: number) {
         return new Promise((resolve, reject) => {
-            http.get(`/document-requirements`)
+            http.get(`/required-documents/${bussinesId}`)
                 .then(response => {
 
                     if (response.status === 200) {
@@ -78,6 +78,16 @@ class DocumentRequired extends VuexModule {
     async getDocumentsByBussines(bussinesId: number) {
         return await http.get(`/documentos-requeridos/${bussinesId}`)
             .then((payload: any) => {
+                return payload;
+            })
+            .catch(() => {
+                return { data: null };
+            });
+    }
+    @Action
+    async getRequiredDocuments(bussinesId: number) {
+        return await http.get(`/required-documents/${bussinesId}`)
+          .then((payload: any) => {
                 return payload;
             })
             .catch(() => {
