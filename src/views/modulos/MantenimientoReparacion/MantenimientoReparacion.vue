@@ -89,14 +89,14 @@ import storageData from "@/store/services/storageService";
 export default class Usuario extends Vue {
   @Prop() item?: Object;
   headers = [
-    { text: "ID", value: "id" },
-    { text: "Nombre del Taller", value: "workshop_name" },
-    { text: "Dirección", value: "workshop_address" },
-  /*   { text: "Estado", value: "estado_id" },
-    { text: "Municipio", value: "municipio_id" },
-    { text: "Parroquia", value: "parroquia_id" }, */
-    { text: "Teléfonos", value: "workshop_phone" },
-    { text: "Herramienta/Dispositivo Técnico", value: "technical_device.nombre" },
+    { text: "ID", value: "Id" },
+    { text: "Nombre del Taller", value: "Nombre del Taller" },
+    { text: "Dirección", value: "Dirección" },
+    { text: "Estado", value: "Estado" },
+    { text: "Municipio", value: "Municipio" },
+    { text: "Parroquia", value: "Parroquia" },
+    { text: "Teléfonos", value: "Teléfono" },
+    { text: "Herramienta/Dispositivo Técnico", value: "Dispositivo Técnico" },
     { text: "Acciones", value: "actions" },
   ];
 
@@ -123,7 +123,8 @@ export default class Usuario extends Vue {
   timeout = 2000;
   label = "Buscar";
   per_page = 10;
-  endpoint: string = 'workshops-technical-help';
+  endpoint: string = 'get-workshops-technical-help/' + storageData.get("_bussines").id;
+  endpointDelete: string = 'workshops-technical-help';
   options = {};
   textbody = "";
   titlemodal = "";
@@ -140,8 +141,8 @@ export default class Usuario extends Vue {
 
   eliminar(item) {
     this.dataFormDelete = {
-      endpoint: this.endpoint,
-      id: item.id,
+      endpoint: this.endpointDelete,
+      id: item.Id,
     };
     this.dialogDelete = true;
     this.textbody = "Confirme que desea eliminar el registro";
@@ -187,7 +188,7 @@ export default class Usuario extends Vue {
   editar(item) {
     this.$router.push({
       name: "createtechnicalhelp",
-      params: { id: item.id },
+      params: { id: item.Id },
     });
   }
   async dataIndexRequest() {

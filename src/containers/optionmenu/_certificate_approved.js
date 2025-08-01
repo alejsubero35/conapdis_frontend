@@ -133,7 +133,6 @@ export default [
         route: '/base',
         icon: 'cibElasticStack',
         items: [
-
           {
             _name: 'CSidebarNavItem',
             name: 'Carga de Documentos',

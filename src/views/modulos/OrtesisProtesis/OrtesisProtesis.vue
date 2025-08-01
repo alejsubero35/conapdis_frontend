@@ -89,12 +89,11 @@ import storageData from "@/store/services/storageService";
 export default class Usuario extends Vue {
   @Prop() item?: Object;
   headers = [
-    { text: "ID", value: "id" },
-    { text: "Nombre de la Empresa", value: "company_name" },
-    { text: "Tipo", value: "tipo" },
-    { text: "Tipos de Prótesis", value: "protesis.name" },
-    { text: "Tipos de Ortesis", value: "ortesis.name" },
-    { text: "Otros", value: "otros" },
+    { text: "ID", value: "Id" },
+    { text: "Nombre de la Empresa", value: "Nombre" },
+    { text: "Tipo", value: "Tipo" },
+    { text: "Tipos de Prótesis", value: "Tipo de Protesis"},
+    { text: "Tipos de Ortesis", value: "Tipo de Otesis" },
     { text: "Acciones", value: "actions" },
   ];
   [x: string]: unknown;
@@ -119,7 +118,8 @@ export default class Usuario extends Vue {
   timeout = 2000;
   label = "Buscar";
   per_page = 10;
-  endpoint: string = 'ortesis-protesis';
+  endpoint: string = 'get-ortesis-protesis/' + storageData.get("_bussines").id;
+  endpointDelete: string = 'ortesis-protesis';
   options = {};
   textbody = "";
   titlemodal = "";
@@ -136,8 +136,8 @@ export default class Usuario extends Vue {
 
   eliminar(item) {
     this.dataFormDelete = {
-      endpoint: this.endpoint,
-      id: item.id,
+      endpoint: this.endpointDelete,
+      id: item.Id,
     };
     this.dialogDelete = true;
     this.textbody = "Confirme que desea eliminar el registro";
@@ -183,11 +183,12 @@ export default class Usuario extends Vue {
   editar(item) {
     this.$router.push({
       name: "createortesis",
-      params: { id: item.id },
+      params: { id: item.Id },
     });
   }
   async dataIndexRequest() {
     this.overlay = true;
+    var busine_id = storageData.get("bussines_id");
     const data: any = await extrasModule.getAll(this.endpoint);
 
     this.desserts = data.data.data;

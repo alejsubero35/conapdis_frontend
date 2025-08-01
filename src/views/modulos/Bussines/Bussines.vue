@@ -217,25 +217,25 @@
               </v-col>
 
               <!-- <v-col cols="12" sm="6" md="3">
-									<v-tooltip top>
-										<template v-slot:activator="{ on, attrs }">
-											<v-select
-												:items="arrayEconomicSector"
-												item-text="name"
-												item-value="id"
-												label="Sector Económico"
-												placeholder="Sector Económico"
-												v-model="bussinesform.economic_sectors_id"
-												v-bind="attrs"
-												v-on="on"
-												dense
-												:rules="rules"
-												required
-											></v-select>
-										</template>
-										<span>Tooltip</span>
-									</v-tooltip>
-								</v-col> -->
+                  <v-tooltip top>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-select
+                        :items="arrayEconomicSector"
+                        item-text="name"
+                        item-value="id"
+                        label="Sector Económico"
+                        placeholder="Sector Económico"
+                        v-model="bussinesform.economic_sectors_id"
+                        v-bind="attrs"
+                        v-on="on"
+                        dense
+                        :rules="rules"
+                        required
+                      ></v-select>
+                    </template>
+                    <span>Tooltip</span>
+                  </v-tooltip>
+                </v-col> -->
 
               <v-col cols="12" sm="6" md="3">
                 <v-select
@@ -352,16 +352,16 @@
                 ></v-text-field>
               </v-col>
               <!-- <v-col cols="12" sm="6" md="6">
-								<v-text-field   
-								:append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"   
-								:type="show ? 'text' : 'password'"  
-								label="Password" 
-								placeholder="Password"  
-								dense 
-								:rules="rules" 
-								v-model="bussinesform.password"  @click:append="show = !show">
-							   </v-text-field>
-						   </v-col> -->
+                <v-text-field   
+                :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"   
+                :type="show ? 'text' : 'password'"  
+                label="Password" 
+                placeholder="Password"  
+                dense 
+                :rules="rules" 
+                v-model="bussinesform.password"  @click:append="show = !show">
+                 </v-text-field>
+               </v-col> -->
             </v-row>
           </v-form>
         </tab-content>
@@ -641,250 +641,54 @@
           >
             <v-row>
               <v-col cols="12" sm="12" md="12">
-                <v-row>
-                  <v-container class="mt-5">
-                    <v-layout
-                      v-for="(doc, index) in documents"
-                      :key="index"
-                      row
-                      wrap
-                    >
-                      <v-row>
-                        <input type="hidden" v-model="doc.id" />
-                        <input type="hidden" v-model="doc.bussines_id" />
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            :disabled="(disabled = true)"
-                            label="Nombre Documento"
-                            placeholder="Nombre Documento"
-                            outlined
-                            dense
-                            :rules="rules"
-                            v-model="doc.title"
-                          >
-                          </v-text-field>
-                        </v-col>
-
-                        <v-col cols="12" sm="6" md="4">
-                          <v-file-input
-                            :rules="doc.is_required == 1 ? rules : Notrules"
-                            :disabled="
-                              doc.approved == 1 ? disabledFile : !disabledFile
-                            "
-                            accept=".pdf,.jpg,.png,.jpeg"
-                            outlined
-                            dense
-                            :label="
-                              doc.approved == 1
-                                ? 'Documento Adjuntado en Revisión'
-                                : placeholder
-                            "
-                            @change="updateDocument(doc)"
-                            v-model="doc.name"
-                          >
-                          </v-file-input>
-                          <span
-                            class="d-flex justify-end"
-                            style="margin-top: -25px; color: #4b4b4b"
-                            >{{ validation }} |
-                            {{
-                              doc.max_size.substring(0, doc.max_size.length - 6)
-                            }}
-                            MB</span
-                          >
-                        </v-col>
-                      </v-row>
-                    </v-layout>
-                  </v-container>
-                </v-row>
+                <!-- Tabla de documentos cargados -->
+                <v-card class="mb-5" outlined>
+                  <v-card-title class="headline">Documentos Cargados</v-card-title>
+                  <v-data-table
+                    :headers="[
+                      { text: 'Nombre', value: 'title' },
+                      { text: 'Tipo', value: 'type' },
+                      { text: 'Fecha de carga', value: 'registration_date' },
+                      { text: 'Documento', value: 'file_url', sortable: false }
+                    ]"
+                    :items="documentsload"
+                    class="elevation-1"
+                    :loading="overlay"
+                    loading-text="Cargando documentos..."
+                    dense
+                  >
+                    <template v-slot:item.file_url="{ item }">
+                      <v-btn v-if="item.file_url" :href="item.file_url" target="_blank" icon color="primary">
+                        <v-icon>mdi-file-eye</v-icon>
+                      </v-btn>
+                      <span v-else class="grey--text">No disponible</span>
+                    </template>
+                  </v-data-table>
+                </v-card>
+                <!-- Inputs para cargar documentos requeridos -->
+                <v-card outlined>
+                  <v-card-title class="subtitle-1">Subir Documentos Requeridos</v-card-title>
+                  <v-row>
+                    <v-col v-for="(doc, idx) in documents" :key="doc.id" cols="12" sm="6" md="4">
+                      <v-file-input
+                        v-if="!doc.url"
+                        :label="'Subir ' + doc.title + ' ' + validation"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        :rules="documentsload.length > 0 ? [] : [(v) => !!v || 'Campo requerido']"
+                        @change="(e) => updateDocument(doc, e)"
+                        outlined
+                        dense
+                        show-size
+                        :disabled="overlay"
+                      ></v-file-input>
+                      <v-chip v-else color="success" small>Ya cargado</v-chip>
+                    </v-col>
+                  </v-row>
+                </v-card>
               </v-col>
             </v-row>
           </v-form>
         </tab-content>
-        <!-- <tab-content title="ACCESIBILIDAD EN EL ENTORNO FISICO" icon="mdi mdi-stairs-up" :before-change="beforeTabSwitchFive">
-					<v-form class="formCliente" ref="validateStepFormFive"  lazy-validation >	
-						<v-row>
-							<v-col style="margin-top: -4%;"  cols="12" sm="12" md="12">
-								<v-row>    
-									<v-col cols="12" sm="6" md="6">
-										<v-switch
-										v-model="bussinesform.rampas"
-										:label="'Rampas: ' + rampasShow"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="rampas"
-										@change="setItem('rampas')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.accesibilidad"
-										:label="'Accesibilidad: ' + accesibilidadShow"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="accesibilidad"
-										@change="setItem('accesibilidad')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.acceso_directo"
-										:label="`Acceso Directo: ${acceso_directoShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="acceso_directo"
-										@change="setItem('acceso_directo')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.transporte_publico"
-										:label="`Transporte Público: ${transporte_publicoShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="transporte_publico"
-										@change="setItem('transporte_publico')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.transporte_empresa"
-										:label="`Transporte Empresa: ${transporte_empresaShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="transporte_empresa"
-										@change="setItem('transporte_empresa')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.viabilidad"
-										:label="`Viabilidad: ${viabilidadShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="viabilidad"
-										@change="setItem('viabilidad')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.banos_acondicionados"
-										:label="`Baños acondicionados para discapacidad motora: ${banos_acondicionadosShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="banos_acondicionados"
-										@change="setItem('banos_acondicionados')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.escaleras"
-										:label="`Escaleras: ${escalerasShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="escaleras"
-										@change="setItem('escaleras')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.pasamanos"
-										:label="`Pasamanos: ${pasamanosShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="pasamanos"
-										@change="setItem('pasamanos')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-									</v-col>
-									<v-col cols="12" sm="6" md="6">
-										<v-switch
-										v-model="bussinesform.pasillos"
-										:label="`Pasillos: ${pasillosShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="pasillos"
-										@change="setItem('pasillos')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.ascensores"
-										:label="`Ascensores: ${ascensoresShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="ascensores"
-										@change="setItem('ascensores')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.puertas_adaptadas"
-										:label="`Puertas Adaptadas: ${puertas_adaptadasShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="puertas_adaptadas"
-										@change="setItem('puertas_adaptadas')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.buena_iluminacion"
-										:label="`Buena Iluminación: ${buena_iluminacionShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="buena_iluminacion"
-										@change="setItem('buena_iluminacion')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.senalizaciones_luminosas"
-										:label="`Señalizaciones Luminosas: ${senalizaciones_luminosasShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="senalizaciones_luminosas"
-										@change="setItem('senalizaciones_luminosas')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.puestos_de_estacionamiento"
-										:label="`Puestos de Estacionamientos: ${puestos_de_estacionamientoShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="puestos_de_estacionamiento"
-										@change="setItem('puestos_de_estacionamiento')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.senalizacion"
-										:label="`Señalización: ${senalizacionShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="senalizacion"
-										@change="setItem('senalizacion')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-										<v-switch
-										v-model="bussinesform.herramientas_tecnologicas"
-										:label="`Herramienta Tecnológica: ${herramientas_tecnologicasShow}`"
-										color="success"
-										hide-details
-										class="pl-3 pr-3"
-										:value="herramientas_tecnologicas"
-										@change="setItem('herramientas_tecnologicas')"
-										:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-										></v-switch>
-									</v-col>
-								</v-row>
-							</v-col>
-						</v-row>
-					</v-form>	
-				</tab-content> -->
         <tab-content
           title="OTROS"
           icon="mdi mdi-all-inclusive"
@@ -900,37 +704,12 @@
                     </h5></strong
                   ></span
                 >
-                <v-switch
-                  v-model="bussinesform.hospital_center"
-                  :label="
-                    '¿Es usted un Centro Hospitalario?  ' + hospital_centerShow
-                  "
+                <v-switch v-model="bussinesform.hospital_center"
+                  :label="'¿Es usted un Centro Hospitalario?  '"
                   color="success"
                   hide-details
                   class="pl-3 pr-3 mb-5"
-                  :value="hospital_center"
                   @change="setItem('hospital_center')"
-                  :readonly="
-                    validateInput == 1 ? (readonly = true) : (readonly = false)
-                  "
-                ></v-switch>
-                <span
-                  ><strong
-                    ><h5>Herramientas y dispositivos Técnicos.</h5></strong
-                  ></span
-                >
-           
-                <v-switch
-                  v-model="bussinesform.maintenance_and_repair"
-                  :label="
-                    '¿Se dedica al mantenimiento y reparación de Ayudas Técnicas?  ' +
-                    maintenance_and_repairShow
-                  "
-                  color="success"
-                  hide-details
-                  class="pl-3 pr-3 mb-5"
-                  :value="maintenance_and_repair"
-                  @change="setItem('maintenance_and_repair')"
                 ></v-switch>
                 <span
                   ><strong
@@ -940,20 +719,13 @@
                     </h5></strong
                   ></span
                 >
-                <v-switch
-                  v-model="bussinesform.maintenance_and_repair"
-                  :label="
-                    '¿Se dedica al mantenimiento y reparación de dispositivos Técnicos?)    ' +
-                    maintenance_and_repairShow
-                  "
+                <v-switch v-model="bussinesform.maintenance_and_repair"
+                  :label="'¿Se dedica al mantenimiento y reparación de dispositivos Técnicos?'"
                   color="success"
                   hide-details
                   class="pl-3 pr-3 mb-5"
-                  :value="maintenance_and_repair"
                   @change="setItem('maintenance_and_repair')"
-                  :readonly="
-                    validateInput == 1 ? (readonly = true) : (readonly = false)
-                  "
+                
                 ></v-switch>
                 <span
                   ><strong
@@ -966,8 +738,7 @@
                 <v-switch
                   v-model="bussinesform.ortesis_protesis"
                   :label="
-                    '¿Es Fabricante de órtesis y prótesis?  ' +
-                    ortesis_protesisShow
+                    '¿Es Fabricante de órtesis y prótesis?  '
                   "
                   color="success"
                   hide-details
@@ -978,14 +749,13 @@
                 <v-switch
                   v-model="bussinesform.ortesis_laboratories"
                   :label="
-                    '¿Laboratorios de órtesis?  ' +
-                    ortesis_protesisShow
+                    '¿Laboratorios de órtesis?  '
                   "
                   color="success"
                   hide-details
                   class="pl-3 pr-3 mb-5"
-                  :value="ortesis_protesis"
-                  @change="setItem('ortesis_protesis')"
+                  :value="ortesis_laboratories"
+                  @change="setItem('ortesis_laboratories')"
                 ></v-switch>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -1000,8 +770,7 @@
                 <v-switch
                   v-model="bussinesform.has_workers_interpretes"
                   :label="
-                    '¿Posee usted trabajadores Interpretes, Facilitadores y/o Ambas?  ' +
-                    has_workers_interpretesShow
+                    '¿Posee usted trabajadores Interpretes, Facilitadores y/o Ambas?  '
                   "
                   color="success"
                   hide-details
@@ -1013,8 +782,7 @@
                   v-show="hidecertificate"
                   v-model="bussinesform.have_certificate"
                   :label="
-                    '¿Tiene certificado de intérprete/facilitador? Nota:este campo depende de la respuesta anterior  ' +
-                    have_certificateShow
+                    '¿Tiene certificado de intérprete/facilitador? Nota:este campo depende de la respuesta anterior  '
                   "
                   color="success"
                   hide-details
@@ -1022,48 +790,28 @@
                   :value="have_certificate"
                   @change="setItem('have_certificate')"
                 ></v-switch>
-                <!--<v-text-field
-								label="N° Certificado"
-								placeholder="N° Certificado"
-								dense
-								:rules="emailRules"
-								type="email"
-								v-model="bussinesform.email_rl"
-								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-								></v-text-field>
-							
-								<v-text-field
-								label="Email"
-								placeholder="Email"
-								dense
-								:rules="emailRules"
-								type="email"
-								v-model="bussinesform.email_rl"
-								:readonly="(validateInput == 1) ? readonly = true : readonly = false"
-								></v-text-field> -->
-                <span
+
+                <!-- <span
                   ><strong><h5>Educación discapacidad.</h5></strong></span
                 >
                 <v-switch
                   v-model="bussinesform.is_educational_center"
                   :label="
-                    '¿Es usted un Centro Educativo?   ' +
-                    is_educational_centerShow
+                    '¿Es usted un Centro Educativo?   '
                   "
                   color="success"
                   hide-details
                   class="pl-3 pr-3 mb-5"
                   :value="is_educational_center"
                   @change="setItem('is_educational_center')"
-                ></v-switch>
+                ></v-switch> -->
                 <span
                   ><strong><h5>Vivienda Discapacidad.</h5></strong></span
                 >
                 <v-switch
                   v-model="bussinesform.has_delivered_homes"
                   :label="
-                    '¿Usted ha entregado viviendas a personas con discapacidad?  ' +
-                    has_delivered_homesShow
+                    '¿Usted ha entregado viviendas a personas con discapacidad?  '
                   "
                   color="success"
                   hide-details
@@ -1072,11 +820,11 @@
                   @change="setItem('has_delivered_homes')"
                 ></v-switch>
                 <!-- <v-textarea
-									label="Observaciones"
-									dense
-									v-model="bussinesform.observations"
-									rows="2"
-								></v-textarea> -->
+                  label="Observaciones"
+                  dense
+                  v-model="bussinesform.observations"
+                  rows="2"
+                ></v-textarea> -->
               </v-col>
             </v-row>
           </v-form>
@@ -1144,14 +892,6 @@ export default class Bussines extends Vue {
     code: 0,
     message: "",
     country_id: 237,
-    hospital_center: 0,
-    human_help: 0,
-    maintenance_and_repair: 0,
-    ortesis_protesis: 0,
-    has_workers_interpretes: 0,
-    have_certificate: 0,
-    is_educational_center: 0,
-    has_delivered_homes: 0,
     username: "",
     documents: [],
   };
@@ -1181,6 +921,7 @@ export default class Bussines extends Vue {
   have_certificate: boolean = false;
   has_workers_interpretes: boolean = false;
   ortesis_protesis: boolean = false;
+  ortesis_laboratories: boolean = false;
   maintenance_and_repair: boolean = false;
   human_help: boolean = false;
   hospital_center: boolean = false;
@@ -1188,6 +929,7 @@ export default class Bussines extends Vue {
   human_helpShow = "No";
   maintenance_and_repairShow = "No";
   ortesis_protesisShow = "No";
+  ortesis_laboratoriesShow = "No";
   has_workers_interpretesShow = "No";
   have_certificateShow = "No";
   is_educational_centerShow = "No";
@@ -1238,6 +980,7 @@ export default class Bussines extends Vue {
   bussines_id = "";
   documentsForm = {};
   documents = [];
+  documentsload = [];
 
   visiblecustomers = false;
   imageUrl: any = "";
@@ -1287,9 +1030,15 @@ export default class Bussines extends Vue {
   /* METODOS DOCUMENTS */
   async getDocuments() {
     this.overlay = true;
-    const documents: any = await documentModule.getDocumentsAll();
-    //this.documents = documents.data.data;
-    this.documents = documents.data.data.filter(
+    const dataDocuments: any = await documentModule.getDocumentsAll();
+ 
+    const loaddocuments: any = await documentModule.getDocumentsByBussines(
+     storageData.get("_bussines").id
+    );
+    this.documentsload = loaddocuments.data.documents;
+
+    this.documents = dataDocuments.data.data;
+    this.documents = this.documents.filter(
       (doc: any) => doc.visibility_in === 1
     );
     this.validateBtn();
@@ -1308,37 +1057,29 @@ export default class Bussines extends Vue {
       this.disabledBtn = true;
     }
   }
-  async updateDocument(doc) {
+  async updateDocument(doc, fileEvent) {
     let index = this.documents.findIndex(({ id }) => id == doc.id);
-    const _this = this;
-    var event = event || window.event;
-
-    if (event.target.files != undefined) {
-      if (event.target.files.length > 0) {
-        if (
-          event.target.files[0].type === "image/png" ||
-          event.target.files[0].type === "image/jpg" ||
-          event.target.files[0].type === "image/jpeg" ||
-          event.target.files[0].type === "application/pdf"
-        ) {
-          if (event.target.files[0].size < this.documents[index].max_size) {
-            if (
-              event.target.files[0] != undefined &&
-              event.target.files.length == 1
-            ) {
-              let base64 = await this.getBase64(event.target.files[0], doc);
-            }
-          } else {
-            this.dialogOpen = true;
-            this.dataModalAlert = "El Documento excede el tamaño permitido";
-            this.backClear(doc);
-          }
+    const files = fileEvent && fileEvent.target ? fileEvent.target.files : fileEvent;
+    if (files && files.length > 0) {
+      const file = files[0];
+      if (
+        file.type === "image/png" ||
+        file.type === "image/jpg" ||
+        file.type === "image/jpeg" ||
+        file.type === "application/pdf"
+      ) {
+        if (file.size < this.documents[index].max_size) {
+          let base64 = await this.getBase64(file, doc);
         } else {
           this.dialogOpen = true;
-          this.dataModalAlert = "Extensión NO permitida";
+          this.dataModalAlert = "El Documento excede el tamaño permitido";
           this.backClear(doc);
-          return false;
         }
+      } else {
+        this.dialogOpen = true;
+        this.dataModalAlert = "Extensión NO permitida";
+        this.backClear(doc);
+        return false;
       }
     }
   }
@@ -1610,6 +1351,11 @@ export default class Bussines extends Vue {
           this.ortesis_protesisShow = "Si";
         else this.ortesis_protesisShow = "No";
         break;
+      case "ortesis_laboratories":
+        if (this.bussinesform.ortesis_laboratories)
+          this.ortesis_laboratoriesShow = "Si";
+        else this.ortesis_laboratoriesShow = "No";
+        break;
       case "has_workers_interpretes":
         if (this.bussinesform.has_workers_interpretes) {
           this.has_workers_interpretesShow = "Si";
@@ -1681,10 +1427,10 @@ export default class Bussines extends Vue {
     this.arrayStates = states.data.data;
   }
   /* async getUserType(){
-		const typeuser : any = await bussinesModule.getUserTypeAll()
-		this.arrayUserType = typeuser.data.data
-		this.initData()
-	} */
+    const typeuser : any = await bussinesModule.getUserTypeAll()
+    this.arrayUserType = typeuser.data.data
+    this.initData()
+  } */
   async getEconomicSector() {
     const economicsector: any = await bussinesModule.getEconomicSectorAll();
     this.arrayEconomicSector = economicsector.data.data;
@@ -1800,56 +1546,32 @@ export default class Bussines extends Vue {
     };
   }
   async updataSwitchBussines(data) {
-    this.bussinesform.accesibilidad = data.accesibilidad == "No" ? false : true;
-    this.accesibilidadShow = data.accesibilidad == "No" ? "No" : "Si";
-    this.bussinesform.ascensores = data.ascensores == "No" ? false : true;
-    this.ascensoresShow = data.ascensores == "No" ? "No" : "Si";
-    this.bussinesform.rampas = data.rampas == "No" ? false : true;
-    this.rampasShow = data.rampas == "No" ? "No" : "Si";
-    this.bussinesform.acceso_directo =
-      data.acceso_directo == "No" ? false : true;
-    this.acceso_directoShow = data.acceso_directo == "No" ? "No" : "Si";
-    this.bussinesform.transporte_publico =
-      data.transporte_publico == "No" ? false : true;
-    this.transporte_publicoShow = data.transporte_publico == "No" ? "No" : "Si";
-    this.bussinesform.transporte_empresa =
-      data.transporte_empresa == "No" ? false : true;
-    this.transporte_empresaShow = data.transporte_empresa == "No" ? "No" : "Si";
-    this.bussinesform.viabilidad = data.viabilidad == "No" ? false : true;
-    this.viabilidadShow = data.viabilidad == "No" ? "No" : "Si";
-    this.bussinesform.banos_acondicionados =
-      data.banos_acondicionados == "No" ? false : true;
-    this.banos_acondicionadosShow =
-      data.banos_acondicionados == "No" ? "No" : "Si";
-    this.bussinesform.escaleras = data.escaleras == "No" ? false : true;
-    this.escalerasShow = data.escaleras == "No" ? "No" : "Si";
-    this.bussinesform.pasamanos = data.pasamanos == "No" ? false : true;
-    this.pasamanosShow = data.pasamanos == "No" ? "No" : "Si";
-    this.bussinesform.pasillos = data.pasillos == "No" ? false : true;
-    this.pasillosShow = data.pasillos == "No" ? "No" : "Si";
-    this.bussinesform.puertas_adaptadas =
-      data.puertas_adaptadas == "No" ? false : true;
-    this.puertas_adaptadasShow = data.puertas_adaptadas == "No" ? "No" : "Si";
-    this.bussinesform.buena_iluminacion =
-      data.buena_iluminacion == "No" ? false : true;
-    this.buena_iluminacionShow = data.buena_iluminacion == "No" ? "No" : "Si";
-    this.bussinesform.senalizaciones_luminosas =
-      data.senalizaciones_luminosas == "No" ? false : true;
-    this.senalizaciones_luminosasShow =
-      data.senalizaciones_luminosas == "No" ? "No" : "Si";
-    this.bussinesform.puestos_de_estacionamiento =
-      data.puestos_de_estacionamiento == "No" ? false : true;
-    this.puestos_de_estacionamientoShow =
-      data.puestos_de_estacionamiento == "No" ? "No" : "Si";
-    this.bussinesform.senalizacion = data.senalizacion == "No" ? false : true;
-    this.senalizacionShow = data.senalizacion == "No" ? "No" : "Si";
-    this.bussinesform.herramientas_tecnologicas =
-      data.herramientas_tecnologicas == "No" ? false : true;
-    this.herramientas_tecnologicasShow =
-      data.herramientas_tecnologicas == "No" ? "No" : "Si";
+
+    // Campos del tab "OTROS"
+    this.bussinesform.hospital_center = data.hospital_center == "No" ? false : true;
+    this.hospital_centerShow = data.hospital_center == "No" ? "No" : "Si";
+    this.bussinesform.human_help = data.human_help == "No" ? false : true;
+    this.human_helpShow = data.human_help == "No" ? "No" : "Si";
+    this.bussinesform.maintenance_and_repair = data.maintenance_and_repair == "No" ? false : true;
+    this.maintenance_and_repairShow = data.maintenance_and_repair == "No" ? "No" : "Si";
+    this.bussinesform.ortesis_protesis = data.ortesis_protesis == "No" ? false : true;
+    this.ortesis_protesisShow = data.ortesis_protesis == "No" ? "No" : "Si";
+    this.bussinesform.ortesis_laboratories = data.ortesis_laboratories == "No" ? false : true;
+    // No hay show para ortesis_laboratories, se puede agregar si lo necesitas
+    this.ortesis_laboratoriesShow = data.ortesis_laboratories == "No" ? "No" : "Si";
+    this.bussinesform.has_workers_interpretes = data.has_workers_interpretes == "No" ? false : true;
+    this.has_workers_interpretesShow = data.has_workers_interpretes == "No" ? "No" : "Si";
+    this.bussinesform.have_certificate = data.have_certificate == "No" ? false : true;
+    this.have_certificateShow = data.have_certificate == "No" ? "No" : "Si";
+    this.bussinesform.is_educational_center = data.is_educational_center == "No" ? false : true;
+    this.is_educational_centerShow = data.is_educational_center == "No" ? "No" : "Si";
+    this.bussinesform.has_delivered_homes = data.has_delivered_homes == "No" ? false : true;
+    this.has_delivered_homesShow = data.has_delivered_homes == "No" ? "No" : "Si";
+   
   }
 
   async serverAll() {
+    await this.getDocuments();
     await this.getStates();
     await this.getEconomicSector();
     await this.getEconomicActivies();
@@ -1857,7 +1579,7 @@ export default class Bussines extends Vue {
     await this.getTyperif();
     await this.getTypeDocument();
     await this.getPositionAll();
-    await this.getDocuments();
+ 
     //await this.initData();
   }
 
@@ -1887,6 +1609,21 @@ export default class Bussines extends Vue {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .vue-form-wizard .wizard-header {
+
+// Modern UI styles for v-card-title
+.v-card-title {
+  background: linear-gradient(90deg, #3f51b5 0%, #2196f3 100%);
+  color: #fff !important;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.12);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
   display: none;
 }
 </style>

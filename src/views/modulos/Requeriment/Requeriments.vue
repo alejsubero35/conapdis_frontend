@@ -11,6 +11,37 @@
       enctype="multipart/form-data"
     >
       <TitleSection :sectiontitle="sectiontitle" />
+    <!--   <v-container>
+        <v-layout>
+             <v-row>
+              <v-col cols="12" sm="12" md="8">
+                <v-card class="mb-5" outlined>
+                  <v-card-title class="headline">Documentos Cargados</v-card-title>
+                  <v-data-table
+                    :headers="[
+                      { text: 'Nombre', value: 'title' },
+                  { text: 'Fecha de carga', value: 'registration_date' },
+                  { text: 'Documento', value: 'file_url', sortable: false }
+                ]"
+                :items="documentsload"
+                class="elevation-1"
+                :loading="overlay"
+                loading-text="Cargando documentos..."
+                dense
+              >
+                <template v-slot:item.file_url="{ item }">
+                  <v-btn v-if="item.file_url" :href="item.file_url" target="_blank" icon color="primary">
+                    <v-icon>mdi-file-eye</v-icon>
+                  </v-btn>
+                  <span v-else class="grey--text">No disponible</span>
+                </template>
+              </v-data-table>
+            </v-card>
+              </v-col>
+            </v-row>
+         
+        </v-layout>
+      </v-container> -->
       <v-container v-if="documents.length > 0" class="mt-5">
         <v-layout v-for="(doc, index) in documents" :key="index" row wrap>
           <v-row>
@@ -28,36 +59,8 @@
               >
               </v-text-field>
             </v-col>
-            <!-- <v-col v-if="doc.url == ''" cols="12" sm="6" md="4">
-                        <v-menu
-                            :close-on-content-click="true"
-                            :nudge-right="40"
-                            transition="scale-transition"
-                            offset-y
-                            min-width="auto"
-                        >
-                            <template v-slot:activator="{ on, attrs }">
-                            <v-text-field
-                                v-model="doc.registration_date"
-                                label="Fecha Vencimiento"
-                                append-icon="mdi-calendar"
-                                v-bind="attrs"
-                                v-on="on"
-                                dense 
-                                outlined
-                                :rules="(doc.url == '' && doc.is_required == 1) ? rules : Notrules"
-                            ></v-text-field>
-                            </template>
-                            <v-date-picker
-                            v-model="date"
-                            @change="updateFecha(doc.id)"
-                            no-title
-                            :allowed-dates="disablePastDates"
-                            locale="es"
-                            ></v-date-picker>
-                        </v-menu>
-                    </v-col> -->
-            <v-col v-if="doc.url == ''" cols="12" sm="6" md="4">
+
+            <v-col v-if="doc.file_url == '' || doc.file_url == null" cols="12" sm="6" md="4">
               <v-file-input
                 :rules="doc.is_required == 1 ? rules : Notrules"
                 :disabled="doc.approved == 1 ? disabledFile : !disabledFile"
@@ -84,11 +87,11 @@
             <v-col v-else cols="12" sm="6" md="4">
               <v-chip
                 class="ma-1 mt-2 mb-5"
-                :href="doc.url"
+                :href="doc.file_url"
                 target="_blank"
                 :color="doc.status == 'pending' ? 'warning' : 'green'"
                 text-color="white"
-                style="width: 100%"
+                style="width: 100%; cursor: pointer"
               >
                 {{ doc.title }}
               </v-chip>
@@ -100,7 +103,7 @@
         <h1 class="text-center">No hay documentos requeridos</h1>
       </v-container>
       <div class="mt-5 d-flex justify-end">
-        <v-btn small @click="save" :disabled="disabledBtn" color="success"
+        <v-btn small @click="save"  color="success"
           >Guardar
         </v-btn>
       </div>
@@ -154,6 +157,15 @@ export default class RequerimentsDocuments extends Vue {
   tempDoc = {};
   arrayExtension = ["pdf", "jpg", "png", "jpeg", "PNG"];
   dateP = new Date().toISOString().substr(0, 10);
+  todayDate = this.getTodayDate();
+
+  getTodayDate(): string {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
   max = new Date(Date.now() - 315569260000).toISOString().substr(0, 10);
   arrayDates = [];
   disablePastDates(val) {
@@ -183,9 +195,15 @@ export default class RequerimentsDocuments extends Vue {
 
   async getDocuments() {
     this.overlay = true;
-    const documents: any = await documentModule.getDocumentsAll();
-    //this.documents = documents.data.data;
-    this.documents = documents.data.data.filter(
+    const documents: any = await documentModule.getDocumentsAll(storageData.get("_bussines").id);
+ /*    console.log(documents, 'aquii')
+     const loaddocuments: any = await documentModule.getRequiredDocuments(
+     storageData.get("_bussines").id
+    ); */
+ /*    console.log(loaddocuments)
+    this.documentsload = loaddocuments.data.required_documents */
+;
+    this.documents = documents.data.documents.filter(
       (doc: any) => doc.visibility_in === 2
     );
     this.validateBtn();
@@ -193,12 +211,13 @@ export default class RequerimentsDocuments extends Vue {
   }
 
   async save() {
+    console.log(this.FormRequestDocuments)
     const valid = await this.$refs.documents.validate();
     delete this.FormRequestDocuments.name;
     const events = [];
     for (var i = 0; i < this.FormRequestDocuments.length; i++) {
       if (
-        this.FormRequestDocuments[i].url == "" &&
+        this.FormRequestDocuments[i].file_url == "" &&
         this.FormRequestDocuments[i].bussines_id != undefined
       ) {
         events.push(this.FormRequestDocuments[i]);
@@ -242,6 +261,10 @@ export default class RequerimentsDocuments extends Vue {
     var event = event || window.event;
 
     if (event.target.files != undefined) {
+       this.documents[index].bussines_id = storageData.get("_bussines")
+        ? storageData.get("_bussines").id
+        : this.getBussines.id;
+        this.documents[index].registration_date = this.todayDate;
       if (event.target.files.length > 0) {
         if (
           event.target.files[0].type === "image/png" ||
@@ -271,11 +294,7 @@ export default class RequerimentsDocuments extends Vue {
     }
   }
 
-  async getImgBase(imgbase64, doc, fileName) {
-    let index = this.documents.findIndex(({ id }) => id == doc.id);
-    this.documents[index].file = imgbase64;
-    this.documents[index].name = fileName;
-  }
+
   getBase64(file, doc) {
     const _this = this;
     var reader = new FileReader();
@@ -287,6 +306,13 @@ export default class RequerimentsDocuments extends Vue {
       console.log("Error: ", error);
     };
     return true;
+  }
+
+  async getImgBase(imgbase64, doc, fileName) {
+    let index = this.documents.findIndex(({ id }) => id == doc.id);
+    this.documents[index].file = imgbase64;
+    this.documents[index].name = fileName;
+    console.log(this.documents)
   }
   closeModal() {
     this.dialogOpen = false;
