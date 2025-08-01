@@ -51,6 +51,7 @@
             dense
             :rules="rules"
             v-model="dataForm.responsible"
+        
           ></v-text-field>
         </v-col>
         <v-col cols="12" sm="4" md="3">
@@ -61,8 +62,9 @@
             dense
             :rules="rules"
             v-model="dataForm.phone_number"
-            type="number"
+          
             min="0"
+                 v-mask="'####-#######'"
           ></v-text-field>
         </v-col>
         <v-col cols="12" sm="4" md="3">
