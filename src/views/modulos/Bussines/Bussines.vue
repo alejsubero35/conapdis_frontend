@@ -1037,7 +1037,8 @@ export default class Bussines extends Vue {
     );
     this.documentsload = loaddocuments.data.documents;
 
-    this.documents = dataDocuments.data.data;
+    this.documents = dataDocuments.data.documents;
+    console.log(this.documents);
     this.documents = this.documents.filter(
       (doc: any) => doc.visibility_in === 1
     );
