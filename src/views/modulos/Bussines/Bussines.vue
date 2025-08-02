@@ -1044,6 +1044,18 @@ export default class Bussines extends Vue {
     this.validateBtn();
     this.overlay = false;
   }
+ 
+  async getDocumentsAll() {
+    this.overlay = true;
+    const dataDocuments: any = await documentModule.getAllDocuments();
+
+    this.documents = dataDocuments.data.data;
+    this.documents = this.documents.filter(
+      (doc: any) => doc.visibility_in === 1
+    );
+    this.validateBtn();
+    this.overlay = false;
+  }
   async validateBtn() {
     const events = [];
     for (var i = 0; i < this.FormRequestDocuments.length; i++) {
@@ -1571,7 +1583,10 @@ export default class Bussines extends Vue {
   }
 
   async serverAll() {
-    await this.getDocuments();
+    if (storageData.get("_bussines")) {
+      await this.getDocuments();
+    } 
+    await this.getDocumentsAll();
     await this.getStates();
     await this.getEconomicSector();
     await this.getEconomicActivies();

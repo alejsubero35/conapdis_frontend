@@ -56,6 +56,24 @@ class DocumentRequired extends VuexModule {
         })
     }
     @Action
+    getAllDocuments() {
+        return new Promise((resolve, reject) => {
+            http.get(`/document-requirements`)
+                .then(response => {
+
+                    if (response.status === 200) {
+                        resolve(response);
+                    }
+                })
+                .catch(error => {
+                    reject(error)
+                })
+
+
+        })
+    }
+    
+    @Action
     async saveDocuments(dataDocuments: DocumentReq) {
 
         await http.post(`document-bussines/store_documents`, dataDocuments)
@@ -76,7 +94,7 @@ class DocumentRequired extends VuexModule {
 
     @Action
     async getDocumentsByBussines(bussinesId: number) {
-        return await http.get(`/documentos-requeridos/${bussinesId}`)
+        return await http.get(`/required-documents/${bussinesId}`)
             .then((payload: any) => {
                 return payload;
             })
