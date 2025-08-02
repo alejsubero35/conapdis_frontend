@@ -102,7 +102,7 @@
                 <span>Descargar Certificados</span>
               </v-tooltip>
             </div>
-        <!--     <div v-else class="d-flex">
+            <div v-else class="d-flex">
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -117,7 +117,7 @@
                 </template>
                 <span>Pago en Línea</span>
               </v-tooltip>
-            </div> -->
+            </div>
           </template>
         </v-data-table>
       </template>
@@ -262,143 +262,7 @@ export default class Usuario extends Vue {
   $router: any;
   formPayment: any = {};
   dialogPayment = false;
-  bankArray = [
-    {
-      codigo: "0001",
-      nombre: "Banco Central de Venezuela",
-      rif: "G200001100",
-    },
-    {
-      codigo: "0102",
-      nombre: "Banco de Venezuela",
-      rif: "G200099976",
-    },
-    {
-      codigo: "0104",
-      nombre: "Banco Venezolano de Crédito",
-      rif: "J000029709",
-    },
-    {
-      codigo: "0105",
-      nombre: "Banco Mercantil",
-      rif: "J000029610",
-    },
-    {
-      codigo: "0108",
-      nombre: "BBVA Provincial",
-      rif: "J000029679",
-    },
-    {
-      codigo: "0114",
-      nombre: "Bancaribe",
-      rif: "J000029490",
-    },
-    {
-      codigo: "0115",
-      nombre: "Banco Exterior",
-      rif: "J000029504",
-    },
-    {
-      codigo: "0128",
-      nombre: "Banco Caroní",
-      rif: "J095048551",
-    },
-    {
-      codigo: "0134",
-      nombre: "Banesco",
-      rif: "J070133805",
-    },
-    {
-      codigo: "0137",
-      nombre: "Banco Sofitasa",
-      rif: "J090283846",
-    },
-    {
-      codigo: "0138",
-      nombre: "Banco Plaza",
-      rif: "J002970553",
-    },
-    {
-      codigo: "0146",
-      nombre: "Bangente",
-      rif: "J301442040",
-    },
-    {
-      codigo: "0151",
-      nombre: "BFC Banco Fondo Común",
-      rif: "J000723060",
-    },
-    {
-      codigo: "0156",
-      nombre: "100% Banco",
-      rif: "J085007768",
-    },
-    {
-      codigo: "0157",
-      nombre: "DELSUR Banco Universal",
-      rif: "J000797234",
-    },
-    {
-      codigo: "0163",
-      nombre: "Banco Del Tesoro",
-      rif: "G200051876",
-    },
-    {
-      codigo: "0166",
-      nombre: "Banco Agrícola de Venezuela",
-      rif: "G200057955",
-    },
-    {
-      codigo: "0168",
-      nombre: "Bancrecer",
-      rif: "G200068973",
-    },
-    {
-      codigo: "0169",
-      nombre: "Mi Banco",
-      rif: "J315941023",
-    },
-    {
-      codigo: "0171",
-      nombre: "Banco Activo",
-      rif: "J080066227",
-    },
-    {
-      codigo: "0172",
-      nombre: "Bancamiga",
-      rif: "J316287599",
-    },
-    {
-      codigo: "0173",
-      nombre: "Banco Internacional de Desarrollo",
-      rif: "J294640109",
-    },
-    {
-      codigo: "0174",
-      nombre: "Banplus",
-      rif: "J000423032",
-    },
-    {
-      codigo: "0175",
-      nombre: "Banco Bicentenario del Pueblo",
-      rif: "G200091487",
-    },
-    {
-      codigo: "0177",
-      nombre: "Banfanb",
-      rif: "G200106573",
-    },
-    {
-      codigo: "0191",
-      nombre: "Banco Nacional de Crédito (BNC)",
-      rif: "J309841327",
-    },
-    {
-      codigo: "0601",
-      nombre: "Instituto Municipal de Crédito Popular",
-      rif: "G200068973",
-    },
-  ];
+ 
   getColor(item) {
     if (item == "Pendiente") {
       return "warning";
@@ -436,9 +300,7 @@ export default class Usuario extends Vue {
     const data: any = await formacionModule.downloadCertificate(item.id);
   }
   async paymentInLine(item) {
-    console.log(item);
-    this.dialogPayment = true;
-    this.formPayment.amount_payment = item.workshop_amount;
+    this.$router.push({ name: "paymentcenter"});
   }
   async procesedPayment() {
     this.overlay = true;

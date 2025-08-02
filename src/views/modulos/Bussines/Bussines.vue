@@ -1030,7 +1030,7 @@ export default class Bussines extends Vue {
   /* METODOS DOCUMENTS */
   async getDocuments() {
     this.overlay = true;
-    const dataDocuments: any = await documentModule.getDocumentsAll();
+    const dataDocuments: any = await documentModule.getDocumentsAll(storageData.get("_bussines").id);
  
     const loaddocuments: any = await documentModule.getDocumentsByBussines(
      storageData.get("_bussines").id

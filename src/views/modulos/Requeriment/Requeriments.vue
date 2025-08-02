@@ -347,7 +347,9 @@ export default class RequerimentsDocuments extends Vue {
     }
   }
   mounted() {
-    this.getDocuments();
+    if (storageData.get("_bussines")) {
+      this.getDocuments();
+    }
   }
 }
 </script>
