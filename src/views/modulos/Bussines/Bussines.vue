@@ -1075,24 +1075,29 @@ export default class Bussines extends Vue {
     const files = fileEvent && fileEvent.target ? fileEvent.target.files : fileEvent;
     if (files && files.length > 0) {
       const file = files[0];
-      if (
-        file.type === "image/png" ||
-        file.type === "image/jpg" ||
-        file.type === "image/jpeg" ||
-        file.type === "application/pdf"
-      ) {
-        if (file.size < this.documents[index].max_size) {
-          let base64 = await this.getBase64(file, doc);
-        } else {
-          this.dialogOpen = true;
-          this.dataModalAlert = "El Documento excede el tamaño permitido";
-          this.backClear(doc);
-        }
-      } else {
+      console.log('Archivo seleccionado:', file);
+      const allowedExtensions = ["pdf", "jpg", "jpeg", "png"];
+      const allowedMimeTypes = [
+        "application/pdf",
+        "image/jpeg",
+        "image/png"
+      ];
+      const fileExtension = file.name.split('.').pop().toLowerCase();
+
+      // Validar extensión y tipo MIME
+      if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
         this.dialogOpen = true;
-        this.dataModalAlert = "Extensión NO permitida";
+        this.dataModalAlert = "Extensión o tipo de archivo NO permitido. Solo se permiten: pdf, jpg, jpeg, png";
         this.backClear(doc);
         return false;
+      }
+
+      if (file.size < this.documents[index].max_size) {
+        let base64 = await this.getBase64(file, doc);
+      } else {
+        this.dialogOpen = true;
+        this.dataModalAlert = "El Documento excede el tamaño permitido";
+        this.backClear(doc);
       }
     }
   }
@@ -1112,6 +1117,8 @@ export default class Bussines extends Vue {
     let index = this.documents.findIndex(({ id }) => id == doc.id);
     this.documents[index].file = imgbase64;
     this.documents[index].name = fileName;
+    console.log('Base64 generado:', imgbase64);
+    console.log('Documento actualizado:', this.documents[index]);
   }
   getBase64(file, doc) {
     const _this = this;
