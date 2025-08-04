@@ -126,7 +126,7 @@ class paymentModule extends VuexModule {
     }
     @Action
     async getValueMMV() {
-        return await http.get(`${URLBASE}/bcv-currency?currency=euro`)
+        return await http.get(`${URLBASE}/api/bcv-currency?currency=euro`)
             .then((payload: any) => {
                 return payload;
             })
