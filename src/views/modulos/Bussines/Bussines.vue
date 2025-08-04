@@ -647,7 +647,6 @@
                   <v-data-table
                     :headers="[
                       { text: 'Nombre', value: 'title' },
-                      { text: 'Tipo', value: 'type' },
                       { text: 'Fecha de carga', value: 'registration_date' },
                       { text: 'Documento', value: 'file_url', sortable: false }
                     ]"
