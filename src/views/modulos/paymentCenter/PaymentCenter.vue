@@ -118,7 +118,7 @@ export default class PaymentCenter extends Vue {
 
    openPaymentDialog(item: any) {
     console.log('Monto original:', item.amount); // Verifica el valor real
-    const montoConvertido = item.amount * this.valoreuro;
+    const montoConvertido = Number(item.amount * this.valoreuro).toFixed(2);
     console.log('Monto convertido:', montoConvertido); // Verifica el resultado
     this.selectedPayment = { 
         ...item, 
