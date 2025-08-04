@@ -124,6 +124,17 @@ class paymentModule extends VuexModule {
             })
         return dataPayment;
     }
+    @Action
+    async getValueMMV() {
+        return await http.get(`/api/bcv-currency?currency=euro`)
+            .then((payload: any) => {
+                return payload;
+            })
+            .catch(() => {
+                return { data: null };
+            });
+    }
+    
 
 }
 

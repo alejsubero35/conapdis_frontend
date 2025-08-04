@@ -4,6 +4,7 @@
     <PaymentDialog
       :dialogPayment="dialogPayment"
       :formPayment="selectedPayment"
+      :valoreuro="valoreuro"
       @close="dialogPayment = false"
       @pay="processPayment"
     />
@@ -32,7 +33,7 @@
             >
               <!-- Monto column custom rendering -->
               <template v-slot:item.amount="{ item }">
-                {{ Math.floor(item.amount) }} <span class="grey--text text--darken-2" style="font-size: 0.9em;">(MMV-BCV)</span>
+               {{ Number(item.amount).toFixed(2) }} <span class="grey--text text--darken-2" style="font-size: 0.9em;">(MMV-BCV)</span>
               </template>
               <!-- Estado column custom rendering -->
               <template v-slot:item.status="{ item }">
@@ -92,8 +93,14 @@ export default class PaymentCenter extends Vue {
     textmsj = "";
     color = "";
     timeout = 2000;
+    valoreuro: number = 180;
     mounted() {
         this.fetchPendingPayments();
+        this.getvalorEuro();
+    }
+    async getvalorEuro() {
+         const valormmv: any = await paymentModule.getValueMMV();
+         this.valoreuro = valormmv;
     }
     async fetchPendingPayments() {
         this.overlay = true;
@@ -105,12 +112,24 @@ export default class PaymentCenter extends Vue {
     
     }
 
+   openPaymentDialog(item: any) {
+    console.log('Monto original:', item.amount); // Verifica el valor real
+    const montoConvertido = item.amount * this.valoreuro;
+    console.log('Monto convertido:', montoConvertido); // Verifica el resultado
+    this.selectedPayment = { 
+        ...item, 
+        amount: montoConvertido, // Solo en el modal
+        amount_payment: montoConvertido, 
+        pending_payment_id: item.id 
+    };
+    this.dialogPayment = true;
+}
 
-    openPaymentDialog(item: any) {
+   /*  openPaymentDialog(item: any) {
         // Asignar amount_payment y pending_payment_id
         this.selectedPayment = { ...item, amount_payment: item.amount, pending_payment_id: item.id };
         this.dialogPayment = true;
-    }
+    } */
     async processPayment(paymentData: any) {
         this.overlay = true;
         const process: any = await paymentModule.processPayment(paymentData);

@@ -29,7 +29,7 @@
           </v-row>
           <v-row class="mt-0">
             <v-col cols="4">
-              <v-subheader>Monto</v-subheader>
+              <v-subheader>Monto (Bs.)</v-subheader>
             </v-col>
             <v-col cols="8">
               <v-text-field
@@ -113,6 +113,9 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions class="justify-end">
+        <v-btn class="ml-0" style="margin-right:auto;">
+          <span>MMV-BCV = {{ valoreuro }}</span>
+        </v-btn>
         <v-btn color="error" text @click="$emit('close')">
           Cerrar
         </v-btn>
@@ -128,7 +131,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 @Component
 export default class PaymentDialog extends Vue {
     @Prop({ default: false }) dialogPayment!: boolean;
-    /*  @Prop({ default: () => [] }) bankArray!: Array<any>; */
+    @Prop({ default: () => ({}) }) valoreuro!: number;
     @Prop({ default: () => ({}) }) formPayment!: any;
     valid: boolean = false;
     bankArray = [
@@ -276,7 +279,6 @@ export default class PaymentDialog extends Vue {
         }
     }
     getBankData(event: any) {
-        
         if (event) {
             this.formPayment.bank_name = event.nombre;
             this.formPayment.banco_orig = event.codigo;
