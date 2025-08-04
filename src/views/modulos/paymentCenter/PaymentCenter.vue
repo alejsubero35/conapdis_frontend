@@ -93,13 +93,16 @@ export default class PaymentCenter extends Vue {
     textmsj = "";
     color = "";
     timeout = 2000;
-    valoreuro: number = 180;
+    valoreuro: number = 0;
     mounted() {
         this.fetchPendingPayments();
         this.getvalorEuro();
     }
     async getvalorEuro() {
          const valormmv: any = await paymentModule.getValueMMV();
+         console.log(valormmv)
+         console.log('Valor MMV:', valormmv.value); // Verifica el valor real
+
          this.valoreuro = valormmv.value;
     }
     async fetchPendingPayments() {
