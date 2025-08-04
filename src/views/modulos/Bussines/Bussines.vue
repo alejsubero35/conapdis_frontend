@@ -642,7 +642,7 @@
             <v-row>
               <v-col cols="12" sm="12" md="12">
                 <!-- Tabla de documentos cargados -->
-                <v-card class="mb-5" outlined>
+                <v-card class="mb-5" outlined v-if="existStorage">
                   <v-card-title class="headline">Documentos Cargados</v-card-title>
                   <v-data-table
                     :headers="[
@@ -672,10 +672,11 @@
                     <v-col v-for="(doc, idx) in documents" :key="doc.id" cols="12" sm="6" md="4">
                       <v-file-input
                         v-if="!doc.url"
+                        v-model="documentsloadTemp[idx]"
                         :label="'Subir ' + doc.title + ' ' + validation"
                         accept=".pdf,.jpg,.jpeg,.png"
                         :rules="documentsload.length > 0 ? [] : [(v) => !!v || 'Campo requerido']"
-                        @change="(e) => updateDocument(doc, e)"
+                        @change="(e) => updateDocument(doc, e,idx)"
                         outlined
                         dense
                         show-size
@@ -854,7 +855,7 @@
       <v-card>
         <v-card-title class="text-h5"> Notificación </v-card-title>
         <v-card-text>
-          {{ titlemodalalert }}
+          {{ dataModalAlert }}
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -895,6 +896,7 @@ export default class Bussines extends Vue {
     username: "",
     documents: [],
   };
+  documentsloadTemp: any = [];
   hidecertificate = false; // esta variable oculta un campo mientras la condicion sea no.
   loadingWizard = false;
   typerif = [
@@ -975,7 +977,7 @@ export default class Bussines extends Vue {
 
   /* DOCUMENTOS REQUERIDOS */
   validation = "(Solo png,jpg,jpeg,pdf)";
-
+  existStorage = (storageData.get('_bussines')) ? true : false;
   show: Boolean = false;
   bussines_id = "";
   documentsForm = {};
@@ -996,6 +998,15 @@ export default class Bussines extends Vue {
   dateP = new Date().toISOString().substr(0, 10);
   max = new Date(Date.now() - 315569260000).toISOString().substr(0, 10);
   arrayDates = [];
+  todayDate = this.getTodayDate();
+
+  getTodayDate(): string {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
   disablePastDates(val) {
     return val >= new Date().toISOString().substr(0, 10);
   }
@@ -1036,9 +1047,12 @@ export default class Bussines extends Vue {
      storageData.get("_bussines").id
     );
     this.documentsload = loaddocuments.data.documents;
+    this.documentsload = this.documentsload.filter(
+      (doc: any) => doc.visibility_in === 1
+    );
 
     this.documents = dataDocuments.data.documents;
-    console.log(this.documents);
+  
     this.documents = this.documents.filter(
       (doc: any) => doc.visibility_in === 1
     );
@@ -1070,12 +1084,16 @@ export default class Bussines extends Vue {
       this.disabledBtn = true;
     }
   }
-  async updateDocument(doc, fileEvent) {
+  async updateDocument(doc, fileEvent,i) {
     let index = this.documents.findIndex(({ id }) => id == doc.id);
     const files = fileEvent && fileEvent.target ? fileEvent.target.files : fileEvent;
-    if (files && files.length > 0) {
-      const file = files[0];
-      console.log('Archivo seleccionado:', file);
+           this.documents[index].bussines_id = (storageData.get("_bussines"))
+        ? storageData.get("_bussines").id
+        : '';
+       
+        this.documents[index].registration_date = this.todayDate;
+    if (files) {
+      const file = files;
       const allowedExtensions = ["pdf", "jpg", "jpeg", "png"];
       const allowedMimeTypes = [
         "application/pdf",
@@ -1088,6 +1106,7 @@ export default class Bussines extends Vue {
       if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
         this.dialogOpen = true;
         this.dataModalAlert = "Extensión o tipo de archivo NO permitido. Solo se permiten: pdf, jpg, jpeg, png";
+        this.documentsloadTemp[i] = null;
         this.backClear(doc);
         return false;
       }
@@ -1117,8 +1136,6 @@ export default class Bussines extends Vue {
     let index = this.documents.findIndex(({ id }) => id == doc.id);
     this.documents[index].file = imgbase64;
     this.documents[index].name = fileName;
-    console.log('Base64 generado:', imgbase64);
-    console.log('Documento actualizado:', this.documents[index]);
   }
   getBase64(file, doc) {
     const _this = this;
@@ -1135,12 +1152,14 @@ export default class Bussines extends Vue {
   backClear(doc) {
     setTimeout(() => {
       doc.name = null;
-    }, 1500);
+      doc.file = null;
+      // Si el input depende de doc.name, esto lo limpia
+      this.$forceUpdate();
+    }, 150);
   }
   /* FIN METODOS */
   async getRifType(event) {
     if (this.bussinesform.rif != undefined) {
-      console.log(1);
       this.bussinesform.rif = "";
       switch (event) {
         case 4:
@@ -1168,7 +1187,6 @@ export default class Bussines extends Vue {
           this.showogaceta = false;
       }
     } else {
-      console.log(2);
       switch (event) {
         case 4:
           this.validatetyperif = "V";
@@ -1491,7 +1509,6 @@ export default class Bussines extends Vue {
   async getPositionAll() {
     const position: any = await bussinesModule.getPositionAll();
     this.arrayPosition = position.data;
-    console.log(this.arrayPosition);
     //this.ordenarArray2(position.data.data)
   }
   async ordenarArray2(array) {
