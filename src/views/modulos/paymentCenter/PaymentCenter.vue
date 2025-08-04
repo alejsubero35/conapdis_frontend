@@ -100,7 +100,7 @@ export default class PaymentCenter extends Vue {
     }
     async getvalorEuro() {
          const valormmv: any = await paymentModule.getValueMMV();
-         this.valoreuro = valormmv;
+         this.valoreuro = valormmv.value;
     }
     async fetchPendingPayments() {
         this.overlay = true;
