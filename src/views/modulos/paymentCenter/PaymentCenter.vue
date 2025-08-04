@@ -100,10 +100,11 @@ export default class PaymentCenter extends Vue {
     }
     async getvalorEuro() {
          const valormmv: any = await paymentModule.getValueMMV();
-         console.log(valormmv)
-         console.log('Valor MMV:', valormmv.value); // Verifica el valor real
-
-         this.valoreuro = valormmv.value;
+         if(valormmv.status == 200) {
+            this.valoreuro = valormmv.data.value;
+         } else {
+            this.valoreuro = 0; // Valor por defecto si falla la obtención
+         }   
     }
     async fetchPendingPayments() {
         this.overlay = true;
