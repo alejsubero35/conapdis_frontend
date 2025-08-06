@@ -31,9 +31,9 @@
       @click.native="$store.commit('set', ['sidebarMinimize', !minimize])"
     />
     <div class="p-3">
-      <!-- <CButton color="primary" block @click="dialog = true">
+      <CButton color="primary" block @click="dialog = true">
         Datos Bancarios
-      </CButton> -->
+      </CButton>
       <v-dialog v-model="dialog" max-width="500">
         <v-card>
           <v-card-title
@@ -43,11 +43,11 @@
           >
           <v-card-text>
             <!-- Información Bancaria -->
-            <div>
+            <!-- <div>
               <p><strong>Banco:</strong> Banco Ejemplo</p>
               <p><strong>Cuenta:</strong> 1234567890</p>
               <p><strong>Titular:</strong> Juan Pérez</p>
-            </div>
+            </div> -->
             <v-divider class="my-4"></v-divider>
             <!-- Pago Móvil -->
             <div>
@@ -60,19 +60,19 @@
               <v-row dense>
                 <v-col cols="12" sm="6">
                   <strong>Banco:</strong>
-                  <div>Banco Ejemplo</div>
+                  <div>Bancamiga</div>
                 </v-col>
                 <v-col cols="12" sm="6">
                   <strong>Teléfono:</strong>
-                  <div>0414-1234567</div>
+                  <div>04265181924</div>
                 </v-col>
                 <v-col cols="12" sm="6">
-                  <strong>Cédula:</strong>
-                  <div>V-12.345.678</div>
+                  <strong>Rif:</strong>
+                  <div>G200006838</div>
                 </v-col>
                 <v-col cols="12" sm="6">
                   <strong>Código:</strong>
-                  <div>0102</div>
+                  <div>0172</div>
                 </v-col>
               </v-row>
             </div>
