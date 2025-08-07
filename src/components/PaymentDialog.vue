@@ -1,10 +1,16 @@
 <template>
-  <v-dialog v-model="dialogPayment" width="700">
-    <v-card>
-      <v-card-title class="text-h5 grey lighten-2">
-        Pagos en Línea
+  <v-dialog v-model="dialogPayment" max-width="500" content-class="modern-dialog">
+    <v-card class="modern-card">
+      <v-card-title class="modern-title">
+        <v-icon color="#1976d2" left>mdi-credit-card-outline</v-icon>
+        <span>Pagos en Línea</span>
+        <v-spacer></v-spacer>
+        <v-btn icon @click="$emit('close')">
+          <v-icon color="#d54949">mdi-close</v-icon>
+        </v-btn>
       </v-card-title>
-      <v-card-text class="pa-5">
+      <v-divider></v-divider>
+      <v-card-text class="modern-section">
         <v-form ref="paymentForm" v-model="valid" lazy-validation>
             <input type="hidden" v-model="formPayment.id" >
             <input type="hidden" v-model="formPayment.pending_payment_id" readonly>
@@ -111,18 +117,21 @@
           </v-row>
         </v-form>
       </v-card-text>
-      <v-divider></v-divider>
-      <v-card-actions class="justify-end">
-        <v-btn class="ml-0" style="margin-right:auto;">
-          <span>MMV-BCV = {{ valoreuro }}</span>
-        </v-btn>
-        <v-btn color="error" text @click="$emit('close')">
-          Cerrar
-        </v-btn>
-        <v-btn color="primary" text @click="submitPayment">
-          Pagar
-        </v-btn>
-      </v-card-actions>
+      <v-card-actions class="modern-actions">
+      <div class="modern-euro-chip">
+        <span class="modern-euro-label">MMV-BCV</span>
+        <span class="modern-euro-value">{{ valoreuro }}</span>
+      </div>
+      <v-spacer></v-spacer>
+      <!-- <v-btn color="error" class="modern-btn" @click="$emit('close')">
+        <v-icon left small>mdi-close</v-icon>
+        Cerrar
+      </v-btn> -->
+      <v-btn color="primary" class="modern-btn" @click="submitPayment">
+        <v-icon left small>mdi-check-circle-outline</v-icon>
+        Pagar
+      </v-btn>
+    </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -273,9 +282,10 @@ export default class PaymentDialog extends Vue {
     ];
   
     submitPayment() {
-        (this.$refs.paymentForm as any).validate();
+        const isValid = (this.$refs.paymentForm as any).validate();
+        if (!isValid) return;
         if (this.valid) {
-        this.$emit('pay', this.formPayment);
+            this.$emit('pay', this.formPayment);
         }
     }
     getBankData(event: any) {
@@ -288,3 +298,80 @@ export default class PaymentDialog extends Vue {
     }
 }
 </script>
+<style scoped>
+.modern-dialog {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+.modern-card {
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  padding: 0;
+}
+.modern-title {
+  display: flex;
+  align-items: center;
+  font-size: 22px;
+  font-weight: 600;
+  color: #1c3969;
+  padding: 18px 24px 8px 24px;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+}
+.modern-section {
+  padding: 18px 24px 24px 24px;
+}
+.modern-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 16px 24px;
+}
+.modern-euro-chip {
+  display: flex;
+  align-items: center;
+  background: #e3f2fd;
+  border-radius: 24px;
+  box-shadow: 0 2px 8px -4px #c3cfe2;
+  padding: 8px 18px;
+  font-weight: 600;
+  font-size: 16px;
+  color: #1976d2;
+  margin-right: 12px;
+  min-width: 120px;
+}
+.modern-euro-label {
+  margin-left: 6px;
+  font-weight: 500;
+}
+.modern-euro-value {
+  margin-left: 8px;
+  font-weight: 700;
+  color: #1c3969;
+}
+.modern-btn {
+  border-radius: 8px;
+  font-weight: 600;
+  margin-left: 8px;
+  min-width: 100px;
+  box-shadow: 0 2px 8px -4px #c3cfe2;
+}
+@media (max-width: 600px) {
+  .modern-card {
+    border-radius: 10px;
+  }
+  .modern-title, .modern-section, .modern-actions {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .modern-euro-chip {
+    font-size: 14px;
+    padding: 6px 10px;
+    min-width: 90px;
+  }
+  .modern-btn {
+    min-width: 80px;
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+}
+</style>
