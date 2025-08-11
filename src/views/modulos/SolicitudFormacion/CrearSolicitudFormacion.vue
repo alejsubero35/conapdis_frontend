@@ -20,7 +20,7 @@
         <v-col cols="12" sm="6" md="3">
           <v-select
             :items="workshops"
-            item-text="description"
+            item-text="coordination_workshop.description"
             item-value="id"
             label="Taller"
             placeholder="Taller"

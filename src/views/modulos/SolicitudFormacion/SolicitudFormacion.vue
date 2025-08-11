@@ -139,7 +139,7 @@ export default class Usuario extends Vue {
   headers = [
     { text: "Id", value: "id" },
     { text: "Fecha ", value: "proposed_date" },
-    { text: "Taller", value: "workshop.description" },
+    { text: "Taller", value: "workshop.coordination_workshop.description" },
     { text: "Responsable", value: "responsible" },
     { text: "Cantidad", value: "number_of_participants" },
     { text: "Status", value: "status" },

@@ -1,6 +1,6 @@
 <template>
     <div class="content-section">
-	    <v-overlay :value="overlay">
+        <v-overlay :value="overlay">
         <v-progress-circular
             indeterminate
             size="64"
@@ -301,11 +301,11 @@ export default class EditarCliente extends Vue {
     [x: string]: unknown;
     listPrice?: any = [];
     pricelist_id = ''
-	condicionespago?: any = [];
-	overlay = false;
-	title : string = '';
-	subtitle : string = ''
-	dataForm : any = {
+    condicionespago?: any = [];
+    overlay = false;
+    title : string = '';
+    subtitle : string = ''
+    dataForm : any = {
   
     };
     sectiontitle = 'AGREGAR Y LISTAR ASISTENCIAS'
@@ -349,10 +349,10 @@ export default class EditarCliente extends Vue {
     titleModalDelete = ''
     textbody = ''
     idDelete = ''
-	$refs!: {
+    $refs!: {
         dataForm: InstanceType<typeof ValidationObserver>;
     };
-	get FormRequest(): any {
+    get FormRequest(): any {
         return this.dataForm
     }
     updateFecha(){
@@ -388,14 +388,16 @@ export default class EditarCliente extends Vue {
         this.arrayGradoDiscapacidad = gradodiscapacidad.data;
 
         const states : any = await bussinesModule.getStatesAll()
-		this.arrayStates = states.data.data
+        this.arrayStates = states.data.data
 
     }
 
     async getsolicitud(id){
         const {data} : any = await formacionModule.getRequestById(id)
         console.log(data)
-        this.tallername = data.data.workshop.description
+        this.tallername = (data.data.workshop && data.data.workshop.coordination_workshop && data.data.workshop.coordination_workshop.description)
+            ? data.data.workshop.coordination_workshop.description
+            : 'No Asignado'
         this.dataForm.workshop_id = data.data.workshop.id
     }
     async onSubmit(){
@@ -440,7 +442,7 @@ export default class EditarCliente extends Vue {
         }
 
     }
-	reset () {
+    reset () {
         this.$refs.dataForm.reset()
     }
 
@@ -468,15 +470,15 @@ export default class EditarCliente extends Vue {
   
         this.empresaname = storageData.get('_bussines').rif + '-' +storageData.get('_bussines').company_name  
     }
-	data(){
+    data(){
     return{
         rules: [
             (v:any) => !!v || 'Campo requerido'
         ],
-		emailRules: [
-			v => !!v || 'E-mail is requerido',
-			v => /.+@.+/.test(v) || 'E-mail must be valid',
-		], 
+        emailRules: [
+            v => !!v || 'E-mail is requerido',
+            v => /.+@.+/.test(v) || 'E-mail must be valid',
+        ], 
         numberRule: [
          
             v => v >= 0  || 'El valor debe ser mayor a cero',
