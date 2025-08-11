@@ -11,6 +11,10 @@
       </v-card-title>
       <v-divider></v-divider>
       <v-card-text class="modern-section">
+        <div class="modern-note">
+          <v-icon color="#ff9800" left small>mdi-alert-circle-outline</v-icon>
+          <span class="modern-note-text">Debe cancelar el monto exacto indicado en el campo <b>Monto (Bs.)</b> para procesar su pago correctamente.</span>
+        </div>
         <v-form ref="paymentForm" v-model="valid" lazy-validation>
             <input type="hidden" v-model="formPayment.id" >
             <input type="hidden" v-model="formPayment.pending_payment_id" readonly>
@@ -285,6 +289,7 @@ export default class PaymentDialog extends Vue {
         const isValid = (this.$refs.paymentForm as any).validate();
         if (!isValid) return;
         if (this.valid) {
+            this.formPayment.mmv = this.valoreuro;
             this.$emit('pay', this.formPayment);
         }
     }
@@ -354,6 +359,23 @@ export default class PaymentDialog extends Vue {
   margin-left: 8px;
   min-width: 100px;
   box-shadow: 0 2px 8px -4px #c3cfe2;
+}
+/* Nota moderna de advertencia */
+.modern-note {
+  display: flex;
+  align-items: center;
+  background: #fff8e1;
+  border-left: 5px solid #ff9800;
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px -4px #ffe0b2;
+}
+.modern-note-text {
+  color: #b26a00;
+  font-size: 15px;
+  font-weight: 500;
+  margin-left: 8px;
 }
 @media (max-width: 600px) {
   .modern-card {

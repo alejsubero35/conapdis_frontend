@@ -33,7 +33,12 @@
             >
               <!-- Monto column custom rendering -->
               <template v-slot:item.amount="{ item }">
-               {{ Number(item.amount).toFixed(2) }} <span class="grey--text text--darken-2" style="font-size: 0.9em;">(MMV-BCV)</span>
+                <span v-if="item.remaining_times && Number(item.remaining_times) > 0">
+                  {{ Number(item.remaining_times).toFixed(0) }} <span class="grey--text text--darken-2" style="font-size: 0.9em;"> (MMV-BCV)</span>
+                </span>
+                <span v-else>
+                  {{ Number(item.amount).toFixed(0) }} <span class="grey--text text--darken-2" style="font-size: 0.9em;"> (MMV-BCV)</span>
+                </span>
               </template>
               <!-- Estado column custom rendering -->
               <template v-slot:item.status="{ item }">
@@ -47,13 +52,18 @@
                     <span class="font-weight-bold" style="color:#155724">Pagado</span>
                   </v-badge>
                 </span>
+                <span v-else-if="item.status === 'partial'">
+                  <v-badge color="info" dot>
+                    <span class="font-weight-bold" style="color:#0c5460">Parcialmente Pagado</span>
+                  </v-badge>
+                </span>
                 <span v-else>
                   {{ item.status }}
                 </span>
               </template>
               <!-- Acciones column custom rendering -->
               <template v-slot:item.actions="{ item }">
-                <v-btn small v-if="item.status === 'pending'" color="primary" @click="openPaymentDialog(item)">
+                <v-btn small v-if="item.status === 'pending' || item.status === 'partial'" color="primary" @click="openPaymentDialog(item)">
                   <v-icon left>mdi-credit-card</v-icon> Pagar
                 </v-btn>
                 <v-btn small v-else-if="item.status === 'paid'" color="success">
@@ -117,9 +127,12 @@ export default class PaymentCenter extends Vue {
     }
 
    openPaymentDialog(item: any) {
-    console.log('Monto original:', item.amount); // Verifica el valor real
-    const montoConvertido = Number(item.amount * this.valoreuro).toFixed(2);
-    console.log('Monto convertido:', montoConvertido); // Verifica el resultado
+    let montoConvertido;
+    if (item.remaining_times && Number(item.remaining_times) > 0) {
+      montoConvertido = Number(item.remaining_times * this.valoreuro).toFixed(2);
+    } else {
+      montoConvertido = Number(item.amount * this.valoreuro).toFixed(2);
+    }
     this.selectedPayment = { 
         ...item, 
         amount: montoConvertido, // Solo en el modal

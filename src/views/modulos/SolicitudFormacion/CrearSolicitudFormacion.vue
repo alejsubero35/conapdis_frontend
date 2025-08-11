@@ -40,7 +40,7 @@
             dense
             readonly
             v-model="amount_participant"
-            prefix="$"
+            prefix="MMV-BCV = "
           ></v-text-field>
         </v-col>
         <v-col cols="12" sm="4" md="3">
@@ -258,7 +258,7 @@
             v-model="dataForm.workshop_amount"
             type="number"
             readonly
-            prepend-inner-icon="mdi-currency-usd"
+            prefix="MMV-BCV = "
             solo
           ></v-text-field>
         </v-col>
