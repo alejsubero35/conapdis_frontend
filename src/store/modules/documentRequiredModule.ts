@@ -93,8 +93,8 @@ class DocumentRequired extends VuexModule {
     }
 
     @Action
-    async getDocumentsByBussines(bussinesId: number) {
-        return await http.get(`/required-documents/${bussinesId}`)
+    async getDocumentsByBussines(bussinesId: number) {console.log('bussinesId', bussinesId)
+        return await http.get(`/required-documents-busines/${bussinesId}`)
             .then((payload: any) => {
                 return payload;
             })

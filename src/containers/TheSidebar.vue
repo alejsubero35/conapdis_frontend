@@ -31,60 +31,59 @@
       @click.native="$store.commit('set', ['sidebarMinimize', !minimize])"
     />
     <div class="p-3">
-      <!-- <CButton color="primary" block @click="dialog = true">
+      <CButton color="primary" block @click="dialog = true">
         Datos Bancarios
-      </CButton> -->
-      <v-dialog v-model="dialog" max-width="500">
-        <v-card>
-          <v-card-title
-            style="color: #1c3969; font-weight: bold"
-            class="headline"
-            >Información Bancaria</v-card-title
-          >
+      </CButton>
+      <v-dialog v-model="dialog" max-width="500" content-class="modern-dialog">
+        <v-card class="modern-card">
+          <v-card-title class="modern-title">
+            <v-icon color="#1976d2" left>mdi-bank</v-icon>
+            <span>Información Bancaria</span>
+            <v-spacer></v-spacer>
+            <v-btn icon @click="dialog = false">
+              <v-icon color="#d54949">mdi-close</v-icon>
+            </v-btn>
+          </v-card-title>
+          <v-divider></v-divider>
           <v-card-text>
-            <!-- Información Bancaria -->
-            <div>
-              <p><strong>Banco:</strong> Banco Ejemplo</p>
-              <p><strong>Cuenta:</strong> 1234567890</p>
-              <p><strong>Titular:</strong> Juan Pérez</p>
-            </div>
-            <v-divider class="my-4"></v-divider>
-            <!-- Pago Móvil -->
-            <div>
-              <h5
-                class="mb-3"
-                style="color: #1c3969; font-weight: bold; font-size: 24px"
-              >
+            <div class="modern-section">
+              <h5 class="modern-subtitle">
+                <v-icon color="#4f9cb9" left>mdi-cellphone-message</v-icon>
                 Pago Móvil
               </h5>
               <v-row dense>
-                <v-col cols="12" sm="6">
-                  <strong>Banco:</strong>
-                  <div>Banco Ejemplo</div>
+                <v-col cols="12" sm="6" class="modern-item">
+                  <v-icon color="#fdbd1a" left>mdi-bank-outline</v-icon>
+                  <span class="modern-label">Banco:</span>
+                  <span class="modern-value">Bancamiga</span>
                 </v-col>
-                <v-col cols="12" sm="6">
-                  <strong>Teléfono:</strong>
-                  <div>0414-1234567</div>
+                <v-col cols="12" sm="6" class="modern-item">
+                  <v-icon color="#4f9cb9" left>mdi-phone</v-icon>
+                  <span class="modern-label">Teléfono:</span>
+                  <span class="modern-value">04265181924</span>
+                  <v-icon small class="ml-2 copy-icon" @click="copyToClipboard('04265181924')">mdi-content-copy</v-icon>
                 </v-col>
-                <v-col cols="12" sm="6">
-                  <strong>Cédula:</strong>
-                  <div>V-12.345.678</div>
+                <v-col cols="12" sm="6" class="modern-item">
+                  <v-icon color="#a9ce58" left>mdi-card-account-details</v-icon>
+                  <span class="modern-label">Rif:</span>
+                  <span class="modern-value">G200006838</span>
+                  <v-icon small class="ml-2 copy-icon" @click="copyToClipboard('G200006838')">mdi-content-copy</v-icon>
                 </v-col>
-                <v-col cols="12" sm="6">
-                  <strong>Código:</strong>
-                  <div>0102</div>
+                <v-col cols="12" sm="6" class="modern-item">
+                  <v-icon color="#d54949" left>mdi-numeric</v-icon>
+                  <span class="modern-label">Código:</span>
+                  <span class="modern-value">0172</span>
+                  <v-icon small class="ml-2 copy-icon" @click="copyToClipboard('0172')">mdi-content-copy</v-icon>
                 </v-col>
               </v-row>
             </div>
           </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="dialog = false">Cerrar</v-btn>
-          </v-card-actions>
         </v-card>
       </v-dialog>
+       <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color" />
     </div>
   </CSidebar>
+  
 </template>
 
 <script>
@@ -112,6 +111,10 @@ export default {
       bussine: "",
       token: "",
       dialog: false,
+      snackbar: false,
+      textmsj: "",
+      color: "",
+      timeout: 2000,
     };
   },
   mounted() {
@@ -128,6 +131,32 @@ export default {
     currentRouteName() {
       return this.$route.name;
     },
+  },
+  methods: {
+    copyToClipboard(value) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(value).then(() => {
+          this.textmsj = "Copiado: " + value;
+          this.color = "success";
+          this.snackbar = true;
+          this.back();
+        });
+      } else {
+        // Fallback para navegadores antiguos
+        const textarea = document.createElement('textarea');
+        textarea.value = value;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert('Copiado: ' + value);
+      }
+    },
+    back() {
+      setTimeout(() => {
+        this.snackbar = false;
+      }, 2000);
+    }
   },
 };
 </script>
@@ -172,5 +201,61 @@ export default {
   color: #fff;
   background: rgba(255, 255, 255, 0.35);
   border-radius: 35px 0px 0px 35px;
+}
+.copy-icon {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.copy-icon:hover {
+  color: #1976d2;
+}
+// Modern UI styles
+.modern-dialog {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+.modern-card {
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  padding: 0;
+}
+.modern-title {
+  display: flex;
+  align-items: center;
+  font-size: 22px;
+  font-weight: 600;
+  color: #1c3969;
+  padding: 18px 24px 8px 24px;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+}
+.modern-section {
+  padding: 18px 24px 24px 24px;
+}
+.modern-subtitle {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 500;
+  color: #1976d2;
+  margin-bottom: 18px;
+}
+.modern-item {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px -4px #c3cfe2;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+}
+.modern-label {
+  font-weight: 600;
+  color: #1c3969;
+  margin-left: 8px;
+}
+.modern-value {
+  font-weight: 400;
+  color: #333;
+  margin-left: 6px;
 }
 </style>

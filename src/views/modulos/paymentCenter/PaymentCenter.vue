@@ -4,6 +4,7 @@
     <PaymentDialog
       :dialogPayment="dialogPayment"
       :formPayment="selectedPayment"
+      :valoreuro="valoreuro"
       @close="dialogPayment = false"
       @pay="processPayment"
     />
@@ -32,7 +33,12 @@
             >
               <!-- Monto column custom rendering -->
               <template v-slot:item.amount="{ item }">
-                {{ Math.floor(item.amount) }} <span class="grey--text text--darken-2" style="font-size: 0.9em;">(MMV-BCV)</span>
+                <span v-if="item.remaining_times && Number(item.remaining_times) > 0">
+                  {{ Number(item.remaining_times).toFixed(0) }} <span class="grey--text text--darken-2" style="font-size: 0.9em;"> (MMV-BCV)</span>
+                </span>
+                <span v-else>
+                  {{ Number(item.amount).toFixed(0) }} <span class="grey--text text--darken-2" style="font-size: 0.9em;"> (MMV-BCV)</span>
+                </span>
               </template>
               <!-- Estado column custom rendering -->
               <template v-slot:item.status="{ item }">
@@ -46,13 +52,18 @@
                     <span class="font-weight-bold" style="color:#155724">Pagado</span>
                   </v-badge>
                 </span>
+                <span v-else-if="item.status === 'partial'">
+                  <v-badge color="info" dot>
+                    <span class="font-weight-bold" style="color:#0c5460">Parcialmente Pagado</span>
+                  </v-badge>
+                </span>
                 <span v-else>
                   {{ item.status }}
                 </span>
               </template>
               <!-- Acciones column custom rendering -->
               <template v-slot:item.actions="{ item }">
-                <v-btn small v-if="item.status === 'pending'" color="primary" @click="openPaymentDialog(item)">
+                <v-btn small v-if="item.status === 'pending' || item.status === 'partial'" color="primary" @click="openPaymentDialog(item)">
                   <v-icon left>mdi-credit-card</v-icon> Pagar
                 </v-btn>
                 <v-btn small v-else-if="item.status === 'paid'" color="success">
@@ -92,8 +103,18 @@ export default class PaymentCenter extends Vue {
     textmsj = "";
     color = "";
     timeout = 2000;
+    valoreuro: number = 0;
     mounted() {
         this.fetchPendingPayments();
+        this.getvalorEuro();
+    }
+    async getvalorEuro() {
+         const valormmv: any = await paymentModule.getValueMMV();
+         if(valormmv.status == 200) {
+            this.valoreuro = valormmv.data.value;
+         } else {
+            this.valoreuro = 0; // Valor por defecto si falla la obtención
+         }   
     }
     async fetchPendingPayments() {
         this.overlay = true;
@@ -105,12 +126,27 @@ export default class PaymentCenter extends Vue {
     
     }
 
+   openPaymentDialog(item: any) {
+    let montoConvertido;
+    if (item.remaining_times && Number(item.remaining_times) > 0) {
+      montoConvertido = Number(item.remaining_times * this.valoreuro).toFixed(2);
+    } else {
+      montoConvertido = Number(item.amount * this.valoreuro).toFixed(2);
+    }
+    this.selectedPayment = { 
+        ...item, 
+        amount: montoConvertido, // Solo en el modal
+        amount_payment: montoConvertido, 
+        pending_payment_id: item.id 
+    };
+    this.dialogPayment = true;
+}
 
-    openPaymentDialog(item: any) {
+   /*  openPaymentDialog(item: any) {
         // Asignar amount_payment y pending_payment_id
         this.selectedPayment = { ...item, amount_payment: item.amount, pending_payment_id: item.id };
         this.dialogPayment = true;
-    }
+    } */
     async processPayment(paymentData: any) {
         this.overlay = true;
         const process: any = await paymentModule.processPayment(paymentData);

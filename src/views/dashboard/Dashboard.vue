@@ -119,7 +119,6 @@
               </ul>
            </div>
       </div>
-  
     </div>
   </div>
 </template>
@@ -146,17 +145,23 @@ export default {
 }
 .contenedor{
  display: flex;
+ flex-wrap: wrap;
+ gap: 20px;
 }
 .div1{
   padding: 20px;
   background: white;
   border-radius: 10px;
   margin-right: 25px;
+  min-width: 280px;
+  flex: 1 1 350px;
 }
 .div2{
   padding: 20px;
   background: white;
   border-radius: 10px;
+  min-width: 280px;
+  flex: 1 1 350px;
 }
 .mision{
   padding: 10px;
@@ -181,5 +186,40 @@ ul li {
   flex-wrap: wrap;
 
 
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 900px) {
+  .contenedor {
+    flex-direction: column;
+    gap: 0;
+  }
+  .div1, .div2 {
+    margin-right: 0;
+    margin-bottom: 20px;
+    min-width: unset;
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .div1, .div2 {
+    padding: 10px;
+    border-radius: 6px;
+  }
+  .mision {
+    font-size: 12px;
+    padding: 6px;
+  }
+  ul li {
+    padding: 6px;
+    font-size: 12px;
+  }
+  h4 {
+    font-size: 16px;
+  }
 }
 </style>

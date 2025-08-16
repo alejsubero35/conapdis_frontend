@@ -10,7 +10,7 @@ import {
 import store from '@/store';
 import { Bussines } from '../interfaces/Bussines';
 import { UserToken } from '../interfaces/UserToken';
-import { http, https } from '@/utils/http';
+import { http, https, URLBASE } from '@/utils/http';
 import { deserialize } from 'jsonapi-fractal'
 import storageData from '@/store/services/storageService'
 
@@ -124,6 +124,17 @@ class paymentModule extends VuexModule {
             })
         return dataPayment;
     }
+    @Action
+    async getValueMMV() {
+        return await http.get(`${URLBASE}/api/bcv-currency?currency=euro`)
+            .then((payload: any) => {
+                return payload;
+            })
+            .catch(() => {
+                return { data: null };
+            });
+    }
+    
 
 }
 
