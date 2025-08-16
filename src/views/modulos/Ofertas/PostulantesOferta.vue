@@ -433,8 +433,9 @@ export default class EditarCliente extends Vue {
         return  date.toISOString();
     }
 
-    downloadCV(item) {console.log(item)
-        this.$router.push({ name: "downloadcv", params: { id: item.pcd_id } });
+    downloadCV(item) {
+        // Backend espera user_id en getDataCurriculo($id)
+        this.$router.push({ name: "downloadcv", params: { id: item.user_id } });
     }
    
     async dataIndex(){  

@@ -217,33 +217,58 @@ import ofertModule from '@/store/modules/ofertModule';
              let formatted_date = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
              return  formatted_date;
          },
-         async getDataCV(id){  
+         // Calcula edad a partir de una fecha (ISO o DD/MM/YYYY)
+         calculateAge(fecha) {
+            if (!fecha) return ''
+            let birth
+            if (typeof fecha === 'string' && fecha.includes('/')) {
+                const [dd, mm, yyyy] = fecha.split('/')
+                birth = new Date(parseInt(yyyy, 10), parseInt(mm, 10) - 1, parseInt(dd, 10))
+            } else {
+                birth = new Date(fecha)
+            }
+            if (isNaN(birth.getTime())) return ''
+            const today = new Date()
+            let age = today.getFullYear() - birth.getFullYear()
+            const m = today.getMonth() - birth.getMonth()
+            if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+                age--
+            }
+            return age
+         },
+      async getDataCV(id){  
             this.overlay = true
             const data = await ofertModule.getDataCV(id)  
             console.log(data)
             if(data.status == 200){
-                this.fullname       = data.data.postulaPcd.nombres_postula_pcd+' '+data.data.postulaPcd.apellidos_postula_pcd
-                this.cedula         = data.data.postulaPcd.cedula_postula_pcd
-                this.telefono_1     = data.data.postulaPcd.telefono1_postula_pcd
-                this.telefono_2     = data.data.postulaPcd.telefono2_postula_pcd
-                this.fecha_nac      = data.data.postulaPcd.fecha_nacimiento_postula_pcd
-                this.edad           = 20//data.data.postulaPcd.
-                this.certificado    = data.data.pdc.numero_certificado
-                this.direccion      = data.data.postulaPcd.direccion_postula_pcd
-                this.sexo           = data.data.postulaPcd.nombre
-                this.profesion      = data.data.postulaPcd.desc_profesion_postula
-                this.nivel          = data.data.formacion_academica.desc_grado_instruccion_postula
-                this.carrera        = data.data.formacion_academica.desc_carrera_postula
-                this.instituto      = data.data.formacion_academica.instituto_postula_pcd_laboral
-                this.culminacion    = data.data.formacion_academica.ano_culminacion_postula_pcd_laboral
-                this.condicion      = data.data.formacion_academica.desc_condicion_postula
-                this.empresatrabaja = data.data.laborales.empresa_postula_pcd_laboral
-                this.cargo          = data.data.laborales.cargo_postula_pcd_laboral
-                this.inicio         = data.data.laborales.fecha_postula_desde
-                this.fin            = data.data.laborales.fecha_postula_hasta
-                this.idioma         = data.data.idiomas.desc_idioma_postula
-                this.nivelidioma    = data.data.idiomas.desc_nivel_postula
-                this.habilidades    = data.data.postulaPcd.habilidades_postula_pcd
+          const p = data.data.postulaPcd || {}
+          const fa = data.data.formacion_academica || {}
+          const lab = data.data.laborales || {}
+          const idi = data.data.idiomas || {}
+          const pdc = data.data.pdc || {}
+
+          this.fullname       = [p.nombres_postula_pcd, p.apellidos_postula_pcd].filter(Boolean).join(' ')
+          this.cedula         = p.cedula_postula_pcd || ''
+          this.telefono_1     = p.telefono1_postula_pcd || ''
+          this.telefono_2     = p.telefono2_postula_pcd || ''
+                this.fecha_nac      = p.fecha_nacimiento_postula_pcd || ''
+                this.edad           = this.calculateAge(this.fecha_nac)
+          this.certificado    = pdc.numero_certificado || ''
+          this.direccion      = p.direccion_postula_pcd || ''
+          this.sexo           = p.nombre || ''
+          this.profesion      = p.desc_profesion_postula || ''
+          this.nivel          = fa.desc_grado_instruccion_postula || ''
+          this.carrera        = fa.desc_carrera_postula || ''
+          this.instituto      = fa.instituto_postula_pcd_laboral || ''
+          this.culminacion    = fa.ano_culminacion_postula_pcd_laboral || ''
+          this.condicion      = fa.desc_condicion_postula || ''
+          this.empresatrabaja = lab.empresa_postula_pcd_laboral || ''
+          this.cargo          = lab.cargo_postula_pcd_laboral || ''
+          this.inicio         = lab.fecha_postula_desde || ''
+          this.fin            = lab.fecha_postula_hasta || ''
+          this.idioma         = idi.desc_idioma_postula || ''
+          this.nivelidioma    = idi.desc_nivel_postula || ''
+          this.habilidades    = p.habilidades_postula_pcd || ''
                 this.overlay = false
             } 
    
@@ -257,6 +282,26 @@ import ofertModule from '@/store/modules/ofertModule';
         
 
      }
+        ,
+        // Calcula la edad desde una fecha (acepta ISO o DD/MM/YYYY)
+        calculateAge(fecha) {
+            if (!fecha) return ''
+            let birth
+            if (typeof fecha === 'string' && fecha.includes('/')) {
+                const [dd, mm, yyyy] = fecha.split('/')
+                birth = new Date(parseInt(yyyy, 10), parseInt(mm, 10) - 1, parseInt(dd, 10))
+            } else {
+                birth = new Date(fecha)
+            }
+            if (isNaN(birth.getTime())) return ''
+            const today = new Date()
+            let age = today.getFullYear() - birth.getFullYear()
+            const m = today.getMonth() - birth.getMonth()
+            if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+                age--
+            }
+            return age
+        }
  }
  </script>
  <style scoped>

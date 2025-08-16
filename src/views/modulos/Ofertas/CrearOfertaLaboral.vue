@@ -23,7 +23,7 @@
         <v-col cols="12" sm="6" md="6">
           <v-select
             :items="arrayCharges"
-            item-text="description"
+            item-text="nombre"
             item-value="id"
             label="Cargo"
             placeholder="Cargo"

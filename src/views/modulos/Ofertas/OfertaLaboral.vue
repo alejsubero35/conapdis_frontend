@@ -45,10 +45,10 @@
                     v-bind="attrs"
                     v-on="on"
                   >
-                    <v-icon>mdi-eye-circle</v-icon>
+          <v-icon>mdi-pencil</v-icon>
                   </v-btn>
                 </template>
-                <span>Ver Oferta</span>
+        <span>Editar Oferta</span>
               </v-tooltip>
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">

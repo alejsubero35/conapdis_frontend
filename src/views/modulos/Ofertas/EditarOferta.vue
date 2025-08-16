@@ -23,7 +23,7 @@
         <v-col cols="12" sm="6" md="6">
           <v-select
             :items="arrayCharges"
-            item-text="description"
+            item-text="nombre"
             item-value="id"
             label="Cargo"
             placeholder="Cargo"
@@ -109,7 +109,7 @@
       <v-row>
         <v-col
           v-for="(discapacidades, index) in arrayDiscapacidades"
-          :key="index"
+          :key="discapacidades.id"
           cols="12"
           sm="4"
           md="4"
@@ -117,7 +117,8 @@
           <v-checkbox
             :label="discapacidades.nombre"
             color="indigo"
-            :value="discapacidades.id"
+            :input-value="selectedDiscapacidadIds.includes(discapacidades.id)"
+            @change="toggleDiscapacidad(discapacidades.id)"
             hide-details
             class="ml-5"
             dense
@@ -125,7 +126,7 @@
         </v-col>
       </v-row>
       <v-row class="d-flex justify-center p-5">
-        <!-- <v-btn @click="onSubmit" color="primary" small>Guardar</v-btn> -->
+        <v-btn @click="onSubmit" color="primary" small>Actualizar</v-btn>
       </v-row>
     </v-form>
     <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color" />
@@ -167,6 +168,8 @@ export default class EditarCliente extends Vue {
   arrayCharges = [];
   arrayProfession = [];
   arrayDiscapacidades = [];
+  // IDs seleccionados de discapacidades
+  selectedDiscapacidadIds: number[] = [];
   date = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
     .toISOString()
     .substr(0, 10);
@@ -191,15 +194,44 @@ export default class EditarCliente extends Vue {
   getProfesionObject(event) {
     this.dataForm.ofert_profession_id = event.id;
   }
-  selectChk(disc, idx) {
-    let index = this.arrayChk.findIndex(({ id }) => id == disc.id);
-
-    if (index >= 0) {
-      this.arrayChk = this.arrayChk.filter((val) => val.id != disc.id);
+  // Alterna selección por ID para el listado de discapacidades
+  toggleDiscapacidad(id: number) {
+    const idx = this.selectedDiscapacidadIds.indexOf(id);
+    if (idx >= 0) {
+      this.selectedDiscapacidadIds.splice(idx, 1);
     } else {
-      this.arrayChk.push(disc);
+      this.selectedDiscapacidadIds.push(id);
     }
-    this.dataForm.arraydisc = this.arrayChk;
+  }
+
+  onSubmit() {
+    const valid: any = this.$refs.dataForm.validate();
+
+    if (valid) {
+      this.saveOfert();
+    } else {
+      this.dialog = true;
+    }
+  }
+  async saveOfert() {
+    this.overlay = true;
+  // Enviar las discapacidades seleccionadas como array de IDs
+  this.dataForm.arraydisc = this.selectedDiscapacidadIds;
+    const data = await ofertModule.save(this.FormRequest);
+    console.log(data);
+    if (data.code == 200 || data.code == 201) {
+      this.textmsj = "Oferta Actualizada con Éxito.";
+      this.color = "success";
+      this.snackbar = true;
+      this.back();
+      this.overlay = false;
+    } else {
+      this.textmsj = "Error al Registrar los datos de la Oferta.";
+      this.color = "error";
+      this.snackbar = true;
+      this.backError();
+      this.overlay = false;
+    }
   }
   isChecked(id) {
     return this.checkAll; // Si checkAll es true, todos los checkboxes están marcados
@@ -210,13 +242,22 @@ export default class EditarCliente extends Vue {
     this.arrayCharges = charges.data;
     const profession: any = await ofertModule.getprofession();
     this.arrayProfession = profession.data;
+  // Cargar todas las discapacidades para poder mostrarlas y preseleccionar
+  const discapacidades: any = await ofertModule.getDiscapacidades();
+  this.arrayDiscapacidades = (discapacidades.data || []).map((d) => ({
+    ...d,
+    id: Number(d.id),
+  }));
   }
   async getOferta(id) {
     const data: any = await ofertModule.getOfertById(id);
     this.dataForm = data.data.oferts;
+  // Asegurar que el id esté en el payload para actualización
+  this.dataForm.id = data.data.oferts.id;
     this.cargo_id = data.data.oferts.id_cargo_postula_oferta;
     this.profesion_id = data.data.oferts.id_profesion_postula_oferta;
-    this.arrayDiscapacidades = data.data.discapacidades;
+  // Preseleccionar las discapacidades ya asociadas a la oferta (normalizando a number)
+  this.selectedDiscapacidadIds = (data.data.discapacidades || []).map((d) => Number(d.id));
   }
 
   reset() {
@@ -244,8 +285,9 @@ export default class EditarCliente extends Vue {
       storageData.get("_bussines").rif +
       "-" +
       storageData.get("_bussines").company_name;
-    this.dataForm.id_postula_empresa = storageData.get("_bussines").id;
-    this.dataForm.fecha_postula_oferta = this.date;
+  // Alinear nombres de campos con el alta de oferta
+  this.dataForm.empresa_id = storageData.get("_bussines").id;
+  this.dataForm.fecha = this.date;
   }
   data() {
     return {
