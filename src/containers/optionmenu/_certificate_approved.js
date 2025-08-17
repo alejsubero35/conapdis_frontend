@@ -195,12 +195,12 @@ export default [
             to: '/trainingevaluation',
             icon: 'cibOpenstreetmap'
           }, */
-          {
+          /* {
             _name: 'CSidebarNavItem',
             name: 'Citas',
             to: '/citas',
             icon: 'cibMyspace'
-          },
+          }, */
         ]
       },
       {

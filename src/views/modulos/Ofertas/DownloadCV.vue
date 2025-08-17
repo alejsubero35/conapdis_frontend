@@ -240,13 +240,13 @@ import ofertModule from '@/store/modules/ofertModule';
       async getDataCV(id){  
             this.overlay = true
             const data = await ofertModule.getDataCV(id)  
-            console.log(data)
+            console.log(data.data.postulaPcd)
             if(data.status == 200){
-          const p = data.data.postulaPcd || {}
-          const fa = data.data.formacion_academica || {}
-          const lab = data.data.laborales || {}
-          const idi = data.data.idiomas || {}
-          const pdc = data.data.pdc || {}
+                const p = data.data.postulaPcd || {}
+                const fa = data.data.formacion_academica || {}
+                const lab = data.data.laborales || {}
+                const idi = data.data.idiomas || {}
+                const pdc = data.data.pdc || {}
 
           // set photo if provided
           this.actualPhoto   = pdc.url_foto || ''

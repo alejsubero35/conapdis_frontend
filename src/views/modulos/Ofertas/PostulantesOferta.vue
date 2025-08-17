@@ -230,14 +230,14 @@
                     ></v-text-field>
                 </v-col>
                 </v-row>
-                <v-row v-show="existCita">
+                <!-- <v-row v-show="existCita">
                     <v-col cols="12" sm="12" md="12" class="p-0">
                         <v-textarea
                             label="Gestión"
                             placeholder="Gestión"
                             outlined
                             dense
-                            v-model="dataFormCita.gestion_cita_oferta_pcd"
+                            v-model="dataFormCita.gestion"
                             rows="2"
                         ></v-textarea>
                     </v-col>
@@ -247,11 +247,11 @@
                             placeholder="Acuerdos"
                             outlined
                             dense
-                            v-model="dataFormCita.acuerdos_cita_oferta_pcd"
+                            v-model="dataFormCita.acuerdos"
                             rows="2"
                         ></v-textarea>
                     </v-col>
-                </v-row>
+                </v-row> -->
             </v-form>
     
             <v-card-actions v-if="validateCita == 1">
@@ -393,10 +393,10 @@ export default class EditarCliente extends Vue {
         if(item.citado == 0){
             this.titlecita = 'Ver Cita'
             this.existCita = true
-            this.dataFormCita.hora_cita_oferta_pcd = item.hora_cita_oferta_pcd
-            this.dataFormCita.contacto_cita_oferta_pcd = item.contacto_cita_oferta_pcd
-            this.dataFormCita.telefono_cita_oferta_pcd = item.telefono_cita_oferta_pcd
-            this.date = item.fecha_cita_oferta_pcd
+            this.dataFormCita.hora = item.hora
+            this.dataFormCita.contacto = item.contacto
+            this.dataFormCita.telefono = item.telefono
+            this.date = item.fecha
         }else{
             this.existCita = false
         }
