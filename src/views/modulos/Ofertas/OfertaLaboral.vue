@@ -264,7 +264,7 @@ export default class Usuario extends Vue {
       params: { id: id },
     });
   }
-  postulantes(item) {
+  postulantes(item) {console.log(item)
     if (item.postulantes.length == 0) {
       this.color = "warning";
       this.textmsj = "Esta Oferta no tiene postulantes asignados.";

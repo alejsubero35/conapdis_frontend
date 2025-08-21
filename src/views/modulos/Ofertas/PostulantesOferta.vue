@@ -81,13 +81,13 @@
                                         v-bind="attrs"
                                         v-on="on"
                                     >
-                                        <v-icon v-if="item.citado == 1">mdi-briefcase-plus</v-icon>
-                                        <v-icon v-else>mdi-file-eye</v-icon>
+                                        <v-icon v-if="item.cita_id">mdi-file-eye</v-icon>
+                                        <v-icon v-else> mdi-briefcase-plus</v-icon>
                                       
                                     </v-btn>
                                 </template>
-                                <span v-if="item.citado == 1">Crear Cita</span>
-                                <span v-else>Ver Cita</span>
+                                <span v-if="item.cita_id">Ver Cita</span>
+                                <span v-else>Crear Cita</span>
                             </v-tooltip>
                             <v-tooltip top>
                                 <template v-slot:activator="{on, attrs}">
@@ -178,7 +178,7 @@
                             v-bind="attrs"
                             v-on="on"
                             dense 
-                            :disabled="(validateCita == 0) ? disabled = true : disabled = false"
+                            :disabled="(validateCita > 0) ? disabled = true : disabled = false"
                         ></v-text-field>
                         </template>
                         <v-date-picker
@@ -200,7 +200,7 @@
                         :rules="rules"
                         v-model="dataFormCita.hora"
                         type="time"
-                        :disabled="(validateCita == 0) ? disabled = true : disabled = false"
+                        :disabled="(validateCita > 0) ? disabled = true : disabled = false"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
@@ -212,7 +212,7 @@
                         :rules="rules"
                         v-model="dataFormCita.contacto"
                         type="text"
-                        :disabled="(validateCita == 0) ? disabled = true : disabled = false"
+                        :disabled="(validateCita > 0) ? disabled = true : disabled = false"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
@@ -226,11 +226,11 @@
                         type="number"
                         min="0"
                         max="11"
-                        :disabled="(validateCita == 0) ? disabled = true : disabled = false"
+                        :disabled="(validateCita > 0) ? disabled = true : disabled = false"
                     ></v-text-field>
                 </v-col>
                 </v-row>
-                <v-row v-show="existCita">
+                <!-- <v-row v-show="existCita">
                     <v-col cols="12" sm="12" md="12" class="p-0">
                         <v-textarea
                             label="Gestión"
@@ -251,16 +251,22 @@
                             rows="2"
                         ></v-textarea>
                     </v-col>
-                </v-row>
+                </v-row> -->
             </v-form>
-    
-            <v-card-actions v-if="validateCita == 1">
+
+            <v-card-actions v-if="validateCita == null">
                 <v-spacer></v-spacer>
                 <v-btn color="danger" small @click="dialogCita = false">
                     Cancelar
                 </v-btn>
                 <v-btn color="primary" small @click="saveCita()">
                     Guardar
+                </v-btn>
+            </v-card-actions>
+            <v-card-actions v-else>
+                <v-spacer></v-spacer>
+                <v-btn color="danger" small @click="dialogCita = false">
+                    Cancelar
                 </v-btn>
             </v-card-actions>
             </v-card>
@@ -331,7 +337,7 @@ export default class EditarCliente extends Vue {
     cantidad_postula_oferta = ''
     experiencia_postula_oferta = ''
     existCita = false
-    validateCita = 1
+    validateCita = 0
     titlecita = 'Realizar Cita'
 	$refs!: {
         dataFormCita: InstanceType<typeof ValidationObserver>;
@@ -378,27 +384,32 @@ export default class EditarCliente extends Vue {
         this.$router.push({ name: "crearofertalaboral"});
     }
 
-    eliminar(item){
+    eliminar(item){console.log(item)
         this.dialogDelete = true;
         this.textbody = 'Confirme que desea Rechazar al Postulante'
         this.titlemodal = 'Rechazar Postulante'
-        this.formRechazar.id_postula_oferta  =  this.$route.params.id
+        this.formRechazar.id_postula_oferta  =  item.ofert_postulation_id
         this.formRechazar.id_pcd_postula_pcd = item.id_pcd_postula_pcd
     }
     
     getCita(item){console.log(item)
         this.dataFormCita.personas_discapacidad_id = item.personas_discapacidad_id
         this.dialogCita = true 
-        this.validateCita = item.citado
-        if(item.citado == 0){
+        this.validateCita = item.cita_id    
+        console.log(this.validateCita);
+        if(item.cita_id > 0){
             this.titlecita = 'Ver Cita'
             this.existCita = true
-            this.dataFormCita.hora_cita_oferta_pcd = item.hora_cita_oferta_pcd
-            this.dataFormCita.contacto_cita_oferta_pcd = item.contacto_cita_oferta_pcd
-            this.dataFormCita.telefono_cita_oferta_pcd = item.telefono_cita_oferta_pcd
-            this.date = item.fecha_cita_oferta_pcd
+            this.dataFormCita.hora = item.hora
+            this.dataFormCita.contacto = item.contacto
+            this.dataFormCita.telefono = item.telefono
+            this.date = item.fecha
         }else{
             this.existCita = false
+            this.dataFormCita.hora = ''
+            this.dataFormCita.contacto = ''
+            this.dataFormCita.telefono = ''
+            this.date = item.fecha
         }
     }
 
@@ -413,7 +424,7 @@ export default class EditarCliente extends Vue {
             this.dialogDelete = event;
             this.getPostulantesAll(this.$route.params.id); 
             this.color = 'success'
-            this.textmsj = 'Usuario Eliminado con Éxito.'
+            this.textmsj = 'Postulante Rechazado con Éxito.'
             this.snackbar = true
             this.closeSnackbar()
             this.overlay = false
