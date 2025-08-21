@@ -97,7 +97,7 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col v-show="showoficial" cols="12" sm="6" md="3">
+              <v-col v-if="bussinesform.type_rif != 6" cols="12" sm="6" md="3">
                 <v-text-field
                   label="Tomo"
                   placeholder="Tomo"
@@ -108,7 +108,7 @@
                   "
                 ></v-text-field>
               </v-col>
-              <v-col v-show="showoficial" cols="12" sm="6" md="3">
+              <v-col v-if="bussinesform.type_rif != 6" cols="12" sm="6" md="3">
                 <v-text-field
                   label="Folio"
                   placeholder="Folio"
@@ -119,7 +119,7 @@
                   "
                 ></v-text-field>
               </v-col>
-              <v-col v-show="showogaceta" cols="12" sm="6" md="6">
+              <v-col v-if="bussinesform.type_rif == 6" cols="12" sm="6" md="6">
                 <v-text-field
                   label="Gaceta Oficial"
                   placeholder="Gaceta Oficial"
@@ -310,6 +310,26 @@
             <v-row>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
+                  label="Email"
+                  placeholder="Email"
+                  type="email"
+                  dense
+                  :rules="rules"
+                  v-model="bussinesform.email_r"
+                  @blur="validatEmail()"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field
+                  label="Username"
+                  placeholder="username"
+                  dense
+                  v-model="bussinesform.username"
+                  readonly
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field
                   label="Nombre"
                   placeholder="Nombres Responsable de la Aplicación"
                   dense
@@ -332,25 +352,7 @@
                   "
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field
-                  label="Email"
-                  placeholder="Email"
-                  type="email"
-                  dense
-                  v-model="bussinesform.email_r"
-                  @blur="validatEmail()"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field
-                  label="Username"
-                  placeholder="username"
-                  dense
-                  v-model="bussinesform.username"
-                  readonly
-                ></v-text-field>
-              </v-col>
+           
               <!-- <v-col cols="12" sm="6" md="6">
                 <v-text-field   
                 :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"   
@@ -854,7 +856,7 @@
       <v-card>
         <v-card-title class="text-h5"> Notificación </v-card-title>
         <v-card-text>
-          {{ dataModalAlert }}
+          {{ titlemodalalert }}
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -1298,7 +1300,7 @@ export default class Bussines extends Vue {
       if (validate.data.length > 0) {
         this.dialogOpen = true;
         this.bussinesform.email_r = "";
-        this.titlemodalalert = "Este Correo ya existe";
+        this.titlemodalalert = "Este Correo ya existe en el Sistema.";
       } else {
       }
     }
