@@ -1,5 +1,6 @@
 import 'core-js/stable'
 import Vue from 'vue'
+import './plugins/sentry'
 import _Vue from 'vue'
 import App from '@/App.vue'
 import router from './router'
@@ -58,7 +59,7 @@ Vue.prototype.$log = console.log.bind(console)
 
 
 
-new Vue({
+const appInstance = new Vue({
   el: '#app',
   router,
   store,
@@ -67,5 +68,7 @@ new Vue({
   vuetify,
   render: h => h(App)
 })
+
+;(window as any).$router = router
 
 

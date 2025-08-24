@@ -49,7 +49,9 @@
     "vuex-class": "^0.3.2",
     "vuex-module-decorators": "^0.17.0",
     "vuex-persistedstate": "^4.1.0",
-    "workbox-webpack-plugin": "^6.5.3"
+    "workbox-webpack-plugin": "^6.5.3",
+    "@sentry/vue": "^7.114.0",
+    "@sentry/tracing": "^7.114.0"
   },
   "devDependencies": {
     "@types/inflected": "^1.1.29",
