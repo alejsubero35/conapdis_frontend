@@ -31,7 +31,7 @@ if (dsn) {
   (window as any).testSentryVueMessage = async () => {
     const id = Sentry.captureMessage('Vue Sentry test message', 'info');
     // Forzar flush (dev server) para ver inmediatamente en panel
-    try { await Sentry.flush(2000); } catch(e) { /* ignore */ }
+    try { await Sentry.flush(2000); } catch (e) { /* ignore */ }
     console.log('Sentry message eventId:', id);
     return id;
   };
