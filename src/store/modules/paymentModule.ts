@@ -117,6 +117,39 @@ class paymentModule extends VuexModule {
                 if (payload) {
                     dataPayment.code = payload.status;
                     dataPayment.message = payload.data?.message || '';
+                    // Si el pago fue exitoso (2xx), levantamos la restricción de menú
+                    const ok = payload.status >= 200 && payload.status < 300;
+                    const success = ok || payload.data?.success === true;
+                    if (success) {
+                        // Habilitar opciones de menú inmediatamente
+                        storageData.set('_pending_registration', false);
+                        // Extra: refrescar con backend para alinear estado real y evitar inconsistencias
+                        const bussines = storageData.get('_bussines');
+                        if (bussines && bussines.id) {
+                            // Pequeño delay para dar tiempo a que el backend consolide el estado
+                            setTimeout(() => {
+                              http.get(`/payments/pending/${bussines.id}`).then((check: any) => {
+                                const d = check && check.data ? check.data : {};
+                                const paidSet = new Set(['paid', 'pagado', 'processed', 'procesada', 'completed', 'completado']);
+                                const isArrayPending = (arr: any[]): boolean => {
+                                    return arr.some((it: any) => {
+                                        const st = (it?.status || '').toString().toLowerCase();
+                                        return !paidSet.has(st);
+                                    });
+                                };
+                                let pending = false;
+                                if (typeof (d as any)?.pending === 'boolean') pending = (d as any).pending;
+                                else if (typeof (d as any)?.status === 'string') pending = ((d as any).status as string).toLowerCase() === 'pending';
+                                else if (Array.isArray(d)) pending = isArrayPending(d);
+                                else if (Array.isArray((d as any)?.data)) pending = isArrayPending((d as any).data);
+                                storageData.set('_pending_registration', pending);
+                              }).catch(() => {
+                                // Si falla el check, mantenemos habilitado localmente para no romper UX
+                                storageData.set('_pending_registration', false);
+                              });
+                            }, 600);
+                        }
+                    }
                 } else {
                     dataPayment.code = 500;
                     dataPayment.message = 'Error al procesar la Solicitud';

@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import storageData from '@/store/services/storageService'
+import { get_http } from '@/utils/http'
 // Containers
 const TheContainer = () => import('@/containers/TheContainer.vue')
 
@@ -485,14 +487,70 @@ const router = new Router({
 })
 
 
-router.beforeEach((to?: any, from?: any, next?: any) => {
+// Rutas permitidas cuando el registro está pendiente (permitimos pagar y salir)
+const allowWhenPending = new Set(['paymentcenter', 'Logout', 'Login']);
+
+async function isRegistrationPending(): Promise<boolean> {
+  try {
+    const bussines = storageData.get('_bussines');
+    if (!bussines || !bussines.id) return false; // si no hay empresa cargada, no bloqueamos
+    const url = `/payments/pending/${bussines.id}`;
+    const resp = await get_http.get(url);
+    // Intentamos interpretar múltiples formatos de respuesta
+  const data = resp && (resp as any).data ? (resp as any).data : {};
+    // Formatos admitidos: { pending: true/false } o { status: 'pending'|'approved' }
+    if (typeof data?.pending === 'boolean') return data.pending;
+    if (typeof data?.status === 'string') return data.status.toLowerCase() === 'pending';
+    // Si el endpoint retorna una lista de pagos, considerar 'paid' como NO pendiente
+    const isArrayPending = (arr: any[]): boolean => {
+      const paidSet = new Set(['paid', 'pagado', 'processed', 'procesada', 'completed', 'completado']);
+      // pendiente si existe algún item cuyo status NO esté en el set de pagado
+      return arr.some((it: any) => {
+        const st = (it?.status || '').toString().toLowerCase();
+        return !paidSet.has(st);
+      });
+    };
+    if (Array.isArray(data)) return isArrayPending(data);
+    if (Array.isArray((data as any)?.data)) return isArrayPending((data as any).data);
+    // fallback: si no hay señal clara, asumimos PENDING para no abrir acceso indebidamente
+    return true;
+  } catch (e) {
+    // En caso de error de red o 4xx/5xx, asumimos PENDING para no abrir acceso indebidamente
+    return true;
+  }
+}
+
+router.beforeEach(async (to?: any, from?: any, next?: any) => {
   document.title = to.meta.title;
   ///console.log(!!http.defaults.headers.common['Authorization'])
   if (to.meta.Auth && !window.localStorage.getItem('_token')) {
 
     next({ path: '/login' });
   } else {
-
+    // Verificación de registro pendiente para usuarios autenticados
+    const hasToken = !!window.localStorage.getItem('_token');
+    if (hasToken) {
+      // Si localmente sabemos que NO está pendiente (tras pago exitoso), permitimos navegar sin bloquear
+      const localPendingFlag = storageData.get('_pending_registration');
+      if (localPendingFlag === false) {
+        return next();
+      }
+      // Si aún no hay empresa en storage, asumimos pendiente por seguridad y redirigimos a pagos
+      const bussines = storageData.get('_bussines');
+      if (!bussines || !bussines.id) {
+        storageData.set('_pending_registration', true);
+        if (!allowWhenPending.has(to.name)) {
+          return next({ name: 'paymentcenter', query: { notice: 'pending' } });
+        }
+        return next();
+      }
+      // Consultar servidor tras login para evitar estados obsoletos
+      const pending = await isRegistrationPending();
+      storageData.set('_pending_registration', pending);
+      if (pending && !allowWhenPending.has(to.name)) {
+        return next({ name: 'paymentcenter', query: { notice: 'pending' } });
+      }
+    }
     next();
   }
 
