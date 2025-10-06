@@ -17,10 +17,10 @@
     </CSidebarBrand>
     <div v-if="currentRouteName != 'reportes'">
       <CRenderFunction
-        v-if="token"
-        flat
-        :content-to-render="$options.certificateapproved"
-      />
+              v-if="token"
+              flat
+              :content-to-render="menuContent"
+            />
       <CRenderFunction v-else flat :content-to-render="$options.estandar" />
     </div>
     <div v-else>
@@ -90,7 +90,7 @@
 import admin from "./optionmenu/_admin";
 import inspeccionRequest from "./optionmenu/_inspection_request";
 import certificatepending from "./optionmenu/_certificate_pending";
-import certificateapproved from "./optionmenu/_certificate_approved";
+import buildCertificateApprovedMenu from "./optionmenu/_certificate_approved";
 import estandar from "./optionmenu/_estandar";
 import approved from "./optionmenu/_approved";
 import storageData from "@/store/services/storageService";
@@ -101,7 +101,7 @@ export default {
   certificatepending,
   estandar,
   approved,
-  certificateapproved,
+  certificateapproved: buildCertificateApprovedMenu, // mantenemos referencia si alguien usa $options
   inspeccionRequest,
 
   components: {},
@@ -115,11 +115,26 @@ export default {
       textmsj: "",
       color: "",
       timeout: 2000,
+      menuContent: [],
     };
   },
   mounted() {
     this.typeRol = storageData.get("_rolename");
     this.token = storageData.get("_token");
+    // construir menú inicial
+    this.menuContent = buildCertificateApprovedMenu();
+    // escuchar cambios en storage realizados por el servicio
+    if (typeof window !== 'undefined') {
+      window.addEventListener('app:storage-changed', this.refreshMenu);
+      // también escuchar cambios de storage en otras pestañas
+      window.addEventListener('storage', this.refreshMenu);
+    }
+  },
+  beforeDestroy() {
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('app:storage-changed', this.refreshMenu);
+      window.removeEventListener('storage', this.refreshMenu);
+    }
   },
   computed: {
     show() {
@@ -133,6 +148,12 @@ export default {
     },
   },
   methods: {
+    refreshMenu() {
+      this.menuContent = buildCertificateApprovedMenu();
+      // En caso de que el token o rol cambien también actualizamos
+      this.typeRol = storageData.get("_rolename");
+      this.token = storageData.get("_token");
+    },
     copyToClipboard(value) {
       if (navigator.clipboard) {
         navigator.clipboard.writeText(value).then(() => {
