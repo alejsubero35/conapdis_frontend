@@ -35,7 +35,7 @@
             </template>
           </template>
           <template v-slot:item.action="{ item }">
-            <div v-if="item.payment_proccesed == 1" class="d-flex">
+            <div v-if="item.status == 'Pendiente' && item.payment_proccesed == 0" class="d-flex">
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -51,7 +51,25 @@
                 </template>
                 <span>Ver Solicitud de Formación</span>
               </v-tooltip>
-              <v-tooltip
+            </div>
+            <div v-else-if="item.status == 'Pago Pendiente'" class="d-flex">
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    color="primary"
+                    dark
+                    @click="paymentInLine(item)"
+                    x-small
+                    rounded
+                    >PROCESAR PAGO
+                    <v-icon>mdi-credit-card-outline</v-icon>
+                  </v-btn>
+                </template>
+                <span>Pago en Línea</span>
+              </v-tooltip>
+            </div>
+            <div v-else class="d-flex">
+                   <v-tooltip
                 v-if="
                   !(item.status === 'Negada' || item.status === 'Pendiente')
                 "
@@ -100,22 +118,6 @@
                   </v-btn>
                 </template>
                 <span>Descargar Certificados</span>
-              </v-tooltip>
-            </div>
-            <div v-else class="d-flex">
-              <v-tooltip top>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    color="primary"
-                    dark
-                    @click="paymentInLine(item)"
-                    x-small
-                    rounded
-                    >PROCESAR PAGO
-                    <v-icon>mdi-credit-card-outline</v-icon>
-                  </v-btn>
-                </template>
-                <span>Pago en Línea</span>
               </v-tooltip>
             </div>
           </template>
@@ -178,6 +180,8 @@ export default class Usuario extends Vue {
       return "warning";
     } else if (item == "Negada") {
       return "error";
+    } else if (item == "Pago Pendiente") {
+      return "warning";
     } else {
       return "success";
     }
