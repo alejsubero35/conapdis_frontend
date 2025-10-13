@@ -354,6 +354,7 @@ export default class EditarCliente extends Vue {
   amount = false;
   amount_participant = 0;
   totalamount = 0;
+  rules = [(v: any) => !!v || "Campo requerido"];
   $refs!: {
     dataForm: InstanceType<typeof ValidationObserver>;
   };
@@ -499,30 +500,28 @@ export default class EditarCliente extends Vue {
     this.dataForm.proposed_date = this.date;
     this.dataForm.date_request = this.date;
   }
-  data() {
-    return {
-      rules: [(v: any) => !!v || "Campo requerido"],
-      emailRules: [
-        (v) => !!v || "E-mail is requerido",
-        (v) => /.+@.+/.test(v) || "E-mail must be valid",
-      ],
-      numberRule: [
-        (v) => v >= 0 || "El valor debe ser mayor a cero",
-        (v) => v <= 100 || "El valor debe ser menor a 100",
-      ],
-      rulesNum: [(v) => v >= 0 || "Campo Requerido"],
-      textRules: [
-        (v: any) => !!v || "Campo Requerido",
-        (v: any) =>
-          /^[A-Za-z-0-9]+$/.test(v) || "Campo No acepta caracteres especiales",
-        (v: any) =>
-          (v && v.length <= 10) || "Debe ingresar máximo 10 caracteres",
-      ],
-      Notrules: [
-           
-      ],
-    };
-  }
+
+  rules = [(v: any) => !!v || "Campo requerido"];
+  emailRules = [
+    (v) => !!v || "E-mail is requerido",
+    (v) => /.+@.+/.test(v) || "E-mail must be valid",
+  ];
+  numberRule = [
+    (v) => v >= 0 || "El valor debe ser mayor a cero",
+    (v) => v <= 100 || "El valor debe ser menor a 100",
+  ];
+  rulesNum = [(v) => v >= 0 || "Campo Requerido"];
+  textRules = [
+    (v: any) => !!v || "Campo Requerido",
+    (v: any) =>
+      /^[A-Za-z-0-9]+$/.test(v) || "Campo No acepta caracteres especiales",
+    (v: any) =>
+      (v && v.length <= 10) || "Debe ingresar máximo 10 caracteres",
+  ];
+  Notrules = [
+       
+  ];
+
   setItem() {}
 }
 </script>

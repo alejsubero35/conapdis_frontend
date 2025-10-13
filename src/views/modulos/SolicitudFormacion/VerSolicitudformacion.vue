@@ -17,13 +17,13 @@
                         outlined
                         dense
                         v-model="empresaname"
-                        readonly
+                
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6"	md="3">
                     <v-select
                         :items="workshops"
-                        item-text="description"
+                        item-text="coordination_workshop.description"
                         item-value="id"
                         label="Taller"
                         placeholder="Taller"
@@ -31,9 +31,21 @@
                         dense
                         :rules="rules"
                         required
+                        @change="getWorkshop($event)"
                         v-model="workshop_id"
-                        readonly
+                
                     ></v-select>
+                </v-col>
+                <v-col v-show="amount" cols="12" sm="4" md="3">
+                <v-text-field
+                    label="Monto por Participante"
+                    placeholder="Monto por Participante"
+                    outlined
+                    dense
+            
+                    v-model="amount_participant"
+                    prefix="MMV-BCV = "
+                ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4"	md="3">
                     <v-text-field
@@ -43,7 +55,7 @@
                         dense
                         :rules="rules"
                         v-model="dataForm.responsible"
-                        readonly
+                
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="3">
@@ -56,7 +68,7 @@
                         v-model="dataForm.phone_number"
                         type="number"
                         min="0"
-                        readonly
+                
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4"	md="3">
@@ -69,33 +81,44 @@
                         v-model="dataForm.number_of_participants"
                         type="number"
                         min="0"
-                        readonly
+                        @input="calculateAmount()"
                     ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6"	md="3">
-                    <v-select
-                        :items="invitedInstitutions"
-                        item-text="text"
-                        item-value="value"
-                        label="Instituciones Invitadas"
-                        placeholder="Instituciones Invitadas"
-                        v-model="dataForm.invited_institutions"
-                        outlined
-                        dense
-                        readonly
-                    ></v-select>
+                <v-col cols="12" sm="6" md="3">
+                <v-select
+                    :items="invitedInstitutions"
+                    item-text="text"
+                    item-value="value"
+                    label="Instituciones Invitadas"
+                    placeholder="Instituciones Invitadas"
+                    v-model="dataForm.invited_institutions"
+                    outlined
+                    dense
+                    @change="getInvited($event)"
+                ></v-select>
                 </v-col>
-                <v-col v-show="cantInvited" cols="12" sm="4"	md="3">
-                    <v-text-field
-                        label="Cantidad Personas Invitadas"
-                        placeholder="Cantidad Personas Invitadas"
-                        outlined
-                        dense
-                        v-model="dataForm.invited_people_number"
-                        type="number"
-                        min="0"
-                        readonly
-                    ></v-text-field>
+                <v-col v-show="cantInvited" cols="12" sm="4" md="3">
+                <v-text-field
+                    label="Nombre de la Institución"
+                    placeholder="Nombre de la Institución"
+                    outlined
+                    dense
+                    v-model="dataForm.name_institution"
+                    type="text"
+                ></v-text-field>
+                </v-col>
+                <v-col v-show="cantInvited" cols="12" sm="4" md="3">
+                <v-text-field
+                    label="Cantidad Personas Invitadas"
+                    placeholder="Cantidad Personas Invitadas"
+                    outlined
+                    dense
+                    v-model="dataForm.invited_people_number"
+                    type="number"
+                    min="0"
+                    @input="calculateAmountInvited()"
+                    :rules="(cantInvited) ? rules : Notrules"
+                ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="3">
                     <v-select
@@ -110,7 +133,7 @@
                         :rules="rules"
                         required
                         @change="getMunicipalityByState($event)"
-                        readonly
+                
                     ></v-select>
                 </v-col>
                 <v-col cols="12" sm="4" md="3">
@@ -126,7 +149,7 @@
                         :rules="rules"
                         required
                         @change="getParishesByMunicipality($event)"
-                        readonly
+                
                     ></v-select>
                 </v-col>
                 <v-col cols="12" sm="4" md="3">
@@ -141,7 +164,7 @@
                         dense
                         :rules="rules"
                         required
-                        readonly
+                
                     ></v-select>
                 </v-col>
                 <v-col cols="12" sm="6" md="3">
@@ -183,7 +206,7 @@
                         :rules="rules"
                         v-model="dataForm.start_time"
                         type="time"
-                        readonly
+                
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="3">
@@ -195,7 +218,7 @@
                         :rules="rules"
                         v-model="dataForm.end_time"
                         type="time"
-                        readonly
+                
                     ></v-text-field>
                 </v-col>		
                  <v-col cols="12" sm="6"	md="3">
@@ -206,7 +229,7 @@
                         dense
                         :rules="rules"
                         v-model="dataForm.benchmark"
-                        readonly
+                
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6"	md="3">
@@ -222,10 +245,10 @@
                         :rules="rules"
                         required
                         @change="setItem()"
-                        readonly
+                
                     ></v-select>
                 </v-col>
-                <v-col cols="12" sm="8" md="6">
+                <v-col cols="12" sm="6" md="6">
                     <v-textarea
                         label="Dirección"
                         placeholder="Dirección"
@@ -234,8 +257,20 @@
                         :rules="rules"
                         v-model="dataForm.address"
                         rows="2"
-                        readonly
+                
                     ></v-textarea>
+                </v-col>
+                <v-col cols="12" sm="4" md="3">
+                <v-text-field
+                    label="Monto Total del Taller"
+                    placeholder="Monto Total del Taller"
+                    dense
+                    v-model="dataForm.workshop_amount"
+                    type="number"
+                    readonly
+                    prefix="MMV-BCV = "
+                    solo
+                ></v-text-field>
                 </v-col>
             </v-row>
             <v-row>
@@ -254,9 +289,9 @@
                 </v-container>
                 </v-col>
             </v-row>
-<!--             <v-row class="d-flex justify-center p-5">
-                <v-btn @click="onSubmit"  color="primary" small>Guardar</v-btn>
-            </v-row> -->
+            <v-row class="d-flex justify-center p-5">
+                <v-btn @click="onSubmit" color="primary" small>Guardar</v-btn>
+            </v-row>
         </v-form>
     <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color" />
     <!-- <ModalApproved @confirm="confirm" :titleModalDelete="titleModalDelete" :textbody="textbody" :dialogDelete="openDialog" @cerrarModal="cerrarModal"/> -->
@@ -275,17 +310,52 @@ import storageData from '@/store/services/storageService'
 
   }
 })
-export default class EditarCliente extends Vue {
+class EditarCliente extends Vue {
+    async onSubmit() {
+        // Validar el formulario antes de enviar
+        const valid = await this.$refs.dataForm.validate();
+        if (!valid) {
+            this.textmsj = 'Por favor, complete los campos requeridos.';
+            this.color = 'warning';
+            this.snackbar = true;
+            return;
+        }
+        this.overlay = true;
+        try {
+            // Preparar datos para actualizar
+            const payload = {
+                ...this.dataForm,
+                requirements: this.checkboxModel,
+                workshop_id: this.workshop_id,
+            };
+            // Llamar al método de actualización (ajustar según API real)
+            await formacionModule.updateRequest(payload);
+            this.textmsj = 'Solicitud actualizada correctamente';
+            this.color = 'success';
+            this.snackbar = true;
+            this.back();
+        } catch (error) {
+            this.textmsj = 'Error al actualizar la solicitud';
+            this.color = 'error';
+            this.snackbar = true;
+        } finally {
+            this.overlay = false;
+        }
+    }
     [x: string]: unknown;
     listPrice?: any = [];
     pricelist_id = ''
-	condicionespago?: any = [];
-	overlay = false;
-	title : string = '';
-	subtitle : string = ''
-	dataForm : any = {
+    condicionespago?: any = [];
+    overlay = false;
+    title : string = '';
+    subtitle : string = ''
+    dataForm : any = {
 
     };
+
+    rulesNum = [
+        (v: any) => v >= 0 || 'Campo Requerido',
+    ];
 
     tipozona = [
         {value: 'Rural', text: 'Rural'},
@@ -302,7 +372,7 @@ export default class EditarCliente extends Vue {
     textmsj = ''
     color = ''
     timeout = 2000
-    sectiontitle = 'VISUALIZAR SOLICITUD DE FORMACIÓN'
+    sectiontitle = 'EDITAR SOLICITUD DE FORMACIÓN'
     dialog = false
     openDialog = false
     textbody = ''
@@ -319,6 +389,8 @@ export default class EditarCliente extends Vue {
     cantInvited = false
     arrayRequirements : any = []
     checkboxModel = []
+    amount = false;
+    amount_participant = 0;
 	$refs!: {
         dataForm: InstanceType<typeof ValidationObserver>;
     };
@@ -350,6 +422,52 @@ export default class EditarCliente extends Vue {
 	    this.overlay = false
 	}
 
+    async getWorkshop(event) {
+        this.dataForm.workshop_id = event.id;
+        this.amount = true;
+        this.amount_participant = event.amount_by_participant;
+        this.calculateAmount();
+    }
+    async calculateAmount() {
+        if (this.amount_participant == 0) {
+        this.textmsj = "Debe Seleccionar un Taller.";
+        this.color = "warning";
+        this.snackbar = true;
+        this.backError();
+        this.dataForm.number_of_participants = "";
+        this.dataForm.workshop_amount = "";
+        } else {
+            this.calculateAmountInvited()
+        }
+
+    }
+
+    async calculateAmountInvited(){
+        if(this.dataForm.invited_people_number > 0){
+        this.dataForm.workshop_amount = (parseFloat(this.dataForm.invited_people_number) + parseFloat(this.dataForm.number_of_participants)) * this.amount_participant;
+        }else{
+        this.dataForm.workshop_amount = parseFloat(this.dataForm.number_of_participants) * this.amount_participant;
+        }
+    }
+    async getInvited(event) {
+        if (this.dataForm.number_of_participants != undefined) {
+            if (event == 1) {
+                this.cantInvited = true;
+            } else {
+            this.cantInvited = false;
+            this.dataForm.invited_people_number = 0;
+            this.dataForm.name_institution = '';
+            this.calculateAmountInvited()
+            }
+        }else{
+            this.textmsj = "El Campo cantidad de participantes NO puede estar vacio.";
+            this.color = "warning";
+            this.snackbar = true;
+            this.backError();
+            this.dataForm.invited_institutions = ''
+        }
+    }
+
 	reset () {
         this.$refs.dataForm.reset()
     }
@@ -368,31 +486,39 @@ export default class EditarCliente extends Vue {
     go() {
         this.$router.go(-1)
     }
+
     async getRequestTraining(id){
         this.overlay = true
-        const data : any = await formacionModule.getRequestById(id)
- 
-        this.dataForm = data.data.data
-
-        if(data.data.requirements){
-            for(var j=0; j<data.data.requirements.length;j++){ 
-                this.checkboxModel.push(data.data.requirements[j].gform_requirement_id)
-            }  
-        }
+        const response: any = await formacionModule.getRequestById(id);
+        const { data, requirements = [], invited_institutions } = response.data;
+        const { workshop } = data;
    
-        if(data.data.data.workshop){
-            this.workshop_id = data.data.data.workshop.id
-        }
-        
-        if(data.data.invited_institutions == 1){
+        //this.workshops = workshop.coordination_workshop
+        this.amount = true;
+        this.amount_participant = workshop.coordination_workshop.hours
+        this.dataForm = data;
+        if(data.invited_institutions == 1){
             this.cantInvited = true
         }else{
             this.cantInvited = false
         }
-        await this.getMunicipalityByState(data.data.data)
-        await this.getParishesByMunicipality(data.data.data)
+
+        if (requirements && requirements.length) {
+            for (let j = 0; j < requirements.length; j++) {
+                this.checkboxModel.push(requirements[j].gform_requirement_id);
+            }
+        }
+
+        if (workshop) {
+            this.workshop_id = workshop.coordination_workshop.id;
+        }
+
+        //this.cantInvited = invited_institutions == 1;
+
+        await this.getMunicipalityByState(data);
+        await this.getParishesByMunicipality(data);
     }
-     async getRequirementTrainig(){
+    async getRequirementTrainig(){
 		const requirement : any = await formacionModule.getRequirementTrainigAll()
         this.arrayRequirements = requirement
 	}
@@ -427,6 +553,9 @@ export default class EditarCliente extends Vue {
             (v:any) => /^[A-Za-z-0-9]+$/.test(v) || 'Campo No acepta caracteres especiales',
             (v:any) =>(v && v.length <= 10) ||'Debe ingresar máximo 10 caracteres'
         ],
+        Notrules : [
+       
+        ]
             
         }
     };
@@ -435,6 +564,8 @@ export default class EditarCliente extends Vue {
     }
 
 }
+
+export default EditarCliente;
 </script>
 <style lang="scss" scoped>
     .form_data_section{

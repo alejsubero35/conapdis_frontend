@@ -46,10 +46,10 @@
                     v-bind="attrs"
                     v-on="on"
                   >
-                    <v-icon>mdi-eye-outline</v-icon>
+                    <v-icon>mdi-pencil-outline</v-icon>
                   </v-btn>
                 </template>
-                <span>Ver Solicitud de Formación</span>
+                <span>Editar Solicitud de Formación</span>
               </v-tooltip>
             </div>
             <div v-else-if="item.status == 'Pago Pendiente'" class="d-flex">
@@ -207,7 +207,7 @@ export default class Usuario extends Vue {
   cerrarModal(event) {
     this.dialogDelete = event;
   }
-  async evaluarformacion(item) {
+  evaluarformacion(item) {
     this.$router.push({ name: "trainingevaluation", params: { id: item.id } });
   }
   async downloadCertificates(item) {

@@ -23,6 +23,21 @@ import storageData from '@/store/services/storageService'
 
 class formacionModule extends VuexModule {
 
+    @Action
+    async updateRequest(dataRequest: any) {
+        // Ajusta la URL si tu backend usa otra ruta
+        await http.post(`training/update_request`, dataRequest)
+            .then((payload: any) => {
+                if (payload) {
+                    dataRequest.code = payload.status
+                } else {
+                    dataRequest.code = 500;
+                    dataRequest.message = 'Error al actualizar la Solicitud';
+                }
+            })
+        return dataRequest;
+    }
+
     token: string | null = localStorage.getItem('_token');
 
     @Action({ rawError: true })
