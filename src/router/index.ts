@@ -334,10 +334,10 @@ const router = new Router({
 
         },
         {
-          path: 'versolicitudformacion/:id',
-          name: 'versolicitudformacion',
+          path: 'editarsolicitudformacion/:id',
+          name: 'editarsolicitudformacion',
           component: VerSolicitudformacion,
-          meta: { Auth: true, title: 'VerSolicitudformacion' },
+          meta: { Auth: true, title: 'EditarSolicitudformacion' },
 
         },
         {

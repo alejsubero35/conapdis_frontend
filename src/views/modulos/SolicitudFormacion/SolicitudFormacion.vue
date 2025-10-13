@@ -191,7 +191,7 @@ export default class Usuario extends Vue {
   }
   ver(item) {
     this.$router.push({
-      name: "versolicitudformacion",
+      name: "editarsolicitudformacion",
       params: { id: item.id },
     });
   }
