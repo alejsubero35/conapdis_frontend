@@ -156,8 +156,7 @@ export default class Usuario extends Vue {
     }
 
     async viewPDF(id) {
-        //this.$router.push({ name: "planillaguiainspeccion", params: { id: id } });
-           const data : any = await guiaModule.downloadGuide(id);
+        const data : any = await guiaModule.downloadGuide(id);
     }
     async dataIndex(){  
     
