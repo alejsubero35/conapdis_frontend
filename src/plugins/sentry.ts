@@ -4,8 +4,10 @@ import Vue from 'vue';
 import router from '@/router';
 
 const dsn = process.env.VUE_APP_SENTRY_DSN;
+const isProd = (process.env.NODE_ENV === 'production') || (process.env.VUE_APP_SENTRY_ENV === 'production');
 
-if (dsn) {
+// Solo inicializar Sentry en producción y si hay DSN
+if (dsn && isProd) {
   Sentry.init({
     Vue,
     dsn,
@@ -16,6 +18,7 @@ if (dsn) {
         routingInstrumentation: Sentry.vueRouterInstrumentation(router)
       })
     ],
+    // En producción puedes ajustar estas tasas vía variables de entorno
     tracesSampleRate: Number(process.env.VUE_APP_SENTRY_TRACES || 0),
     replaysSessionSampleRate: Number(process.env.VUE_APP_SENTRY_REPLAYS_SESSION || 0),
     replaysOnErrorSampleRate: Number(process.env.VUE_APP_SENTRY_REPLAYS_ON_ERROR || 1.0),
