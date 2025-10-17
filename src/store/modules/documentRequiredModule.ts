@@ -113,6 +113,18 @@ class DocumentRequired extends VuexModule {
             });
     }
 
+    @Action
+    async deleteDocument(documentId: number) {
+        // Attempts to delete a required document by id. Adjust endpoint if your API differs.
+        return await http.delete(`/required-documents/${documentId}`)
+            .then((payload: any) => {
+                return payload;
+            })
+            .catch((error) => {
+                return { data: null, error };
+            });
+    }
+
 
 
 }

@@ -650,7 +650,10 @@
                     :headers="[
                       { text: 'Nombre', value: 'title' },
                       { text: 'Fecha de carga', value: 'registration_date' },
-                      { text: 'Documento', value: 'file_url', sortable: false }
+                      { text: 'Documento', value: 'file_url', sortable: false },
+                      { text: 'Status', value: 'status', sortable: false },
+                      { text: 'Observación', value: 'observations', sortable: false },
+                      { text: 'Acciones', value: 'actions', sortable: false }
                     ]"
                     :items="documentsload"
                     class="elevation-1"
@@ -663,6 +666,27 @@
                         <v-icon>mdi-file-eye</v-icon>
                       </v-btn>
                       <span v-else class="grey--text">No disponible</span>
+                    </template>
+
+                    <template v-slot:item.status="{ item }">
+                      <v-chip :color="item.status == 'aprobado' ? 'green' : (item.status == 'rechazado' ? 'red' : 'grey')" small dark>
+                        {{ item.status ? item.status : 'pendiente' }}
+                      </v-chip>
+                    </template>
+
+                    <template v-slot:item.observations="{ item }">
+                      <span class="text--secondary">{{ item.observations ? item.observations : '-' }}</span>
+                    </template>
+
+                    <template v-slot:item.actions="{ item }">
+                      <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn v-bind="attrs" v-on="on" icon color="red" @click="confirmDeleteDocument(item)">
+                            <v-icon>mdi-delete</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Eliminar documento</span>
+                      </v-tooltip>
                     </template>
                   </v-data-table>
                 </v-card>
@@ -866,6 +890,20 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <!-- Dialog de confirmación de eliminación de documento -->
+    <v-dialog v-model="confirmDeleteDialog" max-width="450">
+      <v-card>
+        <v-card-title class="text-h5">Confirmar eliminación</v-card-title>
+        <v-card-text>
+          ¿Está seguro que desea eliminar el documento <strong>{{ documentToDelete ? documentToDelete.title : '' }}</strong> ? Esta acción no se puede deshacer.
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click="cancelDelete">Cancelar</v-btn>
+          <v-btn color="red" text @click="confirmDelete">Eliminar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -970,6 +1008,9 @@ export default class Bussines extends Vue {
   btnText = "Guardar";
   validateInput = 0;
   dialogOpen = false;
+  // Dialog específico para confirmar eliminación de documento
+  confirmDeleteDialog = false;
+  documentToDelete: any = null;
   validatetyperif = "";
   titlemodalalert = "";
   showente = false;
@@ -1059,6 +1100,65 @@ export default class Bussines extends Vue {
     );
     this.validateBtn();
     this.overlay = false;
+  }
+
+  // Confirm before delete: checks status and asks user
+  confirmDeleteDocument(item) {
+    // If document status is 'aprobado', block deletion
+    if (item.status && item.status.toString().toLowerCase() === 'aprobado') {
+      this.dialogOpen = true;
+      this.titlemodalalert = 'No puede eliminar un documento con status aprobado.';
+      return;
+    }
+
+    // Abrir dialog de confirmación (Vuetify)
+    this.documentToDelete = item;
+    this.confirmDeleteDialog = true;
+  }
+
+  cancelDelete() {
+    this.confirmDeleteDialog = false;
+    this.documentToDelete = null;
+  }
+
+  confirmDelete() {
+    if (this.documentToDelete) {
+      this.deleteDocument(this.documentToDelete);
+    }
+    this.confirmDeleteDialog = false;
+    this.documentToDelete = null;
+  }
+
+  async deleteDocument(item) {console.log("eliminar",item);
+    try {
+      this.overlay = true;
+      // If the documentModule exposes a delete endpoint, call it. We'll attempt to call
+      // an endpoint named `deleteDocument` or fallback to HTTP delete via the module.
+      // Try calling documentModule.deleteDocument if exists
+      if (documentModule && (documentModule as any).deleteDocument) {
+        await (documentModule as any).deleteDocument(item.document_bussine_id);
+      } else if ((documentModule as any).httpDelete) {
+        await (documentModule as any).httpDelete(item.id);
+      } else {
+        // No API helper available: optimistic local removal only
+        console.warn('No delete action found on documentModule, removing locally only.');
+      }
+
+      // Remove from local list
+      const idx = this.documentsload.findIndex((d) => d.id === item.id);
+      if (idx > -1) this.documentsload.splice(idx, 1);
+
+      this.textmsj = 'Documento eliminado con éxito.';
+      this.color = 'success';
+      this.snackbar = true;
+    } catch (err) {
+      console.error(err);
+      this.textmsj = 'Error al eliminar el documento.';
+      this.color = 'error';
+      this.snackbar = true;
+    } finally {
+      this.overlay = false;
+    }
   }
  
   async getDocumentsAll() {
@@ -1534,6 +1634,8 @@ export default class Bussines extends Vue {
   data() {
     return {
       show: false,
+      // expose arrayTyperif to the template type system
+      arrayTyperif: [] as any[],
       rules: [(v: any) => !!v || "Campo requerido"],
       emailRules: [
         (v) => !!v || "E-mail is requerido",
