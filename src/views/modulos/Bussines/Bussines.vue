@@ -653,6 +653,8 @@
                       { text: 'Documento', value: 'file_url', sortable: false },
                       { text: 'Status', value: 'status', sortable: false },
                       { text: 'Observación', value: 'observations', sortable: false },
+                      // Columna oculta para reemplazo/recarga del documento
+                      { text: '', value: 'replace_input', sortable: false },
                       { text: 'Acciones', value: 'actions', sortable: false }
                     ]"
                     :items="documentsload"
@@ -688,10 +690,36 @@
                         <span>Eliminar documento</span>
                       </v-tooltip>
                     </template>
+
+                    <!-- Slot para columna oculta de reemplazo -->
+                    <template v-slot:item.replace_input="{ item }">
+                      <div class="replace-cell">
+                        <!-- input file oculto; será habilitado y disparado cuando se elimine el documento -->
+                        <input
+                          :ref="'replaceInput-' + item.id"
+                          type="file"
+                          accept=".pdf,.jpg,.jpeg,.png"
+                          style="display: none"
+                          @change="(e) => updateDocument(item, e.target.files[0], null)"
+                        />
+
+                        <!-- Botón para abrir el diálogo de archivo; solo visible cuando está habilitado -->
+                        <v-btn
+                          v-if="replaceEnabled[item.id]"
+                          icon
+                          small
+                          color="primary"
+                          @click="triggerReplaceInput(item.id)"
+                          title="Subir documento reemplazo"
+                        >
+                          <v-icon>mdi-upload</v-icon>
+                        </v-btn>
+                      </div>
+                    </template>
                   </v-data-table>
                 </v-card>
                 <!-- Inputs para cargar documentos requeridos -->
-                <v-card outlined>
+               <!--  <v-card outlined>
                   <v-card-title class="subtitle-1">Subir Documentos Requeridos</v-card-title>
                   <v-row>
                     <v-col v-for="(doc, idx) in documents" :key="doc.id" cols="12" sm="6" md="4">
@@ -710,7 +738,7 @@
                       <v-chip v-else color="success" small>Ya cargado</v-chip>
                     </v-col>
                   </v-row>
-                </v-card>
+                </v-card> -->
               </v-col>
             </v-row>
           </v-form>
@@ -1025,6 +1053,7 @@ export default class Bussines extends Vue {
   documentsForm = {};
   documents = [];
   documentsload = [];
+  replaceEnabled: any = {};
 
   visiblecustomers = false;
   imageUrl: any = "";
@@ -1093,6 +1122,12 @@ export default class Bussines extends Vue {
       (doc: any) => doc.visibility_in === 1
     );
 
+    // Inicializar replaceEnabled para cada documento (deshabilitado por defecto)
+    this.replaceEnabled = {};
+    this.documentsload.forEach((d: any) => {
+      this.$set(this.replaceEnabled, d.id, false);
+    });
+
     this.documents = dataDocuments.data.documents;
   
     this.documents = this.documents.filter(
@@ -1144,11 +1179,10 @@ export default class Bussines extends Vue {
         console.warn('No delete action found on documentModule, removing locally only.');
       }
 
-      // Remove from local list
-      const idx = this.documentsload.findIndex((d) => d.id === item.id);
-      if (idx > -1) this.documentsload.splice(idx, 1);
+      // Enabling replacement input for this document so user can upload new file
+      this.$set(this.replaceEnabled, item.id, true);
 
-      this.textmsj = 'Documento eliminado con éxito.';
+      this.textmsj = 'Documento eliminado. Ahora puede subir un reemplazo.';
       this.color = 'success';
       this.snackbar = true;
     } catch (err) {
@@ -1158,6 +1192,17 @@ export default class Bussines extends Vue {
       this.snackbar = true;
     } finally {
       this.overlay = false;
+    }
+  }
+
+  triggerReplaceInput(id) {
+    const refName = 'replaceInput-' + id;
+    const input: any = this.$refs[refName];
+    if (input && input.length && input[0]) {
+      input[0].click();
+    } else if (input && input.click) {
+      // single ref
+      input.click();
     }
   }
  
