@@ -649,10 +649,7 @@
                   <v-data-table
                     :headers="[
                       { text: 'Nombre', value: 'title' },
-                      { text: 'Fecha de carga', value: 'registration_date' },
-                      { text: 'Documento', value: 'file_url', sortable: false },
                       { text: 'Status', value: 'status', sortable: false },
-                      { text: 'Observación', value: 'observations', sortable: false },
                       // Columna oculta para reemplazo/recarga del documento
                       { text: '', value: 'replace_input', sortable: false },
                       { text: 'Acciones', value: 'actions', sortable: false }
@@ -663,36 +660,60 @@
                     loading-text="Cargando documentos..."
                     dense
                   >
-                    <template v-slot:item.file_url="{ item }">
-                      <v-btn v-if="item.file_url" :href="item.file_url" target="_blank" icon color="primary">
-                        <v-icon>mdi-file-eye</v-icon>
-                      </v-btn>
-                      <span v-else class="grey--text">No disponible</span>
-                    </template>
-
                     <template v-slot:item.status="{ item }">
-                      <v-chip :color="item.status == 'aprobado' ? 'green' : (item.status == 'rechazado' ? 'red' : 'grey')" small dark>
-                        {{ item.status ? item.status : 'pendiente' }}
+                      <v-chip :color="item.status == 'approved' ? 'green' : (item.status == 'rejected' ? 'red' : 'grey')" small dark>
+                        {{ item.status ? item.status : 'pending' }}
                       </v-chip>
                     </template>
-
-                    <template v-slot:item.observations="{ item }">
-                      <span class="text--secondary">{{ item.observations ? item.observations : '-' }}</span>
-                    </template>
+                    
 
                     <template v-slot:item.actions="{ item }">
-                      <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn v-bind="attrs" v-on="on" icon color="red" @click="confirmDeleteDocument(item)">
-                            <v-icon>mdi-delete</v-icon>
-                          </v-btn>
-                        </template>
-                        <span>Eliminar documento</span>
-                      </v-tooltip>
+                      <div class="d-flex align-center">
+                        <v-tooltip top>
+                          <template v-slot:activator="{ on, attrs }">
+                            <!-- Show view button when there is a valid external URL or a base64 data URL stored in item.file -->
+                            <v-btn v-bind="attrs" v-on="on" icon color="primary" v-if="((item.file_url && isValidUrl(item.file_url)) || item.file) && !savingDocuments[item.id]" :href="(item.file_url && isValidUrl(item.file_url)) ? item.file_url : item.file" target="_blank" rel="noopener">
+                              <v-icon>mdi-file-eye</v-icon>
+                            </v-btn>
+                          </template>
+                          <span v-if="item.file_url && isValidUrl(item.file_url)">Ver documento</span>
+                          <span v-else-if="item.file">Ver documento (preview)</span>
+                          <span v-else>Documento no disponible</span>
+                        </v-tooltip>
+
+                        <!-- If document does NOT exist, show upload button to trigger hidden file input -->
+                        <v-tooltip top>
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn v-bind="attrs" v-on="on" icon color="primary" v-if="!item.file_url && !item.file" @click="triggerReplaceInput(item.id)" title="Subir documento">
+                              <v-icon>mdi-upload</v-icon>
+                            </v-btn>
+                          </template>
+                          <span>Subir documento</span>
+                        </v-tooltip>
+
+                        <!-- Upload replacement button (visible when replacement explicitly enabled) -->
+                        <v-tooltip top>
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn v-bind="attrs" v-on="on" icon color="primary" v-if="replaceEnabled[item.id]" @click="triggerReplaceInput(item.id)" title="Subir documento reemplazo">
+                              <v-icon>mdi-upload</v-icon>
+                            </v-btn>
+                          </template>
+                          <span>Subir reemplazo</span>
+                        </v-tooltip>
+
+                        <v-tooltip v-if="item.status === 'pending'" top>
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn v-bind="attrs" v-on="on" icon color="red" @click="confirmDeleteDocument(item)">
+                              <v-icon>mdi-delete</v-icon>
+                            </v-btn>
+                          </template>
+                          <span>Eliminar documento</span>
+                        </v-tooltip>
+                      </div>
                     </template>
 
                     <!-- Slot para columna oculta de reemplazo -->
-                    <template v-slot:item.replace_input="{ item }">
+                    <template v-slot:item.replace_input="{ item, index }">
                       <div class="replace-cell">
                         <!-- input file oculto; será habilitado y disparado cuando se elimine el documento -->
                         <input
@@ -700,7 +721,7 @@
                           type="file"
                           accept=".pdf,.jpg,.jpeg,.png"
                           style="display: none"
-                          @change="(e) => updateDocument(item, e.target.files[0], null)"
+                          @change="(e) => uploadSingleDocument(item, e, index)"
                         />
 
                         <!-- Botón para abrir el diálogo de archivo; solo visible cuando está habilitado -->
@@ -719,7 +740,7 @@
                   </v-data-table>
                 </v-card>
                 <!-- Inputs para cargar documentos requeridos -->
-               <!--  <v-card outlined>
+                <v-card v-else outlined>
                   <v-card-title class="subtitle-1">Subir Documentos Requeridos</v-card-title>
                   <v-row>
                     <v-col v-for="(doc, idx) in documents" :key="doc.id" cols="12" sm="6" md="4">
@@ -738,7 +759,7 @@
                       <v-chip v-else color="success" small>Ya cargado</v-chip>
                     </v-col>
                   </v-row>
-                </v-card> -->
+                </v-card>
               </v-col>
             </v-row>
           </v-form>
@@ -1054,6 +1075,7 @@ export default class Bussines extends Vue {
   documents = [];
   documentsload = [];
   replaceEnabled: any = {};
+  savingDocuments: any = {};
 
   visiblecustomers = false;
   imageUrl: any = "";
@@ -1126,6 +1148,8 @@ export default class Bussines extends Vue {
     this.replaceEnabled = {};
     this.documentsload.forEach((d: any) => {
       this.$set(this.replaceEnabled, d.id, false);
+      // initialize saving flag
+      this.$set(this.savingDocuments, d.id, false);
     });
 
     this.documents = dataDocuments.data.documents;
@@ -1139,10 +1163,13 @@ export default class Bussines extends Vue {
 
   // Confirm before delete: checks status and asks user
   confirmDeleteDocument(item) {
-    // If document status is 'aprobado', block deletion
-    if (item.status && item.status.toString().toLowerCase() === 'aprobado') {
+    // Normalize status: if missing, treat as 'pendiente'
+    const status = item && item.status ? String(item.status).toLowerCase() : 'pendiente';
+
+    // Only allow deletion when status is 'pendiente'
+    if (status !== 'pending') {
       this.dialogOpen = true;
-      this.titlemodalalert = 'No puede eliminar un documento con status aprobado.';
+      this.titlemodalalert = 'No puede eliminar un documento que no esté en estado pendiente.';
       return;
     }
 
@@ -1181,6 +1208,18 @@ export default class Bussines extends Vue {
 
       // Enabling replacement input for this document so user can upload new file
       this.$set(this.replaceEnabled, item.id, true);
+
+      // Also clear any local file / url so the view button disappears immediately
+      const idxLoad = this.documentsload.findIndex((d: any) => d.id == item.id);
+      if (idxLoad !== -1) {
+        this.$set(this.documentsload[idxLoad], 'file', null);
+        this.$set(this.documentsload[idxLoad], 'file_url', null);
+        this.$set(this.documentsload[idxLoad], 'name', null);
+        // ensure v-data-table detects change
+        this.$set(this.documentsload, idxLoad, Object.assign({}, this.documentsload[idxLoad]));
+      }
+      // ensure saving flag cleared
+      this.$set(this.savingDocuments, item.id, false);
 
       this.textmsj = 'Documento eliminado. Ahora puede subir un reemplazo.';
       this.color = 'success';
@@ -1230,7 +1269,7 @@ export default class Bussines extends Vue {
       this.disabledBtn = true;
     }
   }
-  async updateDocument(doc, fileEvent,i) {
+ async updateDocument(doc, fileEvent,i) {
     let index = this.documents.findIndex(({ id }) => id == doc.id);
     const files = fileEvent && fileEvent.target ? fileEvent.target.files : fileEvent;
            this.documents[index].bussines_id = (storageData.get("_bussines"))
@@ -1266,6 +1305,156 @@ export default class Bussines extends Vue {
       }
     }
   }
+  
+  // Upload a single file immediately when selected from the hidden input
+  async uploadSingleDocument(doc, fileEvent, i) {
+    console.log("subir",doc);
+    console.log(this.documents)
+    let index = -1;
+    try {
+      this.overlay = true;
+      index = this.documents.findIndex(({ id }) => id == doc.id);
+
+      // If not found, try to use the provided slot index as a hint (only if it maps into documents)
+      if (index === -1 && typeof i === 'number' && i >= 0 && i < this.documents.length) {
+        index = i;
+      }
+
+      // Additional fallbacks: try to match by document_bussine_id (from server), or string compare
+      if (index === -1) {
+        if (doc && doc.document_bussine_id) {
+          index = this.documents.findIndex(d => d.document_bussine_id == doc.document_bussine_id);
+        }
+      }
+
+      if (index === -1) {
+        // fallback: try to find by doc.id again more defensively (string compare)
+        index = this.documents.findIndex(d => String(d.id) === String(doc.id));
+      }
+
+      // As a last effort, if i is a valid index in documents, use it
+      if (index === -1 && typeof i === 'number' && i >= 0 && i < this.documents.length) {
+        index = i;
+      }
+
+      if (index === -1) {
+        this.overlay = false;
+        console.warn('uploadSingleDocument: could not determine document index for', doc);
+        this.textmsj = 'Error interno: índice de documento no encontrado.';
+        this.color = 'error';
+        this.snackbar = true;
+        return false;
+      }
+      const files = fileEvent && fileEvent.target ? fileEvent.target.files : fileEvent;
+
+      // Ensure bussines id is set
+      this.documents[index].bussines_id = storageData.get("_bussines")
+        ? storageData.get("_bussines").id
+        : '';
+      this.documents[index].registration_date = this.todayDate;
+
+      if (!files || files.length === 0) {
+        this.overlay = false;
+        return;
+      }
+
+      const file = files[0];
+      const allowedExtensions = ["pdf", "jpg", "jpeg", "png"];
+      const allowedMimeTypes = [
+        "application/pdf",
+        "image/jpeg",
+        "image/png"
+      ];
+      const fileExtension = file.name.split('.').pop().toLowerCase();
+
+      if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
+        this.dialogOpen = true;
+        this.dataModalAlert = "Extensión o tipo de archivo NO permitido. Solo se permiten: pdf, jpg, jpeg, png";
+        this.overlay = false;
+        return false;
+      }
+
+      if (file.size >= this.documents[index].max_size) {
+        this.dialogOpen = true;
+        this.dataModalAlert = "El Documento excede el tamaño permitido";
+        this.overlay = false;
+        return false;
+      }
+
+      // Convert to base64 and attach to the documents list
+      const base64 = await this.getBase64(file, doc);
+      // ensure the documents source has the file
+      if (index !== -1 && this.documents[index]) {
+        this.$set(this.documents[index], 'file', base64);
+        this.$set(this.documents[index], 'name', file.name);
+      }
+      // ensure the loaded table item also has the file
+      const idxLoad = this.documentsload.findIndex(({ id }) => id == doc.id);
+      if (idxLoad !== -1) {
+        this.$set(this.documentsload[idxLoad], 'file', base64);
+        this.$set(this.documentsload[idxLoad], 'name', file.name);
+        // replace the object so v-data-table detects change
+        this.$set(this.documentsload, idxLoad, Object.assign({}, this.documentsload[idxLoad]));
+      }
+
+      // Build payload for saving single document (API expects array of documents in saveDocuments)
+      const payload = [ this.documents[index] ];
+
+      // mark as saving to prevent showing view button until backend returns file_url
+      this.$set(this.savingDocuments, this.documents[index].id, true);
+      const response = await documentModule.saveDocuments(payload as any);
+      if (response && (response.status == 200 || response.status == 201)) {
+        this.textmsj = "Documento cargado con éxito.";
+        this.color = "success";
+        this.snackbar = true;
+
+        // If server returns created documents in response.data, try to update local state immediately
+        try {
+          const returned = response.data && response.data.data ? response.data.data : null;
+          if (returned && Array.isArray(returned) && returned.length > 0) {
+            // The API returns an array of created DocumentBussine objects
+            const created = returned[0];
+            const documentBussineId = created.id || created.document_bussine_id || null;
+            const fileUrl = created.file ? created.file : (created.file_url ? created.file_url : null);
+
+            // update documentsload entry by matching document_requirement id or document id
+            const matchIndex = this.documentsload.findIndex((d: any) => d.id == (created.document_requirement_id || created.id || doc.id));
+            if (matchIndex !== -1) {
+              if (fileUrl) this.$set(this.documentsload[matchIndex], 'file_url', fileUrl);
+              if (documentBussineId) this.$set(this.documentsload[matchIndex], 'document_bussine_id', documentBussineId);
+              this.$set(this.replaceEnabled, this.documentsload[matchIndex].id, false);
+              this.$set(this.savingDocuments, this.documentsload[matchIndex].id, false);
+              // force update
+              this.$set(this.documentsload, matchIndex, Object.assign({}, this.documentsload[matchIndex]));
+            }
+          } else {
+            // fallback: refresh list
+            await this.getDocuments();
+          }
+        } catch (e) {
+          // if anything fails, refresh the documents
+          await this.getDocuments();
+        }
+      } else {
+        this.textmsj = "Error al subir el documento.";
+        this.color = "error";
+        this.snackbar = true;
+      }
+    } catch (err) {
+      console.error(err);
+      this.textmsj = "Error al procesar el archivo.";
+      this.color = "error";
+      this.snackbar = true;
+    } finally {
+      this.overlay = false;
+      try {
+        const docId = doc && doc.id ? doc.id : (index !== -1 && this.documents[index] ? this.documents[index].id : null);
+        if (docId) this.$set(this.savingDocuments, docId, false);
+      } catch (e) {
+        console.warn('Could not unset savingDocuments flag', e);
+      }
+    }
+  }
   async updateFechadocuments(id_) {
     let index = this.documents.findIndex(({ id }) => id == id_);
     this.documents[index].registration_date = this.date;
@@ -1279,21 +1468,53 @@ export default class Bussines extends Vue {
   }
 
   async getImgBase(imgbase64, doc, fileName) {
-    let index = this.documents.findIndex(({ id }) => id == doc.id);
-    this.documents[index].file = imgbase64;
-    this.documents[index].name = fileName;
+    // Update both documents (source) and documentsload (table) if the item exists in either
+    const idxDocs = this.documents.findIndex(({ id }) => id == doc.id);
+    if (idxDocs !== -1) {
+      this.documents[idxDocs].file = imgbase64;
+      this.documents[idxDocs].name = fileName && fileName.name ? fileName.name : fileName;
+    }
+
+    const idxLoad = this.documentsload.findIndex(({ id }) => id == doc.id);
+    if (idxLoad !== -1) {
+      this.documentsload[idxLoad].file = imgbase64;
+      this.documentsload[idxLoad].name = fileName && fileName.name ? fileName.name : fileName;
+      // force update so v-data-table picks up the change
+      this.$set(this.documentsload, idxLoad, Object.assign({}, this.documentsload[idxLoad]));
+    }
   }
   getBase64(file, doc) {
     const _this = this;
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      _this.getImgBase(reader.result, doc, file);
-    };
-    reader.onerror = function (error) {
-      console.log("Error: ", error);
-    };
-    return true;
+    return new Promise((resolve, reject) => {
+      try {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+          try {
+            _this.getImgBase(reader.result, doc, file);
+            resolve(reader.result);
+          } catch (e) {
+            reject(e);
+          }
+        };
+        reader.onerror = function (error) {
+          console.log("Error: ", error);
+          reject(error);
+        };
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+  // Validates that a string is a well-formed http(s) URL
+  isValidUrl(url: any): boolean {
+    if (!url || typeof url !== 'string') return false;
+    try {
+      const parsed = new URL(url);
+      return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+    } catch (e) {
+      return false;
+    }
   }
   backClear(doc) {
     setTimeout(() => {

@@ -75,21 +75,13 @@ class DocumentRequired extends VuexModule {
     
     @Action
     async saveDocuments(dataDocuments: DocumentReq) {
-
-        await http.post(`document-bussines/store_documents`, dataDocuments)
-            .then((payload: any) => {
-
-                if (payload) {
-                    dataDocuments.code = payload.status
-                    /*   const busine: any     = payload.data.data
-                      storageData.set('_bussines', busine);
-                      this.context.commit('setBussines', busine); */
-                } else {
-                    dataDocuments.code = 500;
-                    dataDocuments.message = 'Error al procesar la Solicitud';
-                }
-            })
-        return dataDocuments;
+        try {
+            const payload: any = await http.post(`document-bussines/store_documents`, dataDocuments);
+            // Return full axios response so callers can react immediately
+            return payload;
+        } catch (error) {
+            return { status: 500, data: null, error };
+        }
     }
 
     @Action

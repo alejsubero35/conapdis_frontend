@@ -445,9 +445,7 @@ export default class EditarCliente extends Vue {
     }
 
     async downloadCV(item) {
-        // Backend espera user_id en getDataCurriculo($id)
-        //this.$router.push({ name: "downloadcv", params: { id: item.user_id } });
-        const data : any = await ofertModule.downloadCV(item.persona_discapacidad_id);
+        const data : any = await ofertModule.downloadCV(item.personas_discapacidad_id);
     }
    
     async dataIndex(){  

@@ -306,7 +306,7 @@ import sessionModule from "@/store/modules/sessionModule";
 import { ValidationObserver } from "vee-validate";
 import storageData from "@/store/services/storageService";
 import PaymentDialog from '@/components/PaymentDialog.vue';
-import paymentModule from '@/store/modules/paymentModule';
+
 
 @Component({
   components: { PaymentDialog },
