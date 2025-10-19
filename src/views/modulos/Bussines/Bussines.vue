@@ -607,9 +607,7 @@
                   :rules="emailRules"
                   type="email"
                   v-model="bussinesform.email_rl"
-                  :readonly="
-                    validateInput == 1 ? (readonly = true) : (readonly = false)
-                  "
+                
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
