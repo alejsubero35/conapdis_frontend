@@ -680,7 +680,7 @@
                         </v-tooltip>
 
                         <!-- If document does NOT exist, show upload button to trigger hidden file input -->
-                        <v-tooltip top>
+                        <v-tooltip v-if="item.status === 'pending'" top>
                           <template v-slot:activator="{ on, attrs }">
                             <v-btn v-bind="attrs" v-on="on" icon color="primary" v-if="!item.file_url && !item.file" @click="triggerReplaceInput(item.id)" title="Subir documento">
                               <v-icon>mdi-upload</v-icon>
