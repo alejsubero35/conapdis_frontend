@@ -117,13 +117,33 @@ export default class PaymentCenter extends Vue {
          }   
     }
     async fetchPendingPayments() {
-        this.overlay = true;
-        const bussines = storageData.get("_bussines");
+    this.overlay = true;
+    try {
+      // Intentar obtener la empresa activa desde storage o desde el módulo
+      const bussines = storageData.get("_bussines") || (paymentModule as any)?.getBussines;
+      const businessId = bussines?.id || bussines?.data?.id;
 
-        const pendingPayments: any = await paymentModule.getPendingPayments(bussines.id);
-        this.pendingPayments = pendingPayments.data.data;
-        this.overlay = false;
-    
+      if (!businessId) {
+        // Sin empresa activa, no intentar la consulta
+        this.pendingPayments = [];
+        this.textmsj = "No hay empresa activa seleccionada.";
+        this.color = "warning";
+        this.snackbar = true;
+        return;
+      }
+
+      const resp: any = await paymentModule.getPendingPayments(Number(businessId));
+      // Normalizar la respuesta: puede venir como {data: {data: [...]}} o {data: [...]} o [...]
+      const list = (resp?.data?.data ?? resp?.data ?? resp) as any;
+      this.pendingPayments = Array.isArray(list) ? list : [];
+    } catch (err) {
+      this.textmsj = "Error al cargar pagos pendientes.";
+      this.color = "error";
+      this.snackbar = true;
+      this.pendingPayments = [];
+    } finally {
+      this.overlay = false;
+    }
     }
 
    openPaymentDialog(item: any) {

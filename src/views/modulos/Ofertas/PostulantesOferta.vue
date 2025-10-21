@@ -123,7 +123,7 @@
                                 <span v-if="item.cita_id">Ver Cita</span>
                                 <span v-else>Crear Cita</span>
                             </v-tooltip>
-                            <v-tooltip v-if="isPending(item)" top>
+                            <v-tooltip v-if="canReject(item)" top>
                                 <template v-slot:activator="{on, attrs}">
                                     <v-btn
                                         color="error"
@@ -136,7 +136,22 @@
                                         <v-icon>mdi-account-multiple-minus</v-icon>
                                     </v-btn>
                                 </template>
-                                <span>Rechazar Postulante</span>
+                                <span>No contratar</span>
+                            </v-tooltip>
+                            <v-tooltip v-if="isAccepted(item) || hasCita(item)" top>
+                                <template v-slot:activator="{on, attrs}">
+                                    <v-btn
+                                        color="primary"
+                                        dark
+                                        @click="contratar(item)"   
+                                        icon
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >
+                                        <v-icon>mdi-handshake</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Contratar y continuar a Vincular</span>
                             </v-tooltip>
                         </div>
                     </template>
@@ -410,18 +425,24 @@ export default class PostulantesOferta extends Vue {
             { text: 'Video llamada', value: 'video_llamada' },
         ]
         statusLabel(status: string) {
-            const map: any = { pending: 'Pendiente', accepted: 'Aprobado', rejected: 'Rechazado' }
-            return map[status] || '—'
+            const st = (status || '').toLowerCase()
+            const map: any = { pending: 'Pendiente', accepted: 'Aprobado', rejected: 'Rechazado', hired: 'Contratado' }
+            return map[st] || '—'
         }
         statusColor(status: string) {
-            const map: any = { pending: 'warning', accepted: 'primary', rejected: 'error' }
-            return map[status] || 'grey'
+            const st = (status || '').toLowerCase()
+            const map: any = { pending: 'warning', accepted: 'primary', rejected: 'error', hired: 'success' }
+            return map[st] || 'grey'
         }
         isPending(item: any) {
             return (item?.status || '').toLowerCase() === 'pending'
         }
         isAccepted(item: any) {
             return (item?.status || '').toLowerCase() === 'accepted'
+        }
+        canReject(item: any) {
+            const st = (item?.status || '').toLowerCase()
+            return st === 'pending' || st === 'accepted'
         }
         hasCita(item: any) {
             return !!item?.cita_id
@@ -595,6 +616,23 @@ export default class PostulantesOferta extends Vue {
 
     async downloadCV(item) {
         const data : any = await ofertModule.downloadCV(item.personas_discapacidad_id);
+    }
+   
+    contratar(item){
+        try {
+            // Prefill mínimo no invasivo: guardar en storage para uso opcional futuro
+            const prefill = {
+                personas_discapacidad_id: item.personas_discapacidad_id,
+                ofert_id: this.$route.params.id,
+                empresa_id: storageData.get('_bussines')?.id,
+                full_name: item.full_name || item.username || '',
+                telefono: item.telefono_pcd || '',
+                cedula: item.cedula || ''
+            }
+            storageData.set('_vincular_prefill', prefill)
+        } catch (e) {}
+        // Navegar a Vincular; si la pantalla soporta prefill por storage, lo tomará, si no, no rompe
+        this.$router.push({ name: 'vincular', query: { from: 'oferta', ofertId: String(this.$route.params.id || '') } })
     }
    
     async dataIndex(){  
