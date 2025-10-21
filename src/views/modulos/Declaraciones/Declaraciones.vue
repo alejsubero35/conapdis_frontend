@@ -6,6 +6,10 @@
 
     <div class="formCliente">
       <TitleSection :sectiontitle="sectiontitle" />
+    <div v-show="availabledeclarated" class="modern-note">
+      <v-icon color="error" left small>mdi-alert-circle-outline</v-icon>
+      <span class="modern-note-text">Restringido  el proceso de declaración. NO hay período Activo</span>
+    </div>
       <v-tabs>
         <v-tab>DATOS DE LA NUEVA DECLARACIÓN</v-tab>
         <v-tab @click="getStatements()">DECLARACIONES</v-tab>
@@ -33,6 +37,7 @@
                     dense
                     :rules="rules"
                     v-model="declararform.numero_total_trabajadores"
+                    :disabled="availabledeclarated"
                     type="number"
                     @keyup="calcularporcentaje()"
                   ></v-text-field>
@@ -43,6 +48,7 @@
                     placeholder="Trabajadores con Discapacidad "
                     dense
                     v-model="declararform.trabajadores_discapacidad"
+                    :disabled="availabledeclarated"
                     readonly
                   ></v-text-field>
                 </v-col>
@@ -57,6 +63,7 @@
                     placeholder="Seleccione el Periodo"
                     dense
                     :rules="rules"
+                    :disabled="availabledeclarated"
                     required
                     @change="getPeriodo($event)"
                   ></v-select>
@@ -68,6 +75,7 @@
                     dense
                     :rules="rules"
                     v-model="porcentaje"
+                    :disabled="availabledeclarated"
                     readonly
                     class="porcentaje"
                   ></v-text-field>
@@ -181,6 +189,7 @@ export default class Bussines extends Vue {
   sectiontitle = "Declaración";
   dialog = false;
   tabIndex = 0;
+  availabledeclarated = false;
   date = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
     .toISOString()
     .substr(0, 10);
@@ -262,6 +271,12 @@ export default class Bussines extends Vue {
   async getPeriods() {
     const periods: any = await statementsModule.getPeriodsAll();
     this.arrayPeriods = periods.data;
+    // Si no hay periodos disponibles, activar la nota de disponibilidad
+    if (!periods || !periods.data || periods.data.length === 0) {
+      this.availabledeclarated = true;
+    } else {
+      this.availabledeclarated = false;
+    }
   }
   async getPeopleLinkedByBussinesId(id) {
     const peoplelinked: any =
@@ -384,5 +399,21 @@ export default class Bussines extends Vue {
 }
 .porcentaje {
   color: red;
+}
+.modern-note {
+  display: flex;
+  align-items: center;
+  background: #ffebee; /* light red */
+  border-left: 5px solid #f44336; /* material red 500 */
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px -4px rgba(244, 67, 54, 0.2);
+}
+.modern-note-text {
+  color: #b00020; /* dark error red */
+  font-size: 15px;
+  font-weight: 500;
+  margin-left: 8px;
 }
 </style>
