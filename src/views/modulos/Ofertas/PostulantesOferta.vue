@@ -53,9 +53,42 @@
                                   'items-per-page-text':'Filtro por Página'       
                               }"                     
                           >
+                                                    <template v-slot:item.asistencia="{ item }">
+                                                        <div class="d-flex align-center" style="gap:6px;">
+                                                            <template v-if="item.cita_id">
+                                                                <v-chip small color="info" text-color="white">Citado</v-chip>
+                                                                <span v-if="item.fecha_cita" class="grey--text text--darken-1">{{ item.fecha_cita }}<span v-if="item.hora"> {{ item.hora }}</span></span>
+                                                                <v-chip v-if="item.asistio === 1 || item.asistio === '1'" small color="success" text-color="white">Asistió</v-chip>
+                                                                <v-chip v-else small color="grey" text-color="white">No asistió</v-chip>
+                                                            </template>
+                                                            <template v-else>
+                                                                —
+                                                            </template>
+                                                        </div>
+                                                    </template>
+                                                    <template v-slot:item.status="{ item }">
+                                                        <v-chip small :color="statusColor(item.status)" text-color="white">
+                                                            {{ statusLabel(item.status) }}
+                                                        </v-chip>
+                                                    </template>
                           <template v-slot:item.actions="{ item }">
 
                         <div class="d-flex">
+                            <v-tooltip v-if="isPending(item)" top>
+                                <template v-slot:activator="{on, attrs}">
+                                    <v-btn
+                                        color="success"
+                                        dark
+                                        @click="aprobar(item)"
+                                        icon
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >
+                                        <v-icon>mdi-account-check-outline</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Aprobar Postulante</span>
+                            </v-tooltip>
                             <v-tooltip top>
                                 <template v-slot:activator="{on, attrs}">
                                     <v-btn
@@ -80,6 +113,7 @@
                                         icon
                                         v-bind="attrs"
                                         v-on="on"
+                                        :disabled="!canManageCita(item)"
                                     >
                                         <v-icon v-if="item.cita_id">mdi-file-eye</v-icon>
                                         <v-icon v-else> mdi-briefcase-plus</v-icon>
@@ -89,7 +123,7 @@
                                 <span v-if="item.cita_id">Ver Cita</span>
                                 <span v-else>Crear Cita</span>
                             </v-tooltip>
-                            <v-tooltip top>
+                            <v-tooltip v-if="isPending(item)" top>
                                 <template v-slot:activator="{on, attrs}">
                                     <v-btn
                                         color="error"
@@ -178,7 +212,6 @@
                             v-bind="attrs"
                             v-on="on"
                             dense 
-                            :disabled="(validateCita > 0) ? disabled = true : disabled = false"
                         ></v-text-field>
                         </template>
                         <v-date-picker
@@ -200,7 +233,6 @@
                         :rules="rules"
                         v-model="dataFormCita.hora"
                         type="time"
-                        :disabled="(validateCita > 0) ? disabled = true : disabled = false"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
@@ -212,7 +244,6 @@
                         :rules="rules"
                         v-model="dataFormCita.contacto"
                         type="text"
-                        :disabled="(validateCita > 0) ? disabled = true : disabled = false"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
@@ -223,11 +254,28 @@
                         dense
                         :rules="rules"
                         v-model="dataFormCita.telefono"
-                        type="number"
+                        type="tel"
                         min="0"
                         max="11"
-                        :disabled="(validateCita > 0) ? disabled = true : disabled = false"
                     ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="6">
+                    <v-select
+                        :items="modalidades"
+                        label="Modalidad de entrevista"
+                        outlined
+                        dense
+                        v-model="dataFormCita.modalidad"
+                    ></v-select>
+                </v-col>
+                <v-col cols="12" sm="6" md="6">
+                    <v-switch
+                        v-model="dataFormCita.asistio"
+                        :true-value="1"
+                        :false-value="0"
+                        inset
+                        label="Asistió?"
+                    ></v-switch>
                 </v-col>
                 </v-row>
                 <!-- <v-row v-show="existCita">
@@ -254,7 +302,7 @@
                 </v-row> -->
             </v-form>
 
-            <v-card-actions v-if="validateCita == null">
+            <v-card-actions v-if="!validateCita">
                 <v-spacer></v-spacer>
                 <v-btn color="danger" small @click="dialogCita = false">
                     Cancelar
@@ -268,10 +316,17 @@
                 <v-btn color="danger" small @click="dialogCita = false">
                     Cancelar
                 </v-btn>
+                <v-btn color="primary" small @click="saveCita()">
+                    Actualizar
+                </v-btn>
             </v-card-actions>
             </v-card>
 	    </v-dialog>
-        <ModalDelete @deleteData="deleteData" :titlemodal="titlemodal" :textbody="textbody" :dialogDelete="dialogDelete" @cerrarModal="cerrarModal"/>
+                <ModalDelete @deleteData="deleteData" :titlemodal="titlemodal" :textbody="textbody" :dialogDelete="dialogDelete" @cerrarModal="cerrarModal">
+                    <template v-slot:default>
+                        <v-textarea v-model="formRechazar.rejection_reason" outlined dense label="Motivo del rechazo" rows="3"></v-textarea>
+                    </template>
+                </ModalDelete>
         <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color" />
     </div>
 </template>
@@ -283,11 +338,11 @@ import {serialize} from 'jsonapi-fractal'
 import storageData from '@/store/services/storageService'
 
 @Component({
-  components: {
-
-  }
+    components: {
+        ModalDelete: () => import('@/components/ModalDelete.vue')
+    }
 })
-export default class EditarCliente extends Vue {
+export default class PostulantesOferta extends Vue {
     [x: string]: unknown;
     listPrice?: any = [];
     pricelist_id = ''
@@ -322,6 +377,7 @@ export default class EditarCliente extends Vue {
 /*         {text: 'Grado Instrucción', value: 'desc_grado_instruccion_postula'}, */
         {text: 'Sexo', value: 'sexo'},
         {text: 'Status', value: 'status'},
+        {text: 'Entrevista', value: 'asistencia'},
         {text: 'Acciones', value: 'actions'}
     ];
     snackbar = false;
@@ -339,7 +395,7 @@ export default class EditarCliente extends Vue {
     existCita = false
     validateCita = 0
     titlecita = 'Realizar Cita'
-	$refs!: {
+    $refs!: {
         dataFormCita: InstanceType<typeof ValidationObserver>;
     };
 	get FormRequest(): any {
@@ -348,6 +404,35 @@ export default class EditarCliente extends Vue {
     get FormRequestRechazar(): any {
         return this.formRechazar
     }
+        modalidades = [
+            { text: 'Presencial', value: 'presencial' },
+            { text: 'Por llamada', value: 'llamada' },
+            { text: 'Video llamada', value: 'video_llamada' },
+        ]
+        statusLabel(status: string) {
+            const map: any = { pending: 'Pendiente', accepted: 'Aprobado', rejected: 'Rechazado' }
+            return map[status] || '—'
+        }
+        statusColor(status: string) {
+            const map: any = { pending: 'warning', accepted: 'primary', rejected: 'error' }
+            return map[status] || 'grey'
+        }
+        isPending(item: any) {
+            return (item?.status || '').toLowerCase() === 'pending'
+        }
+        isAccepted(item: any) {
+            return (item?.status || '').toLowerCase() === 'accepted'
+        }
+        hasCita(item: any) {
+            return !!item?.cita_id
+        }
+        canManageCita(item: any) {
+            // Se permite crear cita si está aceptado y no hay cita; ver/editar si ya hay cita
+            const st = (item?.status || '').toLowerCase()
+            if (st === 'accepted') return true
+            if (this.hasCita(item)) return true
+            return false
+        }
     async getPostulantesAll(id){
         const postulantes : any = await  ofertModule.getPostulantesById(id);
         this.desserts = postulantes.data.data;
@@ -355,7 +440,8 @@ export default class EditarCliente extends Vue {
 
     }
     async getOferta(id){
-        this.dataFormCita.id = id
+        // No asignar 'id' aquí (id es de la cita); usar ofert_id para vincular la cita a la oferta
+        this.dataFormCita.ofert_id = id
         const data : any = await ofertModule.getOfertById(id)
         this.cantidad_postula_oferta = data.data.oferts.quantity
         this.experiencia_postula_oferta = data.data.oferts.experience
@@ -392,24 +478,79 @@ export default class EditarCliente extends Vue {
         this.formRechazar.id_pcd_postula_pcd = item.id_pcd_postula_pcd
     }
     
+    async aprobar(item){
+        try{
+            this.overlay = true
+            // Abrir modal para programar entrevista opcional tras aprobar
+            const res:any = await ofertModule.aprobarPostulante({ ofert_postulation_id: item.ofert_postulation_id })
+            if(res.status === 200){
+                this.color = 'success'
+                this.textmsj = 'Postulante aprobado y vacantes actualizadas.'
+                this.snackbar = true
+                this.closeSnackbar()
+                await this.getPostulantesAll(this.$route.params.id)
+                // Prefijar datos para posible cita: contacto = nombre PCD, telefono = telefono_pcd
+                this.dataFormCita = {
+                  id: undefined,
+                  ofert_id: this.$route.params.id,
+                  personas_discapacidad_id: item.personas_discapacidad_id,
+                  contacto: item.full_name || item.username,
+                  telefono: item.telefono_pcd || '',
+                  fecha: this.date,
+                  hora: '',
+                                    modalidad: '',
+                                    busine_id: storageData.get('_bussines').id
+                }
+                this.titlecita = 'Asignar Cita de Entrevista'
+                this.validateCita = 0
+                this.dialogCita = true
+            } else {
+                this.color = 'warning'
+                this.textmsj = (res.data && res.data.message) ? res.data.message : 'No fue posible aprobar al postulante.'
+                this.snackbar = true
+                this.closeSnackbar()
+            }
+        }catch(e){
+            this.color = 'error'
+            this.textmsj = 'Error de conexión al aprobar.'
+            this.snackbar = true
+            this.closeSnackbar()
+        } finally {
+            this.overlay = false
+        }
+    }
+    
     getCita(item){console.log(item)
+    this.dataFormCita = {}
+        this.dataFormCita.ofert_id = this.$route.params.id
         this.dataFormCita.personas_discapacidad_id = item.personas_discapacidad_id
+    this.dataFormCita.busine_id = storageData.get('_bussines').id
         this.dialogCita = true 
         this.validateCita = item.cita_id    
         console.log(this.validateCita);
         if(item.cita_id > 0){
             this.titlecita = 'Ver Cita'
             this.existCita = true
+            this.dataFormCita.id = item.cita_id
             this.dataFormCita.hora = item.hora
-            this.dataFormCita.contacto = item.contacto
-            this.dataFormCita.telefono = item.telefono
-            this.date = item.fecha
+            this.dataFormCita.contacto = item.contacto || item.full_name || item.username
+            this.dataFormCita.telefono = item.telefono || item.telefono_pcd || ''
+            // Prefijar modalidad guardada para que el select la muestre seleccionada
+            this.dataFormCita.modalidad = item.modalidad || ''
+            // Prefijar asistencia guardada (1/0)
+            this.dataFormCita.asistio = (item.asistio === 1 || item.asistio === '1') ? 1 : 0
+            this.date = item.fecha_cita
+            this.dataFormCita.fecha = item.fecha_cita
         }else{
+            this.titlecita = 'Crear Cita'
             this.existCita = false
             this.dataFormCita.hora = ''
-            this.dataFormCita.contacto = ''
-            this.dataFormCita.telefono = ''
-            this.date = item.fecha
+            this.dataFormCita.contacto = item.full_name || item.username
+            this.dataFormCita.telefono = item.telefono_pcd || ''
+            this.dataFormCita.modalidad = ''
+            this.dataFormCita.asistio = 0
+            this.date = item.fecha_cita
+            this.dataFormCita.fecha = this.date
         }
     }
 
@@ -419,6 +560,14 @@ export default class EditarCliente extends Vue {
     async deleteData(event){
       
         this.overlay = true
+        if (!this.formRechazar.rejection_reason || this.formRechazar.rejection_reason.trim().length === 0) {
+            this.overlay = false
+            this.color = 'warning'
+            this.textmsj = 'Debe indicar un motivo de rechazo.'
+            this.snackbar = true
+            this.closeSnackbar()
+            return
+        }
         const res : any = await ofertModule.rechazarPostulante(this.FormRequestRechazar);
         if(res.status == 200){
             this.dialogDelete = event;
@@ -469,7 +618,17 @@ export default class EditarCliente extends Vue {
         const valid :any =  this.$refs.dataFormCita.validate();
         if(valid){
             this.overlayDialog = true
-            const data : any = await ofertModule.saveCita(this.FormRequest)
+            const payload = { ...this.FormRequest } as any
+            // Si no hay id, asegurarnos de enviar ofert_id y persona
+            if (!payload.id) {
+                payload.ofert_id = this.$route.params.id
+                payload.personas_discapacidad_id = payload.personas_discapacidad_id
+            }
+            // Asegurar busine_id
+            if (!payload.busine_id) {
+                payload.busine_id = storageData.get('_bussines').id
+            }
+            const data : any = await ofertModule.saveCita(payload)
             console.log(data.status)
             if(data.status == 200){
                 this.color = 'success'

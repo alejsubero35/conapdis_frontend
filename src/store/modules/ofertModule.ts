@@ -222,21 +222,38 @@ class ofertModule extends VuexModule {
                 })
         })
     }
-    @Action({rawError: true})
-    async downloadCV(id:any) { 
-        const response =  await http.get(`/oferta/downloadCV/${id}`,{
-          	responseType: 'arraybuffer'
+    @Action
+    aprobarPostulante(data) {
+        // data must contain ofert_postulation_id
+        return new Promise((resolve, reject) => {
+            http.post(`/positions/aprobar_postulante`, data)
+                .then(response => {
+                    if (response.status === 200) {
+                        resolve(response);
+                    } else {
+                        resolve(response);
+                    }
+                })
+                .catch(error => {
+                    reject(error)
+                })
         })
-        if (response.status === 200 || response.status === 201){
+    }
+    @Action({ rawError: true })
+    async downloadCV(id: any) {
+        const response = await http.get(`/oferta/downloadCV/${id}`, {
+            responseType: 'arraybuffer'
+        })
+        if (response.status === 200 || response.status === 201) {
             let blob = new Blob([response.data], {
-              type: 'application/pdf'
+                type: 'application/pdf'
             })
             let link = document.createElement('a')
             link.href = window.URL.createObjectURL(blob)
-            link.download = 'CV-'+id+'.pdf'
+            link.download = 'CV-' + id + '.pdf'
             link.click()
         }
-	}
+    }
 
 
 }
