@@ -6,7 +6,7 @@
             size="64"
         ></v-progress-circular>
         </v-overlay>
-        <v-form class="form_data_section" ref="dataForm"  lazy-validation >	
+            <v-form class="form_data_section" ref="dataForm"  lazy-validation >
             <TitleSection :sectiontitle="sectiontitle"/>	
             <v-row class="mt-5 p-3">
                 <v-col cols="12" sm="12" md="4">
@@ -138,7 +138,7 @@
                                 </template>
                                 <span>No contratar</span>
                             </v-tooltip>
-                            <v-tooltip v-if="isAccepted(item) || hasCita(item)" top>
+                            <v-tooltip v-if="canHire(item)" top>
                                 <template v-slot:activator="{on, attrs}">
                                     <v-btn
                                         color="primary"
@@ -211,6 +211,7 @@
                 <v-col cols="12" sm="6" md="6">
                     <v-menu
                         v-model="menu"
+                        :disabled="readOnlyCita"
                         :close-on-content-click="false"
                         :nudge-right="40"
                         transition="scale-transition"
@@ -227,6 +228,7 @@
                             v-bind="attrs"
                             v-on="on"
                             dense 
+                            :disabled="readOnlyCita"
                         ></v-text-field>
                         </template>
                         <v-date-picker
@@ -248,6 +250,7 @@
                         :rules="rules"
                         v-model="dataFormCita.hora"
                         type="time"
+                        :disabled="readOnlyCita"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
@@ -259,6 +262,7 @@
                         :rules="rules"
                         v-model="dataFormCita.contacto"
                         type="text"
+                        :disabled="readOnlyCita"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
@@ -272,6 +276,7 @@
                         type="tel"
                         min="0"
                         max="11"
+                        :disabled="readOnlyCita"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
@@ -281,6 +286,7 @@
                         outlined
                         dense
                         v-model="dataFormCita.modalidad"
+                        :disabled="readOnlyCita"
                     ></v-select>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
@@ -290,6 +296,7 @@
                         :false-value="0"
                         inset
                         label="Asistió?"
+                        :disabled="readOnlyCita"
                     ></v-switch>
                 </v-col>
                 </v-row>
@@ -317,13 +324,10 @@
                 </v-row> -->
             </v-form>
 
-            <v-card-actions v-if="!validateCita">
+            <v-card-actions v-if="readOnlyCita">
                 <v-spacer></v-spacer>
                 <v-btn color="danger" small @click="dialogCita = false">
-                    Cancelar
-                </v-btn>
-                <v-btn color="primary" small @click="saveCita()">
-                    Guardar
+                    Cerrar
                 </v-btn>
             </v-card-actions>
             <v-card-actions v-else>
@@ -332,7 +336,7 @@
                     Cancelar
                 </v-btn>
                 <v-btn color="primary" small @click="saveCita()">
-                    Actualizar
+                    {{ validateCita ? 'Actualizar' : 'Guardar' }}
                 </v-btn>
             </v-card-actions>
             </v-card>
@@ -410,6 +414,7 @@ export default class PostulantesOferta extends Vue {
     existCita = false
     validateCita = 0
     titlecita = 'Realizar Cita'
+    readOnlyCita = false
     $refs!: {
         dataFormCita: InstanceType<typeof ValidationObserver>;
     };
@@ -440,6 +445,12 @@ export default class PostulantesOferta extends Vue {
         isAccepted(item: any) {
             return (item?.status || '').toLowerCase() === 'accepted'
         }
+        isRejected(item: any) {
+            return (item?.status || '').toLowerCase() === 'rejected'
+        }
+        isHired(item: any) {
+            return (item?.status || '').toLowerCase() === 'hired'
+        }
         canReject(item: any) {
             const st = (item?.status || '').toLowerCase()
             return st === 'pending' || st === 'accepted'
@@ -453,6 +464,12 @@ export default class PostulantesOferta extends Vue {
             if (st === 'accepted') return true
             if (this.hasCita(item)) return true
             return false
+        }
+        canHire(item: any) {
+            // Solo permitir contratar si está aceptado o tiene cita, y NO está rechazado ni ya contratado
+            const st = (item?.status || '').toLowerCase()
+            if (st === 'rejected' || st === 'hired') return false
+            return this.isAccepted(item) || this.hasCita(item)
         }
     async getPostulantesAll(id){
         const postulantes : any = await  ofertModule.getPostulantesById(id);
@@ -524,6 +541,7 @@ export default class PostulantesOferta extends Vue {
                 }
                 this.titlecita = 'Asignar Cita de Entrevista'
                 this.validateCita = 0
+                this.readOnlyCita = false
                 this.dialogCita = true
             } else {
                 this.color = 'warning'
@@ -543,9 +561,16 @@ export default class PostulantesOferta extends Vue {
     
     getCita(item){console.log(item)
     this.dataFormCita = {}
+        const st = (item?.status || '').toLowerCase()
+        // Solo ver cita cuando está rechazado o contratado
+        this.readOnlyCita = (st === 'rejected' || st === 'hired')
         this.dataFormCita.ofert_id = this.$route.params.id
         this.dataFormCita.personas_discapacidad_id = item.personas_discapacidad_id
     this.dataFormCita.busine_id = storageData.get('_bussines').id
+        // Si no hay cita y no está aceptado, no abrir (no se puede crear/editar)
+        if (!item.cita_id && st !== 'accepted') {
+            return
+        }
         this.dialogCita = true 
         this.validateCita = item.cita_id    
         console.log(this.validateCita);
@@ -572,6 +597,8 @@ export default class PostulantesOferta extends Vue {
             this.dataFormCita.asistio = 0
             this.date = item.fecha_cita
             this.dataFormCita.fecha = this.date
+            // Si estamos creando (sin cita), aseguramos edición habilitada
+            this.readOnlyCita = false
         }
     }
 
@@ -619,6 +646,22 @@ export default class PostulantesOferta extends Vue {
     }
    
     contratar(item){
+        // Guardia adicional: si fue rechazado o ya contratado, no permitir continuar
+        const st = (item?.status || '').toLowerCase()
+        if (st === 'rejected') {
+            this.color = 'warning'
+            this.textmsj = 'Este postulante fue rechazado. No es posible contratar.'
+            this.snackbar = true
+            this.closeSnackbar()
+            return
+        }
+        if (st === 'hired') {
+            this.color = 'info'
+            this.textmsj = 'Este postulante ya está contratado.'
+            this.snackbar = true
+            this.closeSnackbar()
+            return
+        }
         try {
             // Prefill mínimo no invasivo: guardar en storage para uso opcional futuro
             const prefill = {
