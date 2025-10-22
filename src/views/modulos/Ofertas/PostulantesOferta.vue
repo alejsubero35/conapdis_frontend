@@ -411,6 +411,9 @@ export default class PostulantesOferta extends Vue {
     disabledHeader = true
     cantidad_postula_oferta = ''
     experiencia_postula_oferta = ''
+    // Cargo de la oferta (para prefill en Vincular)
+    ofertaCargoId: any = null
+    ofertaCargoName: string = ''
     existCita = false
     validateCita = 0
     titlecita = 'Realizar Cita'
@@ -483,6 +486,13 @@ export default class PostulantesOferta extends Vue {
         const data : any = await ofertModule.getOfertById(id)
         this.cantidad_postula_oferta = data.data.oferts.quantity
         this.experiencia_postula_oferta = data.data.oferts.experience
+        // Guardar cargo de la oferta para prefill
+        this.ofertaCargoId = data.data.oferts?.ofert_position_id || null
+        // Si tenemos lista de cargos, intenta derivar el nombre
+        if (this.ofertaCargoId && Array.isArray(this.arrayCharges) && this.arrayCharges.length) {
+            const found = this.arrayCharges.find((c:any) => String(c.id) === String(this.ofertaCargoId))
+            this.ofertaCargoName = found?.nombre || ''
+        }
     }
 
 	reset () {
@@ -670,7 +680,10 @@ export default class PostulantesOferta extends Vue {
                 empresa_id: storageData.get('_bussines')?.id,
                 full_name: item.full_name || item.username || '',
                 telefono: item.telefono_pcd || '',
-                cedula: item.cedula || ''
+                cedula: item.cedula || '',
+                // Prefill de cargo (id de la oferta)
+                cargo_id: this.ofertaCargoId || null,
+                cargo_nombre: this.ofertaCargoName || ''
             }
             storageData.set('_vincular_prefill', prefill)
         } catch (e) {}
@@ -688,6 +701,11 @@ export default class PostulantesOferta extends Vue {
     async comboboxAll(){
         const charges : any = await  ofertModule.getCharges();
         this.arrayCharges = charges.data
+        // Si ya conocemos el cargo de la oferta, intenta obtener su nombre ahora
+        if (this.ofertaCargoId && Array.isArray(this.arrayCharges) && this.arrayCharges.length) {
+            const found = this.arrayCharges.find((c:any) => String(c.id) === String(this.ofertaCargoId))
+            this.ofertaCargoName = found?.nombre || ''
+        }
         const profession : any = await ofertModule.getprofession();
         this.arrayProfession = profession.data
     }

@@ -568,6 +568,10 @@ export default class Bussines extends Vue {
         if (prefill.full_name) {
           this.fullname = prefill.full_name;
         }
+        // Prefill de cargo (si viene desde la oferta)
+        if (prefill.cargo_id) {
+          this.vincularform.cargo_personadiscapacidad = prefill.cargo_id;
+        }
         // Prefill de cédula en el select
         if (prefill.cedula && prefill.personas_discapacidad_id) {
           const obj = { id: prefill.personas_discapacidad_id, cedula: prefill.cedula, nombres: prefill.full_name };
