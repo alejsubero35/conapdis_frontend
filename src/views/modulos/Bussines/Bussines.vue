@@ -7,7 +7,9 @@
     <div class="formCliente">
       <TitleSection :sectiontitle="sectiontitle" />
       <form-wizard
+        ref="wizard"
         class="test"
+        :key="wizardKey"
         :start-index="tabIndex"
         :title="title"
         :subtitle="subtitle"
@@ -659,7 +661,7 @@
                     dense
                   >
                     <template v-slot:item.status="{ item }">
-                      <v-chip :color="item.status == 'approved' ? 'green' : (item.status == 'rejected' ? 'red' : 'grey')" small dark>
+                      <v-chip :color="item.status == 'approved' ? 'green' : (item.status == 'rejected' ? 'red' : 'warning')" small dark>
                         {{ item.status ? item.status : 'pending' }}
                       </v-chip>
                     </template>
@@ -667,46 +669,61 @@
 
                     <template v-slot:item.actions="{ item }">
                       <div class="d-flex align-center">
-                        <v-tooltip top>
+                        <!-- If replacement mode is enabled for this item, only show the upload action -->
+                        <v-tooltip v-if="replaceEnabled[item.id]" top>
                           <template v-slot:activator="{ on, attrs }">
-                            <!-- Show view button when there is a valid external URL or a base64 data URL stored in item.file -->
-                            <v-btn v-bind="attrs" v-on="on" icon color="primary" v-if="((item.file_url && isValidUrl(item.file_url)) || item.file) && !savingDocuments[item.id]" :href="(item.file_url && isValidUrl(item.file_url)) ? item.file_url : item.file" target="_blank" rel="noopener">
-                              <v-icon>mdi-file-eye</v-icon>
-                            </v-btn>
-                          </template>
-                          <span v-if="item.file_url && isValidUrl(item.file_url)">Ver documento</span>
-                          <span v-else-if="item.file">Ver documento (preview)</span>
-                          <span v-else>Documento no disponible</span>
-                        </v-tooltip>
-
-                        <!-- If document does NOT exist, show upload button to trigger hidden file input -->
-                        <v-tooltip v-if="item.status === 'pending'" top>
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" v-on="on" icon color="primary" v-if="!item.file_url && !item.file" @click="triggerReplaceInput(item.id)" title="Subir documento">
-                              <v-icon>mdi-upload</v-icon>
-                            </v-btn>
-                          </template>
-                          <span>Subir documento</span>
-                        </v-tooltip>
-
-                        <!-- Upload replacement button (visible when replacement explicitly enabled) -->
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" v-on="on" icon color="primary" v-if="replaceEnabled[item.id]" @click="triggerReplaceInput(item.id)" title="Subir documento reemplazo">
+                            <v-btn v-bind="attrs" v-on="on" icon color="primary" @click="triggerReplaceInput(item.id)" title="Subir documento reemplazo">
                               <v-icon>mdi-upload</v-icon>
                             </v-btn>
                           </template>
                           <span>Subir reemplazo</span>
                         </v-tooltip>
 
-                        <v-tooltip v-if="item.status === 'pending'" top>
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" v-on="on" icon color="red" @click="confirmDeleteDocument(item)">
-                              <v-icon>mdi-delete</v-icon>
-                            </v-btn>
-                          </template>
-                          <span>Eliminar documento</span>
-                        </v-tooltip>
+                        <!-- When not in replacement mode follow status rules -->
+                        <template v-else>
+                          <v-tooltip top>
+                            <template v-slot:activator="{ on, attrs }">
+                              <!-- Show view button when there is a valid external URL or a base64 data URL stored in item.file
+                                   Only show when not saving and when file exists OR when status is approved (approved must be view-only)
+                              -->
+                              <v-btn
+                                v-bind="attrs"
+                                v-on="on"
+                                icon
+                                color="primary"
+                                v-if=" (item.status === 'approved') || (item.status === 'pending') "
+                                :href="item.file_url"
+                                target="_blank"
+                                rel="noopener"
+                              >
+                                <v-icon>mdi-file-eye</v-icon>
+                              </v-btn>
+                            </template>
+                            <span v-if="item.file_url && isValidUrl(item.file_url)">Ver documento</span>
+                            <span v-else-if="item.file">Ver documento (preview)</span>
+                            <span v-else>Documento no disponible</span>
+                          </v-tooltip>
+
+                          <!-- If document DOES NOT exist and status is pending, show upload button to trigger hidden file input -->
+                          <v-tooltip v-if="item.status === 'pending'" top>
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-btn v-bind="attrs" v-on="on" icon color="primary" v-if="!item.file_url && !item.file" @click="triggerReplaceInput(item.id)" title="Subir documento">
+                                <v-icon>mdi-upload</v-icon>
+                              </v-btn>
+                            </template>
+                            <span>Subir documento</span>
+                          </v-tooltip>
+
+                          <!-- Delete: only when status is pending and there is a file to delete -->
+                          <v-tooltip v-if="item.status === 'pending' && (item.file_url || item.file)" top>
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-btn v-bind="attrs" v-on="on" icon color="red" @click="confirmDeleteDocument(item)">
+                                <v-icon>mdi-delete</v-icon>
+                              </v-btn>
+                            </template>
+                            <span>Eliminar documento</span>
+                          </v-tooltip>
+                        </template>
                       </div>
                     </template>
 
@@ -972,6 +989,8 @@ export default class Bussines extends Vue {
   segmentos?: any = [];
   condicionespago?: any = [];
   overlay = false;
+  // Re-render key to force wizard to honor start-index when changed
+  wizardKey: number = 0;
   title: string = "";
   subtitle: string = "";
   validateStepForm: any = { inactivo: "1" };
@@ -1505,7 +1524,7 @@ export default class Bussines extends Vue {
     });
   }
   // Validates that a string is a well-formed http(s) URL
-  isValidUrl(url: any): boolean {
+  public isValidUrl = (url: any): boolean => {
     if (!url || typeof url !== 'string') return false;
     try {
       const parsed = new URL(url);
@@ -1513,7 +1532,7 @@ export default class Bussines extends Vue {
     } catch (e) {
       return false;
     }
-  }
+  };
   backClear(doc) {
     setTimeout(() => {
       doc.name = null;
@@ -1725,6 +1744,9 @@ export default class Bussines extends Vue {
       this.snackbar = true;
       this.back();
       this.overlay = false;
+      // Reset wizard to first tab
+      this.tabIndex = 0;
+      this.wizardKey = this.wizardKey + 1; // force re-render to apply start-index
     } else {
       this.textmsj = "Error al Actualizar los datos de la Empresa.";
       this.color = "error";
@@ -1991,6 +2013,7 @@ export default class Bussines extends Vue {
   }
 
   mounted() {
+    console.log(this.tabIndex)
     this.serverAll();
     if (storageData.get("_bussines") !== null) {
       this.overlay = true;

@@ -56,16 +56,16 @@ export default function buildCertificateApprovedMenu() {
               const has_workers_interpretes = bussines && bussines.has_workers_interpretes === "Si";
               const is_educational_center = bussines && bussines.is_educational_center === "Si";
               if (hospital_center) {
-                items.push({ _name: 'CSidebarNavItem', name: 'Centro Hospitalario', to: '/hospitalcenter', icon: 'cibAnaconda' });
+                items.push({ _name: 'CSidebarNavItem', name: 'Centro Hospitalario', to: '/hospitalcenter', icon: 'cilHome' });
               }
               if (maintenance_and_repair) {
-                items.push({ _name: 'CSidebarNavItem', name: 'Mantenimiento y Reparación', to: '/mantenimientoandreparacion', icon: 'cibAnaconda' });
+                items.push({ _name: 'CSidebarNavItem', name: 'Mantenimiento y Reparación', to: '/mantenimientoandreparacion', icon: 'cilLaptop' });
               }
               if (ortesis_protesis) {
-                items.push({ _name: 'CSidebarNavItem', name: 'Ortesis y Prótesis', to: '/ortesisprotesis', icon: 'cibAnaconda' });
+                items.push({ _name: 'CSidebarNavItem', name: 'Ortesis y Prótesis', to: '/ortesisprotesis', icon: 'cilSettings' });
               }
               if (ortesis_laboratories) {
-                items.push({ _name: 'CSidebarNavItem', name: 'Laboratorios de Órtesis', to: '/ortesislaboratories', icon: 'cibAnaconda' });
+                items.push({ _name: 'CSidebarNavItem', name: 'Laboratorios de Órtesis', to: '/ortesislaboratories', icon: 'cilSpeedometer' });
               }
               if (has_workers_interpretes) {
                 items.push({ _name: 'CSidebarNavItem', name: 'Interpretes', to: '/interpretes', icon: 'cibAnaconda' });
