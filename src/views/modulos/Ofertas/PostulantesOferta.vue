@@ -721,10 +721,18 @@ export default class PostulantesOferta extends Vue {
             const payload = { ...this.FormRequest } as any;
 
             // Asegurar claves mínimas SIEMPRE
-            payload.ofert_id = this.$route.params.id;
-            if (!payload.personas_discapacidad_id) {
-                payload.personas_discapacidad_id = this.dataFormCita.personas_discapacidad_id;
+            payload.ofert_id = Number(this.$route.params.id || this.dataFormCita.ofert_id || 0);
+            payload.personas_discapacidad_id = Number(payload.personas_discapacidad_id || this.dataFormCita.personas_discapacidad_id || 0);
+
+            // Validar requeridos localmente antes de llamar API
+            if (!payload.ofert_id || !payload.personas_discapacidad_id) {
+                this.color = 'warning';
+                this.textmsj = 'Faltan datos obligatorios: ofert_id y persona.';
+                this.snackbar = true;
+                this.closeSnackbar();
+                return;
             }
+
             // Asegurar busine_id
             if (!payload.busine_id) {
                 payload.busine_id = storageData.get('_bussines').id
@@ -762,6 +770,8 @@ export default class PostulantesOferta extends Vue {
         this.comboboxAll(); 
         this.empresaname = storageData.get('_bussines').rif + '-' +storageData.get('_bussines').company_name  
         this.dataFormCita.fecha = this.date
+        // Asegurar ofert_id desde el inicio
+        this.dataFormCita.ofert_id = Number(this.$route.params.id || 0)
         this.dataFormCita.busine_id = storageData.get('_bussines').id
     }
 	data(){
