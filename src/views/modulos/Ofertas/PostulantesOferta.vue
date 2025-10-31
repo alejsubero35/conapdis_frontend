@@ -605,7 +605,7 @@ export default class PostulantesOferta extends Vue {
             this.dataFormCita.telefono = item.telefono_pcd || ''
             this.dataFormCita.modalidad = ''
             this.dataFormCita.asistio = 0
-            this.date = item.fecha_cita
+            // Mantener la fecha actual por defecto cuando no existe en el item
             this.dataFormCita.fecha = this.date
             // Si estamos creando (sin cita), aseguramos edición habilitada
             this.readOnlyCita = false
@@ -713,32 +713,47 @@ export default class PostulantesOferta extends Vue {
         this.dataFormCita.fecha = this.date
     }
     async saveCita(){
-       
-        const valid :any =  this.$refs.dataFormCita.validate();
-        if(valid){
-            this.overlayDialog = true
-            const payload = { ...this.FormRequest } as any
-            // Si no hay id, asegurarnos de enviar ofert_id y persona
-            if (!payload.id) {
-                payload.ofert_id = this.$route.params.id
-                payload.personas_discapacidad_id = payload.personas_discapacidad_id
+        try {
+            const valid = await this.$refs.dataFormCita.validate();
+            if (!valid) return;
+
+            this.overlayDialog = true;
+            const payload = { ...this.FormRequest } as any;
+
+            // Asegurar claves mínimas SIEMPRE
+            payload.ofert_id = this.$route.params.id;
+            if (!payload.personas_discapacidad_id) {
+                payload.personas_discapacidad_id = this.dataFormCita.personas_discapacidad_id;
             }
             // Asegurar busine_id
             if (!payload.busine_id) {
                 payload.busine_id = storageData.get('_bussines').id
             }
-            const data : any = await ofertModule.saveCita(payload)
-            console.log(data.status)
-            if(data.status == 200){
-                this.color = 'success'
-                this.textmsj = 'Cita Guardada con Éxito.'
-                this.snackbar = true
-                this.closeSnackbar()
-                this.reset()
-                this.getPostulantesAll(this.$route.params.id); 
-                this.overlayDialog = false
-                this.dialogCita    = false
+
+            const data : any = await ofertModule.saveCita(payload);
+            if(data.status === 200){
+                this.color = 'success';
+                this.textmsj = 'Cita Guardada con Éxito.';
+                this.snackbar = true;
+                this.closeSnackbar();
+                this.reset();
+                await this.getPostulantesAll(this.$route.params.id);
+                this.dialogCita = false;
+            } else {
+                this.color = 'warning';
+                this.textmsj = (data.data && data.data.message) ? data.data.message : 'No fue posible guardar la cita.';
+                this.snackbar = true;
+                this.closeSnackbar();
             }
+        } catch (error) {
+            const anyErr: any = error;
+            const msg = anyErr?.response?.data?.message || 'Error al guardar la cita.';
+            this.color = 'error';
+            this.textmsj = msg;
+            this.snackbar = true;
+            this.closeSnackbar();
+        } finally {
+            this.overlayDialog = false;
         }
     }
     mounted(){
