@@ -1747,6 +1747,20 @@ export default class Bussines extends Vue {
       // Reset wizard to first tab
       this.tabIndex = 0;
       this.wizardKey = this.wizardKey + 1; // force re-render to apply start-index
+      this.$nextTick(() => {
+        try {
+          const wiz: any = (this.$refs as any).wizard;
+          if (wiz) {
+            if (typeof wiz.reset === 'function') {
+              wiz.reset();
+            } else if ('activeTabIndex' in wiz) {
+              wiz.activeTabIndex = 0;
+            }
+          }
+        } catch (e) {
+          // noop: fallback is key-based re-render
+        }
+      });
     } else {
       this.textmsj = "Error al Actualizar los datos de la Empresa.";
       this.color = "error";
@@ -2032,15 +2046,17 @@ export default class Bussines extends Vue {
 .formCliente {
   background: white;
   padding: 2%;
-  //border-radius: 8px;
-  //border: 1px solid;
 }
+
 .vue-form-wizard {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-.vue-form-wizard .wizard-header {
 
-// Modern UI styles for v-card-title
+.vue-form-wizard .wizard-header {
+  display: none;
+}
+
+/* Modern UI styles for v-card-title */
 .v-card-title {
   background: linear-gradient(90deg, #3f51b5 0%, #2196f3 100%);
   color: #fff !important;
@@ -2053,7 +2069,5 @@ export default class Bussines extends Vue {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-}
-  display: none;
 }
 </style>
