@@ -104,7 +104,7 @@
                                 </template>
                                 <span>Descargar CV</span>
                             </v-tooltip>
-                            <v-tooltip top>
+                            <v-tooltip v-if="canManageCita(item)" top>
                                 <template v-slot:activator="{on, attrs}">
                                     <v-btn
                                         color="warning"
@@ -113,7 +113,6 @@
                                         icon
                                         v-bind="attrs"
                                         v-on="on"
-                                        :disabled="!canManageCita(item)"
                                     >
                                         <v-icon v-if="item.cita_id">mdi-file-eye</v-icon>
                                         <v-icon v-else> mdi-briefcase-plus</v-icon>
@@ -271,11 +270,11 @@
                         placeholder="Teléfono"
                         outlined
                         dense
-                        :rules="rules"
+                        :rules="rulesTel"
                         v-model="dataFormCita.telefono"
                         type="tel"
-                        min="0"
-                        max="11"
+                        maxlength="14"
+                        @input="onTelefonoInput"
                         :disabled="readOnlyCita"
                     ></v-text-field>
                 </v-col>
@@ -286,6 +285,7 @@
                         outlined
                         dense
                         v-model="dataFormCita.modalidad"
+                        :rules="rules"
                         :disabled="readOnlyCita"
                     ></v-select>
                 </v-col>
@@ -298,6 +298,13 @@
                         label="Asistió?"
                         :disabled="readOnlyCita"
                     ></v-switch>
+                </v-col>
+                <v-col cols="12" sm="12" md="12" v-if="!readOnlyCita">
+                    <v-checkbox
+                        v-model="notifyEmail"
+                        :disabled="!!validateCita"
+                        label="Notificar por correo al guardar"
+                    ></v-checkbox>
                 </v-col>
                 </v-row>
                 <!-- <v-row v-show="existCita">
@@ -347,6 +354,17 @@
                     </template>
                 </ModalDelete>
         <Notificacion :snackbar="snackbar" :textmsj="textmsj" :color="color" />
+        <v-dialog v-model="dialogConfirmHire" max-width="520">
+            <v-card>
+                <v-card-title class="text-h6">Confirmar contratación</v-card-title>
+                <v-card-text>¿Está seguro de contratar a {{ hireDisplayName }}?</v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn text color="grey" small @click="dialogConfirmHire = false">Cancelar</v-btn>
+                    <v-btn color="primary" small @click="confirmHireProceed">Confirmar</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 <script lang="ts">
@@ -405,6 +423,8 @@ export default class PostulantesOferta extends Vue {
     timeout = 2000;
     desserts = []
     dialogCita = false
+    dialogConfirmHire = false
+    itemToHire: any = null
     profesion = ''
     cargo     = ''
     disabled = true
@@ -418,6 +438,7 @@ export default class PostulantesOferta extends Vue {
     validateCita = 0
     titlecita = 'Realizar Cita'
     readOnlyCita = false
+    notifyEmail = true
     $refs!: {
         dataFormCita: InstanceType<typeof ValidationObserver>;
     };
@@ -552,6 +573,9 @@ export default class PostulantesOferta extends Vue {
                 this.titlecita = 'Asignar Cita de Entrevista'
                 this.validateCita = 0
                 this.readOnlyCita = false
+                this.notifyEmail = true
+                // Asegurar nombre de empresa visible en el modal
+                this.empresaname = (storageData.get('_bussines').rif || '') + '-' + (storageData.get('_bussines').company_name || '')
                 this.dialogCita = true
             } else {
                 this.color = 'warning'
@@ -577,6 +601,8 @@ export default class PostulantesOferta extends Vue {
         this.dataFormCita.ofert_id = this.$route.params.id
         this.dataFormCita.personas_discapacidad_id = item.personas_discapacidad_id
     this.dataFormCita.busine_id = storageData.get('_bussines').id
+        // Refrescar nombre de empresa para evitar que aparezca vacío al abrir "Ver Cita"
+        this.empresaname = (storageData.get('_bussines').rif || '') + '-' + (storageData.get('_bussines').company_name || '')
         // Si no hay cita y no está aceptado, no abrir (no se puede crear/editar)
         if (!item.cita_id && st !== 'accepted') {
             return
@@ -587,6 +613,7 @@ export default class PostulantesOferta extends Vue {
         if(item.cita_id > 0){
             this.titlecita = 'Ver Cita'
             this.existCita = true
+            this.notifyEmail = false
             this.dataFormCita.id = item.cita_id
             this.dataFormCita.hora = item.hora
             this.dataFormCita.contacto = item.contacto || item.full_name || item.username
@@ -600,6 +627,7 @@ export default class PostulantesOferta extends Vue {
         }else{
             this.titlecita = 'Crear Cita'
             this.existCita = false
+            this.notifyEmail = true
             this.dataFormCita.hora = ''
             this.dataFormCita.contacto = item.full_name || item.username
             this.dataFormCita.telefono = item.telefono_pcd || ''
@@ -655,6 +683,10 @@ export default class PostulantesOferta extends Vue {
         const data : any = await ofertModule.downloadCV(item.personas_discapacidad_id);
     }
    
+    get hireDisplayName(){
+        const it:any = this.itemToHire || {}
+        return it.full_name || it.username || 'este postulante'
+    }
     contratar(item){
         // Guardia adicional: si fue rechazado o ya contratado, no permitir continuar
         const st = (item?.status || '').toLowerCase()
@@ -672,6 +704,14 @@ export default class PostulantesOferta extends Vue {
             this.closeSnackbar()
             return
         }
+        this.itemToHire = item
+        this.dialogConfirmHire = true
+        return
+    }
+    async confirmHireProceed(){
+        const item:any = this.itemToHire
+        if (!item) { this.dialogConfirmHire = false; return }
+        this.dialogConfirmHire = false
         try {
             // Prefill mínimo no invasivo: guardar en storage para uso opcional futuro
             const prefill = {
@@ -686,6 +726,14 @@ export default class PostulantesOferta extends Vue {
                 cargo_nombre: this.ofertaCargoName || ''
             }
             storageData.set('_vincular_prefill', prefill)
+            // Marcar como contratado en backend
+            await ofertModule.contratarPostulante({ ofert_postulation_id: item.ofert_postulation_id })
+            // Refrescar listado
+            await this.getPostulantesAll(this.$route.params.id)
+            this.color = 'success'
+            this.textmsj = 'Postulante contratado.'
+            this.snackbar = true
+            this.closeSnackbar()
         } catch (e) {}
         // Navegar a Vincular; si la pantalla soporta prefill por storage, lo tomará, si no, no rompe
         this.$router.push({ name: 'vincular', query: { from: 'oferta', ofertId: String(this.$route.params.id || '') } })
@@ -712,6 +760,26 @@ export default class PostulantesOferta extends Vue {
     async updateFecha(){
         this.dataFormCita.fecha = this.date
     }
+    onTelefonoInput(val:any){
+        const digits = String(val || '').replace(/\D/g, '').slice(0, 10)
+        const a = digits.substring(0, 3)
+        const b = digits.substring(3, 6)
+        const c = digits.substring(6, 10)
+        let formatted = ''
+        if (a) {
+            formatted = `(${a}`
+            if (a.length === 3) {
+                formatted += ')'
+            }
+        }
+        if (b) {
+            formatted += (a.length === 3 ? ' ' : '') + b
+        }
+        if (c) {
+            formatted += (b.length ? '-' : '') + c
+        }
+        this.dataFormCita.telefono = formatted
+    }
     async saveCita(){
         try {
             const valid = await this.$refs.dataFormCita.validate();
@@ -737,11 +805,17 @@ export default class PostulantesOferta extends Vue {
             if (!payload.busine_id) {
                 payload.busine_id = storageData.get('_bussines').id
             }
+            // Enviar flag de notificación solo en creación
+            if (!this.validateCita) {
+                payload.notify = !!this.notifyEmail;
+            }
 
             const data : any = await ofertModule.saveCita(payload);
             if(data.status === 200){
                 this.color = 'success';
-                this.textmsj = 'Cita Guardada con Éxito.';
+                this.textmsj = (!this.validateCita && this.notifyEmail)
+                  ? 'Cita guardada y notificación enviada al postulante.'
+                  : (this.validateCita ? 'Cita actualizada con éxito.' : 'Cita guardada con éxito.');
                 this.snackbar = true;
                 this.closeSnackbar();
                 this.reset();
@@ -764,43 +838,38 @@ export default class PostulantesOferta extends Vue {
             this.overlayDialog = false;
         }
     }
+    data(){
+        return{
+            rules: [
+                (v:any) => !!v || 'Campo requerido'
+            ],
+            rulesTel: [
+                (v:any) => !!v || 'Campo requerido',
+                (v:any) => (/^\(\d{3}\)\s?\d{3}-\d{4}$/.test(String(v || ''))) || 'Formato: (412) 016-9750',
+            ],
+            emailRules: [
+                (v:any) => !!v || 'E-mail is requerido',
+                (v:any) => /.+@.+/.test(v) || 'E-mail must be valid',
+            ],
+            rulesNum: [
+                (v:any) => v >= 0  || 'Campo Requerido',
+            ],
+            textRules: [
+                (v:any) => !!v || 'Campo Requerido',
+                (v:any) => /^[A-Za-z-0-9]+$/.test(v) || 'Campo No acepta caracteres especiales',
+                (v:any) => (v && v.length <= 10) || 'Debe ingresar máximo 10 caracteres'
+            ],
+        }
+    }
     mounted(){
         this.getPostulantesAll(this.$route.params.id); 
         this.getOferta(this.$route.params.id)
         this.comboboxAll(); 
-        this.empresaname = storageData.get('_bussines').rif + '-' +storageData.get('_bussines').company_name  
+        this.empresaname = storageData.get('_bussines').rif + '-' + storageData.get('_bussines').company_name
         this.dataFormCita.fecha = this.date
-        // Asegurar ofert_id desde el inicio
         this.dataFormCita.ofert_id = Number(this.$route.params.id || 0)
         this.dataFormCita.busine_id = storageData.get('_bussines').id
     }
-	data(){
-    return{
-        rules: [
-            (v:any) => !!v || 'Campo requerido'
-        ],
-		emailRules: [
-			v => !!v || 'E-mail is requerido',
-			v => /.+@.+/.test(v) || 'E-mail must be valid',
-		], 
-        numberRule: [
-         
-            v => v >= 0  || 'El valor debe ser mayor a cero',
-            v => v <= 100  || 'El valor debe ser menor a 100'
-        ],
-        rulesNum: [
-            v => v >= 0  || 'Campo Requerido',
-        ],
-        textRules: [
-            (v:any) => !!v || 'Campo Requerido',
-            (v:any) => /^[A-Za-z-0-9]+$/.test(v) || 'Campo No acepta caracteres especiales',
-            (v:any) =>(v && v.length <= 10) ||'Debe ingresar máximo 10 caracteres'
-        ],
-            
-        }
-    };
-
-
 }
 </script>
 <style lang="scss" scoped>

@@ -71,6 +71,20 @@ class ofertModule extends VuexModule {
         })
     }
     @Action
+    contratarPostulante(data) {
+        return new Promise((resolve, reject) => {
+            http.post(`/oferta/contratar_postulante`, data)
+                .then(response => {
+                    if (response.status === 200) {
+                        resolve(response);
+                    }
+                })
+                .catch(error => {
+                    reject(error)
+                })
+        })
+    }
+    @Action
     cerrarOferta(id) {
         return new Promise((resolve, reject) => {
             http.post(`/positions/cerrar_ofert/${id}`)

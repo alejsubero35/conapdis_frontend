@@ -77,29 +77,20 @@
                 </template>
                 <span>Ver Postulantes</span>
               </v-tooltip>
-              <v-tooltip top>
+              <v-tooltip v-if="canCerrarOferta(item)" top>
                 <template v-slot:activator="{ on, attrs }">
-                  <span v-bind="attrs" v-on="on">
-                    <v-btn
-                      color="warning"
-                      dark
-                      @click="cerrarOferta(item, 0)"
-                      icon
-                      :disabled="!canCerrarOferta(item)"
-                    >
-                      <v-icon>mdi-account-multiple-remove</v-icon>
-                    </v-btn>
-                  </span>
+                  <v-btn
+                    color="warning"
+                    dark
+                    @click="cerrarOferta(item, 0)"
+                    icon
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon>mdi-account-multiple-remove</v-icon>
+                  </v-btn>
                 </template>
-                <span>
-                  {{
-                    item.status === 'inactiva'
-                      ? 'Oferta inactiva'
-                      : (item.postulantes && item.postulantes.length > 0)
-                        ? 'Tiene postulantes asignados'
-                        : 'Cerrar Oferta'
-                  }}
-                </span>
+                <span>Cerrar Oferta</span>
               </v-tooltip>
               <v-tooltip  v-if="item.status != 'inactiva'" top>
                 <template v-slot:activator="{ on, attrs }">
