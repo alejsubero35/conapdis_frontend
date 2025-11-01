@@ -348,7 +348,7 @@
             </v-card-actions>
             </v-card>
 	    </v-dialog>
-                <ModalDelete @deleteData="deleteData" :titlemodal="titlemodal" :textbody="textbody" :dialogDelete="dialogDelete" @cerrarModal="cerrarModal">
+                <ModalDelete @deleteData="deleteData" :titlemodal="titlemodal" :textbody="textbody" :dialogDelete.sync="dialogDelete" @cerrarModal="cerrarModal">
                     <template v-slot:default>
                         <v-textarea v-model="formRechazar.rejection_reason" outlined dense label="Motivo del rechazo" rows="3"></v-textarea>
                     </template>
