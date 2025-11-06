@@ -1622,7 +1622,9 @@ export default class Bussines extends Vue {
   }
   beforeTabSwitch() {
     const valid: any = this.$refs.validateStepForm.validate();
-    this.bussinesform.username = this.bussinesform.rif.replaceAll("-", "");
+    this.bussinesform.username = this.bussinesform.rif
+      ? String(this.bussinesform.rif).split("-").join("")
+      : "";
 
     Math.ceil(this.bussinesform.tomo);
     Math.ceil(this.bussinesform.folio);
@@ -1689,6 +1691,10 @@ export default class Bussines extends Vue {
     }
   }
   async onComplete() {
+    if (this.overlay) {
+      return; // prevent re-entrance on multiple clicks
+    }
+    this.overlay = true; // block UI immediately while preparing documents
     await this.addDocuemnts();
     if (this.FormRequest.id > 0) {
       this.updateBussines();

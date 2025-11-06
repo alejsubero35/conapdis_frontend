@@ -215,16 +215,16 @@
                 this.estado                 = (data.data.state) ? data.data.state.name: ''
                 this.municipio              = (data.data.municipality) ? data.data.municipality.name : ''
                 this.parroquia              = (data.data.parishe) ? data.data.parishe.name : ''
-                this.direccion              = (busine) ? busine.company_name : ''.location    
-                this.firstname              = this.currentUser.first_name
-                this.lastname               = this.currentUser.last_name
-                this.position               = (this.currentUser.position) ? this.currentUser.position.name : ''
-                this.identitycard           = this.currentUser.number 
+                this.direccion              = (busine) ? busine.location : ''    
+                this.firstname              = (busine) ? busine.first_name_rl : ''  //this.currentUser.first_name
+                this.lastname               = (busine) ? busine.last_name_rl : ''  //this.currentUser.last_name
+                this.position               = (busine) ? (busine.position) ? busine.position.name : '' : ''  //(this.currentUser.position) ? this.currentUser.position.name : ''
+                this.identitycard           = (busine) ? busine.identity_card_rl : ''  //this.currentUser.number 
                 //this.phone                  = this.currentUser.bussine.phone                  
                 //this.email                  = this.currentUser.bussine.email_r  
                 //this.identitycard           = this.currentUser.number_document_identity 
-                this.phone                  = this.currentUser.phone                  
-                this.email                  = this.currentUser.email                                
+                this.phone                  = (busine) ? busine.telefono1_representante_legal : ''  //this.currentUser.phone                  
+                this.email                  = (busine) ? busine.email_rl : ''  //this.currentUser.email                                
                 this.overlay = false 
             }
 

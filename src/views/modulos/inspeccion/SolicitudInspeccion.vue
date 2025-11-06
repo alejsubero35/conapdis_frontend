@@ -77,7 +77,7 @@ export default class Usuario extends Vue {
 	@Prop() item?: Object;
     headers = [
             {text: 'N° Expediente', value: 'payroll_number'},
-            {text: 'Nómina', value: 'file_number'},
+            {text: 'Nómina', value: 'nomina_total_trabajadores'},
             {text: 'Estado', value: 'state.name'},
             {text: 'Municipio', value: 'municipality.name'},
             {text: 'Parroquia', value: 'parishe.name'},

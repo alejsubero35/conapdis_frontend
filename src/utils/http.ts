@@ -32,7 +32,7 @@ http.interceptors.request.use((config) => {
   // Optional headers
   if (localStorage.getItem('_token')) {
     const token: any = localStorage.getItem('_token');
-    const tk = token?.replaceAll('"', "");
+    const tk = token ? String(token).split('"').join("") : "";
     config.headers.Authorization = `Bearer ${tk}`;
     //config.headers['Content-Type'] = 'application/json';
     config.headers['Content-Type'] = 'application/json';
@@ -61,7 +61,7 @@ get_http.interceptors.request.use((config) => {
   // Optional headers
   if (localStorage.getItem('_token')) {
     const token: any = localStorage.getItem('_token');
-    const tk = token?.replaceAll('"', "");
+    const tk = token ? String(token).split('"').join("") : "";
     config.headers.Authorization = `Bearer ${tk}`;
     config.headers['Content-Type'] = 'application/json';
     config.headers['Accept'] = '*/*'
@@ -81,14 +81,24 @@ http.interceptors.response.use((response) => {
   return response;
 
 }, async (error: any) => {
-  const { config, response: { status } } = error;
+  // Stop loading regardless of error type
+  store.commit('loading', false);
 
+  const status = error && error.response ? error.response.status : undefined;
   if (status === 401) {
     await session.redirectLogin();
     return error;
-  } else {
+  }
+
+  if (error && error.response && error.response.data) {
+    // Backend provided structured error
     return error.response.data;
   }
+
+  // Network/CORS or unknown error without response
+  store.commit('error', true);
+  store.commit('errors', { message: 'Network/CORS error' });
+  return Promise.reject(error);
 });
 
 
