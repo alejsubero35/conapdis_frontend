@@ -1837,6 +1837,10 @@ export default class Bussines extends Vue {
       this.bussinesform.ortesis_protesis = "Si";
     else this.bussinesform.ortesis_protesis = "No";
 
+     if (this.bussinesform.ortesis_laboratories)
+      this.bussinesform.ortesis_laboratories = "Si";
+    else this.bussinesform.ortesis_laboratories = "No";
+
     if (this.bussinesform.has_workers_interpretes)
       this.bussinesform.has_workers_interpretes = "Si";
     else this.bussinesform.has_workers_interpretes = "No";
@@ -1985,26 +1989,33 @@ export default class Bussines extends Vue {
       state_id: "1",
     };
   }
-  async updataSwitchBussines(data) {
+  async updataSwitchBussines(data) {console.log("data",data);
 
     // Campos del tab "OTROS"
     this.bussinesform.hospital_center = data.hospital_center == "No" ? false : true;
     this.hospital_centerShow = data.hospital_center == "No" ? "No" : "Si";
+
     this.bussinesform.human_help = data.human_help == "No" ? false : true;
     this.human_helpShow = data.human_help == "No" ? "No" : "Si";
+
     this.bussinesform.maintenance_and_repair = data.maintenance_and_repair == "No" ? false : true;
     this.maintenance_and_repairShow = data.maintenance_and_repair == "No" ? "No" : "Si";
+
     this.bussinesform.ortesis_protesis = data.ortesis_protesis == "No" ? false : true;
     this.ortesis_protesisShow = data.ortesis_protesis == "No" ? "No" : "Si";
+
     this.bussinesform.ortesis_laboratories = data.ortesis_laboratories == "No" ? false : true;
-    // No hay show para ortesis_laboratories, se puede agregar si lo necesitas
     this.ortesis_laboratoriesShow = data.ortesis_laboratories == "No" ? "No" : "Si";
+
     this.bussinesform.has_workers_interpretes = data.has_workers_interpretes == "No" ? false : true;
     this.has_workers_interpretesShow = data.has_workers_interpretes == "No" ? "No" : "Si";
+
     this.bussinesform.have_certificate = data.have_certificate == "No" ? false : true;
     this.have_certificateShow = data.have_certificate == "No" ? "No" : "Si";
+
     this.bussinesform.is_educational_center = data.is_educational_center == "No" ? false : true;
     this.is_educational_centerShow = data.is_educational_center == "No" ? "No" : "Si";
+    
     this.bussinesform.has_delivered_homes = data.has_delivered_homes == "No" ? false : true;
     this.has_delivered_homesShow = data.has_delivered_homes == "No" ? "No" : "Si";
    
