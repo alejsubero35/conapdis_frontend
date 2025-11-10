@@ -272,6 +272,7 @@ export default class Bussines extends Vue {
       this.declararform.personas_discapacidades = peoplelinked.data.length;
     } else {
       this.declararform.trabajadores_discapacidad = 0;
+      this.declararform.personas_discapacidades = 0;
       //this.dialogOpen = true
     }
   }
