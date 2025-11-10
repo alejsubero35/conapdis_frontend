@@ -1,14 +1,15 @@
 <template>
     <div>
-        <v-dialog v-model="dialogDelete" max-width="350">
+        <v-dialog v-model="localOpen" @input="onInput" max-width="350">
             <v-card>
                 <v-card-title class="text-h6">
                     {{ titlemodal }}
                 </v-card-title>
 
-                <v-card-text>
-                   {{ textbody }}
-                </v-card-text>
+                     <v-card-text>
+                         <div class="mb-2">{{ textbody }}</div>
+                         <slot></slot>
+                     </v-card-text>
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -33,22 +34,32 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop }     from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch }     from 'vue-property-decorator';
 @Component({
-  components: {
-
-  }
+    components: {}
 })
-export default class ButtonOpen extends Vue {
-    @Prop() dialogDelete?: Boolean;
-    @Prop() textbody?: ' Estas seguro de eliminar el Registro?';
-    @Prop() titlemodal?: ' Estas seguro de eliminar el Registro?';
+export default class ModalDelete extends Vue {
+        @Prop({type: Boolean, required: true}) dialogDelete!: boolean;
+        @Prop({type: String, default: '¿Está seguro?'}) textbody!: string;
+        @Prop({type: String, default: 'Confirmar'}) titlemodal!: string;
+        localOpen: boolean = false;
+        mounted(){
+            this.localOpen = !!this.dialogDelete
+        }
+        @Watch('dialogDelete')
+        syncDialog(val:boolean){
+            this.localOpen = !!val
+        }
     
     deleteContact(){
         this.$emit('deleteData',false)
     }
     cerrarModal(){
         this.$emit('cerrarModal',false)
+    }
+    onInput(val:boolean){
+        this.localOpen = !!val
+        this.$emit('update:dialogDelete', this.localOpen)
     }
 }
 

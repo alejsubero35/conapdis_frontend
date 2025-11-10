@@ -33,6 +33,18 @@
             'items-per-page-text': 'Filtro por Página',
           }"
         >
+          <template v-slot:item.postulados="{ item }">
+            <span>{{ (item.postulantes && item.postulantes.length) ? item.postulantes.length : 0 }}</span>
+          </template>
+          <template v-slot:item.status="{ item }">
+            <v-chip
+              :color="statusColor(item.status)"
+              text-color="white"
+              small
+            >
+              {{ statusLabel(item.status) }}
+            </v-chip>
+          </template>
           <template v-slot:item.action="{ item }">
             <div class="d-flex">
               <v-tooltip top>
@@ -65,7 +77,7 @@
                 </template>
                 <span>Ver Postulantes</span>
               </v-tooltip>
-              <v-tooltip v-if="item.status != 'inactiva'" top>
+              <v-tooltip v-if="canCerrarOferta(item)" top>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     color="warning"
@@ -96,6 +108,11 @@
                 <span>Eliminar</span>
               </v-tooltip>
             </div>
+          </template>
+          <template v-slot:item.vacantes_restantes="{ item }">
+            <v-chip :color="vacantesRestantes(item) > 0 ? 'primary' : 'grey'" text-color="white" small>
+              Disponible {{ vacantesRestantes(item) }}/{{ item.quantity || 0 }}
+            </v-chip>
           </template>
           <template v-slot:item.fecha="{ item }">
             <template>
@@ -131,8 +148,9 @@ export default class Usuario extends Vue {
     { text: "Razón Social ", value: "razon_social" },
     { text: "Fecha ", value: "fecha" },
     { text: "Cargo", value: "cargo" },
-    { text: "Cantidad", value: "quantity" },
-    { text: "Postulados", value: "quantity" },
+    // { text: "Vacantes", value: "quantity" }, // ocultada por claridad; usamos "Disponibles X/Y"
+  { text: "Disponible", value: "vacantes_restantes" },
+    { text: "Postulados", value: "postulados" },
     { text: "Profesión", value: "profesion" },
     { text: "Status", value: "status" },
     { text: "Acciones", value: "action" },
@@ -296,6 +314,52 @@ export default class Usuario extends Vue {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
+  }
+
+  statusLabel(status: string) {
+    if (!status) return '—';
+    const map: any = {
+      activa: 'Activa',
+      inactiva: 'Inactiva',
+      cerrada: 'Cerrada',
+      open: 'Activa',
+      closed: 'Cerrada',
+    };
+    return map[status] || status;
+  }
+
+  statusColor(status: string) {
+    if (!status) return 'grey';
+    const map: any = {
+      activa: 'green',
+      inactiva: 'grey',
+      cerrada: 'orange',
+      open: 'green',
+      closed: 'orange',
+    };
+    return map[status] || 'primary';
+  }
+
+  vacantesRestantes(item: any) {
+    if (!item) return 0;
+    // Preferir valor del backend si viene ya calculado
+    if (typeof item.quantity_vacante_tem === 'number') return item.quantity_vacante_tem;
+    const total = typeof item.quantity === 'number' ? item.quantity : parseInt(item.quantity || '0', 10) || 0;
+    const aceptados = (item.postulantes || []).filter((p: any) => (p.pivot && (p.pivot.status === 'accepted' || p.pivot.estado === 'accepted'))).length;
+    return Math.max(total - aceptados, 0);
+  }
+
+  canCerrarOferta(item: any) {
+    if (!item) return false;
+    if (item.status === 'inactiva') return false;
+    if (item.postulantes && item.postulantes.length > 0) return false;
+    return true;
+  }
+
+  isCerrada(item: any) {
+    if (!item) return false;
+    if (item.status === 'inactiva') return true; // cerrada por empresa
+    return this.vacantesRestantes(item) === 0;   // cerrada por completar vacantes
   }
 }
 </script>

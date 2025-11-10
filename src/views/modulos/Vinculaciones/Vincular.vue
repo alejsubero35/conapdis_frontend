@@ -17,6 +17,7 @@
               <v-row>
                 <v-col cols="12" sm="6" md="4">
                   <v-select
+                    v-model="selectedCustomer"
                     :items="arrayCustomers"
                     item-text="cedula"
                     item-value="id"
@@ -319,6 +320,7 @@ export default class Bussines extends Vue {
   subtitle: string = "";
   validateStepForm: any = { inactivo: "1" };
   arrayPosition = [];
+  selectedCustomer: any = null;
   vincularform: any = {
     code: 0,
     message: "",
@@ -549,6 +551,43 @@ export default class Bussines extends Vue {
     this.getPositionAll();
     this.formatDate(this.date);
     this.vincularform.trabaja_desde = this.date;
+    // Prefill opcional desde flujo de Postulantes (contratación)
+    try {
+      const from = (this.$route.query?.from || '').toString();
+      const prefill = storageData.get('_vincular_prefill');
+      if (from === 'oferta' && prefill && typeof prefill === 'object') {
+        // Setear ids mínimos; el resto el usuario lo completa
+        if (prefill.personas_discapacidad_id) {
+          this.vincularform.personas_discapacidad_id = prefill.personas_discapacidad_id;
+        }
+        if (!this.vincularform.empresa_id) {
+          this.vincularform.empresa_id = prefill.empresa_id
+            || storageData.get('_bussines_id')
+            || storageData.get('_bussines')?.id;
+        }
+        if (prefill.full_name) {
+          this.fullname = prefill.full_name;
+        }
+        // Prefill de cargo (si viene desde la oferta)
+        if (prefill.cargo_id) {
+          this.vincularform.cargo_personadiscapacidad = prefill.cargo_id;
+        }
+        // Prefill de cédula en el select
+        if (prefill.cedula && prefill.personas_discapacidad_id) {
+          const obj = { id: prefill.personas_discapacidad_id, cedula: prefill.cedula, nombres: prefill.full_name };
+          this.arrayCustomers = [obj];
+          this.selectedCustomer = obj;
+          // Disparar lógica existente como si el usuario seleccionara
+          this.getPersonCertificate(obj);
+        }
+        // Mensaje informativo no intrusivo
+        this.color = 'info';
+        this.textmsj = 'Datos precargados desde oferta. Verifique y complete la vinculación.';
+        this.snackbar = true;
+        // Limpiar prefill para evitar reuso accidental
+        storageData.remove('_vincular_prefill');
+      }
+    } catch (e) {}
   }
   data() {
     return {

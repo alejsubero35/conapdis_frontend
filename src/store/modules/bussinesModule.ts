@@ -358,7 +358,8 @@ class bussinesModule extends VuexModule {
 	@Action
 	validateEmailRL(value) {
 		return new Promise((resolve, reject) => {
-			http.get(`/busines/validate_email/${value}`)
+			const email = encodeURIComponent(value || '');
+			http.get(`/busines/validate_email/${email}`)
 				.then(response => {
 
 					if (response.status === 200) {
@@ -366,10 +367,9 @@ class bussinesModule extends VuexModule {
 					}
 				})
 				.catch(error => {
-					reject(error)
+					// resolve with empty data to avoid throwing in UI handlers
+					resolve({ data: [], error });
 				})
-
-
 		})
 	}
 	@Action
