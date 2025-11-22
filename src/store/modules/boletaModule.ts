@@ -43,7 +43,7 @@ import {
 			}) 
 		}
 	@Action
-    getInspectionRequestById(id) {
+    getSanctioningTicketsById(id) {
 		return new Promise((resolve, reject) => {  
 			http.get(`/sanctioning-tickets/${id}`)
 			.then(response =>  {
@@ -57,8 +57,8 @@ import {
 			}) 
 		}
     @Action({rawError: true})
-        async downloadGuide(id:any) { 
-        const response =  await http.get(`/sanctioning-tickets/${id}`,{
+        async downloadSanctioningTicket(id:any) { 
+        const response =  await http.get(`/sanctioning-tickets/download/${id}`,{
           	responseType: 'arraybuffer'
         })
         if (response.status === 200 || response.status === 201){
@@ -71,8 +71,21 @@ import {
             link.click()
         }
 	}
-
-  }  
-  
+    @Action({rawError: true})
+        async downloadSanctioningTicketTwo(id:any) { 
+        const response =  await http.get(`/sanctioning-tickets/download_two/${id}`,{
+          	responseType: 'arraybuffer'
+        })
+        if (response.status === 200 || response.status === 201){
+            let blob = new Blob([response.data], {
+              type: 'application/pdf'
+            })
+            let link = document.createElement('a')
+            link.href = window.URL.createObjectURL(blob)
+            link.download = 'Boleta_2-'+id+'.pdf'
+            link.click()
+        }
+	}
+  }
   export default getModule(boletaModule);
   

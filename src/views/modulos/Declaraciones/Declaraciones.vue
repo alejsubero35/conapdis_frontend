@@ -77,6 +77,7 @@
                     v-model="porcentaje"
                     :disabled="availabledeclarated"
                     readonly
+                    :color="colorPorcentaje"
                     class="porcentaje"
                   ></v-text-field>
                 </v-col>
@@ -245,6 +246,8 @@ export default class Bussines extends Vue {
       this.disabled = false;
     }
   }
+  colorPorcentaje: string = "";
+
   async calcularporcentaje() {
     let porcentajeley: number =
       parseInt(this.declararform.numero_total_trabajadores) * (5 / 100);
@@ -257,7 +260,7 @@ export default class Bussines extends Vue {
         porcentajeley +
         " " +
         " - No cumple con el 5% estipulado por la  Ley";
-      this.porcentaje = "0";
+      this.colorPorcentaje = "red";
       this.disabled = true;
     } else {
       this.porcentaje =
@@ -265,6 +268,7 @@ export default class Bussines extends Vue {
         porcentajeley +
         " " +
         "- Cumple con el 5% estipulado por la  Ley";
+      this.colorPorcentaje = "";
       this.disabled = false;
     }
   }

@@ -76,15 +76,39 @@
                                 <td  colspan="3" style="font-size:12px;font-weight:bold">% de trabajadores con discapacidad que deberia tener : 5 % </td>
                                 <td  colspan="3" style="font-size:12px;font-weight:bold">N° total de trabajadores con discapacidad: {{ cant_trabajadores_discapacidad }}</td>
                             </tr>
-                            <tr>
+                            <tr v-if="peoplelinked.data && peoplelinked.data.length > 0">
                                 <th class="td-center" colspan="6">Lista de Trabajadores con Discapacidad para este Semestre</th>
                             </tr>
                         </table>
+                        <table v-if="peoplelinked.data && peoplelinked.data.length > 0">
+                            <tr>
+                                <th class="td-center">Cédula</th>
+                                <th class="td-center">Nombres</th>
+                                <th class="td-center">Apellidos</th>
+                                <th class="td-center">Fecha de Inserción Laboral</th>
+                            </tr>
+                            <tr v-for="(person, index) in peoplelinked.data" :key="index">
+                                <td class="td-center">{{ person.cedula }}</td>
+                                <td class="td-center">{{ person.nombres }}</td>
+                                <td class="td-center">{{ person.apellidos }}</td>
+                                <td class="td-center">{{ formatofecha(person.trabaja_desde) }}</td>
+                            </tr>
+                        </table>
                     </v-row>         
+                  
+                    <!-- <div>   <img alt="Código QR" id="codigo"  width="80"></div> -->
+                    <div style="text-align:center;margin-top:100px;">
+                        <hr style="width:60%;margin:auto;margin-bottom:12px;" />
+                        <div style="font-weight:bold;">Soraida Ramírez Osorio</div>
+                        <div>Socióloga</div>
+                        <div style="font-weight:bold;">Presidenta de Conapdis</div>
+                        <div style="margin-top:8px;font-size:14px;">
+                            Designada Mediante Gaceta Oficial N°40.567, de fecha 22-12-14 Decreto N° 1.551 de Fecha 22-12-14
+                        </div>
+                    </div>
                     <div class="mt-5 d-flex justify-end ">
                         <v-btn  small @click="generateReport" color="success" v-show="btn_atras"  >{{ btnSave }}</v-btn> 
                     </div>
-                    <!-- <div>   <img alt="Código QR" id="codigo"  width="80"></div> -->
                 </div>
             </section>
         </vue-html2pdf>
@@ -94,6 +118,7 @@
  import VueHtml2pdf from 'vue-html2pdf'
  import inspeccionModule   from '@/store/modules/inspeccionModule';
  import storageData from '@/store/services/storageService'
+ import statementsModule from "@/store/modules/statementsModule";
   
  export default {
      components: {
@@ -127,7 +152,8 @@
             location: '',
             sector : '',
             tipocompany : '',
-            nro_declaracion : ''
+            nro_declaracion : '',
+            peoplelinked : []
 
          }
      },
@@ -185,9 +211,16 @@
             foreground: "#8bc34a", // Color del QR
             level: "H", // Puede ser L,M,Q y H (L es el de menor nivel, H el mayor)
             });
+        },
+        async getPeopleLinkedByBussinesId(id) {
+            this.peoplelinked = await statementsModule.getPeopleLinkedByBussinesId(id);
+            console.log(this.peoplelinked);
+       
         }
      },
+
      mounted(){
+        this.getPeopleLinkedByBussinesId(storageData.get("_bussines_id"));
         this.Qr()
         if(this.$route.params.item){
             this.dataDeclaracion = this.$route.params.item

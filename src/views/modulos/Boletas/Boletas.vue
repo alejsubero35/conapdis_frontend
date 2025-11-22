@@ -34,7 +34,7 @@
                   <v-btn
                     color="success"
                     dark
-                    @click="viewPDF(item.id)"
+                    @click="donwload(item)"
                     icon
                     v-bind="attrs"
                     v-on="on"
@@ -42,7 +42,7 @@
                     <v-icon>mdi-file-download-outline</v-icon>
                   </v-btn>
                 </template>
-                <span>Ver Guía de Inspección</span>
+                <span>Descargar Boleta Sancionatoria</span>
               </v-tooltip>
             </div>
           </template>
@@ -73,11 +73,12 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import boletaModule from "@/store/modules/boletaModule";
+import storageData from "@/store/services/storageService";
 
 @Component({
   components: {},
 })
-export default class Usuario extends Vue {
+export default class SanctioningTickets extends Vue {
   @Prop() item?: Object;
   headers = [
     { text: "Fecha de Aplicación", value: "current_date" },
@@ -114,6 +115,7 @@ export default class Usuario extends Vue {
   options = {};
   textbody = "";
   titlemodal = "";
+  bussine_id: any = null;
   @Watch("options", { immediate: false })
   handler(val) {
     if (val.page != 1) {
@@ -161,20 +163,34 @@ export default class Usuario extends Vue {
     return date.toISOString();
   }
 
-  async viewPDF(id) {
+  async donwload(item) {console.log(item);
     //this.$router.push({ name: "planillaguiainspeccion", params: { id: id } });
-    const data: any = await boletaModule.downloadGuide(id);
+    let data: any;
+    if (item.ticket_type == '1') {
+      data = await boletaModule.downloadSanctioningTicket(item.id);
+    } else {
+      data = await boletaModule.downloadSanctioningTicketTwo(item.id);
+    }
   }
   async dataIndex() {
     this.overlay = true;
     let paginateData: any = [];
-    const { data, status }: any = await boletaModule.getAll();
+    const { data, status }: any = await boletaModule.getSanctioningTicketsById(storageData.get("_bussines").id);
     this.desserts = data.data;
     this.overlay = false;
   }
   async setQueryPage(page: number) {}
   mounted() {
     this.dataIndex();
+    // Obtener la empresa logueada desde localStorage y asignar su id a bussine_id
+    const bussinesRaw: any = storageData.get("_bussines").id;
+    try {
+      const bussines = typeof bussinesRaw === "string" ? JSON.parse(bussinesRaw) : bussinesRaw;
+      // Se intenta distintas claves comunes para el id
+      this.bussine_id = bussines?.id || bussines?.bussine_id || bussines?.busine_id || null;
+    } catch (e) {
+      this.bussine_id = null; // En caso de error al parsear
+    }
   }
 }
 </script>
