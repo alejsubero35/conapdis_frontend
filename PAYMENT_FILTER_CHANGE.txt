@@ -1,0 +1,45 @@
+// INSTRUCCIONES: Cambio necesario en src/router/index.ts
+// Reemplazar la función isRegistrationPending() (líneas 493-521) con el siguiente código:
+
+async function isRegistrationPending(): Promise<boolean> {
+  try {
+    const bussines = storageData.get('_bussines');
+    if (!bussines || !bussines.id) return false; // si no hay empresa cargada, no bloqueamos
+    const url = `/payments/pending/${bussines.id}`;
+    const resp = await get_http.get(url);
+    // Intentamos interpretar múltiples formatos de respuesta
+    const data = resp && (resp as any).data ? (resp as any).data : {};
+    
+    // Extraer el array de pagos del response
+    const payments = Array.isArray(data) ? data : (Array.isArray((data as any)?.data) ? (data as any).data : []);
+    
+    // Filtrar solo pagos de tipo SingleRegistration que estén pendientes
+    const singleRegistrationPayments = payments.filter((payment: any) => {
+      // Verificar que sea del tipo SingleRegistration
+      const isSingleRegistration = payment.payable_type === 'App\\Models\\SingleRegistration';
+      if (!isSingleRegistration) return false;
+      
+      // Verificar que NO esté pagado
+      const paidSet = new Set(['paid', 'pagado', 'processed', 'procesada', 'completed', 'completado']);
+      const status = (payment?.status || '').toString().toLowerCase();
+      const isPending = !paidSet.has(status);
+      
+      return isPending;
+    });
+    
+    // Solo bloqueamos si existe al menos un SingleRegistration pendiente
+    return singleRegistrationPayments.length > 0;
+  } catch (e) {
+    // En caso de error de red o 4xx/5xx, no bloqueamos para evitar problemas de acceso
+    console.error('Error checking registration pending status:', e);
+    return false;
+  }
+}
+
+// RESUMEN DEL CAMBIO:
+// =====================
+// ANTES: La función bloqueaba menús si CUALQUIER pago estaba pendiente
+// AHORA: La función solo bloquea menús si hay un pago pendiente de tipo 'App\Models\SingleRegistration'
+//
+// Esto permite que los usuarios accedan a los menús cuando tienen pagos pendientes de otros tipos
+// como TrainingRequest, SanctioningTicket, etc., solo bloqueando cuando hay un SingleRegistration pendiente.

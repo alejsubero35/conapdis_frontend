@@ -833,7 +833,6 @@
                   color="success"
                   hide-details
                   class="pl-3 pr-3 mb-5"
-                  :value="ortesis_protesis"
                   @change="setItem('ortesis_protesis')"
                 ></v-switch>
                 <v-switch
@@ -844,7 +843,6 @@
                   color="success"
                   hide-details
                   class="pl-3 pr-3 mb-5"
-                  :value="ortesis_laboratories"
                   @change="setItem('ortesis_laboratories')"
                 ></v-switch>
               </v-col>
@@ -865,36 +863,20 @@
                   color="success"
                   hide-details
                   class="pl-3 pr-3 mb-5"
-                  :value="has_workers_interpretes"
                   @change="setItem('has_workers_interpretes')"
                 ></v-switch>
                 <v-switch
                   v-show="hidecertificate"
                   v-model="bussinesform.have_certificate"
                   :label="
-                    '¿Tiene certificado de intérprete/facilitador? Nota:este campo depende de la respuesta anterior  '
+                    '¿Posee Certificado de pertenecer a la Red Nacional de Interpretes?  '
                   "
                   color="success"
                   hide-details
                   class="pl-3 pr-3 mb-5"
-                  :value="have_certificate"
                   @change="setItem('have_certificate')"
                 ></v-switch>
-
-                <!-- <span
-                  ><strong><h5>Educación discapacidad.</h5></strong></span
-                >
-                <v-switch
-                  v-model="bussinesform.is_educational_center"
-                  :label="
-                    '¿Es usted un Centro Educativo?   '
-                  "
-                  color="success"
-                  hide-details
-                  class="pl-3 pr-3 mb-5"
-                  :value="is_educational_center"
-                  @change="setItem('is_educational_center')"
-                ></v-switch> -->
+                
                 <span
                   ><strong><h5>Vivienda Discapacidad.</h5></strong></span
                 >
@@ -906,7 +888,6 @@
                   color="success"
                   hide-details
                   class="pl-3 pr-3 mb-5"
-                  :value="has_delivered_homes"
                   @change="setItem('has_delivered_homes')"
                 ></v-switch>
                 <!-- <v-textarea
@@ -1720,9 +1701,10 @@ export default class Bussines extends Vue {
   }
   async saveBussines() {
     console.log(this.FormRequest);
-    this.updateSwitch();
     this.overlay = true;
-    const data = await bussinesModule.save(this.FormRequest);
+    // No mutar el formulario vinculado a los switches; serializar a 'Si'/'No' para enviar
+    const payload = this.serializeSwitches(this.FormRequest);
+    const data = await bussinesModule.save(payload);
 
     if (data.code == 201) {
       this.textmsj = "Empresa Creada con Éxito.";
@@ -1742,7 +1724,9 @@ export default class Bussines extends Vue {
   }
   async updateBussines() {
     this.overlay = true;
-    const data = await bussinesModule.update(this.FormRequest);
+    // No mutar el formulario vinculado a los switches; serializar a 'Si'/'No' para enviar
+    const payload = this.serializeSwitches(this.FormRequest);
+    const data = await bussinesModule.update(payload);
 
     if (data.code == 201) {
       this.textmsj = "Empresa Actualizada con Éxito.";
@@ -1827,37 +1811,20 @@ export default class Bussines extends Vue {
         break;
     }
   }
-  async updateSwitch() {
-    if (this.bussinesform.hospital_center)
-      this.bussinesform.hospital_center = "Si";
-    else this.bussinesform.hospital_center = "No";
-
-    if (this.bussinesform.human_help) this.bussinesform.human_help = "Si";
-    else this.bussinesform.human_help = "No";
-
-    if (this.bussinesform.maintenance_and_repair)
-      this.bussinesform.maintenance_and_repair = "Si";
-    else this.bussinesform.maintenance_and_repair = "No";
-
-    if (this.bussinesform.ortesis_protesis)
-      this.bussinesform.ortesis_protesis = "Si";
-    else this.bussinesform.ortesis_protesis = "No";
-
-    if (this.bussinesform.has_workers_interpretes)
-      this.bussinesform.has_workers_interpretes = "Si";
-    else this.bussinesform.has_workers_interpretes = "No";
-
-    if (this.bussinesform.have_certificate)
-      this.bussinesform.have_certificate = "Si";
-    else this.bussinesform.have_certificate = "No";
-
-    if (this.bussinesform.is_educational_center)
-      this.bussinesform.is_educational_center = "Si";
-    else this.bussinesform.is_educational_center = "No";
-
-    if (this.bussinesform.has_delivered_homes)
-      this.bussinesform.has_delivered_homes = "Si";
-    else this.bussinesform.has_delivered_homes = "No";
+  serializeSwitches(form) {
+    // Construye un payload sin mutar los v-model booleanos
+    const payload = { ...form };
+    const toSiNo = (v) => (v === true ? 'Si' : 'No');
+    payload.hospital_center = toSiNo(!!form.hospital_center);
+    payload.human_help = toSiNo(!!form.human_help);
+    payload.maintenance_and_repair = toSiNo(!!form.maintenance_and_repair);
+    payload.ortesis_protesis = toSiNo(!!form.ortesis_protesis);
+    payload.ortesis_laboratories = toSiNo(!!form.ortesis_laboratories);
+    payload.has_workers_interpretes = toSiNo(!!form.has_workers_interpretes);
+    payload.have_certificate = toSiNo(!!form.have_certificate);
+    payload.is_educational_center = toSiNo(!!form.is_educational_center);
+    payload.has_delivered_homes = toSiNo(!!form.has_delivered_homes);
+    return payload;
   }
 
   async goDocuments() {
@@ -1992,28 +1959,44 @@ export default class Bussines extends Vue {
     };
   }
   async updataSwitchBussines(data) {
+    // Normalizar a booleano; default a false cuando no viene definido
+    const toBool = (val) => {
+      if (typeof val === 'boolean') return val;
+      if (val === null || val === undefined) return false;
+      const s = String(val).trim().toLowerCase();
+      if (s === 'si' || s === 'sí' || s === '1' || s === 'true') return true;
+      if (s === 'no' || s === '0' || s === 'false') return false;
+      return false;
+    };
 
     // Campos del tab "OTROS"
-    this.bussinesform.hospital_center = data.hospital_center == "No" ? false : true;
-    this.hospital_centerShow = data.hospital_center == "No" ? "No" : "Si";
-    this.bussinesform.human_help = data.human_help == "No" ? false : true;
-    this.human_helpShow = data.human_help == "No" ? "No" : "Si";
-    this.bussinesform.maintenance_and_repair = data.maintenance_and_repair == "No" ? false : true;
-    this.maintenance_and_repairShow = data.maintenance_and_repair == "No" ? "No" : "Si";
-    this.bussinesform.ortesis_protesis = data.ortesis_protesis == "No" ? false : true;
-    this.ortesis_protesisShow = data.ortesis_protesis == "No" ? "No" : "Si";
-    this.bussinesform.ortesis_laboratories = data.ortesis_laboratories == "No" ? false : true;
-    // No hay show para ortesis_laboratories, se puede agregar si lo necesitas
-    this.ortesis_laboratoriesShow = data.ortesis_laboratories == "No" ? "No" : "Si";
-    this.bussinesform.has_workers_interpretes = data.has_workers_interpretes == "No" ? false : true;
-    this.has_workers_interpretesShow = data.has_workers_interpretes == "No" ? "No" : "Si";
-    this.bussinesform.have_certificate = data.have_certificate == "No" ? false : true;
-    this.have_certificateShow = data.have_certificate == "No" ? "No" : "Si";
-    this.bussinesform.is_educational_center = data.is_educational_center == "No" ? false : true;
-    this.is_educational_centerShow = data.is_educational_center == "No" ? "No" : "Si";
-    this.bussinesform.has_delivered_homes = data.has_delivered_homes == "No" ? false : true;
-    this.has_delivered_homesShow = data.has_delivered_homes == "No" ? "No" : "Si";
-   
+    this.bussinesform.hospital_center = toBool(data.hospital_center);
+    this.hospital_centerShow = this.bussinesform.hospital_center ? 'Si' : 'No';
+
+    this.bussinesform.human_help = toBool(data.human_help);
+    this.human_helpShow = this.bussinesform.human_help ? 'Si' : 'No';
+
+    this.bussinesform.maintenance_and_repair = toBool(data.maintenance_and_repair);
+    this.maintenance_and_repairShow = this.bussinesform.maintenance_and_repair ? 'Si' : 'No';
+
+    this.bussinesform.ortesis_protesis = toBool(data.ortesis_protesis);
+    this.ortesis_protesisShow = this.bussinesform.ortesis_protesis ? 'Si' : 'No';
+
+    this.bussinesform.ortesis_laboratories = toBool(data.ortesis_laboratories);
+    this.ortesis_laboratoriesShow = this.bussinesform.ortesis_laboratories ? 'Si' : 'No';
+
+    this.bussinesform.has_workers_interpretes = toBool(data.has_workers_interpretes);
+    this.has_workers_interpretesShow = this.bussinesform.has_workers_interpretes ? 'Si' : 'No';
+    this.hidecertificate = this.bussinesform.has_workers_interpretes;
+
+    this.bussinesform.have_certificate = toBool(data.have_certificate);
+    this.have_certificateShow = this.bussinesform.have_certificate ? 'Si' : 'No';
+
+    this.bussinesform.is_educational_center = toBool(data.is_educational_center);
+    this.is_educational_centerShow = this.bussinesform.is_educational_center ? 'Si' : 'No';
+
+    this.bussinesform.has_delivered_homes = toBool(data.has_delivered_homes);
+    this.has_delivered_homesShow = this.bussinesform.has_delivered_homes ? 'Si' : 'No';
   }
 
   async serverAll() {
