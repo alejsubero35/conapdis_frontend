@@ -166,7 +166,7 @@ export default class SanctioningTickets extends Vue {
   async donwload(item) {console.log(item);
     //this.$router.push({ name: "planillaguiainspeccion", params: { id: id } });
     let data: any;
-    if (item.ticket_type == '1') {
+    if (item.ticket_type == 'boleta 1') {
       data = await boletaModule.downloadSanctioningTicket(item.id);
     } else {
       data = await boletaModule.downloadSanctioningTicketTwo(item.id);
