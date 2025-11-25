@@ -83,7 +83,7 @@ export default class SanctioningTickets extends Vue {
   headers = [
     { text: "Fecha de Aplicación", value: "current_date" },
     { text: "N° de Boleta", value: "ticket_type" },
-    { text: "Status", value: "status" },
+ /*    { text: "Status", value: "status" }, */
     /* {
       text: "Solicitud de Inspección",
       value: "inspection_request.payroll_number",
