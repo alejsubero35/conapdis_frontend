@@ -486,6 +486,28 @@ const router = new Router({
   ]
 })
 
+// Reload on lazy-chunk load failures (new deploy vs cached app.js)
+router.onError((error: any) => {
+  const isChunkLoadError = /Loading chunk \d+ failed|ChunkLoadError/i.test(error?.message || '');
+  if (isChunkLoadError) {
+    // Force a hard reload to fetch the latest bundle mapping
+    try {
+      // Attempt to bypass service worker cache if present
+      if (navigator && 'serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistration().then(reg => {
+          reg?.active?.postMessage?.('skipWaiting');
+        }).finally(() => {
+          window.location.reload();
+        });
+      } else {
+        window.location.reload();
+      }
+    } catch {
+      window.location.reload();
+    }
+  }
+});
+
 
 // Rutas permitidas cuando el registro está pendiente (permitimos pagar y salir)
 const allowWhenPending = new Set(['paymentcenter', 'Logout', 'Login']);

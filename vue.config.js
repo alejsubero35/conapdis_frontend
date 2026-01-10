@@ -2,6 +2,15 @@ const path = require('path')
 const name = 'Conapdis' // TODO: get this variable from setting.ts
 
 module.exports = {
+  publicPath: '/',
+  filenameHashing: true,
+  productionSourceMap: false,
+  configureWebpack: {
+    output: {
+      filename: 'js/[name].[contenthash:8].js',
+      chunkFilename: 'js/[name].[contenthash:8].js'
+    }
+  },
   //publicPath: process.env.NODE_ENV === 'production' ? '' : '/',
  //publicPath: path.resolve(__dirname, '../dist/index.html'),
 
