@@ -661,7 +661,7 @@
                     dense
                   >
                     <template v-slot:item.status="{ item }">
-                      <v-chip :color="item.status == 'approved' ? 'green' : (item.status == 'rejected' ? 'red' : 'warning')" small dark>
+                      <v-chip :color="(item.status || 'pending') == 'approved' ? 'green' : ((item.status || 'pending') == 'rejected' ? 'red' : 'warning')" small dark>
                         {{ item.status ? item.status : 'pending' }}
                       </v-chip>
                     </template>
@@ -691,7 +691,7 @@
                                 v-on="on"
                                 icon
                                 color="primary"
-                                v-if=" (item.status === 'approved') || (item.status === 'pending') "
+                                v-if=" ((item.status || 'pending') === 'approved') || ((item.status || 'pending') === 'pending') "
                                 :href="item.file_url"
                                 target="_blank"
                                 rel="noopener"
@@ -705,7 +705,7 @@
                           </v-tooltip>
 
                           <!-- If document DOES NOT exist and status is pending, show upload button to trigger hidden file input -->
-                          <v-tooltip v-if="item.status === 'pending'" top>
+                          <v-tooltip v-if="(item.status || 'pending') === 'pending'" top>
                             <template v-slot:activator="{ on, attrs }">
                               <v-btn v-bind="attrs" v-on="on" icon color="primary" v-if="!item.file_url && !item.file" @click="triggerReplaceInput(item.id)" title="Subir documento">
                                 <v-icon>mdi-upload</v-icon>
@@ -715,7 +715,7 @@
                           </v-tooltip>
 
                           <!-- Delete: only when status is pending and there is a file to delete -->
-                          <v-tooltip v-if="item.status === 'pending' && (item.file_url || item.file)" top>
+                          <v-tooltip v-if="(item.status || 'pending') === 'pending' && (item.file_url || item.file)" top>
                             <template v-slot:activator="{ on, attrs }">
                               <v-btn v-bind="attrs" v-on="on" icon color="red" @click="confirmDeleteDocument(item)">
                                 <v-icon>mdi-delete</v-icon>
@@ -1013,6 +1013,8 @@ export default class Bussines extends Vue {
   maintenance_and_repair: boolean = false;
   human_help: boolean = false;
   hospital_center: boolean = false;
+  // Flag para saber si el método setItem() fue ejecutado al menos una vez
+  setItemExecuted: boolean = false;
   hospital_centerShow = "No";
   human_helpShow = "No";
   maintenance_and_repairShow = "No";
@@ -1676,6 +1678,24 @@ export default class Bussines extends Vue {
       return; // prevent re-entrance on multiple clicks
     }
     this.overlay = true; // block UI immediately while preparing documents
+    // Validación previa: si no se ha ejecutado setItem y algún switch del apartado "OTROS" está activo, bloquear guardado
+    const anyOtrosChecked = !!(
+      this.bussinesform.hospital_center ||
+      this.bussinesform.human_help ||
+      this.bussinesform.maintenance_and_repair ||
+      this.bussinesform.ortesis_protesis ||
+      this.bussinesform.ortesis_laboratories ||
+      this.bussinesform.has_workers_interpretes ||
+      this.bussinesform.have_certificate ||
+      this.bussinesform.is_educational_center ||
+      this.bussinesform.has_delivered_homes
+    );
+    if (!this.setItemExecuted && anyOtrosChecked) {
+      this.dialogOpen = true;
+      this.titlemodalalert =
+        'Por favor confirme los campos del apartado "OTROS" interactuando con los interruptores antes de guardar.';
+      return; // No continuar con el guardado
+    }
     await this.addDocuemnts();
     if (this.FormRequest.id > 0) {
       this.updateBussines();
@@ -1761,6 +1781,8 @@ export default class Bussines extends Vue {
     //this.reset();
   }
   async setItem(event) {
+    // Marcar que el usuario ha interactuado con los interruptores y que setItem() fue ejecutado
+    this.setItemExecuted = true;
     switch (event) {
       case "hospital_center":
         if (this.bussinesform.hospital_center) this.hospital_centerShow = "Si";
