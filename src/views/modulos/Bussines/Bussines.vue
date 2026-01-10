@@ -661,7 +661,7 @@
                     dense
                   >
                     <template v-slot:item.status="{ item }">
-                      <v-chip :color="item.status == 'approved' ? 'green' : (item.status == 'rejected' ? 'red' : 'warning')" small dark>
+                      <v-chip :color="(item.status || 'pending') == 'approved' ? 'green' : ((item.status || 'pending') == 'rejected' ? 'red' : 'warning')" small dark>
                         {{ item.status ? item.status : 'pending' }}
                       </v-chip>
                     </template>
@@ -691,7 +691,7 @@
                                 v-on="on"
                                 icon
                                 color="primary"
-                                v-if=" (item.status === 'approved') || (item.status === 'pending') "
+                                v-if=" ((item.status || 'pending') === 'approved') || ((item.status || 'pending') === 'pending') "
                                 :href="item.file_url"
                                 target="_blank"
                                 rel="noopener"
@@ -705,7 +705,7 @@
                           </v-tooltip>
 
                           <!-- If document DOES NOT exist and status is pending, show upload button to trigger hidden file input -->
-                          <v-tooltip v-if="item.status === 'pending'" top>
+                          <v-tooltip v-if="(item.status || 'pending') === 'pending'" top>
                             <template v-slot:activator="{ on, attrs }">
                               <v-btn v-bind="attrs" v-on="on" icon color="primary" v-if="!item.file_url && !item.file" @click="triggerReplaceInput(item.id)" title="Subir documento">
                                 <v-icon>mdi-upload</v-icon>
@@ -715,7 +715,7 @@
                           </v-tooltip>
 
                           <!-- Delete: only when status is pending and there is a file to delete -->
-                          <v-tooltip v-if="item.status === 'pending' && (item.file_url || item.file)" top>
+                          <v-tooltip v-if="(item.status || 'pending') === 'pending' && (item.file_url || item.file)" top>
                             <template v-slot:activator="{ on, attrs }">
                               <v-btn v-bind="attrs" v-on="on" icon color="red" @click="confirmDeleteDocument(item)">
                                 <v-icon>mdi-delete</v-icon>
