@@ -623,9 +623,6 @@
                   dense
                   :rules="rules"
                   required
-                  :readonly="
-                    validateInput == 1 ? (readonly = true) : (readonly = false)
-                  "
                 ></v-select>
               </v-col>
             </v-row>
