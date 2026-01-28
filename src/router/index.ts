@@ -559,11 +559,11 @@ router.beforeEach(async (to?: any, from?: any, next?: any) => {
         return next();
       }
       // Consultar siempre para evitar estados obsoletos
-      const pending = await isRegistrationPending();
+     /*  const pending = await isRegistrationPending();
       storageData.set('_pending_registration', pending);
       if (pending && !allowWhenPending.has(to.name)) {
         return next({ name: 'paymentcenter', query: { notice: 'pending' } });
-      }
+      } */
     }
     next();
   }
