@@ -55,6 +55,7 @@ export default function buildCertificateApprovedMenu() {
               const ortesis_laboratories = bussines && bussines.ortesis_laboratories === "Si";
               const has_workers_interpretes = bussines && bussines.has_workers_interpretes === "Si";
               const is_educational_center = bussines && bussines.is_educational_center === "Si";
+              const has_delivered_homes = bussines && bussines.has_delivered_homes === "Si";
               if (hospital_center) {
                 items.push({ _name: 'CSidebarNavItem', name: 'Centro Hospitalario', to: '/hospitalcenter', icon: 'cilHome' });
               }
@@ -73,6 +74,9 @@ export default function buildCertificateApprovedMenu() {
               if (is_educational_center) {
                 items.push({ _name: 'CSidebarNavItem', name: 'Estudiantes PCD', to: '/educationalcenter', icon: 'cibAnaconda' });
               }
+              /* if (has_delivered_homes) {
+                items.push({ _name: 'CSidebarNavItem', name: 'Viviendas Entregadas', to: '/deliveredhomes', icon: 'cilHome' });
+              } */
               return items;
             })()
           };

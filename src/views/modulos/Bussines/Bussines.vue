@@ -2036,6 +2036,7 @@ export default class Bussines extends Vue {
 
   mounted() {
     console.log(this.tabIndex)
+    console.log(storageData.get("_bussines"))
     this.serverAll();
     if (storageData.get("_bussines") !== null) {
       this.overlay = true;
@@ -2044,6 +2045,7 @@ export default class Bussines extends Vue {
       this.updataSwitchBussines(storageData.get("_bussines"));
       this.getMunicipalityByState(this.bussinesform.state_id);
       this.getParishesByMunicipality(this.bussinesform.municipality_id);
+      this.getSectoresByParishes(this.bussinesform.parishe_id);
       this.btnText = "Actualizar";
       this.validateInput = 1;
     }
