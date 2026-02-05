@@ -156,7 +156,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import bussinesModule from "@/store/modules/bussinesModule";
 import statementsModule from "@/store/modules/statementsModule";
 import { ValidationObserver } from "vee-validate";
@@ -208,6 +208,8 @@ export default class Bussines extends Vue {
   desserts = [];
   porcentaje = "";
   disabled = true;
+  cumpleLeyPorcentaje = false;
+  periodoYaDeclarado = false;
   dataValidate = {
     empresa_id: "",
     periodo_id: "",
@@ -238,19 +240,29 @@ export default class Bussines extends Vue {
       this.color = "warning";
       this.snackbar = true;
       this.back();
-      this.disabled = true;
+      this.periodoYaDeclarado = true;
+      this.updateDeclararDisabled();
     } else {
+      this.periodoYaDeclarado = false;
       this.declararform.periodo = event;
       this.declararform.empresa_id = storageData.get("_bussines_id");
       this.calcularporcentaje();
-      this.disabled = false;
+      this.updateDeclararDisabled();
     }
   }
   colorPorcentaje: string = "";
 
   async calcularporcentaje() {
-    let porcentajeley: number =
-      parseInt(this.declararform.numero_total_trabajadores) * (5 / 100);
+    const totalTrabajadores = parseInt(this.declararform.numero_total_trabajadores);
+    if (!Number.isFinite(totalTrabajadores) || totalTrabajadores <= 0) {
+      this.porcentaje = "";
+      this.colorPorcentaje = "";
+      this.cumpleLeyPorcentaje = false;
+      this.updateDeclararDisabled();
+      return;
+    }
+
+    let porcentajeley: number = totalTrabajadores * (5 / 100);
 
     if (
       porcentajeley > parseFloat(this.declararform.trabajadores_discapacidad)
@@ -261,7 +273,8 @@ export default class Bussines extends Vue {
         " " +
         " - No cumple con el 5% estipulado por la  Ley";
       this.colorPorcentaje = "red";
-      this.disabled = true;
+      this.cumpleLeyPorcentaje = false;
+      this.updateDeclararDisabled();
     } else {
       this.porcentaje =
         "Total = " +
@@ -269,8 +282,38 @@ export default class Bussines extends Vue {
         " " +
         "- Cumple con el 5% estipulado por la  Ley";
       this.colorPorcentaje = "";
-      this.disabled = false;
+      this.cumpleLeyPorcentaje = true;
+      this.updateDeclararDisabled();
     }
+  }
+
+  updateDeclararDisabled() {
+    const totalTrabajadores = this.declararform.numero_total_trabajadores;
+    const periodo = this.declararform.periodo;
+
+    const camposRequeridosCompletos =
+      totalTrabajadores !== undefined &&
+      totalTrabajadores !== null &&
+      String(totalTrabajadores).trim() !== "" &&
+      periodo !== undefined &&
+      periodo !== null &&
+      String(periodo).trim() !== "";
+
+    this.disabled =
+      this.availabledeclarated ||
+      this.periodoYaDeclarado ||
+      !camposRequeridosCompletos ||
+      !this.cumpleLeyPorcentaje;
+  }
+
+  @Watch("declararform.numero_total_trabajadores")
+  onNumeroTotalTrabajadoresChanged() {
+    this.calcularporcentaje();
+  }
+
+  @Watch("declararform.trabajadores_discapacidad")
+  onTrabajadoresDiscapacidadChanged() {
+    this.calcularporcentaje();
   }
   async getPeriods() {
     const periods: any = await statementsModule.getPeriodsAll();
@@ -281,11 +324,12 @@ export default class Bussines extends Vue {
     } else {
       this.availabledeclarated = false;
     }
+    this.updateDeclararDisabled();
   }
   async getPeopleLinkedByBussinesId(id) {
     const peoplelinked: any =
       await statementsModule.getPeopleLinkedByBussinesId(id);
-
+console.log(peoplelinked,'aquii')
     if (peoplelinked.data.length > 0) {
       this.declararform.trabajadores_discapacidad = peoplelinked.data.length;
       this.declararform.personas_discapacidades = peoplelinked.data.length;
@@ -294,6 +338,7 @@ export default class Bussines extends Vue {
       this.declararform.personas_discapacidades = 0;
       //this.dialogOpen = true
     }
+    this.updateDeclararDisabled();
   }
   async declarar() {
     this.overlay = true;
@@ -377,6 +422,7 @@ export default class Bussines extends Vue {
     this.getPeriods();
     this.getPeopleLinkedByBussinesId(storageData.get("_bussines_id"));
     this.declararform.empresa_id = storageData.get("_bussines_id");
+    this.updateDeclararDisabled();
   }
 }
 </script>
