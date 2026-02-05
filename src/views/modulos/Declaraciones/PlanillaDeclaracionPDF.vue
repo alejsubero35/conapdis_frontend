@@ -57,7 +57,7 @@
                                 <td  colspan="3" style="font-size:12px;font-weight:bold">Objeto: {{ object }}</td>
                             </tr>
                             <tr>
-                                <td  colspan="3" style="font-size:12px;font-weight:bold">Actividad Económica : {{ rif }} </td>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">Actividad Económica : {{ economic_activity }} </td>
                                 <td  colspan="3" style="font-size:12px;font-weight:bold">Teléfono: {{ phone }}</td>
                             </tr>
                             <tr>
@@ -103,7 +103,7 @@
                         <div>Socióloga</div>
                         <div style="font-weight:bold;">Presidenta de Conapdis</div>
                         <div style="margin-top:8px;font-size:14px;">
-                            Designada Mediante Gaceta Oficial N°40.567, de fecha 22-12-14 Decreto N° 1.551 de Fecha 22-12-14
+                            Designada Mediante Gaceta Oficial N°40.567,<br> de fecha 22-12-14 Decreto N° 1.551 de Fecha 22-12-14
                         </div>
                     </div>
                     <div class="mt-5 d-flex justify-end ">
@@ -152,6 +152,7 @@
             location: '',
             sector : '',
             tipocompany : '',
+            economic_activity:'',
             nro_declaracion : '',
             peoplelinked : []
 
@@ -193,7 +194,8 @@
             this.estado                 = (data.data.state) ? data.data.state.name: ''
             this.municipio              = (data.data.municipality) ? data.data.municipality.name : ''
             this.parroquia              = (data.data.parishe) ? data.data.parishe.name : ''
-            this.direccion              = (busine) ? busine.company_name : ''.location    
+            this.direccion              = (busine) ? busine.company_name : ''.location  
+            this.economic_activity      = (busine) ? busine.economic_activity.name : ''
             this.firstname              = this.currentBussine.first_name
             this.lastname               = this.currentBussine.last_name
             this.position               = this.currentBussine.position.name
@@ -246,6 +248,7 @@
             this.tipocompany                    = this.currentBussine.company_types.name
             this.estado                         = this.currentBussine.state.name
             this.municipio                      = this.currentBussine.municipality.name 
+            this.economic_activity              = this.currentBussine.economic_activity.name 
         }
         
 

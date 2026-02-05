@@ -262,6 +262,7 @@
                   label="Número Patronal  IVSS"
                   placeholder="Número Patronal  IVSS"
                   dense
+                  :rules="rules"
                   v-model="bussinesform.employer_number_ivss"
                   :readonly="
                     validateInput == 1 ? (readonly = true) : (readonly = false)

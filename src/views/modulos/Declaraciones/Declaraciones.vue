@@ -40,6 +40,7 @@
                     :disabled="availabledeclarated"
                     type="number"
                     @keyup="calcularporcentaje()"
+                    min="0"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
