@@ -210,6 +210,7 @@ export default class Bussines extends Vue {
   porcentaje = "";
   disabled = true;
   cumpleLeyPorcentaje = false;
+  noAplicaCalculoLey = false;
   periodoYaDeclarado = false;
   dataValidate = {
     empresa_id: "",
@@ -259,6 +260,16 @@ export default class Bussines extends Vue {
       this.porcentaje = "";
       this.colorPorcentaje = "";
       this.cumpleLeyPorcentaje = false;
+      this.noAplicaCalculoLey = false;
+      this.updateDeclararDisabled();
+      return;
+    }
+
+    if (totalTrabajadores < 20) {
+      this.porcentaje = "No aplica para el calculo de ley (Declaración en 0)";
+      this.colorPorcentaje = "";
+      this.cumpleLeyPorcentaje = true;
+      this.noAplicaCalculoLey = true;
       this.updateDeclararDisabled();
       return;
     }
@@ -275,6 +286,7 @@ export default class Bussines extends Vue {
         " - No cumple con el 5% estipulado por la  Ley";
       this.colorPorcentaje = "red";
       this.cumpleLeyPorcentaje = false;
+      this.noAplicaCalculoLey = false;
       this.updateDeclararDisabled();
     } else {
       this.porcentaje =
@@ -284,6 +296,7 @@ export default class Bussines extends Vue {
         "- Cumple con el 5% estipulado por la  Ley";
       this.colorPorcentaje = "";
       this.cumpleLeyPorcentaje = true;
+      this.noAplicaCalculoLey = false;
       this.updateDeclararDisabled();
     }
   }
@@ -291,6 +304,8 @@ export default class Bussines extends Vue {
   updateDeclararDisabled() {
     const totalTrabajadores = this.declararform.numero_total_trabajadores;
     const periodo = this.declararform.periodo;
+    const porcentaje = this.porcentaje;
+    const trabajadoresDiscapacidad = this.declararform.trabajadores_discapacidad;
 
     const camposRequeridosCompletos =
       totalTrabajadores !== undefined &&
@@ -298,13 +313,18 @@ export default class Bussines extends Vue {
       String(totalTrabajadores).trim() !== "" &&
       periodo !== undefined &&
       periodo !== null &&
-      String(periodo).trim() !== "";
+      String(periodo).trim() !== "" &&
+      porcentaje !== undefined &&
+      porcentaje !== null &&
+      String(porcentaje).trim() !== "" &&
+      trabajadoresDiscapacidad !== undefined &&
+      trabajadoresDiscapacidad !== null &&
+      String(trabajadoresDiscapacidad).trim() !== "";
 
     this.disabled =
       this.availabledeclarated ||
       this.periodoYaDeclarado ||
-      !camposRequeridosCompletos ||
-      !this.cumpleLeyPorcentaje;
+      !camposRequeridosCompletos;
   }
 
   @Watch("declararform.numero_total_trabajadores")
