@@ -79,7 +79,7 @@
                     :disabled="availabledeclarated"
                     readonly
                     :color="colorPorcentaje"
-                    class="porcentaje"
+                    :class="{'porcentaje-cumple': cumpleLeyPorcentaje && porcentaje !== '', 'porcentaje-no-cumple': !cumpleLeyPorcentaje && porcentaje !== ''}"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -265,25 +265,18 @@ export default class Bussines extends Vue {
       return;
     }
 
-    if (totalTrabajadores < 20) {
-      this.porcentaje = "No aplica para el calculo de ley (Declaración en 0)";
-      this.colorPorcentaje = "";
-      this.cumpleLeyPorcentaje = true;
-      this.noAplicaCalculoLey = true;
-      this.updateDeclararDisabled();
-      return;
-    }
+    
 
-    let porcentajeley: number = totalTrabajadores * (5 / 100);
+    const trabajadoresDisc = parseFloat(this.declararform.trabajadores_discapacidad) || 0;
+    const porcentajeReal: number = (trabajadoresDisc / totalTrabajadores) * 100;
+    const porcentajeFormateado = porcentajeReal % 1 === 0 ? porcentajeReal.toString() : porcentajeReal.toFixed(2);
 
-    if (
-      porcentajeley > parseFloat(this.declararform.trabajadores_discapacidad)
-    ) {
+    if (porcentajeReal < 5) {
       this.porcentaje =
         "Total = " +
-        porcentajeley +
-        " " +
-        " - No cumple con el 5% estipulado por la  Ley";
+        porcentajeFormateado +
+        "%" +
+        " - No cumple con el 5% estipulado por la Ley";
       this.colorPorcentaje = "red";
       this.cumpleLeyPorcentaje = false;
       this.noAplicaCalculoLey = false;
@@ -291,9 +284,9 @@ export default class Bussines extends Vue {
     } else {
       this.porcentaje =
         "Total = " +
-        porcentajeley +
-        " " +
-        "- Cumple con el 5% estipulado por la  Ley";
+        porcentajeFormateado +
+        "%" +
+        " - Cumple con el 5% estipulado por la Ley";
       this.colorPorcentaje = "";
       this.cumpleLeyPorcentaje = true;
       this.noAplicaCalculoLey = false;
@@ -469,8 +462,13 @@ console.log(peoplelinked,'aquii')
   height: 100%;
   width: 100%;
 }
-.porcentaje {
-  color: red;
+.porcentaje-cumple ::v-deep input {
+  color: green !important;
+  font-weight: bold;
+}
+.porcentaje-no-cumple ::v-deep input {
+  color: red !important;
+  font-weight: bold;
 }
 .modern-note {
   display: flex;

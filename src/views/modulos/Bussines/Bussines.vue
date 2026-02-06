@@ -144,38 +144,16 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="3">
-                <v-menu
-                  v-model="menu2"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="auto"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="date"
-                      label="Año"
-                      append-icon="mdi-calendar"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                      dense
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="date"
-                    @input="menu2 = false"
-                    @change="updateFecha()"
-                    :disabled="
-                      validateInput == 1
-                        ? (disabled = true)
-                        : (disabled = false)
-                    "
-                    locale="es"
-                    no-title
-                  ></v-date-picker>
-                </v-menu>
+                <v-select
+                  :items="yearItems"
+                  label="Año"
+                  placeholder="Año"
+                  v-model="bussinesform.registro_mercantil_ano"
+                  dense
+                  :readonly="
+                    validateInput == 1 ? (readonly = true) : (readonly = false)
+                  "
+                ></v-select>
               </v-col>
             </v-row>
             <v-row>
@@ -1049,7 +1027,7 @@ export default class Bussines extends Vue {
   date = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
     .toISOString()
     .substr(0, 10);
-  menu2: boolean = false;
+  registrationYear: string = new Date().getFullYear().toString();
   validateRifDB = false;
   max25chars = (v) => v.length <= 25 || "Input too long!";
   btnText = "Guardar";
@@ -1119,6 +1097,15 @@ export default class Bussines extends Vue {
   get FormRequestDocuments(): any {
     return this.documents;
   }
+  get yearItems(): any[] {
+    const currentYear = new Date().getFullYear();
+    const startYear = 1900;
+    const years: any[] = [];
+    for (let y = currentYear; y >= startYear; y--) {
+      years.push({ text: String(y), value: String(y) });
+    }
+    return years;
+  }
   get activo() {
     return (this.validateStepForm.inactivo = "1");
   }
@@ -1127,6 +1114,9 @@ export default class Bussines extends Vue {
   }
   handleValidation(isValid, tabIndex) {}
   async updateFecha() {
+    if (this.registrationYear) {
+      this.date = `${this.registrationYear}-01-01`;
+    }
     this.bussinesform.registration_date = this.date;
   }
   /* METODOS DOCUMENTS */
@@ -2043,6 +2033,9 @@ export default class Bussines extends Vue {
       this.overlay = true;
       this.sectiontitle = "Actualizar Datos de Empresa";
       this.bussinesform = storageData.get("_bussines");
+      if (this.bussinesform.registro_mercantil_ano) {
+        this.bussinesform.registro_mercantil_ano = String(this.bussinesform.registro_mercantil_ano);
+      }
       this.updataSwitchBussines(storageData.get("_bussines"));
       this.getMunicipalityByState(this.bussinesform.state_id);
       this.getParishesByMunicipality(this.bussinesform.municipality_id);
