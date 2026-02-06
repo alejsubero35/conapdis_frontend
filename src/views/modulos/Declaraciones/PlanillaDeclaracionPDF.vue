@@ -73,7 +73,7 @@
                                 <td  colspan="3" style="font-size:12px;font-weight:bold">Cant. Trabajadores sin discapacidad: {{ cant_trabajadores }}</td>
                             </tr>
                             <tr>
-                                <td  colspan="3" style="font-size:12px;font-weight:bold">% de trabajadores con discapacidad que deberia tener : {{ porcentaje_esperado }}</td>
+                                <td  colspan="3" style="font-size:12px;font-weight:bold">5 % de trabajadores con discapacidad que deberia tener : {{ porcentaje_esperado }}</td>
                                 <td  colspan="3" style="font-size:12px;font-weight:bold">N° total de trabajadores con discapacidad: {{ cant_trabajadores_discapacidad }}</td>
                             </tr>
                             <tr v-if="peoplelinked.data && peoplelinked.data.length > 0">
@@ -85,12 +85,14 @@
                                 <th class="td-center">Cédula</th>
                                 <th class="td-center">Nombres</th>
                                 <th class="td-center">Apellidos</th>
+                                <th class="td-center">N°. Certificado</th>
                                 <th class="td-center">Fecha de Inserción Laboral</th>
                             </tr>
                             <tr v-for="(person, index) in peoplelinked.data" :key="index">
                                 <td class="td-center">{{ person.cedula }}</td>
                                 <td class="td-center">{{ person.nombres }}</td>
                                 <td class="td-center">{{ person.apellidos }}</td>
+                                <td class="td-center">{{ person.numero_certificado }}</td>
                                 <td class="td-center">{{ formatofecha(person.trabaja_desde) }}</td>
                             </tr>
                         </table>
@@ -250,7 +252,7 @@
             this.estado                         = this.currentBussine.state.name
             this.municipio                      = this.currentBussine.municipality.name 
             this.economic_activity              = this.currentBussine.economic_activity.name 
-            this.porcentaje_esperado            = Math.ceil(parseInt(this.dataDeclaracion.numero_total_trabajadores) * 0.05)
+            this.porcentaje_esperado            = Math.floor(parseInt(this.dataDeclaracion.numero_total_trabajadores) * 0.05) || 0
         }
         
 
