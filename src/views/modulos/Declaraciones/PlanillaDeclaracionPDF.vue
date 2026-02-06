@@ -92,7 +92,7 @@
                                 <td class="td-center">{{ person.cedula }}</td>
                                 <td class="td-center">{{ person.nombres }}</td>
                                 <td class="td-center">{{ person.apellidos }}</td>
-                                <td class="td-center">{{ person.numero_certificado }}</td>
+                                <td class="td-center">D-{{ person.numero_certificado }}</td>
                                 <td class="td-center">{{ formatofecha(person.trabaja_desde) }}</td>
                             </tr>
                         </table>
