@@ -358,7 +358,12 @@ class bussinesModule extends VuexModule {
 	@Action
 	validateEmailRL(value) {
 		return new Promise((resolve, reject) => {
-			const email = encodeURIComponent(value || '');
+			const rawEmail = typeof value === 'string' ? value.trim() : '';
+			if (!rawEmail) {
+				resolve({ data: [], skipped: true });
+				return;
+			}
+			const email = encodeURIComponent(rawEmail);
 			http.get(`/busines/validate_email/${email}`)
 				.then(response => {
 

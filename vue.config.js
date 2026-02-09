@@ -5,10 +5,12 @@ module.exports = {
   publicPath: '/',
   filenameHashing: true,
   productionSourceMap: false,
-  configureWebpack: {
-    output: {
-      filename: 'js/[name].[contenthash:8].js',
-      chunkFilename: 'js/[name].[contenthash:8].js'
+  configureWebpack: (config) => {
+    const useContentHash = process.env.NODE_ENV === 'production'
+    config.output = {
+      ...config.output,
+      filename: useContentHash ? 'js/[name].[contenthash:8].js' : 'js/[name].[hash:8].js',
+      chunkFilename: useContentHash ? 'js/[name].[contenthash:8].js' : 'js/[name].[hash:8].js'
     }
   },
   //publicPath: process.env.NODE_ENV === 'production' ? '' : '/',
