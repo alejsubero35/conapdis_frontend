@@ -176,7 +176,7 @@
          },
          formatofecha(fecha) {
              var date = new Date(fecha);
-             let formatted_date = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
+             let formatted_date = date.getUTCDate() + "-" + (date.getUTCMonth() + 1) + "-" + date.getUTCFullYear()
              return  formatted_date;
          },
          async getSolicitudById(id){  

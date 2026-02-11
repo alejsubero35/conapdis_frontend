@@ -256,9 +256,18 @@ export default class Bussines extends Vue {
 
   async calcularporcentaje() {
     const totalTrabajadores = parseInt(this.declararform.numero_total_trabajadores);
-    if (!Number.isFinite(totalTrabajadores) || totalTrabajadores <= 0) {
+    if (!Number.isFinite(totalTrabajadores) || totalTrabajadores < 0) {
       this.porcentaje = "";
       this.colorPorcentaje = "";
+      this.cumpleLeyPorcentaje = false;
+      this.noAplicaCalculoLey = false;
+      this.updateDeclararDisabled();
+      return;
+    }
+
+    if (totalTrabajadores === 0) {
+      this.porcentaje = "0";
+      this.colorPorcentaje = "red";
       this.cumpleLeyPorcentaje = false;
       this.noAplicaCalculoLey = false;
       this.updateDeclararDisabled();
