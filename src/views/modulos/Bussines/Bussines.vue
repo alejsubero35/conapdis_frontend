@@ -1845,8 +1845,12 @@ export default class Bussines extends Vue {
     this.$router.push({ name: "Dashboard" });
   }
   async getStates() {
-    const states: any = await bussinesModule.getStatesAll();
-    this.arrayStates = states.data.data;
+    try {
+      const states: any = await bussinesModule.getStatesAll();
+      this.arrayStates = states && states.data && states.data.data ? states.data.data : [];
+    } catch (error) {
+      this.arrayStates = [];
+    }
   }
   /* async getUserType(){
     const typeuser : any = await bussinesModule.getUserTypeAll()
