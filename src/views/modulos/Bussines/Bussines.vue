@@ -1593,9 +1593,16 @@ export default class Bussines extends Vue {
   }
   beforeTabSwitch() {
     const valid: any = this.$refs.validateStepForm.validate();
-    this.bussinesform.username = this.bussinesform.rif
-      ? String(this.bussinesform.rif).split("-").join("")
-      : "";
+
+    const isEditing = !!(this.bussinesform && this.bussinesform.id);
+    const currentUsername = this.bussinesform && this.bussinesform.username
+      ? String(this.bussinesform.username).trim()
+      : '';
+    if (!isEditing && !currentUsername) {
+      this.bussinesform.username = this.bussinesform.rif
+        ? String(this.bussinesform.rif).split("-").join("")
+        : "";
+    }
 
     Math.ceil(this.bussinesform.tomo);
     Math.ceil(this.bussinesform.folio);
