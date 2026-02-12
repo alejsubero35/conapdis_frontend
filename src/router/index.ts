@@ -548,6 +548,13 @@ async function isRegistrationPending(): Promise<boolean> {
 
 router.beforeEach(async (to?: any, from?: any, next?: any) => {
   document.title = to.meta.title;
+
+  // Interceptar código de impersonación que viene como query param en /login
+  const impersonateCode = to.query.impersonate_code;
+  if (impersonateCode) {
+    return next({ path: '/impersonate', query: { code: impersonateCode } });
+  }
+
   ///console.log(!!http.defaults.headers.common['Authorization'])
   if (to.meta.Auth && !window.localStorage.getItem('_token')) {
 
