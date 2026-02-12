@@ -113,7 +113,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/dashboard',
+      redirect: (to: any) => ({ path: '/dashboard', query: to.query }),
       name: 'Home',
       component: TheContainer,
 
