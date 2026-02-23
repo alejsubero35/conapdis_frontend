@@ -27,8 +27,8 @@
          @hasGenerated="hasGenerated($event)"
          ref="html2Pdf"
         >
-            <section slot="pdf-content"  >
-                <div class="form_contacto">
+            <section slot="pdf-content" class="form_contacto">
+                <section style="width:100%" class="pdf-item">
                   
                     <div class="logo">
                         <img style="object-fit: cover;" src="img/logos_conapdis/CABECERA.png"  alt="">
@@ -111,7 +111,7 @@
                     <div class="mt-5 d-flex justify-end ">
                         <v-btn  small @click="generateReport" color="success" v-show="btn_atras"  >{{ btnSave }}</v-btn> 
                     </div>
-                </div>
+                </section>
             </section>
         </vue-html2pdf>
     </div>

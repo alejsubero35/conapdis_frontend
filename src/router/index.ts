@@ -15,6 +15,7 @@ const CreateUser = () => import('@/views/modulos/users/CreateUser.vue')
 const EditUser = () => import('@/views/modulos/users/EditUser.vue')
 const Login = () => import('@/views/auth/Login.vue')
 const Logout = () => import('@/views/auth/Logout.vue')
+const ImpersonateCallback = () => import('@/views/auth/ImpersonateCallback.vue')
 const UpdatePassword = () => import('@/views/auth/UpdatePassword.vue')
 // Bussines
 const Bussines = () => import('@/views/modulos/Bussines/Bussines.vue')
@@ -112,7 +113,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/dashboard',
+      redirect: (to: any) => ({ path: '/dashboard', query: to.query }),
       name: 'Home',
       component: TheContainer,
 
@@ -458,6 +459,12 @@ const router = new Router({
       //
     },
     {
+      path: '/impersonate',
+      name: 'Impersonate',
+      component: ImpersonateCallback,
+      meta: { Auth: false, title: 'Impersonación' },
+    },
+    {
       path: '/login',
       name: 'Login',
       component: Login,
@@ -541,6 +548,13 @@ async function isRegistrationPending(): Promise<boolean> {
 
 router.beforeEach(async (to?: any, from?: any, next?: any) => {
   document.title = to.meta.title;
+
+  // Interceptar código de impersonación que viene como query param en /login
+  const impersonateCode = to.query.impersonate_code;
+  if (impersonateCode) {
+    return next({ path: '/impersonate', query: { code: impersonateCode } });
+  }
+
   ///console.log(!!http.defaults.headers.common['Authorization'])
   if (to.meta.Auth && !window.localStorage.getItem('_token')) {
 
@@ -559,11 +573,11 @@ router.beforeEach(async (to?: any, from?: any, next?: any) => {
         return next();
       }
       // Consultar siempre para evitar estados obsoletos
-     /*  const pending = await isRegistrationPending();
-      storageData.set('_pending_registration', pending);
-      if (pending && !allowWhenPending.has(to.name)) {
-        return next({ name: 'paymentcenter', query: { notice: 'pending' } });
-      } */
+      /*  const pending = await isRegistrationPending();
+       storageData.set('_pending_registration', pending);
+       if (pending && !allowWhenPending.has(to.name)) {
+         return next({ name: 'paymentcenter', query: { notice: 'pending' } });
+       } */
     }
     next();
   }
