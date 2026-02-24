@@ -278,7 +278,10 @@ export default class Bussines extends Vue {
 
     const trabajadoresDisc = parseFloat(this.declararform.trabajadores_discapacidad) || 0;
     const porcentajeReal: number = (trabajadoresDisc / totalTrabajadores) * 100;
-    const porcentajeFormateado = porcentajeReal % 1 === 0 ? porcentajeReal.toString() : porcentajeReal.toFixed(2);
+    
+    // Aplicar redondeo personalizado: si decimal < 0.5 redondea hacia abajo, si >= 0.5 redondea hacia arriba
+    const porcentajeRedondeado = Math.round(porcentajeReal);
+    const porcentajeFormateado = porcentajeRedondeado.toString();
 
     if (porcentajeReal < 5) {
       this.porcentaje =
@@ -332,14 +335,16 @@ export default class Bussines extends Vue {
       // SI CUMPLE: Si el real es 4.76 pero ya tiene la persona, forzamos a mostrar "5%" 
       // o el real si este fuera mayor a 5.
       const valorVisual = Math.max(5, porcentajeReal);
-      porcentajeAMostrar = valorVisual % 1 === 0 ? valorVisual.toString() : valorVisual.toFixed(2);
+      const valorRedondeado = Math.round(valorVisual);
+      porcentajeAMostrar = valorRedondeado.toString();
       
       this.porcentaje = `Total = ${porcentajeAMostrar}% - Cumple con el 5% establecido`;
       this.colorPorcentaje = "";
       this.cumpleLeyPorcentaje = true;
     } else {
-      // NO CUMPLE: Mostramos el porcentaje real para que vea cuánto le falta
-      porcentajeAMostrar = porcentajeReal % 1 === 0 ? porcentajeReal.toString() : porcentajeReal.toFixed(2);
+      // NO CUMPLE: Mostramos el porcentaje real redondeado
+      const valorRedondeado = Math.round(porcentajeReal);
+      porcentajeAMostrar = valorRedondeado.toString();
       
       this.porcentaje = `Total = ${porcentajeAMostrar}% - No cumple con el 5% establecido (Requiere ${cuotaMinimaRequerida} personas)`;
       this.colorPorcentaje = "red";
