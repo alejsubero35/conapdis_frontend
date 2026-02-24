@@ -254,53 +254,101 @@ export default class Bussines extends Vue {
   }
   colorPorcentaje: string = "";
 
- async calcularporcentaje() {
-  const totalTrabajadores = parseInt(this.declararform.numero_total_trabajadores);
-  const trabajadoresDisc = parseFloat(this.declararform.trabajadores_discapacidad) || 0;
+  /* async calcularporcentaje() {
+    const totalTrabajadores = parseInt(this.declararform.numero_total_trabajadores);
+    if (!Number.isFinite(totalTrabajadores) || totalTrabajadores < 0) {
+      this.porcentaje = "";
+      this.colorPorcentaje = "";
+      this.cumpleLeyPorcentaje = false;
+      this.noAplicaCalculoLey = false;
+      this.updateDeclararDisabled();
+      return;
+    }
 
-  if (!Number.isFinite(totalTrabajadores) || totalTrabajadores < 0) {
-   // this.resetEstado();
-    return;
-  }
+    if (totalTrabajadores === 0) {
+      this.porcentaje = "0";
+      this.colorPorcentaje = "red";
+      this.cumpleLeyPorcentaje = false;
+      this.noAplicaCalculoLey = false;
+      this.updateDeclararDisabled();
+      return;
+    }
 
-  // 1. Caso: Menos de 20 trabajadores
-  if (totalTrabajadores < 20) {
-    this.porcentaje = "No aplica (menos de 20 trabajadores)";
-    this.colorPorcentaje = "";
-    this.cumpleLeyPorcentaje = true; 
-    this.noAplicaCalculoLey = true;
+    
+
+    const trabajadoresDisc = parseFloat(this.declararform.trabajadores_discapacidad) || 0;
+    const porcentajeReal: number = (trabajadoresDisc / totalTrabajadores) * 100;
+    const porcentajeFormateado = porcentajeReal % 1 === 0 ? porcentajeReal.toString() : porcentajeReal.toFixed(2);
+
+    if (porcentajeReal < 5) {
+      this.porcentaje =
+        "Total = " +
+        porcentajeFormateado +
+        "%" +
+        " - No cumple con el 5% estipulado por la Ley";
+      this.colorPorcentaje = "red";
+      this.cumpleLeyPorcentaje = false;
+      this.noAplicaCalculoLey = false;
+      this.updateDeclararDisabled();
+    } else {
+      this.porcentaje =
+        "Total = " +
+        porcentajeFormateado +
+        "%" +
+        " - Cumple con el 5% estipulado por la Ley";
+      this.colorPorcentaje = "";
+      this.cumpleLeyPorcentaje = true;
+      this.noAplicaCalculoLey = false;
+      this.updateDeclararDisabled();
+    }
+  } */
+  async calcularporcentaje() {
+    const totalTrabajadores = parseInt(this.declararform.numero_total_trabajadores);
+    const trabajadoresDisc = parseFloat(this.declararform.trabajadores_discapacidad) || 0;
+
+    if (!Number.isFinite(totalTrabajadores) || totalTrabajadores < 0) {
+    // this.resetEstado();
+      return;
+    }
+
+    // 1. Caso: Menos de 20 trabajadores
+    if (totalTrabajadores < 20) {
+      this.porcentaje = "No aplica (menos de 20 trabajadores)";
+      this.colorPorcentaje = "";
+      this.cumpleLeyPorcentaje = true; 
+      this.noAplicaCalculoLey = true;
+      this.updateDeclararDisabled();
+      return;
+    }
+
+    // 2. Cálculo del mínimo legal (Ej: para 21 es 1.05 -> 1 persona)
+    const cuotaMinimaRequerida = Math.floor(totalTrabajadores * 0.05);
+    
+    // 3. Ajuste de Porcentaje Visual
+    let porcentajeAMostrar: string;
+    const porcentajeReal = (trabajadoresDisc / totalTrabajadores) * 100;
+
+    if (trabajadoresDisc >= cuotaMinimaRequerida) {
+      // SI CUMPLE: Si el real es 4.76 pero ya tiene la persona, forzamos a mostrar "5%" 
+      // o el real si este fuera mayor a 5.
+      const valorVisual = Math.max(5, porcentajeReal);
+      porcentajeAMostrar = valorVisual % 1 === 0 ? valorVisual.toString() : valorVisual.toFixed(2);
+      
+      this.porcentaje = `Total = ${porcentajeAMostrar}% - Cumple con el 5% establecido`;
+      this.colorPorcentaje = "";
+      this.cumpleLeyPorcentaje = true;
+    } else {
+      // NO CUMPLE: Mostramos el porcentaje real para que vea cuánto le falta
+      porcentajeAMostrar = porcentajeReal % 1 === 0 ? porcentajeReal.toString() : porcentajeReal.toFixed(2);
+      
+      this.porcentaje = `Total = ${porcentajeAMostrar}% - No cumple con el 5% establecido (Requiere ${cuotaMinimaRequerida} personas)`;
+      this.colorPorcentaje = "red";
+      this.cumpleLeyPorcentaje = false;
+    }
+
+    this.noAplicaCalculoLey = false;
     this.updateDeclararDisabled();
-    return;
   }
-
-  // 2. Cálculo del mínimo legal (Ej: para 21 es 1.05 -> 1 persona)
-  const cuotaMinimaRequerida = Math.floor(totalTrabajadores * 0.05);
-  
-  // 3. Ajuste de Porcentaje Visual
-  let porcentajeAMostrar: string;
-  const porcentajeReal = (trabajadoresDisc / totalTrabajadores) * 100;
-
-  if (trabajadoresDisc >= cuotaMinimaRequerida) {
-    // SI CUMPLE: Si el real es 4.76 pero ya tiene la persona, forzamos a mostrar "5%" 
-    // o el real si este fuera mayor a 5.
-    const valorVisual = Math.max(5, porcentajeReal);
-    porcentajeAMostrar = valorVisual % 1 === 0 ? valorVisual.toString() : valorVisual.toFixed(2);
-    
-    this.porcentaje = `Total = ${porcentajeAMostrar}% - Cumple con el 5% establecido`;
-    this.colorPorcentaje = "";
-    this.cumpleLeyPorcentaje = true;
-  } else {
-    // NO CUMPLE: Mostramos el porcentaje real para que vea cuánto le falta
-    porcentajeAMostrar = porcentajeReal % 1 === 0 ? porcentajeReal.toString() : porcentajeReal.toFixed(2);
-    
-    this.porcentaje = `Total = ${porcentajeAMostrar}% - No cumple con el 5% establecido (Requiere ${cuotaMinimaRequerida} personas)`;
-    this.colorPorcentaje = "red";
-    this.cumpleLeyPorcentaje = false;
-  }
-
-  this.noAplicaCalculoLey = false;
-  this.updateDeclararDisabled();
-}
 
   updateDeclararDisabled() {
     const totalTrabajadores = this.declararform.numero_total_trabajadores;
