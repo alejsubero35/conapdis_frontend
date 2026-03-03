@@ -734,7 +734,14 @@
                 <v-card v-else outlined>
                   <v-card-title class="subtitle-1">Subir Documentos Requeridos</v-card-title>
                   <v-row>
-                    <v-col v-for="(doc, idx) in documents" :key="doc.id" cols="12" sm="6" md="4">
+                    <v-col
+                      v-for="(doc, idx) in documents"
+                      :key="doc.id"
+                      cols="12"
+                      sm="6"
+                      md="4"
+                      :class="{ 'document-invalid': showDocumentValidationHints && !!getInvalidDocumentReason(doc) }"
+                    >
                       <v-file-input
                         v-if="!doc.url"
                         v-model="documentsloadTemp[idx]"
@@ -748,6 +755,12 @@
                         :disabled="overlay"
                       ></v-file-input>
                       <v-chip v-else color="success" small>Ya cargado</v-chip>
+                      <div
+                        v-if="showDocumentValidationHints && getInvalidDocumentReason(doc)"
+                        class="document-invalid__hint"
+                      >
+                        {{ getInvalidDocumentReason(doc) }}
+                      </div>
                     </v-col>
                   </v-row>
                 </v-card>
@@ -1052,6 +1065,7 @@ export default class Bussines extends Vue {
   documentsload = [];
   replaceEnabled: any = {};
   savingDocuments: any = {};
+  showDocumentValidationHints = false;
 
   visiblecustomers = false;
   imageUrl: any = "";
@@ -1504,6 +1518,37 @@ export default class Bussines extends Vue {
       return false;
     }
   };
+  public isValidBase64Document = (value: any): boolean => {
+    if (!value || typeof value !== "string") {
+      return false;
+    }
+
+    return /^data:(application\/pdf|image\/jpeg|image\/png);base64,/.test(value);
+  };
+  public getInvalidDocumentReason = (doc: any): string | null => {
+    if (!doc || !doc.id) {
+      return "documento inválido o sin identificador.";
+    }
+
+    const hasStoredFile = !!(
+      (doc.url && String(doc.url).trim() !== "") ||
+      (doc.file_url && String(doc.file_url).trim() !== "")
+    );
+
+    if (hasStoredFile) {
+      return null;
+    }
+
+    if (!doc.file) {
+      return "no se cargó archivo.";
+    }
+
+    if (!this.isValidBase64Document(doc.file)) {
+      return "archivo en formato no permitido o base64 inválido (solo pdf, jpg, jpeg, png).";
+    }
+
+    return null;
+  };
   backClear(doc) {
     setTimeout(() => {
       doc.name = null;
@@ -1682,9 +1727,15 @@ export default class Bussines extends Vue {
       this.dialogOpen = true;
       this.titlemodalalert =
         'Por favor confirme los campos del apartado "OTROS" interactuando con los interruptores antes de guardar.';
+      this.overlay = false;
       return; // No continuar con el guardado
     }
-    await this.addDocuemnts();
+    this.showDocumentValidationHints = true;
+    const docsValid = await this.addDocuemnts();
+    if (!docsValid) {
+      this.overlay = false;
+      return;
+    }
     if (this.FormRequest.id > 0) {
       this.updateBussines();
     } else {
@@ -1693,13 +1744,43 @@ export default class Bussines extends Vue {
   }
   async addDocuemnts() {
     delete this.FormRequestDocuments.name;
+
+    const invalidDocs = this.FormRequestDocuments
+      .map((doc: any) => ({
+        doc,
+        reason: this.getInvalidDocumentReason(doc),
+      }))
+      .filter((item: any) => !!item.reason);
+
+    if (invalidDocs.length > 0) {
+      const details = invalidDocs
+        .map((item: any) => {
+          const docName = item.doc?.title || `Documento #${item.doc?.id || "N/A"}`;
+          return `- ${docName}: ${item.reason}`;
+        })
+        .join("\n");
+
+      this.dialogOpen = true;
+      this.dataModalAlert = `Debe corregir los documentos requeridos antes de registrar:\n${details}`;
+      this.textmsj = "Faltan documentos obligatorios por cargar.";
+      this.color = "error";
+      this.snackbar = true;
+      return false;
+    }
+
     const events = [];
     for (var i = 0; i < this.FormRequestDocuments.length; i++) {
-      if (this.FormRequestDocuments[i].url == "") {
+      if (
+        this.FormRequestDocuments[i].url == "" &&
+        this.FormRequestDocuments[i].file_url == "" &&
+        this.FormRequestDocuments[i].file &&
+        this.isValidBase64Document(this.FormRequestDocuments[i].file)
+      ) {
         events.push(this.FormRequestDocuments[i]);
       }
     }
     this.bussinesform.documents = events;
+    return true;
 
     /*         if(events.length > 0){
             if (valid) {
@@ -2077,5 +2158,18 @@ export default class Bussines extends Vue {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+}
+
+.document-invalid {
+  border: 1px solid #ef5350;
+  border-radius: 8px;
+  background: #fff5f5;
+}
+
+.document-invalid__hint {
+  color: #c62828;
+  font-size: 12px;
+  margin-top: 6px;
+  line-height: 1.35;
 }
 </style>
