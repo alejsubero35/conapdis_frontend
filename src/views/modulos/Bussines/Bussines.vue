@@ -1159,8 +1159,34 @@ export default class Bussines extends Vue {
     this.documents = this.documents.filter(
       (doc: any) => doc.visibility_in === 1
     );
+    this.syncLoadedDocumentsWithRequirements();
     this.validateBtn();
     this.overlay = false;
+  }
+  syncLoadedDocumentsWithRequirements() {
+    if (!Array.isArray(this.documents) || !Array.isArray(this.documentsload)) {
+      return;
+    }
+
+    this.documents = this.documents.map((doc: any) => {
+      const loadedDoc = this.documentsload.find((item: any) => {
+        return String(item.id) === String(doc.id)
+          || String(item.document_requirement_id) === String(doc.id);
+      });
+
+      if (!loadedDoc) {
+        return doc;
+      }
+
+      return {
+        ...doc,
+        file_url: loadedDoc.file_url || loadedDoc.file || doc.file_url || doc.url || null,
+        url: loadedDoc.url || loadedDoc.file || doc.url || doc.file_url || null,
+        name: loadedDoc.name || doc.name || null,
+        status: loadedDoc.status || doc.status,
+        document_bussine_id: loadedDoc.document_bussine_id || loadedDoc.id || doc.document_bussine_id || null,
+      };
+    });
   }
 
   // Confirm before delete: checks status and asks user
@@ -1255,6 +1281,7 @@ export default class Bussines extends Vue {
     this.documents = this.documents.filter(
       (doc: any) => doc.visibility_in === 1
     );
+    this.syncLoadedDocumentsWithRequirements();
     this.validateBtn();
     this.overlay = false;
   }
@@ -1271,41 +1298,64 @@ export default class Bussines extends Vue {
       this.disabledBtn = true;
     }
   }
- async updateDocument(doc, fileEvent,i) {
-    let index = this.documents.findIndex(({ id }) => id == doc.id);
-    const files = fileEvent && fileEvent.target ? fileEvent.target.files : fileEvent;
-           this.documents[index].bussines_id = (storageData.get("_bussines"))
-        ? storageData.get("_bussines").id
-        : '';
-       
-        this.documents[index].registration_date = this.todayDate;
-    if (files) {
-      const file = files;
-      const allowedExtensions = ["pdf", "jpg", "jpeg", "png"];
-      const allowedMimeTypes = [
-        "application/pdf",
-        "image/jpeg",
-        "image/png"
-      ];
-      const fileExtension = file.name.split('.').pop().toLowerCase();
-
-      // Validar extensión y tipo MIME
-      if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
-        this.dialogOpen = true;
-        this.dataModalAlert = "Extensión o tipo de archivo NO permitido. Solo se permiten: pdf, jpg, jpeg, png";
-        this.documentsloadTemp[i] = null;
-        this.backClear(doc);
-        return false;
-      }
-
-      if (file.size < this.documents[index].max_size) {
-        let base64 = await this.getBase64(file, doc);
-      } else {
-        this.dialogOpen = true;
-        this.dataModalAlert = "El Documento excede el tamaño permitido";
-        this.backClear(doc);
-      }
+  getSelectedFile(fileEvent: any) {
+    if (!fileEvent) {
+      return null;
     }
+
+    if (fileEvent.target && fileEvent.target.files && fileEvent.target.files.length > 0) {
+      return fileEvent.target.files[0];
+    }
+
+    if (Array.isArray(fileEvent) && fileEvent.length > 0) {
+      return fileEvent[0];
+    }
+
+    if (fileEvent instanceof File) {
+      return fileEvent;
+    }
+
+    return fileEvent.name ? fileEvent : null;
+  }
+  getDocumentValidationError(file: any, maxSize: number) {
+    if (!file) {
+      return "Debe seleccionar un archivo válido.";
+    }
+
+    const allowedExtensions = ["pdf", "jpg", "jpeg", "png"];
+    const allowedMimeTypes = [
+      "application/pdf",
+      "image/jpeg",
+      "image/png"
+    ];
+    const fileExtension = file.name && file.name.includes(".")
+      ? file.name.split(".").pop().toLowerCase()
+      : "";
+
+    if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
+      return "Formato no permitido. Solo se permiten archivos pdf, jpg, jpeg o png.";
+    }
+
+    if (typeof maxSize === "number" && maxSize > 0 && file.size >= maxSize) {
+      return "El documento excede el tamaño permitido.";
+    }
+
+    return null;
+  }
+  showDocumentFileError(message: string, doc: any, index?: number) {
+    this.dialogOpen = true;
+    this.titlemodalalert = "Documento inválido";
+    this.dataModalAlert = message;
+    this.textmsj = message;
+    this.color = "error";
+    this.snackbar = true;
+    if (typeof index === "number") {
+      this.$set(this.documentsloadTemp, index, null);
+    }
+    this.backClear(doc, index);
+  }
+ async updateDocument(doc, fileEvent,i) {
+    return await this.uploadSingleDocument(doc, fileEvent, i);
   }
   
   // Upload a single file immediately when selected from the hidden input
@@ -1347,44 +1397,34 @@ export default class Bussines extends Vue {
         this.snackbar = true;
         return false;
       }
-      const files = fileEvent && fileEvent.target ? fileEvent.target.files : fileEvent;
+      const businessId = storageData.get("_bussines")
+        ? storageData.get("_bussines").id
+        : "";
+      const file = this.getSelectedFile(fileEvent);
 
       // Ensure bussines id is set
-      this.documents[index].bussines_id = storageData.get("_bussines")
-        ? storageData.get("_bussines").id
-        : '';
+      this.documents[index].bussines_id = businessId;
       this.documents[index].registration_date = this.todayDate;
 
-      if (!files || files.length === 0) {
+      if (!file) {
         this.overlay = false;
         return;
       }
 
-      const file = files[0];
-      const allowedExtensions = ["pdf", "jpg", "jpeg", "png"];
-      const allowedMimeTypes = [
-        "application/pdf",
-        "image/jpeg",
-        "image/png"
-      ];
-      const fileExtension = file.name.split('.').pop().toLowerCase();
-
-      if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
-        this.dialogOpen = true;
-        this.dataModalAlert = "Extensión o tipo de archivo NO permitido. Solo se permiten: pdf, jpg, jpeg, png";
-        this.overlay = false;
-        return false;
-      }
-
-      if (file.size >= this.documents[index].max_size) {
-        this.dialogOpen = true;
-        this.dataModalAlert = "El Documento excede el tamaño permitido";
+      const validationError = this.getDocumentValidationError(file, this.documents[index].max_size);
+      if (validationError) {
+        this.showDocumentFileError(validationError, doc, i);
         this.overlay = false;
         return false;
       }
 
       // Convert to base64 and attach to the documents list
       const base64 = await this.getBase64(file, doc);
+      if (!this.isValidBase64Document(base64)) {
+        this.showDocumentFileError("No se pudo procesar el documento seleccionado. Intente con otro archivo válido.", doc, i);
+        this.overlay = false;
+        return false;
+      }
       // ensure the documents source has the file
       if (index !== -1 && this.documents[index]) {
         this.$set(this.documents[index], 'file', base64);
@@ -1397,6 +1437,14 @@ export default class Bussines extends Vue {
         this.$set(this.documentsload[idxLoad], 'name', file.name);
         // replace the object so v-data-table detects change
         this.$set(this.documentsload, idxLoad, Object.assign({}, this.documentsload[idxLoad]));
+      }
+
+      if (!businessId) {
+        this.textmsj = "Documento validado correctamente. Se enviará al completar el registro.";
+        this.color = "success";
+        this.snackbar = true;
+        this.overlay = false;
+        return true;
       }
 
       // Build payload for saving single document (API expects array of documents in saveDocuments)
@@ -1438,13 +1486,13 @@ export default class Bussines extends Vue {
           await this.getDocuments();
         }
       } else {
-        this.textmsj = "Error al subir el documento.";
+        this.textmsj = response?.message || response?.data?.message || "No se pudo guardar el documento. Intente nuevamente.";
         this.color = "error";
         this.snackbar = true;
       }
     } catch (err) {
       console.error(err);
-      this.textmsj = "Error al procesar el archivo.";
+      this.textmsj = "No se pudo procesar el documento seleccionado. Verifique el archivo e intente nuevamente.";
       this.color = "error";
       this.snackbar = true;
     } finally {
@@ -1549,11 +1597,94 @@ export default class Bussines extends Vue {
 
     return null;
   };
-  backClear(doc) {
+  public isRequiredDocument(doc: any): boolean {
+    if (!doc) {
+      return false;
+    }
+
+    return doc.is_required === true || doc.is_required === 1 || doc.is_required === "1";
+  }
+  public getMissingRequiredDocuments(): any[] {
+    return (this.FormRequestDocuments || []).filter((doc: any) => {
+      return this.isRequiredDocument(doc) && !!this.getInvalidDocumentReason(doc);
+    });
+  }
+  public showMissingDocumentsDialog(missingDocs: any[]) {
+    const details = missingDocs
+      .map((doc: any) => {
+        const docName = doc?.title || `Documento #${doc?.id || "N/A"}`;
+        return `- ${docName}: ${this.getInvalidDocumentReason(doc)}`;
+      })
+      .join("\n");
+
+    this.dialogOpen = true;
+    this.titlemodalalert = "Documentos requeridos";
+    this.dataModalAlert = `Debe cargar todos los documentos obligatorios antes de continuar:\n${details}`;
+    this.textmsj = "Faltan documentos obligatorios por cargar.";
+    this.color = "error";
+    this.snackbar = true;
+  }
+  public validateRequiredDocumentsStep(showHints: boolean = true): boolean {
+    if (showHints) {
+      this.showDocumentValidationHints = true;
+    }
+
+    const missingDocs = this.getMissingRequiredDocuments();
+    if (missingDocs.length > 0) {
+      this.showMissingDocumentsDialog(missingDocs);
+      return false;
+    }
+
+    return true;
+  }
+  public hasStoredDocument(doc: any): boolean {
+    if (!doc) {
+      return false;
+    }
+
+    return !!(
+      (doc.url && String(doc.url).trim() !== "") ||
+      (doc.file_url && String(doc.file_url).trim() !== "")
+    );
+  }
+  public buildDocumentsPayload(): any[] {
+    return (this.FormRequestDocuments || []).filter((doc: any) => {
+      return (
+        this.isRequiredDocument(doc) &&
+        !this.hasStoredDocument(doc) &&
+        !!doc.file &&
+        this.isValidBase64Document(doc.file)
+      );
+    });
+  }
+  backClear(doc, index?: number) {
     setTimeout(() => {
-      doc.name = null;
-      doc.file = null;
-      // Si el input depende de doc.name, esto lo limpia
+      if (doc) {
+        doc.name = null;
+        doc.file = null;
+        doc.url = null;
+        doc.file_url = null;
+      }
+
+      const idxDocs = this.documents.findIndex(({ id }) => id == doc?.id);
+      if (idxDocs !== -1) {
+        this.$set(this.documents[idxDocs], "name", null);
+        this.$set(this.documents[idxDocs], "file", null);
+      }
+
+      const idxLoad = this.documentsload.findIndex(({ id }) => id == doc?.id);
+      if (idxLoad !== -1) {
+        this.$set(this.documentsload[idxLoad], "name", null);
+        this.$set(this.documentsload[idxLoad], "file", null);
+        this.$set(this.documentsload[idxLoad], "url", null);
+        this.$set(this.documentsload[idxLoad], "file_url", null);
+        this.$set(this.documentsload, idxLoad, Object.assign({}, this.documentsload[idxLoad]));
+      }
+
+      if (typeof index === "number") {
+        this.$set(this.documentsloadTemp, index, null);
+      }
+
       this.$forceUpdate();
     }, 150);
   }
@@ -1678,7 +1809,7 @@ export default class Bussines extends Vue {
   }
   beforeTabSwitchFive() {
     const valid: any = this.$refs.validateStepFormFive.validate();
-    if (valid) {
+    if (valid && this.validateRequiredDocumentsStep()) {
       return true;
     } else {
       return false;
@@ -1730,7 +1861,10 @@ export default class Bussines extends Vue {
       this.overlay = false;
       return; // No continuar con el guardado
     }
-    this.showDocumentValidationHints = true;
+    if (!this.validateRequiredDocumentsStep()) {
+      this.overlay = false;
+      return;
+    }
     const docsValid = await this.addDocuemnts();
     if (!docsValid) {
       this.overlay = false;
@@ -1745,7 +1879,7 @@ export default class Bussines extends Vue {
   async addDocuemnts() {
     delete this.FormRequestDocuments.name;
 
-    const invalidDocs = this.FormRequestDocuments
+    const invalidDocs = this.getMissingRequiredDocuments()
       .map((doc: any) => ({
         doc,
         reason: this.getInvalidDocumentReason(doc),
@@ -1768,18 +1902,7 @@ export default class Bussines extends Vue {
       return false;
     }
 
-    const events = [];
-    for (var i = 0; i < this.FormRequestDocuments.length; i++) {
-      if (
-        this.FormRequestDocuments[i].url == "" &&
-        this.FormRequestDocuments[i].file_url == "" &&
-        this.FormRequestDocuments[i].file &&
-        this.isValidBase64Document(this.FormRequestDocuments[i].file)
-      ) {
-        events.push(this.FormRequestDocuments[i]);
-      }
-    }
-    this.bussinesform.documents = events;
+    this.bussinesform.documents = this.buildDocumentsPayload();
     return true;
 
     /*         if(events.length > 0){
@@ -1804,7 +1927,7 @@ export default class Bussines extends Vue {
       this.overlay = false;
       this.dialog = true;
     } else {
-      this.textmsj = "Error al Registrar los datos de la Empresa.";
+      this.textmsj = data.message || "No se pudo registrar la empresa. Verifique los datos e intente nuevamente.";
       this.color = "error";
       this.snackbar = true;
       this.backError();
@@ -1841,7 +1964,7 @@ export default class Bussines extends Vue {
         }
       });
     } else {
-      this.textmsj = "Error al Actualizar los datos de la Empresa.";
+      this.textmsj = data.message || "No se pudo actualizar la empresa. Verifique los datos e intente nuevamente.";
       this.color = "error";
       this.snackbar = true;
       this.backError();

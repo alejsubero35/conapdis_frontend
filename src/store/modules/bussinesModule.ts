@@ -59,10 +59,15 @@ class bussinesModule extends VuexModule {
 
 				if (payload) {
 					dataUsers.code = payload.status
+					dataUsers.message = payload?.data?.message || payload?.data?.mensaje || 'Solicitud procesada correctamente';
 				} else {
 					dataUsers.code = 500;
 					dataUsers.message = 'Error al procesar la Solicitud';
 				}
+			})
+			.catch((error: any) => {
+				dataUsers.code = error?.status || error?.code || error?.response?.status || 500;
+				dataUsers.message = error?.message || error?.mensaje || error?.error || 'No se pudo registrar la empresa. Verifique los datos e intente nuevamente.';
 			})
 		return dataUsers;
 	}
@@ -75,6 +80,7 @@ class bussinesModule extends VuexModule {
 
 				if (payload) {
 					dataUsers.code = payload.status
+					dataUsers.message = payload?.data?.message || payload?.data?.mensaje || 'Solicitud procesada correctamente';
 					const busine: any = payload.data.data
 					storageData.remove('_bussines');
 					storageData.set('_bussines', busine);
@@ -85,6 +91,10 @@ class bussinesModule extends VuexModule {
 					dataUsers.code = 500;
 					dataUsers.message = 'Error al procesar la Solicitud';
 				}
+			})
+			.catch((error: any) => {
+				dataUsers.code = error?.status || error?.code || error?.response?.status || 500;
+				dataUsers.message = error?.message || error?.mensaje || error?.error || 'No se pudo actualizar la empresa. Verifique los datos e intente nuevamente.';
 			})
 		return dataUsers;
 	}
