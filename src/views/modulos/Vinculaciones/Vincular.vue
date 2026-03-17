@@ -239,7 +239,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
                 v-model="dategreso"
-                label="Fecha/Ingreso"
+                label="Fecha/Egreso"
                 append-icon="mdi-calendar"
                 readonly
                 v-bind="attrs"
