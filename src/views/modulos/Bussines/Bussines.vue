@@ -59,7 +59,7 @@
                   dense
                   :rules="rules"
                   v-model="bussinesform.rif"
-                  v-mask="'N-########-#'"
+                  v-mask="'A-########-#'"
                   @keyup="validateRif(bussinesform.rif)"
                   :readonly="
                     validateInput == 1 ? (readonly = true) : (readonly = false)
@@ -1690,6 +1690,7 @@ export default class Bussines extends Vue {
   }
   /* FIN METODOS */
   async getRifType(event) {
+    
     if (this.bussinesform.rif != undefined) {
       this.bussinesform.rif = "";
       switch (event) {
@@ -1744,8 +1745,10 @@ export default class Bussines extends Vue {
           this.showogaceta = false;
       }
     }
+  
   }
   async validateRif(value) {
+    this.bussinesform.rif = value.toUpperCase();
     if (value.length == 12) {
       this.validateKeyInit(value);
       const data: any = await bussinesModule.existRif(value);
