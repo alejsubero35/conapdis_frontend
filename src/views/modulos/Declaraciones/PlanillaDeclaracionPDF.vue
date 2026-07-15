@@ -101,11 +101,11 @@
                     <!-- <div>   <img alt="Código QR" id="codigo"  width="80"></div> -->
                     <div style="text-align:center;margin-top:100px;">
                         <hr style="width:60%;margin:auto;margin-bottom:12px;" />
-                        <div style="font-weight:bold;">Soraida Ramírez Osorio</div>
-                        <div>Socióloga</div>
+                        <div style="font-weight:bold;">Aurelix Johana Salcedo Medina</div>
+                      
                         <div style="font-weight:bold;">Presidenta de Conapdis</div>
                         <div style="margin-top:8px;font-size:14px;">
-                            Designada Mediante Gaceta Oficial N°40.567,<br> de fecha 22-12-14 Decreto N° 1.551 de Fecha 22-12-14
+                            Designada Mediante Gaceta Oficial N°43.314,<br>Decreto N° 5.249 
                         </div>
                     </div>
                     <div class="mt-5 d-flex justify-end ">
